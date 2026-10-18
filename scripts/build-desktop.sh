@@ -18,7 +18,7 @@ case "$mode" in
     ;;
   signed)
     : "${APPLE_SIGNING_IDENTITY:?Set your certificate identity from security find-identity -v -p codesigning}"
-    bundles=dmg
+    bundles=app,dmg
     ;;
   release)
     : "${APPLE_SIGNING_IDENTITY:?Missing Developer ID Application signing identity}"
@@ -29,7 +29,9 @@ case "$mode" in
       echo "Official releases require a Developer ID Application identity." >&2
       exit 1
     fi
-    bundles=dmg
+    # Tauri removes the intermediate .app when only a DMG is requested.
+    # Retain it so signature, stapling, and Gatekeeper checks inspect the app.
+    bundles=app,dmg
     ;;
   *) echo "Usage: bash scripts/build-desktop.sh [local|signed|release]" >&2; exit 1 ;;
 esac
