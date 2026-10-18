@@ -30,6 +30,7 @@ You'll need an existing GitHub CLI login. Follow the [development setup](docs/de
 ## Learn more
 
 - [Development](docs/development.md) — setup, commands, and local builds.
+- [Releasing and signing](docs/releasing.md) — official releases and signing your own builds.
 - [Technical overview](docs/architecture.md) — how the app reads GitHub and stores data.
 - [Project status](docs/status.md) — what's implemented and what still needs verification.
 - [Documentation index](docs/README.md) — design notes and detailed engineering records.

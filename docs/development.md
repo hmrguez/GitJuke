@@ -3,7 +3,7 @@
 ## Requirements
 
 - An Apple Silicon Mac running macOS 15 or later.
-- Xcode command-line tools and Rust.
+- Xcode command-line tools and Rust installed through `rustup`. The repository pins its Rust toolchain in `rust-toolchain.toml`.
 - Bun 1.4.2 or later.
 - The GitHub CLI (`gh`), already signed in to GitHub.com with the account you want to use.
 
@@ -47,10 +47,12 @@ Opt-in live and filesystem qualification cases have their own setup in the relev
 ## Build a local app
 
 ```sh
-bun run tauri build --debug --bundles app --target aarch64-apple-darwin --no-sign
+bun run desktop:build
 ```
 
-This produces an unsigned development app, not a distributable release. Signing, notarization, stapling, and a release DMG are separate outstanding work. See [project status](status.md).
+This produces an optimized, ad-hoc signed app at `target/aarch64-apple-darwin/release/bundle/macos/GitJuke.app`, without Apple credentials or notarization. It does not launch or install the app. The build uses the pinned Rust toolchain and locked dependencies.
+
+For a DMG signed with your own certificate, use `bun run desktop:sign`. For a signed and notarized DMG, use `bun run desktop:release`. See [Releasing and signing](releasing.md) for credentials, GitHub setup, and verification. Personal builds need no signing secrets.
 
 ## Local behavior
 

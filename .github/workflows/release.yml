@@ -1,0 +1,109 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: verify
+    runs-on: macos-15
+    timeout-minutes: 60
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.2
+      - name: Validate release source
+        run: |
+          git merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH"
+          bun scripts/check-release.ts "$RELEASE_TAG"
+      - name: Require an unpublished release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$RELEASE_TAG" --json isDraft > "$RUNNER_TEMP/release.json"; then
+            python3 -c 'import json,sys; sys.exit(0 if json.load(open(sys.argv[1]))["isDraft"] else "Refusing to replace a published release")' "$RUNNER_TEMP/release.json"
+          fi
+      - name: Install pinned Rust toolchain and dependencies
+        run: |
+          rustup show active-toolchain
+          bun install --frozen-lockfile
+      - name: Import signing certificate into temporary keychain
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          : "${APPLE_CERTIFICATE:?Missing APPLE_CERTIFICATE release secret}"
+          : "${APPLE_CERTIFICATE_PASSWORD:?Missing APPLE_CERTIFICATE_PASSWORD release secret}"
+          umask 077
+          keychain="$RUNNER_TEMP/gitjuke-signing.keychain-db"
+          password="$(openssl rand -hex 32)"
+          echo "::add-mask::$password"
+          printf '%s' "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/gitjuke-certificate.p12"
+          security create-keychain -p "$password" "$keychain"
+          security set-keychain-settings -lut 7200 "$keychain"
+          security unlock-keychain -p "$password" "$keychain"
+          security import "$RUNNER_TEMP/gitjuke-certificate.p12" -k "$keychain" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$password" "$keychain"
+          security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
+          rm "$RUNNER_TEMP/gitjuke-certificate.p12"
+      - name: Build, sign, notarize, and verify
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: bun run desktop:release
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          cp target/aarch64-apple-darwin/release/bundle/dmg/*.dmg release-assets/
+          cd release-assets
+          shasum -a 256 ./*.dmg > SHA256SUMS.txt
+      - name: Attest DMG provenance
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-path: release-assets/*.dmg
+      - name: Create or update draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            prerelease=false
+            if [[ "$RELEASE_TAG" == *-* ]]; then prerelease=true; fi
+            gh release create "$RELEASE_TAG" --verify-tag --draft --title "GitJuke $RELEASE_TAG" --generate-notes --prerelease="$prerelease"
+          fi
+          if [[ "$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft)" != true ]]; then
+            echo 'Refusing to replace a published release' >&2
+            exit 1
+          fi
+          gh release upload "$RELEASE_TAG" release-assets/* --clobber
+          echo "Draft release: $(gh release view "$RELEASE_TAG" --json url --jq .url)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove signing material
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/gitjuke-signing.keychain-db" || true
+          rm -f "$RUNNER_TEMP/gitjuke-certificate.p12"

@@ -17,6 +17,8 @@ target/
 *.key
 *.p12
 *.pfx
+*.p8
+/release-assets/
 
 # Logs (keep checked-in implementation evidence)
 *.log

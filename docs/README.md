@@ -5,6 +5,7 @@
 | Guide | What you'll find |
 | --- | --- |
 | [Development](development.md) | Requirements, local setup, tests, and builds |
+| [Releasing and signing](releasing.md) | GitHub setup, signing credentials, tagged releases, and independent builds |
 | [Architecture](architecture.md) | GitHub access, readers, storage, and recovery |
 | [Project status](status.md) | Implemented features, known limitations, and release work |
 | [Design system](design/system.md) | Typography, colors, layout, and interaction conventions |

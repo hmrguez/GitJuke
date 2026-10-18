@@ -2,3 +2,8 @@
 members = ["crates/gitjuke-core", "src-tauri"]
 default-members = ["crates/gitjuke-core"]
 resolver = "2"
+
+# Keep host proc-macro dylibs loadable on macOS 27 / Xcode 27.
+# https://github.com/rust-lang/rust/issues/157750
+[profile.release.build-override]
+strip = "none"

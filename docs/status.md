@@ -26,6 +26,6 @@ The following remain unqualified or blocked in the integrated assessment:
 - VoiceOver and broader live GitHub/provider coverage.
 - Performance on the specified physical reference device, including cumulative query work and peak/temporary storage.
 - Signed notification permission, delivery, and click activation; actual login lifecycle.
-- Developer ID signing, notarization, stapling, and distribution packaging.
+- Developer ID signing, notarization, stapling, and distribution packaging. CI and a tagged draft-release pipeline are configured; the first credentialed GitHub run and downloaded-installer smoke test remain outstanding. See [release setup](releasing.md).
 
 All 29 grouped scenarios in the [acceptance matrix](../.scratch/gitjuke/acceptance.md) remain Pending. Consult the dated engineering records for exact test scope and remaining work rather than treating individual passing checks as release certification.
