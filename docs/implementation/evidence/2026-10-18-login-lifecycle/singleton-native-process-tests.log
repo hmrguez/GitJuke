@@ -1,0 +1,38 @@
+
+running 5 tests
+test singleton::tests::child ... ok
+test singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths ... FAILED
+test singleton::tests::separate_processes_serialize_and_sigkill_releases_lock ... 
+thread 'singleton::tests::child' (13674770) panicked at /private/tmp/gitjuke-login-lifecycle/src-tauri/src/singleton.rs:185:46:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership ... FAILED
+test singleton::tests::symlink_lock_is_rejected ... ok
+
+failures:
+
+---- singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths stdout ----
+
+thread 'singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths' (13674767) panicked at /private/tmp/gitjuke-login-lifecycle/src-tauri/src/singleton.rs:168:65:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- singleton::tests::separate_processes_serialize_and_sigkill_releases_lock stdout ----
+
+thread 'singleton::tests::separate_processes_serialize_and_sigkill_releases_lock' (13674768) panicked at /private/tmp/gitjuke-login-lifecycle/src-tauri/src/singleton.rs:211:13:
+assertion failed: Instant::now() < until
+
+---- singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership stdout ----
+
+thread 'singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership' (13675442) panicked at /private/tmp/gitjuke-login-lifecycle/src-tauri/src/singleton.rs:128:41:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+
+failures:
+    singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths
+    singleton::tests::separate_processes_serialize_and_sigkill_releases_lock
+    singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership
+
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.02s
+

@@ -1,0 +1,22 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 37 tests
+test activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure ... ok
+test activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure ... ok
+test activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them ... ok
+test activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay ... ok
+test activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents ... ok
+test activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back ... ok
+test activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart ... ok
+test query_work_tests::cursors_wrap_and_revisit_newly_expired_rows_behind_the_frontier ... ok
+test query_work_tests::cursor_fault_rolls_back_companion_deletes_and_restart_resumes_exact_tail ... ok
+test activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids ... ok
+test runtime::tests::all_writes_denied_preserves_cached_navigation_and_repair_does_not_replay ... ok
+test runtime::tests::check_purge_partial_startup_stays_locked_and_paused_until_repair ... ok
+test runtime::tests::check_purge_worker_denial_protects_and_repairs_paused_without_neighbor_loss ... FAILED
+test runtime::tests::clear_partial_failure_repairs_paused_without_reads_or_old_generation_publication ... ok
+test runtime::tests::control_sweeps_protect_startup_and_resume_before_remote_eligibility ... ok
+test runtime::tests::enrollment_fault_protects_paused_runtime_and_repair_preserves_history ... ok
+test runtime::tests::interrupted_activity_and_summary_repair_before_remote_eligibility ... ok

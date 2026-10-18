@@ -1,0 +1,89 @@
+Window: "Web Inspector — localhost", App: GitJuke Daily Qualification.
+0 standard window Web Inspector — localhost, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content inspector-resource:///Main.html
+			3 button Dock to left of window
+			4 button Dock to bottom of window
+			5 button Dock to right of window
+			6 button Start element selection (⇧⌘C)
+			7 button Device Settings
+			8 tab group (selectable)
+				9 tab (selectable) Elements
+				10 tab (selected) Console
+				11 tab (selectable) Sources
+				12 tab (selectable) Network
+				13 tab (selectable) Timelines
+				14 tab (selectable) Storage
+				15 tab (selectable) Graphics
+				16 tab (selectable) Layers
+				17 tab (selectable) Audit
+				18 tab (selectable) Search (⇧⌘F)
+				19 tab (selectable) Settings (⌘,)
+			20 container Console
+				21 search text field (settable)  
+				22 button (disabled) Find Previous (⇧⌘G)
+				23 button (disabled) Find Next (⌘G)
+				24 text All
+				25 text Evaluations
+				26 text Errors
+				27 text Warnings
+				28 text Logs
+				29 button Other filter options…
+				30 checkbox (settable, integer) Emulate User Gesture, Help: Run console commands as if inside a user gesture, Value: 0
+				31 button Run Console Snippet…
+				32 button Collect garbage
+				33 button Clear log (⌘K or ⌃L)
+				34 container
+					35 text Console opened at 14:50:25
+					36 image
+					37 text Selected Element
+					38 image
+					39 outline (selectable)
+						40 row (selectable) Description: <section class=​"stack-navigator" tabindex=​"-1" aria-label=​"Pull requests">​…​</section>, Value: <section class=​"stack-navigator" tabindex=​"-1" aria-label=​"Pull requests">​…​</section>
+<section class=​"stack-navigator" tabindex=​"-1" aria-label=​"Pull requests">​…​</section>
+section
+class
+=
+"
+stack-navigator
+"
+tabindex
+=
+"
+-1
+"
+aria-label
+=
+"
+Pull requests
+"
+>
+…
+<
+/section
+>
+					41 text  = $1
+					42 image
+					43 text JSON.stringify({viewport:[innerWidth,innerHeight],root:getComputedStyle(document.documentElement).fontSize,body:getComputedStyle(document.querySelector('.list-subhead')).fontSize,zoom:document.documentElement.dataset.textZoom,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,transition:getComputedStyle(document.querySelector('.nav-item')).transitionDuration,nav:[document.querySelector('nav[aria-label=Primary]').scrollWidth,document.querySelector('nav[aria-label=Primary]').clientWidth],sidebar:[
+					44 image
+					45 text "{\"viewport\":[960,640],\"root\":\"12px\",\"body\":\"11px\",\"zoom\":\"100\",\"reduced\":true,\"transition\":\"0s\",\"nav\":[183,149],\"sidebar\":[178,178],\"document\":[960,960]}" = $2
+					46 image
+					47 text JSON.stringify([innerWidth,innerHeight])
+					48 image
+					49 text "[960,640]" = $3
+					50 image
+					51 text document.querySelector('.query-navigation').style.minWidth='0';JSON.stringify([document.querySelector('nav').clientWidth,document.querySelector('nav').scrollWidth])
+					52 image
+					53 text "[162,162]" = $4
+					54 image
+					55 text "[162,162]" = $4
+			56 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools
+			57 container
+	58 close button
+	59 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	60 minimize button
+	61 text Web Inspector — localhost
+62 menu bar
+	63 GitJuke Daily Qualification
+
+The focused UI element is 56 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools

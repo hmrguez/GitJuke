@@ -60,7 +60,7 @@ pub(crate) fn resume(c: &mut Connection) -> Result<()> {
                 "DELETE FROM pending WHERE rowid IN(SELECT rowid FROM pending WHERE json_type(job,'$.Heads') IS NOT NULL ORDER BY rowid LIMIT 127)"
             }
             "activity" => {
-                "DELETE FROM activity_stage WHERE rowid IN(SELECT rowid FROM activity_stage WHERE repo=json_extract(?1,'$.repo') AND number=json_extract(?1,'$.number') ORDER BY rowid LIMIT 127)"
+                "DELETE FROM activity_stage WHERE rowid IN(SELECT rowid FROM activity_stage WHERE repo=json_extract(?1,'$.repo') AND number=json_extract(?1,'$.number') ORDER BY rowid LIMIT 63)"
             }
             "manual" => {
                 "UPDATE watch_locator SET due=0 WHERE rowid IN(SELECT rowid FROM watch_locator WHERE due!=0 AND id IN(SELECT id FROM watch_source) ORDER BY rowid LIMIT 127)"
@@ -79,7 +79,7 @@ pub(crate) fn resume(c: &mut Connection) -> Result<()> {
         } else {
             tx.execute(sql, [])?
         };
-        if changed < 127 {
+        if changed < if kind == "activity" { 63 } else { 127 } {
             tx.execute("DELETE FROM control_sweep WHERE id=1", [])?;
         }
         if tx.total_changes() - before > 128 {

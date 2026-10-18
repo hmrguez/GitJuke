@@ -1,0 +1,106 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content inspector-resource:///Main.html
+			3 button Close
+			4 button Dock to left of window
+			5 button Dock to right of window
+			6 button Detach into separate window
+			7 button Start element selection (⇧⌘C)
+			8 button Device Settings
+			9 tab group (selectable)
+				10 tab (selectable) Elements
+				11 tab (selected) Console
+				12 tab (selectable) Sources
+				13 tab (selectable) Network
+				14 tab (selectable) Timelines
+				15 tab (selectable) Storage
+				16 tab (selectable) Graphics
+				17 tab (selectable) Layers
+				18 tab (selectable) Audit
+				19 tab (selectable) Search (⇧⌘F)
+				20 tab (selectable) Settings (⌘,)
+			21 container Console
+				22 search text field (settable)  
+				23 button (disabled) Find Previous (⇧⌘G)
+				24 button (disabled) Find Next (⌘G)
+				25 text All
+				26 text Evaluations
+				27 text Errors
+				28 text Warnings
+				29 text Logs
+				30 button Other filter options…
+				31 checkbox (settable, integer) Emulate User Gesture, Help: Run console commands as if inside a user gesture, Value: 0
+				32 button Run Console Snippet…
+				33 button Collect garbage
+				34 button Clear log (⌘K or ⌃L)
+				35 container
+					36 text Console opened at 13:39:28
+					37 image
+					38 text CONTENT – 960 – 140
+					39 image
+					40 text CONTENT – 960 – 640
+					41 image
+					42 text CONTENT – 960 – 140
+					43 image
+					44 text Selected Element
+					45 image
+					46 outline (selectable)
+						47 row (selectable) Description: <pre class=​"description">​<script>untrusted</script>​</pre>, Value: <pre class=​"description">​<script>untrusted</script>​</pre>
+<pre class=​"description">​<script>untrusted</script>​</pre>
+pre
+class
+=
+"
+description
+"
+>
+<script>untrusted</script>
+<
+/pre
+>
+					48 text  = $1
+			49 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools
+			50 container
+	51 scroll area
+		52 HTML content Description: GitJuke, URL: tauri://localhost
+			53 container Text size 100%
+				54 text Text size 100%
+			55 container
+				56 text gitjuke.
+				57 container Primary
+					58 text Workspace
+					59 button My PRs
+					60 button Review requests
+					61 button Activity
+				62 button Preferences
+				63 text RE reader GitHub.com
+				64 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			65 container Pull request reader
+				66 button Back
+				67 text a/b / #1
+				68 button Open in GitHub
+				69 container
+					70 text Open
+					71 heading Change 1, Value: 1
+						72 text Change 1
+					73 text reader · main ← aaaaaaaaaa
+				74 container Published native stack
+					75 text No published stack
+				76 tab group (selectable) Reader
+					77 tab (selected) Overview
+					78 tab (selectable) Changes
+					79 tab (selectable) Conversation
+					80 tab (selectable) Checks
+				81 container Overview
+					82 text <script>untrusted</script>
+					83 text Plain-text description · Comments and reviews are in Conversation.
+				84 text Cached 18/10/2026, 13:30:03 · revision 183
+	85 close button
+	86 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	87 minimize button
+	88 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+89 menu bar
+	90 GitJuke Accessibility
+
+The focused UI element is 49 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools

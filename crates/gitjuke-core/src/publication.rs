@@ -196,18 +196,6 @@ pub(crate) fn pending(c: &Connection) -> Result<bool> {
     )
 }
 
-// Every retained backup payload is charged as non-evictable staging. Admission
-// may evict its canonical disposable copy; protected readers retain the backup.
-pub(crate) fn input_bytes(c: &Connection) -> Result<i64> {
-    let input: Option<(String, String)> = c.query_row(
-        "SELECT kind,args FROM main.publication WHERE id=1 AND kind IN ('source_page','selected','head','checks')",
-        [], |r| Ok((r.get(0)?,r.get(1)?)),
-    ).optional()?;
-    let Some((kind, args)) = input else {
-        return Ok(0);
-    };
-    crate::admission_query::input_bytes(&kind, &args)
-}
 pub(crate) fn unprotect(c: &Connection) -> Result<()> {
     let exists: bool = c.query_row(
         "SELECT EXISTS(SELECT 1 FROM sqlite_temp_schema WHERE type='view')",
@@ -289,37 +277,44 @@ impl Store {
         result
     }
 }
+#[cfg(test)]
 struct Plan {
     tbl: &'static str,
     sql: String,
 }
+#[cfg(test)]
 fn plan(tbl: &'static str, sql: impl Into<String>) -> Plan {
     Plan {
         tbl,
         sql: sql.into(),
     }
 }
+#[cfg(test)]
 fn a(args: &Value, name: &str) -> String {
     match args[name].as_str() {
         Some(s) => lit(s),
         None => args[name].to_string(),
     }
 }
+#[cfg(test)]
 fn lit(s: &str) -> String {
     format!("'{}'", s.replace('\'', "''"))
 }
+#[cfg(test)]
 fn flags_plan() -> Plan {
     plan(
         "watch",
         "WITH ns AS (SELECT s.* FROM watch_source s WHERE NOT EXISTS(SELECT 1 FROM publication_row r WHERE r.tbl='watch_source' AND r.k=json_array(s.id,s.source)) UNION ALL SELECT json_extract(new_json,'$[0]'),json_extract(new_json,'$[1]') FROM publication_row WHERE tbl='watch_source' AND new_json IS NOT NULL), ids AS(SELECT id FROM watch UNION SELECT id FROM ns) SELECT json_array(id),json_array(id,EXISTS(SELECT 1 FROM ns WHERE ns.id=ids.id AND source='authored'),EXISTS(SELECT 1 FROM ns WHERE ns.id=ids.id AND (source='direct' OR source LIKE 'team:%')),EXISTS(SELECT 1 FROM ns WHERE ns.id=ids.id AND source='selected')),NULL FROM ids",
     )
 }
+#[cfg(test)]
 fn health(k: &str, time: u64) -> Plan {
     plan(
         "resource_state",
         format!("SELECT json_array({k}),json_array({k},{time},1,NULL),NULL"),
     )
 }
+#[cfg(test)]
 fn plans(kind: &str, x: &Value) -> Result<Vec<Plan>> {
     let time = x["time"].as_u64().unwrap();
     let mut out = vec![];
@@ -470,91 +465,54 @@ pub(crate) fn application_sql() -> String {
 }
 fn batch(c: &mut Connection) -> Result<usize> {
     admit(c)?;
-    let (kind, args, phase, step): (String, String, String, i64) =
-        c.query_row("SELECT kind,args,phase,step FROM publication", [], |r| {
-            Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?))
-        })?;
+    let (kind, args, phase, step, after, ceiling): (
+        String,
+        String,
+        String,
+        i64,
+        Option<i64>,
+        Option<i64>,
+    ) = c.query_row(
+        "SELECT kind,args,phase,step,scan_after,scan_ceiling FROM main.publication",
+        [],
+        |r| {
+            Ok((
+                r.get(0)?,
+                r.get(1)?,
+                r.get(2)?,
+                r.get(3)?,
+                r.get(4)?,
+                r.get(5)?,
+            ))
+        },
+    )?;
     let x: Value = serde_json::from_str(&args)?;
     validate(&kind, &x, phase != "planning")?;
     let before = c.total_changes();
+    if !matches!(phase.as_str(), "planning" | "applying" | "committed") {
+        return Err(Error::StorageUnavailable(
+            "Invalid publication phase; original database preserved.".into(),
+        ));
+    }
     if phase == "planning" {
-        let plans = plans(&kind, &x)?;
-        if let Some(p) = plans.get(step as usize) {
-            let t = table(p.tbl)?;
-            // SQLite does not accept derived-table column aliases; name them in a CTE.
-            let old_expr = format!(
-                "(SELECT {} FROM {} b WHERE {})",
-                row(t, "b"),
-                t.name,
-                pred(t, "b").replace("?1", "candidate.k")
-            );
-            let sql = format!(
-                "WITH candidate(k,n,ref) AS ({}) SELECT k,n,ref FROM candidate WHERE ?2 IS NOT NULL AND (ref IS NOT NULL OR n IS NOT {old_expr}) AND NOT EXISTS(SELECT 1 FROM publication_row WHERE tbl=?1 AND publication_row.k=candidate.k) LIMIT {ROWS}",
-                p.sql
-            );
-            let rows = {
-                let mut q = c.prepare(&sql)?;
-                q.query_map(params![p.tbl, args], |r| {
-                    Ok((
-                        r.get::<_, String>(0)?,
-                        r.get::<_, Option<String>>(1)?,
-                        r.get::<_, Option<String>>(2)?,
-                    ))
-                })?
-                .collect::<std::result::Result<Vec<_>, _>>()?
-            };
-            let done = rows.is_empty();
-            crate::content_budget::publish_bounded(c, now(), |tx| {
-                for (k, n, reference) in &rows {
-                    let old: Option<String> = tx
-                        .query_row(
-                            &format!(
-                                "SELECT {} FROM {} b WHERE {}",
-                                row(t, "b"),
-                                t.name,
-                                pred(t, "b")
-                            ),
-                            [k],
-                            |r| r.get(0),
-                        )
-                        .optional()?;
-                    // Staging is operational work; it never supplies a published reader view.
-                    let old = if t.name == "activity_stage"
-                        || t.name == "source_stage"
-                        || t.name == "teams_stage"
-                        || t.name == "check_context" && serde_json::from_str::<Value>(k)?[3] == 1
-                    {
-                        None
-                    } else {
-                        old
-                    };
-                    let old_bytes =
-                        if old.is_some() && (t.name == "content" || t.name == "check_context") {
-                            tx.query_row(
-                                &format!(
-                                    "SELECT octet_length(json) FROM {} b WHERE {}",
-                                    t.name,
-                                    pred(t, "b")
-                                ),
-                                [k],
-                                |r| r.get::<_, i64>(0),
-                            )?
-                        } else {
-                            0
-                        };
-                    tx.execute("INSERT INTO publication_row(tbl,k,old_json,new_json,reference,old_bytes) VALUES(?,?,?,?,?,?)",params![t.name,k,old,n,reference,old_bytes])?;
-                }
-                if done {
-                    tx.execute("UPDATE publication SET step=step+1", [])?;
-                }
-                Ok(())
-            })?;
-        } else {
+        if planning::finished(&kind, &x, step)? {
+            if after.is_some() || ceiling.is_some() {
+                return Err(Error::StorageUnavailable(
+                    "Invalid completed planning cursor.".into(),
+                ));
+            }
             let tx = c.transaction()?;
             tx.execute("UPDATE publication SET phase='applying'", [])?;
             #[cfg(test)]
             record(&tx, before);
+            crate::shared_storage::bounded(&tx, before)?;
             tx.commit()?;
+        } else {
+            crate::content_budget::publish_bounded(c, now(), |tx| {
+                planning::prepare(tx, &kind, &x, step, after, ceiling)
+            })?;
+            #[cfg(test)]
+            point("cursor_after");
         }
     } else if phase == "applying" {
         let rows = {
@@ -573,7 +531,11 @@ fn batch(c: &mut Connection) -> Result<usize> {
         if rows.is_empty() {
             let tx = c.transaction()?;
             if kind == "checks" && x["complete"] == true {
-                let count:i64=tx.query_row("SELECT COUNT(*) FROM check_context WHERE pr_id=? AND commit_sha=? AND staged=0",params![x["id"].as_str(),x["commit"].as_str()],|r|r.get(0))?;
+                let count = crate::publication_completion::published_count(
+                    &tx,
+                    x["id"].as_str().unwrap(),
+                    x["commit"].as_str().unwrap(),
+                )?;
                 tx.execute(
                     "UPDATE check_state SET complete=?,error=? WHERE pr_id=? AND commit_sha=?",
                     params![
@@ -594,6 +556,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
             record(&tx, before);
             #[cfg(test)]
             point("commit_before");
+            crate::shared_storage::bounded(&tx, before)?;
             tx.commit()?;
             #[cfg(test)]
             point("commit_after");
@@ -672,22 +635,23 @@ fn batch(c: &mut Connection) -> Result<usize> {
         }
     } else {
         let tx = c.transaction()?;
-        let removed=tx.execute("DELETE FROM publication_row WHERE seq IN(SELECT seq FROM publication_row ORDER BY seq LIMIT 127)",[])?;
-        if removed < 127 {
+        let removed=tx.execute("DELETE FROM publication_row WHERE seq IN(SELECT seq FROM publication_row ORDER BY seq LIMIT 63)",[])?;
+        if removed < 63 {
             tx.execute("DELETE FROM publication", [])?;
         }
         #[cfg(test)]
         {
             record(&tx, before);
-            point(if removed < 127 {
+            point(if removed < 63 {
                 "finish_before"
             } else {
                 "cleanup_before"
             });
         }
+        crate::shared_storage::bounded(&tx, before)?;
         tx.commit()?;
         #[cfg(test)]
-        point(if removed < 127 {
+        point(if removed < 63 {
             "finish_after"
         } else {
             "cleanup_after"
@@ -731,36 +695,64 @@ pub(crate) fn bounded_point(phase: &str) {
     point(phase);
 }
 
-pub(crate) fn discard_stage(
-    c: &mut Connection,
-    tbl: &str,
-    filter: &str,
-    args: &Value,
-) -> Result<()> {
+pub(crate) fn discard_stage(c: &mut Connection, tbl: &str, args: &Value) -> Result<()> {
+    // Incoming overlaps are native point deletes, not a filtered scan of every
+    // stored context/source row. Bulk resets have exact indexed scope prefixes.
+    let field = match tbl {
+        "source_stage" => Some("prs"),
+        "check_context" if args["first"] != true => Some("contexts"),
+        "activity_stage" | "check_context" => None,
+        _ => return Err(Error::Safe("Invalid staging cleanup table.".into())),
+    };
+    if let Some(field) = field {
+        for chunk in args[field]
+            .as_array()
+            .ok_or_else(|| Error::Safe("Invalid staging inputs.".into()))?
+            .chunks(64)
+        {
+            admit(c)?;
+            let tx = c.transaction()?;
+            let before = tx.total_changes();
+            for item in chunk {
+                if tbl == "source_stage" {
+                    tx.execute(
+                        "DELETE FROM source_stage WHERE source=? AND id=?",
+                        params![args["source"].as_str(), item["id"].as_str()],
+                    )?;
+                } else {
+                    tx.execute("DELETE FROM check_context WHERE pr_id=? AND commit_sha=? AND id=? AND staged=1",params![args["id"].as_str(),args["commit"].as_str(),item["id"].as_str()])?;
+                }
+            }
+            crate::shared_storage::bounded(&tx, before)?;
+            #[cfg(test)]
+            record(&tx, before);
+            tx.commit()?;
+        }
+        return Ok(());
+    }
     loop {
         admit(c)?;
         let tx = c.transaction()?;
-        let changed = tx.execute(
-            &format!(
-                "DELETE FROM {tbl} WHERE rowid IN(SELECT rowid FROM {tbl} WHERE {filter} LIMIT 128)"
-            ),
-            [args.to_string()],
-        )?;
+        let before = tx.total_changes();
+        let removed = if tbl == "activity_stage" {
+            tx.execute("DELETE FROM activity_stage WHERE rowid IN(SELECT rowid FROM activity_stage WHERE repo=? AND number=? ORDER BY id LIMIT 64)",params![args["repo"].as_str(),args["number"].as_i64()])?
+        } else {
+            tx.execute("DELETE FROM check_context WHERE rowid IN(SELECT rowid FROM check_context INDEXED BY check_staged_keys WHERE pr_id=? AND commit_sha=? AND staged=1 ORDER BY id LIMIT 64)",params![args["id"].as_str(),args["commit"].as_str()])?
+        };
+        crate::shared_storage::bounded(&tx, before)?;
         #[cfg(test)]
         {
-            let before = tx.total_changes() - changed as u64;
             record(&tx, before);
-        }
-        #[cfg(test)]
-        if tbl == "activity_stage" {
-            crate::activity_crash::point("stage_reset_before_commit");
+            if tbl == "activity_stage" {
+                crate::activity_crash::point("stage_reset_before_commit");
+            }
         }
         tx.commit()?;
         #[cfg(test)]
         if tbl == "activity_stage" {
             crate::activity_crash::point("stage_reset_after_commit");
         }
-        if changed < 128 {
+        if removed < 64 {
             return Ok(());
         }
     }
@@ -822,6 +814,10 @@ fn validate(kind: &str, x: &Value, consumed: bool) -> Result<()> {
 #[path = "publication_small.rs"]
 mod small;
 
+#[path = "publication_planning.rs"]
+mod planning;
+
+#[cfg(test)]
 #[path = "activity_publication.rs"]
 mod activity;
 
@@ -833,3 +829,7 @@ pub(crate) fn start_counts() {
 pub(crate) fn take_counts() -> Vec<u64> {
     COUNTS.with(|v| v.borrow_mut().take().unwrap())
 }
+
+#[cfg(test)]
+#[path = "publication_window_tests.rs"]
+mod window_tests;

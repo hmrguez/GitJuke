@@ -1,0 +1,7 @@
+{
+  "existingDevOwners": [
+    "67250 /Users/hmrguez/Programming/Personal/GitJuke/target/debug/gitjuke"
+  ],
+  "normalBundleCleanOwnerSmoke": "not qualified; invocation forwards to the existing dev owner",
+  "ownerWasNotStopped": true
+}

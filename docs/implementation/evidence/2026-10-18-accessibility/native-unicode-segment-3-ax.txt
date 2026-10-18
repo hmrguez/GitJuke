@@ -1,0 +1,85 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container
+				16 container Personal activity
+					17 text ACROSS YOUR REPOSITORIES
+					18 heading Activity, Value: 1
+						19 text Activity
+					20 text Historical baseline pending · Recovery incomplete · 0 PRs pending
+					21 summary About this feed, Value: off
+						22 text About this feed
+					23 button Mark page as seen
+					24 text Applies to these 13 loaded records only.
+					25 button a/b · #1 · Unseen comment · LOCAL: Short complete body 18/10/2026, 13:19:48 · controlled local fixture
+					26 button a/b · #1 · Unseen comment · LOCAL: Three explicit body segments 18/10/2026, 13:19:47 · controlled local fixture
+					27 button a/b · #1 · Unseen comment · LOCAL: Current RIGHT range 199–201 18/10/2026, 13:19:46 · controlled local fixture
+					28 button a/b · #1 · Unseen comment · LOCAL: Oversized placeholder stays unseen 18/10/2026, 13:19:45 · controlled local fixture
+					29 button a/b · #1 · Unseen review · LOCAL: Complete textless review 18/10/2026, 13:19:44 · controlled local fixture
+					30 button a/b · #1 · Unseen comment · LOCAL: Unopened neighbor stays unseen 18/10/2026, 13:19:43 · controlled local fixture
+					31 button a/b · #1 · Seen comment · LOCAL: Inclusive 128 KiB UTF-8 with crossing emoji 18/10/2026, 13:19:42 · controlled local fixture
+					32 button a/b · #1 · Unseen comment · LOCAL: Current LEFT range 199–201 18/10/2026, 13:19:41 · controlled local fixture
+					33 button a/b · #1 · Unseen comment · LOCAL: Wrong commit must not attach 18/10/2026, 13:19:40 · controlled local fixture
+					34 button a/b · #1 · Unseen comment · LOCAL: Mixed side range must not attach 18/10/2026, 13:19:39 · controlled local fixture
+					35 button a/b · #1 · Unseen comment · LOCAL: Negative line must not attach 18/10/2026, 13:19:38 · controlled local fixture
+					36 button a/b · #1 · Unseen comment · LOCAL: Outdated source must not attach 18/10/2026, 13:19:37 · controlled local fixture
+					37 button a/b · #1 · Unseen comment · LOCAL: Different path must not attach 18/10/2026, 13:19:36 · controlled local fixture
+					38 button (disabled) Previous
+					39 button (disabled) Next
+				40 container Pull request reader
+					41 text a/b / #1
+					42 button Open in GitHub
+					43 container
+						44 text Open
+						45 heading Change 1, Value: 1
+							46 text Change 1
+						47 text reader · main ← aaaaaaaaaa
+					48 container Published native stack
+						49 text No published stack
+					50 tab group (selectable) Reader
+						51 tab (selectable) Overview
+						52 tab (selectable) Changes
+						53 tab (selected) Conversation
+						54 tab (selectable) Checks
+					55 container Conversation
+						56 button Back to Activity
+						57 button Browse Conversation sources
+						58 text Exact Activity destination · parent source and thread coverage are not inferred. Patch anchor unavailable: source supplies no verified coordinates.
+						59 text CONVERSATION
+						60 container
+							61 text Head aaaaaaaaaa · safe plain text
+						62 button Refresh conversation
+						63 text 1 loaded / 1 known · exact record only
+						64 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+						65 container Comment by unavailable author
+							66 container
+								67 text Unavailable author Comment 2026-10-18T00:00:00Z
+							68 text Plain text · 131072 UTF-8 bytes · explicit segment 3/3
+							69 container Message body · segment 3 of 3
+								70 text éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé [synthetic body omitted]
+							71 button Previous segment
+							72 text Characters 65536–81920
+							73 button (disabled) Next segment
+							74 button Open source in GitHub
+					75 text Cached 18/10/2026, 13:23:26 · revision 43
+	76 close button
+	77 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	78 minimize button
+	79 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+80 menu bar
+	81 GitJuke Accessibility
+
+The focused UI element is 69 container Message body · segment 3 of 3

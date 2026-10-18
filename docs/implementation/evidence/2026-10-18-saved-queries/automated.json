@@ -1,0 +1,13 @@
+{
+  "scoped_distinct_tests": 73,
+  "frontend": 27,
+  "query_integration": 8,
+  "runtime_integration": 16,
+  "store_integration": 8,
+  "watch_store_integration": 7,
+  "transport_integration": 5,
+  "migration_units": 2,
+  "live_github_tests": 0,
+  "grouped_release_scenarios_promoted": 0,
+  "schema": 15
+}

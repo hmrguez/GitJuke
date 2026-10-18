@@ -1,0 +1,9 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.35s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 1 test
+test migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 250 filtered out; finished in 0.21s
+

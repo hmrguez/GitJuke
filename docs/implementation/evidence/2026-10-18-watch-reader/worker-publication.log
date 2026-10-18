@@ -1,0 +1,11 @@
+$ cargo test -p gitjuke-core --lib --offline runtime::tests::partial_publication_startup_stays_locked_paused_and_repairs_before_reads -- --exact
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.60s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 1 test
+test runtime::tests::partial_publication_startup_stays_locked_paused_and_repairs_before_reads ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 218 filtered out; finished in 1.22s
+

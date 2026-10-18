@@ -1,0 +1,429 @@
+Window: "GitJuke", App: GitJuke.
+0 standard window GitJuke, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container
+				4 text gitjuke.
+				5 container Primary
+					6 button My PRs
+					7 button Review requests
+					8 button Activity
+				9 text Watches + head/check snapshots Personal activity · alerts unavailable
+				10 button Preferences
+				11 text HM hmrguez GitHub.com
+				12 button Monitoring Reading…
+			13 container Pull request reader
+				14 button Back
+				15 text hmrguez/FantasyEditor / #4
+				16 button Open in GitHub
+				17 container
+					18 text merged
+					19 heading codex/ai-project-import, Value: 1
+						20 text codex/ai-project-import
+					21 text hmrguez · staging · head 2fefba2b95
+				22 container Published native stack
+					23 text Confirmed: this PR has no published native stack.
+				24 tab group (selectable) Reader
+					25 tab (selectable) Overview
+					26 tab (selected) Changes
+					27 tab (selectable) Conversation
+					28 tab (selectable) Checks
+				29 container Changes
+					30 text CHANGES
+					31 container
+						32 text Head 2fefba2b95 · base e78ed97833
+					33 button Update Changes
+					34 container Changed files
+						35 text Files 21–40 / 102 known · this page only · cached 12:26:17
+						36 button apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx modified · +29 −2
+						37 button apps/desktop/src/modules/project/components/welcome/index.ts modified · +1 −0
+						38 button apps/desktop/src/modules/project/components/welcome/projectVisibility.test.ts added · +21 −0
+						39 button apps/desktop/src/modules/project/components/welcome/projectVisibility.ts added · +11 −0
+						40 button apps/desktop/src/modules/project/components/welcome/useWelcomeScreen.ts modified · +54 −6
+						41 button apps/desktop/src/modules/project/lib/projectThumbnail.test.ts added · +26 −0
+						42 button apps/desktop/src/modules/project/lib/projectThumbnail.ts added · +30 −0
+						43 button apps/desktop/src/modules/project/services/projectImportService.ts added · +322 −0
+						44 button apps/desktop/src/shared/lib/tauri.ts modified · +76 −0
+						45 button apps/desktop/src/shared/types/project.ts modified · +1 −0
+						46 button apps/remotion/package.json modified · +1 −1
+						47 button apps/web/.gitignore modified · +1 −0
+						48 button apps/web/app/api/auth/register/route.ts modified · +1 −0
+						49 button apps/web/app/api/imports/[id]/__tests__/lifecycle.test.ts added · +105 −0
+						50 button apps/web/app/api/imports/[id]/approve/route.ts added · +19 −0
+						51 button apps/web/app/api/imports/[id]/artifacts/[artifactId]/route.ts added · +29 −0
+						52 button apps/web/app/api/imports/[id]/artifacts/__tests__/route.test.ts added · +157 −0
+						53 button apps/web/app/api/imports/[id]/artifacts/route.ts added · +179 −0
+						54 button apps/web/app/api/imports/[id]/complete/route.ts added · +43 −0
+						55 button apps/web/app/api/imports/[id]/route.ts added · +65 −0
+						56 button Previous files
+						57 text Page 2
+						58 button Next files
+					59 heading apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx, Value: 2
+						60 text apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx
+					61 button Open PR Changes in GitHub
+					62 container
+						63 text Reading mode
+						64 pop up button (collapsed) Reading mode, Value: Continuous, Secondary Actions: Expand
+					65 button Reload file
+					66 text Complete supplied change hunks for this file and revision. · 3,128 UTF-8 bytes · 73 rows
+					67 container
+						68 text Hunk (1– 5 )
+						69 number field (settable) Jump to hunk number, Value: 2
+							70 stepper 0
+								71 unknown
+								72 unknown
+						73 button Go to hunk
+					74 text Rows 1–63 / 73
+					75 container apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.
+						76 table apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx · supplied unified change hunks
+							77 text apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx · supplied unified change hunks
+							78 row (selectable) Old line
+New line
+Change and code
+							79 row (selectable)
+								80 cell (selectable)
+								81 cell (selectable)
+								82 cell (selectable) hunk:
+@@ -1,3 +1,4 @@
+							83 row (selectable)
+								84 cell (selectable)
+								85 cell (selectable) 1
+								86 cell (selectable) added:
++import { useState } from "react";
+							87 row (selectable)
+								88 cell (selectable) 1
+								89 cell (selectable) 2
+								90 cell (selectable) context:
+import { Cloud, LockKeyhole, Trash2 } from "lucide-react";
+							91 row (selectable)
+								92 cell (selectable) 2
+								93 cell (selectable) 3
+								94 cell (selectable) context:
+							95 row (selectable)
+								96 cell (selectable) 3
+								97 cell (selectable) 4
+								98 cell (selectable) context:
+import { Badge } from "@/shared/ui/badge";
+							99 row (selectable)
+								100 cell (selectable)
+								101 cell (selectable)
+								102 cell (selectable) hunk:
+@@ -25,6 +26,7 @@ interface WorldVolumeProps {
+							103 row (selectable)
+								104 cell (selectable) 25
+								105 cell (selectable) 26
+								106 cell (selectable) context:
+identity: string;
+							107 row (selectable)
+								108 cell (selectable) 26
+								109 cell (selectable) 27
+								110 cell (selectable) context:
+detail?: string;
+							111 row (selectable)
+								112 cell (selectable) 27
+								113 cell (selectable) 28
+								114 cell (selectable) context:
+badge?: string;
+							115 row (selectable)
+								116 cell (selectable)
+								117 cell (selectable) 29
+								118 cell (selectable) added:
++  thumbnail?: string;
+							119 row (selectable)
+								120 cell (selectable) 28
+								121 cell (selectable) 30
+								122 cell (selectable) context:
+cloud?: boolean;
+							123 row (selectable)
+								124 cell (selectable) 29
+								125 cell (selectable) 31
+								126 cell (selectable) context:
+disabled?: boolean;
+							127 row (selectable)
+								128 cell (selectable) 30
+								129 cell (selectable) 32
+								130 cell (selectable) context:
+onOpen: () => void;
+							131 row (selectable)
+								132 cell (selectable)
+								133 cell (selectable)
+								134 cell (selectable) hunk:
+@@ -37,14 +39,17 @@ export function WorldVolume({
+							135 row (selectable)
+								136 cell (selectable) 37
+								137 cell (selectable) 39
+								138 cell (selectable) context:
+identity,
+							139 row (selectable)
+								140 cell (selectable) 38
+								141 cell (selectable) 40
+								142 cell (selectable) context:
+detail,
+							143 row (selectable)
+								144 cell (selectable) 39
+								145 cell (selectable) 41
+								146 cell (selectable) context:
+badge,
+							147 row (selectable)
+								148 cell (selectable)
+								149 cell (selectable) 42
+								150 cell (selectable) added:
++  thumbnail,
+							151 row (selectable)
+								152 cell (selectable) 40
+								153 cell (selectable) 43
+								154 cell (selectable) context:
+cloud = false,
+							155 row (selectable)
+								156 cell (selectable) 41
+								157 cell (selectable) 44
+								158 cell (selectable) context:
+disabled = false,
+							159 row (selectable)
+								160 cell (selectable) 42
+								161 cell (selectable) 45
+								162 cell (selectable) context:
+onOpen,
+							163 row (selectable)
+								164 cell (selectable) 43
+								165 cell (selectable) 46
+								166 cell (selectable) context:
+onRemove,
+							167 row (selectable)
+								168 cell (selectable) 44
+								169 cell (selectable) 47
+								170 cell (selectable) context:
+className,
+							171 row (selectable)
+								172 cell (selectable) 45
+								173 cell (selectable) 48
+								174 cell (selectable) context:
+}: WorldVolumeProps) {
+							175 row (selectable)
+								176 cell (selectable)
+								177 cell (selectable) 49
+								178 cell (selectable) added:
++  const [failedThumbnail, setFailedThumbnail] = useState<string>();
+							179 row (selectable)
+								180 cell (selectable) 46
+								181 cell (selectable) 50
+								182 cell (selectable) context:
+const hash = hashString(identity);
+							183 row (selectable)
+								184 cell (selectable) 47
+								185 cell (selectable) 51
+								186 cell (selectable) context:
+const palette = COVER_PALETTES[hash % COVER_PALETTES.length];
+							187 row (selectable)
+								188 cell (selectable)
+								189 cell (selectable) 52
+								190 cell (selectable) added:
++  const hasThumbnail = Boolean(thumbnail) && thumbnail !== failedThumbnail;
+							191 row (selectable)
+								192 cell (selectable) 48
+								193 cell (selectable) 53
+								194 cell (selectable) context:
+const monogram =
+							195 row (selectable)
+								196 cell (selectable) 49
+								197 cell (selectable) 54
+								198 cell (selectable) context:
+name
+							199 row (selectable)
+								200 cell (selectable) 50
+								201 cell (selectable) 55
+								202 cell (selectable) context:
+.split(/\s+/)
+							203 row (selectable)
+								204 cell (selectable)
+								205 cell (selectable)
+								206 cell (selectable) hunk:
+@@ -66,9 +71,26 @@ export function WorldVolume({
+							207 row (selectable)
+								208 cell (selectable) 66
+								209 cell (selectable) 71
+								210 cell (selectable) context:
+className="relative block aspect-[3/4] overflow-hidden rounded-[var(--radius-role-panel)] border border-black/20 px-4 py-4 text-[#fff8e8] shadow-[var(--elevation-2)] transition-shadow duration-[var(--motion-standard)] group-hover/volume:shadow-[0_18px_40px_-18px_rgba(23,17,13,0.65)] sm:px-5 sm:py-5"
+							211 row (selectable)
+								212 cell (selectable) 67
+								213 cell (selectable) 72
+								214 cell (selectable) context:
+style={{
+							215 row (selectable)
+								216 cell (selectable) 68
+								217 cell (selectable) 73
+								218 cell (selectable) context:
+backgroundColor: palette.from,
+							219 row (selectable)
+								220 cell (selectable) 69
+								221 cell (selectable)
+								222 cell (selectable) deleted:
+-            backgroundImage: `radial-gradient(circle at 78% 14%, ${palette.accent}3d, transparent 30%), linear-gradient(145deg, ${palette.from}, ${palette.to})`,
+							223 row (selectable)
+								224 cell (selectable)
+								225 cell (selectable) 74
+								226 cell (selectable) added:
++            backgroundImage: hasThumbnail
+							227 row (selectable)
+								228 cell (selectable)
+								229 cell (selectable) 75
+								230 cell (selectable) added:
++              ? undefined
+							231 row (selectable)
+								232 cell (selectable)
+								233 cell (selectable) 76
+								234 cell (selectable) added:
++              : `radial-gradient(circle at 78% 14%, ${palette.accent}3d, transparent 30%), linear-gradient(145deg, ${palette.from}, ${palette.to})`,
+							235 row (selectable)
+								236 cell (selectable) 70
+								237 cell (selectable) 77
+								238 cell (selectable) context:
+}}
+							239 row (selectable)
+								240 cell (selectable) 71
+								241 cell (selectable) 78
+								242 cell (selectable) context:
+>
+							243 row (selectable)
+								244 cell (selectable)
+								245 cell (selectable) 79
+								246 cell (selectable) added:
++          {hasThumbnail ? (
+							247 row (selectable)
+								248 cell (selectable)
+								249 cell (selectable) 80
+								250 cell (selectable) added:
++            <>
+							251 row (selectable)
+								252 cell (selectable)
+								253 cell (selectable) 81
+								254 cell (selectable) added:
++              <img
+							255 row (selectable)
+								256 cell (selectable)
+								257 cell (selectable) 82
+								258 cell (selectable) added:
++                src={thumbnail}
+							259 row (selectable)
+								260 cell (selectable)
+								261 cell (selectable) 83
+								262 cell (selectable) added:
++                alt=""
+							263 row (selectable)
+								264 cell (selectable)
+								265 cell (selectable) 84
+								266 cell (selectable) added:
++                aria-hidden="true"
+							267 row (selectable)
+								268 cell (selectable)
+								269 cell (selectable) 85
+								270 cell (selectable) added:
++                onError={() => setFailedThumbnail(thumbnail)}
+							271 row (selectable)
+								272 cell (selectable)
+								273 cell (selectable) 86
+								274 cell (selectable) added:
++                className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/volume:scale-[1.03] motion-reduce:transform-none"
+							275 row (selectable)
+								276 cell (selectable)
+								277 cell (selectable) 87
+								278 cell (selectable) added:
++              />
+							279 row (selectable)
+								280 cell (selectable)
+								281 cell (selectable) 88
+								282 cell (selectable) added:
++              <span
+							283 row (selectable)
+								284 cell (selectable)
+								285 cell (selectable) 89
+								286 cell (selectable) added:
++                aria-hidden="true"
+							287 row (selectable)
+								288 cell (selectable)
+								289 cell (selectable) 90
+								290 cell (selectable) added:
++                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,10,8,0.38)_0%,rgba(12,10,8,0.06)_42%,rgba(12,10,8,0.8)_100%)]"
+							291 row (selectable)
+								292 cell (selectable)
+								293 cell (selectable) 91
+								294 cell (selectable) added:
++              />
+							295 row (selectable)
+								296 cell (selectable)
+								297 cell (selectable) 92
+								298 cell (selectable) added:
++            </>
+							299 row (selectable)
+								300 cell (selectable)
+								301 cell (selectable) 93
+								302 cell (selectable) added:
++          ) : null}
+							303 row (selectable)
+								304 cell (selectable) 72
+								305 cell (selectable) 94
+								306 cell (selectable) context:
+<span
+							307 row (selectable)
+								308 cell (selectable) 73
+								309 cell (selectable) 95
+								310 cell (selectable) context:
+aria-hidden="true"
+							311 row (selectable)
+								312 cell (selectable) 74
+								313 cell (selectable) 96
+								314 cell (selectable) context:
+className="absolute inset-y-0 left-0 w-3 border-r border-white/15 bg-black/20 shadow-[4px_0_12px_rgba(0,0,0,0.16)]"
+							315 row (selectable)
+								316 cell (selectable)
+								317 cell (selectable)
+								318 cell (selectable) hunk:
+@@ -80,7 +102,12 @@ export function WorldVolume({
+							319 row (selectable)
+								320 cell (selectable) 80
+								321 cell (selectable) 102
+								322 cell (selectable) context:
+{cloud ? <Cloud aria-hidden="true" className="size-3" /> : null}
+							323 row (selectable)
+								324 cell (selectable) 81
+								325 cell (selectable) 103
+								326 cell (selectable) context:
+</span>
+							327 row (selectable)
+								328 cell (selectable) 82
+								329 cell (selectable) 104
+								330 cell (selectable) context:
+					331 text Supplied change hunks only. Discussion coverage is paginated independently below. Reading files does not mark Activity seen.
+					332 container Inline discussions
+						333 text DISCUSSIONS
+						334 container
+							335 text Head 2fefba2b95 · safe plain text
+						336 button Refresh conversation
+						337 container Conversation sources
+							338 toggle button Comments, Value: off
+							339 toggle button Reviews, Value: off
+							340 toggle button Review threads, Value: on
+						341 text 4 loaded / 4 known · complete source
+						342 text Each source keeps its own pages and GitHub order. Replies replace this panel, up to 50 per page. Ordinary source navigation leaves Activity unseen.
+						343 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:46 2026-08-09T10:38:11Z
+						344 button GitHub source
+						345 button apps/web/app/api/imports/[id]/complete/route.ts Resolved · Outdated · original b764bc3ef8:22 2026-08-09T10:38:11Z
+						346 button GitHub source
+						347 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:52 2026-08-09T10:38:11Z
+						348 button GitHub source
+						349 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:102 2026-08-09T10:38:11Z
+						350 button GitHub source
+						351 button (disabled) Previous page
+						352 text First page
+						353 button (disabled) First page
+						354 button (disabled) Next page
+				355 text Cached 18/10/2026, 12:25:18 · revision 1844
+		356 scroll bar (settable, float) 0
+	357 close button
+	358 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	359 minimize button
+	360 text GitJuke
+361 menu bar
+	362 GitJuke
+
+The focused UI element is 75 container apps/desktop/src/modules/project/components/welcome/WorldVolume.tsx unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.

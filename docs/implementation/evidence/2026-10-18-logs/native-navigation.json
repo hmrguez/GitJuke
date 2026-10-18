@@ -1,0 +1,4 @@
+{
+  "log_reads_after_explicit_open_and_tab_round_trip": 1,
+  "expected": 1
+}

@@ -1,0 +1,13 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 6 tests
+test startup_cleanup::tests::sigkill_during_and_between_batches_recovers_only_committed_cleanup ... ok
+test source_cleanup::tests::sigkill_initialization_keeps_guard_until_last_cleanup_commit ... ok
+test invalidation::tests::invalidation_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test check_purge::tests::check_purge_sigkill_barrier_and_cleanup_commits_preserve_scope_and_history ... ok
+test clear_content::tests::clear_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test maintenance_tests::sigkill_maintenance_before_and_after_first_and_late_commits ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 159 filtered out; finished in 1.51s
+

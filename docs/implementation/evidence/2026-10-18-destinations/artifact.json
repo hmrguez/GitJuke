@@ -1,0 +1,9 @@
+{
+  "artifact": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke",
+  "sha256": "f5f75afe462ddc42dc2d0c3e68c42139020be1822389f80c9ab253bd4a7f9dfa",
+  "bytes": 35557352,
+  "architecture": "target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+  "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428",
+  "sqliteSchema": 14,
+  "releaseQualification": false
+}

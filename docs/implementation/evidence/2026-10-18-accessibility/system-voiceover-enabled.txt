@@ -1,0 +1,2 @@
+Window: "VoiceOver", App: System Settings.
+			58 switch To toggle VoiceOver, quickly press Touch ID three times while holding the Command key., Value: on, ID: AX_VOICEOVER_ENABLED

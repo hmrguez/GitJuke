@@ -1,0 +1,58 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selectable) Changes
+					29 tab (selected) Conversation
+					30 tab (selectable) Checks
+				31 container Conversation
+					32 button Back to Activity
+					33 button Browse Conversation sources
+					34 text Exact Activity destination · parent source and thread coverage are not inferred. Patch unavailable · select the matching file in Changes
+					35 text CONVERSATION
+					36 container
+						37 text Head aaaaaaaaaa · safe plain text
+					38 button Refresh conversation
+					39 text 1 loaded / 1 known · exact record only
+					40 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+					41 container Review comment by unavailable author
+						42 container
+							43 text Unavailable author Review comment 2026-10-18T00:00:00Z
+						44 text Plain text · 20 UTF-8 bytes
+						45 container Message body
+							46 text LOCAL DIFFERENT FILE
+						47 button Open source in GitHub
+				48 text Cached 18/10/2026, 13:30:03 · revision 129
+	49 close button
+	50 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	51 minimize button
+	52 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+53 menu bar
+	54 GitJuke Accessibility
+
+The focused UI element is 41 container Review comment by unavailable author

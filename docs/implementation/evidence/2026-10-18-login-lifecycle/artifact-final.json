@@ -1,0 +1,25 @@
+{
+  "identifier": "dev.hmrguez.gitjuke.lifecycle-qualification",
+  "version": "0.1.0",
+  "os": "27.0",
+  "architecture": "arm64",
+  "minimumOS": "15.0",
+  "binarySha256": "9d964f8850a7e5964315858da8d91775876e0bff096868d4fe223a034d066335",
+  "sourceSha256": {
+    "src-tauri/src/lib.rs": "be586beea65f366fb4e3eb838069df877febc720081c2d653720f811871b4c16",
+    "src-tauri/src/login.rs": "97b41f6435f9758391c5e6f8460829fd72fdde0bfc5fed9ab90292631a5bb880",
+    "src-tauri/src/singleton.rs": "aa325168b281398003ba10d25862c0c2caa79a9d34257945b42611737b494776",
+    "src-tauri/src/notifications.rs": "b42c8485000f8ce43c715082e4f91dba3b0bde342a1053b4c71720fae78211a0",
+    "src-tauri/src/notifications.m": "6eac5710069bb820976b28ba76e0f80721f0270476822ea1556c684d34d3a596",
+    "src-tauri/Cargo.toml": "8fd5593f797023deb1e8ce4d95e649d3ad7713f7f90129ed1407f342b3cd3b35",
+    "Cargo.lock": "1b59b2360a48bd48ff3e0281b60597ba543807654d02159700a25dc56d4efaa3",
+    "crates/gitjuke-core/src/runtime.rs": "26f92c5f3a865e6353c8cc1195f9bc0fbf3e85421426039c59c7eb5d50a70991",
+    "crates/gitjuke-core/src/runtime_alerts.rs": "b25ab31f20a69a9ff48881fc5f7aea0c0bddf1af7de1aeefa5fff4bd3ff8a3b5",
+    "src/LoginSettings.tsx": "eaff88d94f67ac70ea646ff3190cae19c66c19c3856299b5a17cdc0e2ac0abeb",
+    "src/NotificationControls.tsx": "6962ea97fc2dae921c2e69658367f5e33a9c95735b5eed9d4a4005673819a0a4",
+    "src/main.tsx": "d53f99aa751d584926dbd0852a473de7923bc025dc427f768ec8d4908edf71b0"
+  },
+  "sourceRoot": "/Users/hmrguez/Programming/Personal/GitJuke",
+  "signing": "Tauri --no-sign; no explicit signing command",
+  "phase": "Final integrated source, account/app ownership namespace and synchronous shutdown cancellation; qualification login remains off."
+}

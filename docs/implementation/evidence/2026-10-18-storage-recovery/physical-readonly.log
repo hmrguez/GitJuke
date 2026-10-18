@@ -1,0 +1,9 @@
+    Blocking waiting for file lock on artifact directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 17s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 1 test
+test physical_storage_tests::actual_readonly_volume_rejects_writes_and_keeps_cache_readable ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 233 filtered out; finished in 0.01s
+

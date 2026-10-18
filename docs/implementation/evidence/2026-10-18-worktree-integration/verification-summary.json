@@ -1,0 +1,37 @@
+{
+  "branch": "master",
+  "frontendTests": {
+    "passed": 51,
+    "failed": 0
+  },
+  "coreIntegrationTests": {
+    "passed": 74,
+    "failed": 0,
+    "ignored": 1
+  },
+  "desktopTests": {
+    "passed": 12,
+    "failed": 0,
+    "localSocketAccessRequired": true
+  },
+  "coreUnitCoverage": {
+    "initialPassed": 249,
+    "initialFailed": 6,
+    "initialIgnored": 2,
+    "allSixPassFocusedReruns": true,
+    "newSchemaVariantRegressionPassed": true,
+    "singleFinalFullUnitInvocation": false
+  },
+  "migrationGroup": {
+    "passed": 11,
+    "failed": 0
+  },
+  "productionFrontendBuild": true,
+  "workspaceAllTargetsClippyWarningsDenied": true,
+  "formatting": true,
+  "diffWhitespace": true,
+  "schema": 16,
+  "sourceWorktreesRetained": true,
+  "changesCommitted": false,
+  "groupedReleaseScenarios": "All 29 remain Pending"
+}

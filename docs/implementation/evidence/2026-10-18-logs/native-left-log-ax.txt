@@ -1,0 +1,8 @@
+The following is a diff from the previous accessibility tree for Window: "GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 44-65
+~						40 tab (selected) Overview, Value: on
+~						43 tab (selectable) Checks
++					73 container Overview
++						74 text <script>untrusted</script>
++						75 text Plain-text description · Comments and reviews are in Conversation.
+The focused UI element is 40 tab (selected) Overview, Value: on

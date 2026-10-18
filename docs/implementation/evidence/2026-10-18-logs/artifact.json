@@ -1,0 +1,20 @@
+{
+  "app": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Log Qualification.app",
+  "identifier": "dev.hmrguez.gitjuke.logqualification",
+  "version": "0.1.0",
+  "executableSha256": "5938b8105bb0e552f0fbc673b44ccf89e0ad2c2aa82121f3f73e871aab1771f8",
+  "sourceSha256": {
+    "crates/gitjuke-core/src/logs.rs": "90d528b4a2e9ed1125885cc989e6f6929efd890b5019ab7182646d3d3b5db090",
+    "crates/gitjuke-core/src/runtime.rs": "fb699439890d5f8778371e8d1e4ce48aa128de9e7bb0f8ded83c1004aad7fc48",
+    "crates/gitjuke-core/src/transport.rs": "4de2826fac01e02923fbca7942cca708ff8fcf056c19b88ea3dcd62dc3c82e4f",
+    "crates/gitjuke-core/src/github.rs": "8a2ca1aa52d7e9872db1996935e4a45bc63ee655c9d742556e4fecf90501a4be",
+    "src/CheckLog.tsx": "d8cc051981c3141c110ce37c9a49111dc3c741f65735ec21fceb2c9d03f64a47",
+    "src/logs.css": "e1d32b9ef54624755d5a64bd318f7fa900f68dff9af463b40fd75cbe4d33594f",
+    "src/main.tsx": "045f49a32efa0d8f8486a8fd627c8094dc65b65643a4fe6fc960933c190db2ac",
+    "src-tauri/src/lib.rs": "43b1da8554bb8820ab80a76e6c4c778bcb1a7dbc3f5890dd1868cb99fc9b181e"
+  },
+  "finalFrontendAssets": [
+    "index-Dh3WFO2W.js",
+    "index-yUH0GdW5.css"
+  ]
+}

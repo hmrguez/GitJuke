@@ -41,6 +41,53 @@ impl Response {
             body,
         })
     }
+    /// Raw job logs never enter JSON parsing or persistent content. Keep only bounded UTF-8.
+    pub fn parse_log(output: Output) -> Result<Self> {
+        let bytes = &output.stdout;
+        let (end, sep) = bytes
+            .windows(4)
+            .position(|p| p == b"\r\n\r\n")
+            .map(|n| (n, 4))
+            .or_else(|| bytes.windows(2).position(|p| p == b"\n\n").map(|n| (n, 2)))
+            .ok_or_else(|| Error::Safe("Missing log response headers.".into()))?;
+        let head = std::str::from_utf8(&bytes[..end])
+            .map_err(|_| Error::Safe("Invalid log headers.".into()))?;
+        let status = head
+            .lines()
+            .next()
+            .and_then(|l| l.split_whitespace().nth(1))
+            .and_then(|s| s.parse().ok())
+            .ok_or_else(|| Error::Safe("Invalid log status.".into()))?;
+        let headers = head
+            .lines()
+            .skip(1)
+            .filter_map(|l| l.split_once(':'))
+            .map(|(k, v)| (k.to_ascii_lowercase(), v.trim().to_owned()))
+            .collect();
+        let raw = &bytes[end + sep..];
+        let body = if status == 200 && output.success {
+            if raw.len() > crate::logs::LOG_BYTES {
+                serde_json::json!({"limited":true})
+            } else {
+                serde_json::json!({"text":std::str::from_utf8(raw).map_err(|_|Error::Safe("Log is not UTF-8.".into()))?})
+            }
+        } else if status >= 400 {
+            // Keep only structured quota signals, never a provider body.
+            let rate = raw
+                .windows(10)
+                .any(|w| w.eq_ignore_ascii_case(b"rate limit"));
+            serde_json::json!({"message":if rate {"rate limit"} else {""}})
+        } else {
+            return Err(Error::Safe(
+                "Job log download failed or redirect was not followed.".into(),
+            ));
+        };
+        Ok(Self {
+            status,
+            headers,
+            body,
+        })
+    }
     pub fn next_deadline(&self, now: u64) -> u64 {
         if let Some(value) = self.headers.get("retry-after") {
             if let Ok(seconds) = value.parse::<u64>() {
@@ -132,7 +179,11 @@ pub fn parse_search(r: &Response) -> Result<SearchPage> {
                 number,
                 title: string(v, "title")?,
                 url,
-                state: string(v, "state")?,
+                state: if v["pull_request"]["merged_at"].as_str().is_some() {
+                    "merged".into()
+                } else {
+                    string(v, "state")?
+                },
                 draft: v["draft"].as_bool().unwrap_or(false),
                 author: v["user"]["login"].as_str().map(String::from),
                 updated_at: string(v, "updated_at")?,

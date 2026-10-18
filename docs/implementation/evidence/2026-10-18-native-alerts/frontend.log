@@ -1,0 +1,56 @@
+bun test v1.4.2 (744846f84)
+
+scripts/login-settings.test.tsx:
+(pass) default-off inspection does not register or request notification permission [12.76ms]
+(pass) explicit enable, OS-disabled repair and disable use only login commands [9.89ms]
+(pass) registration failure rereads actual saved preference and exposes explicit repair [6.08ms]
+(pass) moved copy cannot enable or repair but can disable existing registration [4.24ms]
+(pass) a delayed registration inspection cannot overwrite a newer explicit choice [5.28ms]
+
+scripts/conversation-render.test.tsx:
+(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [15.81ms]
+(pass) ordinary messages have no seen control and destination placeholders stay labeled [0.19ms]
+
+scripts/logs.test.tsx:
+(pass) logs require explicit action, render safe bounded line pages and release on close [8.82ms]
+(pass) external providers expose details without Actions affordance or automatic fetch [2.95ms]
+(pass) authoritative invalidation releases rendered text without requesting it again [4.13ms]
+(pass) late IPC responses after navigation cannot restore text and cancel only their own ticket [4.09ms]
+(pass) a read crossing a newer revision cannot restore an obsolete body [4.33ms]
+
+scripts/notification-controls.test.tsx:
+(pass) onboarding requests nothing until explicit Enable; Skip persists a disabled choice [2.20ms]
+(pass) denial offers settings without requesting permission again; toggles preserve opt-in [5.37ms]
+(pass) metadata preview requires its own explicit checkbox and bodies stay excluded [1.53ms]
+
+scripts/conversation.test.mjs:
+(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [3.64ms]
+(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.15ms]
+(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.08ms]
+(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.15ms]
+(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [0.56ms]
+(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [0.07ms]
+(pass) exact opened destination traversal counts distinct committed segments only [0.05ms]
+
+scripts/reader-interaction.test.tsx:
+(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [5.14ms]
+(pass) exact destination counts committed distinct segments without stealing focus on polling [10.86ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [3.41ms]
+(pass) return from replies restores the originating thread after asynchronous replacement [9.90ms]
+(pass) reply return does not steal focus if the user moves while the thread list loads [9.72ms]
+(pass) next and first source-page replacement keep stable reader focus and release old bodies [6.04ms]
+(pass) superseded source requests and unmounted readers cannot restore focus or commit old content [6.15ms]
+(pass) changed destination generation restarts segment coverage; stale head never submits seen [13.59ms]
+(pass) terminal patch pages focus the stable diff region; file pages focus the navigator [56.91ms]
+(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [5.26ms]
+(pass) segmented exact destinations retain traversal across current-anchor patch loading and jump to semantic page two [34.29ms]
+(pass) leaving a partial exact destination releases authorization and remounts fresh segment coverage [12.60ms]
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.47ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [7.14ms]
+
+ 36 pass
+ 0 fail
+ 137 expect() calls
+Ran 36 tests across 7 files. [384.00ms]

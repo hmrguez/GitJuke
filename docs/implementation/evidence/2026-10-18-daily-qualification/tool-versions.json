@@ -1,0 +1,21 @@
+{
+  "rust": {
+    "exit": 0,
+    "version": [
+      "rustc 1.95.0 (59807616e 2026-04-14) (Homebrew)"
+    ]
+  },
+  "bun": {
+    "exit": 0,
+    "version": [
+      "1.4.2"
+    ]
+  },
+  "gh": {
+    "exit": 0,
+    "version": [
+      "gh version 2.92.0 (2026-04-28)",
+      "https://github.com/cli/cli/releases/tag/v2.92.0"
+    ]
+  }
+}

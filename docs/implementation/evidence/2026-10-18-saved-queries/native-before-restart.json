@@ -1,0 +1,72 @@
+{
+  "schema": 15,
+  "queries": [
+    {
+      "id": 1,
+      "name": "Local review desk",
+      "search": "repo:a/b is:open",
+      "version": 1,
+      "limited": 0
+    }
+  ],
+  "settings": {
+    "pagedChanges": false,
+    "paused": true,
+    "theme": {
+      "mode": "dark",
+      "canvas": "#121512",
+      "surface": "#1c211b",
+      "accent": "#b8d68a",
+      "ink": "#e7ecdf"
+    },
+    "ghPath": "/private/tmp/gitjuke-query-native-source/gh",
+    "configDir": "/private/tmp/gitjuke-query-native-source/config"
+  },
+  "identity": [
+    [
+      "github.com",
+      42,
+      "reader"
+    ]
+  ],
+  "query_pages": [
+    {
+      "key": "query:1:1:1",
+      "items": 100,
+      "first": 1,
+      "last": 100,
+      "total": 150,
+      "run": 18,
+      "generation": 0,
+      "source_complete": true
+    },
+    {
+      "key": "query:1:1:2",
+      "items": 50,
+      "first": 101,
+      "last": 150,
+      "total": 150,
+      "run": 18,
+      "generation": 0,
+      "source_complete": true
+    }
+  ],
+  "selection": [
+    [
+      "selection",
+      "[\"a/b\",101]"
+    ]
+  ],
+  "selected_pr_cached": [
+    [
+      "pr:a/b:101",
+      "Change 101"
+    ]
+  ],
+  "watch_reasons": [
+    [
+      "PR_101",
+      "selected"
+    ]
+  ]
+}

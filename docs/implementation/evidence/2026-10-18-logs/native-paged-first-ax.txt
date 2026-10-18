@@ -1,0 +1,44 @@
+The following is a diff from the previous accessibility tree for Window: "GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~							76 text Actions job log · memory only · 128 KiB maximum
++							77 container Log text
++								78 text LOCAL SYNTHETIC ACTIONS LOG
+LOCAL LINE 1
+LOCAL LINE 2
+LOCAL LINE 3
+LOCAL LINE 4
+LOCAL LINE 5
+LOCAL LINE 6
+LOCAL LINE 7
+LOCAL LINE 8
+LOCAL LINE 9
+LOCAL LINE 10
+LOCAL LINE 11
+LOCAL LINE 12
+LOCAL LINE 13
+LOCAL LINE 14
+LOCAL LINE 15
+LOCAL LINE 16
+LOCAL LINE 17
+LOCAL LINE 18
+LOCAL LINE 19
+LOCAL LINE 20
+LOCAL LINE 21
+LOCAL LINE 22
+LOCAL LINE 23
+LOCAL LINE 24
+LOCAL LINE 25
+LOCAL LINE 26
+LOCAL LINE 27
+LOCAL LINE 28
+LOCAL LINE 29
+LOCAL LINE 30
+LOCAL LINE 31
+LOCAL LINE 32
+LOCAL LINE 33
+LOCAL LINE 34
+LOCAL LINE 35
+LOC
++							79 button (disabled) Previous log lines
++							80 text Page 1 of 3
++							81 button Next log lines
+The focused UI element is 2 HTML content Description: GitJuke, URL: tauri://localhost

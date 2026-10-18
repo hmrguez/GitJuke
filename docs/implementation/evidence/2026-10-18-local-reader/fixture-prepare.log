@@ -1,0 +1,5 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.43s
+     Running `target/debug/examples/reader_qualification /Users/hmrguez/Programming/Personal/GitJuke/target/reader-qualification-fixture '/Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.qualification'`
+{"allUnseen":true,"database":"/Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.qualification/gitjuke.sqlite3","fixtureDirectory":"/Users/hmrguez/Programming/Personal/GitJuke/target/reader-qualification-fixture","records":6,"remoteAccess":false}

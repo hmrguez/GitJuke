@@ -1,0 +1,51 @@
+{
+  "artifact": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Qualification.app",
+  "identifier": "dev.hmrguez.gitjuke.qualification",
+  "binarySha256": "f861d226ac1ac01aeeb68338cb23306d4382cd624220c4b83623ef907dd01205",
+  "architecture": "target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Qualification.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+  "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428",
+  "sqliteSchema": 14,
+  "syntheticLocalOnly": true,
+  "liveGitHubQualification": false,
+  "fixtureHelperSha256": "ab1002d869d48b0c29829812f3b972d9bcbddcc59603c1148ee73a1ab70d3581",
+  "sourceHelperMatches": true,
+  "scenarioSha256": "b45a99cba5ce5b878aa236b87c86cfe6d5d66c69af265f4eefa4009451de7163",
+  "destinations": {
+    "local-anchor": {
+      "type": "PullRequestReviewComment",
+      "bytes": 62,
+      "utf16Units": 58,
+      "sha256": "8f993c97adf29594d05bc2b3023f70ba349dca80e70adc0ec77cdd4f3699c422"
+    },
+    "local-empty": {
+      "type": "PullRequestReview",
+      "bytes": 0,
+      "utf16Units": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "local-neighbor": {
+      "type": "IssueComment",
+      "bytes": 64,
+      "utf16Units": 62,
+      "sha256": "306705a1588882ccd37bb62b55290b36a639ae396552ac18ccbaa0a1ef224573"
+    },
+    "local-oversized": {
+      "type": "IssueComment",
+      "bytes": 131073,
+      "utf16Units": 131073,
+      "sha256": "0c5c5c759aa8164f9fb53c471ff060903c99edcb520fb7d9cb4bf7a45755f1c2"
+    },
+    "local-segments": {
+      "type": "IssueComment",
+      "bytes": 70571,
+      "utf16Units": 70571,
+      "sha256": "09768b252efc999c71a87133eecd7a1782c17193f8020099a972ec1b5084a351"
+    },
+    "local-short": {
+      "type": "IssueComment",
+      "bytes": 36,
+      "utf16Units": 34,
+      "sha256": "02919ab574b31aac7bad0a74403eca14824d80df8b2e20605896a041a3146a54"
+    }
+  }
+}

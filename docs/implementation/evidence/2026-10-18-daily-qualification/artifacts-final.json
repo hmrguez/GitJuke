@@ -1,0 +1,38 @@
+{
+  "normal": {
+    "path": "/Applications/GitJuke.app",
+    "identifier": "dev.hmrguez.gitjuke",
+    "version": "0.1.0",
+    "build": "0.1.0",
+    "minimumOS": "15.0",
+    "executableSha256": "3dce61a181c74441146ecaf9f367e408a56e9964162c094b7c2580faf6cb34bc",
+    "infoSha256": "aa0d13d03e5136fc266f9231ca4c3ceba8a491dc444546471b51b9a8595ade43",
+    "architecture": "/Applications/GitJuke.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+    "signingDisplay": "Executable=/Applications/GitJuke.app/Contents/MacOS/gitjuke\nIdentifier=gitjuke-9f1684f079c67991\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=290449 flags=0x20002(adhoc,linker-signed) hashes=9073+0 location=embedded\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\nInternal requirements=none\n"
+  },
+  "qualification": {
+    "path": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Daily Qualification.app",
+    "identifier": "dev.hmrguez.gitjuke.dailyqualification",
+    "version": "0.1.0",
+    "build": "0.1.0",
+    "minimumOS": "15.0",
+    "executableSha256": "5dbb55003856913c67fd25a1666b4c19d8a7a5fc6ac222316c6e8d884452fcc3",
+    "infoSha256": "307a571cb3be0d0d4f2e3a2cb89c3724d535f2aae61c16f37f2d570620633418",
+    "architecture": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Daily Qualification.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+    "signingDisplay": "Executable=/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Daily Qualification.app/Contents/MacOS/gitjuke\nIdentifier=gitjuke-9f1684f079c67991\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=290449 flags=0x20002(adhoc,linker-signed) hashes=9073+0 location=embedded\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\nInternal requirements=none\n"
+  },
+  "sourceManifestSha256": "31d55dae8a2ff6bfb8fea9cdcdccc4bb59e00b01fa752137343e09ef87ab370e",
+  "dist": {
+    "dist/assets/diff-worker-BPqJHpWc.js": "ddb8b9625177ef52b61ae86efc565ef3bb4d50a6626bc5d7c5cfff0f445b45e0",
+    "dist/assets/index-BXf5y3Vg.js": "a1a9bfece20a28c94f3dc619d65a4306c5185b016515e97477fd4da7f9fb84f2",
+    "dist/assets/index-CPcuWd5m.css": "88147020191f98296755e9c5d411e32446d0ffd4755ece61c5860cdf99291a42",
+    "dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff": "658b9ee07b0249cf910a8d6f3d812d46c962bae81d7379a0355b1db35c61586f",
+    "dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2": "14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb",
+    "dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2": "cb182feeed4d798ff6961d3c79f7026279448fca0676438aaecb21f3fc39553a",
+    "dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff": "a270dd0bf13d91053b8999b7c120ffadb59680cfd63fe1a6b388a13bf2809fe1",
+    "dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff": "3f4ad0687bcb0edc596c7c85138c5140ba3a9c5a3ce2ee944f27608c0f18bab9",
+    "dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2": "400c6bfda18d5d14acad1c15d6dcb9f8e13c015e7286317e0b9a482539bef147",
+    "dist/index.html": "f3767d7b4f9e12fe0cfdc077f1978406a105f99a4c70e668f274737cf8c403e2"
+  },
+  "noDeveloperIDSigning": true
+}

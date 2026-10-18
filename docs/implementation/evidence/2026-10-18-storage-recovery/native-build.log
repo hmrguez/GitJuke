@@ -1,0 +1,61 @@
+$ tauri build --debug --bundles app --no-sign --config scripts/fixtures/tauri.storage-recovery.json
+        Warn --no-sign flag detected: Signing will be skipped.
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `bun run build`
+$ tsc --noEmit && vite build
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1593 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                               0.35 kB │ gzip:  0.26 kB
+dist/assets/diff-worker-BPqJHpWc.js                           1.04 kB
+dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2   21.17 kB
+dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2   21.83 kB
+dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2   21.86 kB
+dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff    27.50 kB
+dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff    28.18 kB
+dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff    28.21 kB
+dist/assets/index-C8YlqTbD.css                               24.47 kB │ gzip:  5.21 kB
+dist/assets/index-Cg-ZbU7G.js                               247.93 kB │ gzip: 79.02 kB
+✓ built in 10.90s
+    Blocking waiting for file lock on artifact directory
+   Compiling objc2-exception-helper v0.1.1
+   Compiling getrandom v0.4.3
+   Compiling objc2 v0.6.5
+   Compiling libsqlite3-sys v0.36.0
+   Compiling uuid v1.28.0
+   Compiling cfb v0.14.0
+   Compiling schemars v0.8.22
+   Compiling objc2-foundation v0.3.2
+   Compiling infer v0.22.0
+   Compiling wry v0.57.0
+   Compiling block2 v0.6.2
+   Compiling objc2-core-foundation v0.3.2
+   Compiling tauri-utils v2.10.2
+   Compiling dispatch2 v0.3.1
+   Compiling objc2-core-graphics v0.3.2
+   Compiling rusqlite v0.38.0
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/crates/gitjuke-core)
+   Compiling objc2-quartz-core v0.3.2
+   Compiling objc2-app-kit v0.3.2
+   Compiling tauri-build v2.7.3
+   Compiling tauri-codegen v2.7.3
+   Compiling tauri v2.12.4
+   Compiling tauri-macros v2.7.3
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/src-tauri)
+   Compiling objc2-web-kit v0.3.2
+   Compiling tao v0.37.1
+   Compiling muda v0.20.0
+   Compiling window-vibrancy v0.8.1
+   Compiling tauri-runtime v2.12.2
+   Compiling tray-icon v0.25.1
+   Compiling tauri-runtime-wry v2.12.2
+   Compiling tauri-plugin-single-instance v2.5.4
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8m 35s
+       Built application at: /private/tmp/gitjuke-storage-target/debug/gitjuke
+    Bundling GitJuke Storage Recovery.app (/private/tmp/gitjuke-storage-target/debug/bundle/macos/GitJuke Storage Recovery.app)
+        Warn Skipping signing due to --no-sign flag.
+    Finished 1 bundle at:
+        /private/tmp/gitjuke-storage-target/debug/bundle/macos/GitJuke Storage Recovery.app (34.26 MiB)
+

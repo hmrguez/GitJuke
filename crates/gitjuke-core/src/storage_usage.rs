@@ -32,6 +32,7 @@ fn files(path: &Path) -> Result<StorageUsage> {
         shared_memory_bytes,
         journal_bytes,
         managed_bytes,
+        transient_bytes: None,
         disposable_bytes: 0,
         content_limit_bytes: CONTENT_LIMIT as u64,
         warning_at_bytes: STORAGE_WARNING_BYTES,
@@ -61,6 +62,8 @@ mod tests {
         let below = files(&path).unwrap();
         assert_eq!(below.managed_bytes, STORAGE_WARNING_BYTES - 1);
         assert!(!below.warning);
+        assert!(below.transient_bytes.is_none());
+        assert!(serde_json::to_value(&below).unwrap()["transientBytes"].is_null());
         journal.set_len(STORAGE_WARNING_BYTES - 60).unwrap();
         let at = files(&path).unwrap();
         assert_eq!(at.managed_bytes, STORAGE_WARNING_BYTES);

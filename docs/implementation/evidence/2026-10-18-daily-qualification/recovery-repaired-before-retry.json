@@ -1,0 +1,11 @@
+{
+  "filesAfterFailedRetry": {
+    "gitjuke.sqlite3-shm": "6e1b611d76a7bf87787420bd02a1317c71a0b0fcf1566d99edf0416217516c14",
+    "gitjuke.sqlite3-wal": "a5da47e53ded814694420d02c5926f6d27736912a6578a40d1b1930b63c87ab3",
+    "gitjuke.sqlite3": "e218c5bc80626bc3a6997e5128a4c6238a79c1a0494d1c3575182401af89b93b"
+  },
+  "originalFilesUnchanged": true,
+  "helperReadsBefore": 170,
+  "helperReadsAfter": 170,
+  "modeRestored": 420
+}

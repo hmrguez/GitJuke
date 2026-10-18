@@ -1,0 +1,9 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.58s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 1 test
+test local_mixed_identity_fixture_preserves_seen_and_current_range ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 3.30s
+

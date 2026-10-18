@@ -1,0 +1,28 @@
+{
+  "schema": 14,
+  "host": "macOS 27.0 (26A428), arm64",
+  "unsigned": true,
+  "syntheticOnly": true,
+  "files": {
+    "src/main.tsx": "4bc680554f62ee35fcc5f22bd79cb150e023c997f06f3a711998dc50643e0109",
+    "src/reader-accessibility.ts": "e5c34db596bbcfcb5756259020ec2f5fc0aae2bca0ffdd2e673cabdf768826d5",
+    "src/app.css": "398a786872f5693b9c086ddbf31813a4e412ca890133304625d7dadc932b7ee5",
+    "src/theme.css": "395b1e986394651ce74d5a3d4ddddfd25bdd25975d8b7b4a24efff7c3afd78e1",
+    "src/changes.css": "a3cfcee9584de5e621fbf917486f48f5dd360c2fcf83ff62e017550ca8053dbc",
+    "src/conversation.css": "92bc3716c7a6521a126abcc73450e075af20e4c8e9b23235a8bdd29a18566443",
+    "src-tauri/tauri.conf.json": "388c3cacb0e3533ec322747def0bfc52fb2a30401df52a00d34812565d59d03b",
+    "scripts/fixtures/tauri.accessibility-qualification.json": "96c9b0e8e28359e297f5706c718c3de46427bf3fbf811280bab813b913e6daa1"
+  },
+  "bundles": {
+    "GitJuke Accessibility": {
+      "identifier": "dev.hmrguez.gitjuke.qualification.accessibility",
+      "minimumOS": "15.0",
+      "sha256": "23793895890bcc177b946312317159791c27958adcd82b62f01f11b005a71d17"
+    },
+    "GitJuke": {
+      "identifier": "dev.hmrguez.gitjuke",
+      "minimumOS": "15.0",
+      "sha256": "7bbc6ccf4bf5544e249f39d5e3cdba58f1e6a200b43ead48389b338a30bf409f"
+    }
+  }
+}

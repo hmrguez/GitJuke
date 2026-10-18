@@ -1,0 +1,35 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Preferences
+				4 heading Preferences, Value: 2
+					5 text Preferences
+				6 button Close preferences
+				7 container Preferences sections
+					8 toggle button Appearance, Value: on
+					9 toggle button Monitoring, Value: off
+					10 toggle button GitHub, Value: off
+					11 toggle button Storage, Value: off
+				12 container Appearance
+					13 heading Make yourself at home, Value: 3
+						14 text Make yourself at home
+					15 text Two considered palettes. The same quiet workspace.
+					16 toggle button Graphite · selected, Value: on
+					17 toggle button Paper, Value: off
+					18 container
+						19 text Text size
+						20 pop up button (collapsed) Reader text size, Value: 200%, Secondary Actions: Expand
+					21 text ⌘ + / − enlarges text; ⌘ 0 resets. Applies to this session.
+					22 text Typeface
+					23 text JetBrains Mono
+					24 text Warm neutrals, a soft brass accent, and color reserved for meaning. Appearance is kept consistent across every reader.
+				25 text GitJuke 0.1.0 · Your personal review desk.
+	26 close button
+	27 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	28 minimize button
+	29 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+30 menu bar
+	31 GitJuke Accessibility
+
+The focused UI element is 3 container Preferences

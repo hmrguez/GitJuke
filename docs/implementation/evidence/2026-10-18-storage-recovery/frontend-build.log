@@ -1,0 +1,17 @@
+$ tsc --noEmit && vite build
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1593 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                               0.35 kB │ gzip:  0.26 kB
+dist/assets/diff-worker-BPqJHpWc.js                           1.04 kB
+dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2   21.17 kB
+dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2   21.83 kB
+dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2   21.86 kB
+dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff    27.50 kB
+dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff    28.18 kB
+dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff    28.21 kB
+dist/assets/index-C8YlqTbD.css                               24.47 kB │ gzip:  5.21 kB
+dist/assets/index-CAD0tVmv.js                               248.06 kB │ gzip: 79.04 kB
+✓ built in 13.29s

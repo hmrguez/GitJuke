@@ -1,0 +1,4 @@
+error: failed to bind TCP listener to manage locking
+
+Caused by:
+  Operation not permitted (os error 1)

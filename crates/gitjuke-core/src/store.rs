@@ -2,7 +2,7 @@
 use crate::{Error, Result, model::*, now};
 use rusqlite::{Connection, OptionalExtension, params};
 use std::path::Path;
-pub const SCHEMA_VERSION: i64 = 12;
+pub const SCHEMA_VERSION: i64 = 16;
 pub const CONTENT_LIMIT: i64 = 500 * 1024 * 1024;
 pub const MIN_FREE_BYTES: u64 = 1024 * 1024 * 1024;
 pub struct Store {
@@ -14,7 +14,11 @@ impl Store {
         storage_healthy(path.parent().unwrap_or(Path::new("/")))?;
         let mut conn = Connection::open(path)?;
         conn.busy_timeout(std::time::Duration::from_secs(2))?;
+        crate::shared_storage::register(&conn)?;
         let version: i64 = conn.pragma_query_value(None, "user_version", |r| r.get(0))?;
+        if version < 0 {
+            return Err(Error::Safe("The database has an invalid schema version. Original files are preserved; monitoring is stopped.".into()));
+        }
         if version > SCHEMA_VERSION {
             return Err(Error::Safe(
                 "This database requires a newer GitJuke. Its schema was not modified.".into(),
@@ -33,10 +37,13 @@ impl Store {
         crate::invalidation::resume(&mut conn)?;
         crate::control_sweep::resume(&mut conn)?;
         crate::startup_cleanup::cleanup(&mut conn, path.parent().unwrap_or(Path::new("/")))?;
-        Ok(Self {
+        let mut store = Self {
             conn,
             cache_writes: true,
-        })
+        };
+        store.resume_changes_cleanup()?;
+        store.resume_conversation_cleanup()?;
+        Ok(store)
     }
     /// Open an existing compatible cache without migrations or startup writes.
     /// Authentication must still be validated before private content is exposed.
@@ -46,6 +53,7 @@ impl Store {
             rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY | rusqlite::OpenFlags::SQLITE_OPEN_NO_MUTEX,
         )?;
         conn.busy_timeout(std::time::Duration::from_secs(2))?;
+        crate::shared_storage::register(&conn)?;
         let version: i64 = conn.pragma_query_value(None, "user_version", |r| r.get(0))?;
         if version != SCHEMA_VERSION {
             return Err(Error::StorageUnavailable("Storage protection cannot open this schema without migration. Free disk space and reopen GitJuke; original files are preserved.".into()));

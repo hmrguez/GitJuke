@@ -42,6 +42,10 @@ impl Theme {
 #[derive(Clone, Debug, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
+    #[serde(default)]
+    pub alerts: crate::alerts::AlertSettings,
+    #[serde(default)]
+    pub paged_changes: bool,
     pub paused: bool,
     pub theme: Theme,
     pub gh_path: Option<String>,
@@ -206,6 +210,8 @@ pub struct StorageUsage {
     pub shared_memory_bytes: u64,
     pub journal_bytes: u64,
     pub managed_bytes: u64,
+    /// SQLite can unlink temporary files while they remain open. Unknown is not zero.
+    pub transient_bytes: Option<u64>,
     pub disposable_bytes: u64,
     pub content_limit_bytes: u64,
     pub warning_at_bytes: u64,

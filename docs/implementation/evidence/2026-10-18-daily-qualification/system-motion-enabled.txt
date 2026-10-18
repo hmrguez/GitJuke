@@ -1,0 +1,1 @@
+				59 switch Reduce motion, Value: on, ID: AX_REDUCE_MOTION

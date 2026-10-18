@@ -1,0 +1,54 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke v0.1.0 (/private/tmp/gitjuke-login-lifecycle/src-tauri)
+    Finished `test` profile [unoptimized] target(s) in 2m 17s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-lifecycle-target/debug/deps/gitjuke_desktop-25362e7081f06693)
+
+running 10 tests
+test login::tests::status_never_confuses_desire_with_registration ... ok
+test singleton::tests::child ... ok
+test login::tests::os_disabled_requires_exact_label_and_valid_output ... ok
+test singleton::tests::symlink_lock_is_rejected ... ok
+test singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership ... FAILED
+test singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths ... FAILED
+test login::tests::stable_path_identity_and_no_watchdog_are_required ... FAILED
+
+thread 'singleton::tests::child' (13763662) panicked at src-tauri/src/singleton.rs:185:46:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test login::tests::preference_is_default_off_atomic_and_preserves_corruption ... ok
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+test singleton::tests::separate_processes_serialize_and_sigkill_releases_lock ... FAILED
+
+failures:
+
+---- singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership stdout ----
+
+thread 'singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership' (13763659) panicked at src-tauri/src/singleton.rs:128:41:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+---- singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths stdout ----
+
+thread 'singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths' (13763657) panicked at src-tauri/src/singleton.rs:168:65:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- login::tests::stable_path_identity_and_no_watchdog_are_required stdout ----
+
+thread 'login::tests::stable_path_identity_and_no_watchdog_are_required' (13763654) panicked at src-tauri/src/login.rs:416:9:
+assertion failed: valid_install(&exe, &bundle, NORMAL_ID)
+
+---- singleton::tests::separate_processes_serialize_and_sigkill_releases_lock stdout ----
+
+thread 'singleton::tests::separate_processes_serialize_and_sigkill_releases_lock' (13763658) panicked at src-tauri/src/singleton.rs:211:13:
+assertion failed: Instant::now() < until
+
+
+failures:
+    login::tests::stable_path_identity_and_no_watchdog_are_required
+    singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths
+    singleton::tests::separate_processes_serialize_and_sigkill_releases_lock
+    singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership
+
+test result: FAILED. 6 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.01s
+
+error: test failed, to rerun pass `-p gitjuke --lib`

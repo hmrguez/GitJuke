@@ -1,0 +1,10 @@
+
+running 5 tests
+test singleton::tests::child ... ok
+test singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths ... ok
+test singleton::tests::separate_processes_serialize_and_sigkill_releases_lock ... ok
+test singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership ... ok
+test singleton::tests::symlink_lock_is_rejected ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

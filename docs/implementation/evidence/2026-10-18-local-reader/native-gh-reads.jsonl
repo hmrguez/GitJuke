@@ -1,0 +1,113 @@
+{"args": ["--version"], "query": "", "variables": {}}
+{"args": ["auth", "status", "--active", "--hostname", "github.com", "--json", "hosts"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query Authored", "variables": {"after": null, "first": 100}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T10%3A35%3A11Z&per_page=100&page=1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user/teams?per_page=100&page=1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "notifications?all=true&participating=false&per_page=50&page=1&before=2026-10-18T10:35:11Z", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query WatchHeads", "variables": {"first": 25, "ids": ["PR_1"]}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=1&per_page=100"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query ConversationDestination", "variables": {"name": "b", "number": 1, "owner": "a", "thread": "local-segments"}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query ConversationDestination", "variables": {"name": "b", "number": 1, "owner": "a", "thread": "local-short"}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=1&per_page=100"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query ConversationDestination", "variables": {"name": "b", "number": 1, "owner": "a", "thread": "local-oversized"}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=1&per_page=100"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query ConversationDestination", "variables": {"name": "b", "number": 1, "owner": "a", "thread": "local-empty"}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=1&per_page=100"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query ConversationDestination", "variables": {"name": "b", "number": 1, "owner": "a", "thread": "local-anchor"}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/comments/103", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=1&per_page=100"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1/files?per_page=20&page=1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1/files?per_page=1&page=1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["--version"], "query": "", "variables": {}}
+{"args": ["auth", "status", "--active", "--hostname", "github.com", "--json", "hosts"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query WatchHeads", "variables": {"first": 25, "ids": ["PR_1"]}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query Authored", "variables": {"after": null, "first": 100}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T10%3A40%3A26Z&per_page=100&page=1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user/teams?per_page=100&page=1"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "notifications?all=true&participating=false&per_page=50&page=1&before=2026-10-18T10:40:26Z&since=2026-10-18T10:35:10Z", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/issues/1/comments?per_page=50&page=1", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1/reviews?per_page=50&page=1", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/1/comments?per_page=50&page=1", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/issues/1/timeline?per_page=50&page=1", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
+{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}

@@ -1,0 +1,53 @@
+[
+  {
+    "name": "frontend-final",
+    "command": [
+      "bun",
+      "test"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "build-final",
+    "command": [
+      "bun",
+      "run",
+      "build"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "clippy-final",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "format-final",
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "whitespace-final",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0
+  }
+]

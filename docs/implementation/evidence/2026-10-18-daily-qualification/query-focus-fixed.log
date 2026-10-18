@@ -1,0 +1,27 @@
+bun test v1.4.2 (744846f84)
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [147.39ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [54.05ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [139.94ms]
+(pass) a later summary/unavailable route releases a previously opened check destination [1158.66ms]
+(pass) Preferences close restores its opener when native activation did not move focus [83.43ms]
+84 |   r.host.querySelector<HTMLButtonElement>('nav button[title="Activity"]')!.focus();
+85 |   await act(async()=>opener.click());
+86 |   const dialog=r.host.querySelector<HTMLDialogElement>('dialog[open]')!;
+87 |   expect(Boolean(dialog)).toBe(true);
+88 |   await act(async()=>{dialog.close();await new Promise(resolve=>setTimeout(resolve,20));});
+89 |   expect(document.activeElement===opener).toBe(true);
+                                               ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/integrated-routing.test.tsx:89:43)
+(fail) query editor close restores the invoked New query control after native-style activation [74.38ms]
+
+ 5 pass
+ 1 fail
+ 23 expect() calls
+Ran 6 tests across 1 file. [1.74s]

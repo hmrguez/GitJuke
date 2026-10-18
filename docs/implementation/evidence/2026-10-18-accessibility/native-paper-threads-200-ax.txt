@@ -1,0 +1,96 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 200%
+				4 text Text size 200%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selectable) Changes
+					29 tab (selected) Conversation
+					30 tab (selectable) Checks
+				31 container Conversation
+					32 text CONVERSATION
+					33 container
+						34 text Head aaaaaaaaaa · safe plain text
+					35 button Refresh conversation
+					36 container Conversation sources
+						37 toggle button Comments, Value: off
+						38 toggle button Reviews, Value: off
+						39 toggle button Review threads, Value: on
+					40 text 20 loaded / 55 known · this page only; other pages may exist
+					41 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+					42 button file-0.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					43 button GitHub source
+					44 button file-1.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					45 button GitHub source
+					46 button file-2.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					47 button GitHub source
+					48 button file-3.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					49 button GitHub source
+					50 button file-4.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					51 button GitHub source
+					52 button file-5.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					53 button GitHub source
+					54 button file-6.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					55 button GitHub source
+					56 button file-7.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					57 button GitHub source
+					58 button file-8.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					59 button GitHub source
+					60 button file-9.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					61 button GitHub source
+					62 button file-10.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					63 button GitHub source
+					64 button file-11.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					65 button GitHub source
+					66 button file-12.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					67 button GitHub source
+					68 button file-13.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					69 button GitHub source
+					70 button file-14.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					71 button GitHub source
+					72 button file-15.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					73 button GitHub source
+					74 button file-16.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					75 button GitHub source
+					76 button file-17.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					77 button GitHub source
+					78 button file-18.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					79 button GitHub source
+					80 button file-19.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					81 button GitHub source
+					82 button (disabled) Previous page
+					83 text First page
+					84 button (disabled) First page
+					85 button Next page
+				86 text Cached 18/10/2026, 13:40:12 · revision 218
+	87 close button
+	88 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	89 minimize button
+	90 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+91 menu bar
+	92 GitJuke Accessibility
+
+The focused UI element is 31 container Conversation

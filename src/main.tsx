@@ -1,20 +1,41 @@
+import {LoginSettings} from './LoginSettings';
+import {Startup} from './Startup';
+import {friendlyError,activityLabel} from './ui-copy';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { GitBranch, GitPullRequest, Layers3, RefreshCw, Settings2, Pause, Play, ExternalLink, ArrowLeft } from 'lucide-react';
-import { command, presets, revisions, type Overview, type Page, type Snapshot, type Status, type Theme, type CheckPage, type WatchPage, type ActivityPage, type ActivityRecord } from './api';
+import { GitBranch, GitPullRequest, RefreshCw, Settings2, Pause, Play, ExternalLink, ArrowLeft, Activity, Inbox, Search, X, FileText, FileDiff, MessageSquare, CircleCheck } from 'lucide-react';
+import { command, presets, revisions, type Overview, type Page, type Snapshot, type Status, type CheckPage, type ActivityPage, type ActivityRecord } from './api';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
+import {NotificationControls} from './NotificationControls';
+import {QueryNavigation,QueryEditor,QueryReader} from './SavedQueries';
+import {Sidebar} from './Sidebar';
+import {Dropdown} from './Dropdown';
+import type {SavedQuery} from './api';
+import {Changes} from './Changes';
+import {Conversation} from './Conversation';
+import {Markdown} from './Markdown';
+import {CheckReader} from './Checks';
+import {PullRequestIcon,PullRequestBadge,pullRequestState,pullRequestLabel} from './StatusIndicators';
 import './app.css';
 import './theme.css';
+import {compactReader,readerListKey,textSizes,useReaderTextSize} from './reader-accessibility';
 
-function App(){
+export function App(){
+  const textSize=useReaderTextSize();
+  useEffect(()=>{window.addEventListener('keydown',readerListKey);return()=>window.removeEventListener('keydown',readerListKey);},[]);
   const [status,setStatus]=useState<Status|null>(null),[page,setPage]=useState<Page|null>(null);
   const [selected,setSelected]=useState<{repo:string;number:number}|null>(null);
   const [detail,setDetail]=useState<Snapshot<Overview|null>|null>(null),[error,setError]=useState('');
-  const [view,setView]=useState<'mine'|'review'|'activity'>('mine'),[tab,setTab]=useState<'overview'|'checks'>('overview');
+  const [view,setView]=useState<'mine'|'review'|'activity'|'query'>('mine'),[tab,setTab]=useState<'overview'|'changes'|'conversation'|'checks'>('overview');
   const [checks,setChecks]=useState<CheckPage|null>(null),[checkOffset,setCheckOffset]=useState(0);
-  const restored=useRef(false);
+  const [destination,setDestination]=useState<ActivityRecord|null>(null);
+  const [notificationRecord,setNotificationRecord]=useState<ActivityRecord|null>(null);
+  const [notificationUnavailable,setNotificationUnavailable]=useState(false);
+  const restored=useRef(false),selectionOrigin=useRef<string|null>(null),selectionFocus=useRef<Element|null|undefined>(undefined);
+  const [query,setQuery]=useState<SavedQuery|null>(null),[queryEditor,setQueryEditor]=useState(false),[editingQuery,setEditingQuery]=useState<SavedQuery|null>(null);
+  const [search,setSearch]=useState('');
   const [offset,setOffset]=useState(0),[preferences,setPreferences]=useState(false);
   const readSerial=useRef(0),detailSerial=useRef(0),storeRevision=useRef(0);
   const selectedRef=useRef(selected);selectedRef.current=selected;
@@ -24,8 +45,9 @@ function App(){
       const s=await command<Status>('runtime_status');
       if(request!==readSerial.current||s.revision<storeRevision.current)return;
       storeRevision.current=s.revision;setStatus(s);
-      if(s.locked){setPage(null);setDetail(null);setChecks(null);setError('');return;}
+      if(s.locked){setPage(null);setDetail(null);setChecks(null);setDestination(null);setNotificationRecord(null);setError('');return;}
       if(!restored.current&&s.selected){restored.current=true;const selection={repo:s.selected[0],number:s.selected[1]};selectedRef.current=selection;setSelected(selection);}
+      if(view==='query'||view==='activity')return;
       const p=await command<Page>(view==='mine'?'authored_page':'requested_page',{offset});
       if(request!==readSerial.current||p.revision<storeRevision.current)return;
       storeRevision.current=p.revision;setPage(p);setError('');
@@ -50,75 +72,111 @@ function App(){
     return()=>{disposed=true;cleanup?.();clearInterval(timer);window.removeEventListener('focus',focus);};
   },[load,loadDetail]);
   useEffect(()=>{
-    const theme=status?.settings.theme??presets.dark;
+    const theme=presets[status?.settings.theme.mode??'dark'];
     for(const key of ['canvas','surface','accent','ink'] as const)document.documentElement.style.setProperty(`--theme-${key}`,theme[key]);
     document.documentElement.dataset.mode=theme.mode;
   },[status?.settings.theme]);
   async function action(name:string,args?:Record<string,unknown>){try{await command(name,args);setError('');await load();}catch(e){setError(String(e));}}
-  async function select(repo:string,number:number){
+  async function select(repo:string,number:number,origin?:string){
+    selectionOrigin.current=origin??(document.activeElement?.id||null);selectionFocus.current=document.activeElement;
+    setDestination(null);
     ++detailSerial.current;setSelected({repo,number});selectedRef.current={repo,number};setDetail(null);setChecks(null);setCheckOffset(0);
-    try{await command('select_pr',{repo,number});await loadDetail(0);}catch(e){setError(String(e));}
+    try{await command('select_pr',{repo,number});await loadDetail(0);return true;}catch(e){setError(String(e));return false;}
   }
+  function backToList(){selectionFocus.current=undefined;const id=destination?.id;setDestination(null);setSelected(null);selectedRef.current=null;++detailSerial.current;setDetail(null);requestAnimationFrame(()=>{const origin=document.getElementById(id?`activity-${id}`:selectionOrigin.current??'');if(origin?.isConnected)origin.focus();else document.querySelector<HTMLElement>('.stack-navigator')?.focus();});}
+  function browseConversation(){setDestination(null);setTab('conversation');requestAnimationFrame(()=>document.getElementById('conversation')?.focus());}
+  useEffect(()=>{
+    let active=true;let busy=false;
+    async function route(){if(busy)return;busy=true;try{
+      // null means no click; the wrapper distinguishes a summary/unavailable source.
+      const result=await command<{record:ActivityRecord|null;unavailable:boolean}|null>('take_notification_route');
+      if(!active||result===null)return;
+      setNotificationUnavailable(result.unavailable);
+      setNotificationRecord(null);
+      setView('activity');setPreferences(false);setSearch('');
+      if(result.record){const a=result.record;if(!await select(a.repo,a.number))return;if(!active||selectedRef.current?.repo!==a.repo||selectedRef.current?.number!==a.number)return;
+        if(['comment','review','mention'].includes(a.kind)){setNotificationRecord(null);setDestination(a);setTab('conversation');}else{setDestination(null);setTab(a.kind==='check'?'checks':'conversation');setNotificationRecord(a);}
+      }else{backToList();setError('');}
+    }catch{/* Keep pending clicks until the original identity is validated. */}finally{busy=false;}}
+    void route();const timer=setInterval(()=>void route(),1000);return()=>{active=false;clearInterval(timer);};
+  },[]);
+  useEffect(()=>{if(view!=='activity'||selected)setNotificationUnavailable(false);},[view,selected]);
+  function chooseQuery(q:SavedQuery){if(compactReader())backToList();setDestination(null);setQuery(q);setView('query');}
+  function editQuery(){setEditingQuery(query);setQueryEditor(true);}
   const pr=detail?.data;
+  useEffect(()=>{
+    const origin=selectionFocus.current;if(origin===undefined||!pr||destination)return;
+    selectionFocus.current=undefined;
+    if(document.activeElement===origin||document.activeElement===document.body)document.getElementById(`${tab}-tab`)?.focus();
+  },[pr,destination,tab]);
   return <div className={`app-frame ${selected?'show-detail':''}`}>
-    <aside className="sidebar">
-      <div className="brand"><span className="brand-icon"><Layers3 size={19}/></span><span>gitjuke<span className="brand-dot">.</span></span></div>
-      <nav aria-label="Primary">{(['mine','review','activity'] as const).map(item=><button key={item} className={`nav-item ${view===item?'active':''}`} aria-current={view===item?'page':undefined} onClick={()=>{setView(item);setOffset(0);setPage(null);}}><GitPullRequest size={16}/><span>{item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'}</span></button>)}</nav>
-      <p className="implementation-note">Watches + head/check snapshots<br/>Personal activity · alerts unavailable</p>
-      <div className="sidebar-bottom">{status?.storage.warning&&<p role="status" className="state-banner">Local storage ≥1 GiB. Review Preferences.</p>}<button className="nav-item" onClick={()=>setPreferences(true)}><Settings2 size={16}/><span>Preferences</span></button>
-        <div className="account"><span className="avatar">{status?.identity?.login.slice(0,2).toUpperCase()??'?'}</span><div>{status?.identity?.login??'Stored gh login'}<small>GitHub.com</small></div></div>
-        <button className="monitor" onClick={()=>void action('set_pause',{paused:!status?.settings.paused})} disabled={!status}>
-          {status?.settings.paused?<Play size={13}/>:<Pause size={13}/>}<span>{status?.settings.paused?'Paused':status?.storageStopped?'Storage protection':'Monitoring'}<small>{status?.busy?'Reading…':`${status?.watchCount??0} watches · ${status?.delayedWatches??0} delayed`}</small></span>
+    <output className="sr-only" aria-live="polite">Text size {textSize.size}%</output>
+    <Sidebar>
+      <nav id="sidebar-navigation" aria-label="Primary"><p className="section-label">Workspace</p>{(['mine','review','activity'] as const).map(item=><button key={item} aria-label={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} title={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} className={`nav-item ${view===item?'active':''}`} aria-current={view===item?'page':undefined} onClick={()=>{if(compactReader())backToList();setDestination(null);setView(item);setOffset(0);setSearch('');setPage(null);}}>{item==='mine'?<GitPullRequest size={16}/>:item==='review'?<Inbox size={16}/>:<Activity size={16}/>}<span>{item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'}</span></button>)}<QueryNavigation revision={status?.revision??0} current={view==='query'?query:null} onSelect={chooseQuery} onCreate={()=>{setEditingQuery(null);setQueryEditor(true);}} onEdit={editQuery}/></nav>
+
+      <div className="sidebar-bottom">{status?.storage.warning&&<p role="status" className="state-banner">Storage is running low. Open Preferences to review it.</p>}<button className="nav-item" title="Preferences" aria-label="Preferences" onClick={()=>setPreferences(true)}><Settings2 size={16}/><span>Preferences</span></button>
+        <div className="account" title={status?.identity?.login??'Not connected'}><span className="avatar">{status?.identity?.login.slice(0,2).toUpperCase()??'?'}</span><div>{status?.identity?.login??'Not connected'}<small>GitHub.com</small></div></div>
+        <button className="monitor" data-status={!status?'unknown':status.storageStopped?'failure':status.settings.paused?'pending':'success'} title={status?.settings.paused?'Resume updates':'Pause updates'} aria-label={status?.settings.paused?'Resume updates':'Pause updates'} onClick={()=>void action('set_pause',{paused:!status?.settings.paused})} disabled={!status}>
+          {status?.settings.paused?<Play size={13}/>:<Pause size={13}/>}<span>{status?.settings.paused?'Paused':status?.storageStopped?'Updates need attention':'Updates on'}<small>{status?.busy?'Checking for updates…':status?.settings.paused?'Updates paused':status?.storageStopped?'Free up space to resume':'Updates in the background'}</small></span>
         </button>
       </div>
-    </aside>
+    </Sidebar>
     <main className="stacks-workspace">
-      {view==='activity'?<ActivityReader health={status?.storageStopped?status.health:undefined} locked={status?.locked??true} revision={status?.revision??0} report={setError}/>:<section className="stack-navigator" aria-label="Pull requests">
-        <div className="list-heading"><div><span className="eyebrow">YOUR WORK</span><h1>{view==='mine'?'Pull requests':'Review requests'}</h1></div><button className="icon-button" aria-label="Refresh pull requests" onClick={()=>void action('refresh')}><RefreshCw size={16}/></button></div>
-        <p className="list-subhead">{page?.fetchedAt?`Cached ${new Date(page.fetchedAt*1000).toLocaleTimeString()}`:'No successful sync yet'}{page&&!page.complete?' · incomplete':''}</p>
-        {error&&<p role="alert" className="state-banner">{error}</p>}
-        <p className="runtime-health" role="status">{status?.health??'Connecting to native runtime…'}</p>
-        {status?.nextRemoteAt&&status.nextRemoteAt>Date.now()/1000?<p className="state-banner">GitHub deadline: {new Date(status.nextRemoteAt*1000).toLocaleTimeString()}</p>:null}
-        {page?.error&&<p className="state-banner">{page.error}</p>}
-        <div className="pr-list">{page?.items.map(p=><button key={p.id} className={`stack-node ${selected?.repo===p.repo&&selected.number===p.number?'active':''}`} onClick={()=>void select(p.repo,p.number)}>
-          <span className="node-meta">{p.repo} · #{p.number}</span><strong>{p.title}</strong><span className="node-meta">{p.draft?'Draft':p.state} · {p.author??'Unavailable author'}</span>
+      {view==='query'&&query?<QueryReader key={`${query.id}:${query.version}`} query={query} revision={status?.revision??0} locked={status?.locked??true} health={status?.storageStopped?status.health:undefined} select={(repo,number)=>void select(repo,number)} edit={editQuery}/>:view==='activity'?<ActivityReader notificationUnavailable={notificationUnavailable} health={status?.storageStopped?status.health:undefined} locked={status?.locked??true} revision={status?.revision??0} report={setError} open={a=>{void select(a.repo,a.number,`activity-${a.id}`);setDestination(a);setTab('conversation');}}/>:<section className="stack-navigator" tabIndex={-1} aria-label="Pull requests">
+        <div className="list-heading"><div><h1>{view==='mine'?'Pull requests':'Review requests'}</h1></div><button className="icon-button" aria-label="Refresh pull requests" onClick={()=>void action('refresh')}><RefreshCw size={16}/></button></div>
+        {page&&!page.complete&&<p className="list-subhead" role="status">More pull requests are still loading…</p>}
+        {error&&<p role="alert" className="state-banner">{friendlyError(error)}</p>}
+        {status?.locked&&<p className="state-banner">Check your GitHub connection in Preferences.</p>}
+        {status?.storageStopped&&<p className="state-banner">Updates are paused while local storage needs attention.</p>}
+        {page?.error&&<p className="state-banner">{friendlyError(page.error,'Couldn’t update pull requests. Try refreshing.')}</p>}
+        <label className="search-field"><Search size={14}/><input aria-label="Filter pull requests" placeholder="Filter this page…" value={search} onChange={e=>setSearch(e.target.value)}/></label><div className="pr-list">{!page&&<p className="empty" role="status">{status?.locked?'Check your GitHub connection in Preferences.':'Loading your pull requests…'}</p>}{page?.items.filter(p=>`${p.repo} ${p.number} ${p.title}`.toLowerCase().includes(search.toLowerCase())).map(p=><button key={p.id} id={`pr-${p.id}`} data-pr-state={pullRequestState(p)} className={`stack-node ${selected?.repo===p.repo&&selected.number===p.number?'active':''}`} onClick={()=>void select(p.repo,p.number,`pr-${p.id}`)}>
+          <span className="node-meta">{p.repo} · #{p.number}</span><strong className="node-title"><PullRequestIcon pr={p} size={14}/>{p.title}</strong><span className="node-meta"><span className="pr-state-text">{pullRequestLabel(p)}</span> · {p.author??'Unavailable author'}</span>
         </button>)}</div>
-        {page?.items.length===0&&<p className="empty">{page.complete?(view==='mine'?'No open authored PRs.':'No open review requests.'):'No cached results; successful discovery is pending.'}</p>}
+        {search&&page&&page.items.length>0&&!page.items.some(p=>`${p.repo} ${p.number} ${p.title}`.toLowerCase().includes(search.toLowerCase()))&&<p className="empty">No matches on this page.</p>}
+        {page?.items.length===0&&<p className="empty">{page.complete?(view==='mine'?'You have no open pull requests.':'No open review requests.'):'Looking for pull requests…'}</p>}
         <div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous</button><span>{page?.items.length?offset+1:0}–{offset+(page?.items.length??0)}</span><button disabled={page?.nextOffset==null} onClick={()=>setOffset(page?.nextOffset??0)}>Next</button></div>
-        <form className="open-pr" onSubmit={e=>{e.preventDefault();const form=new FormData(e.currentTarget);void select(String(form.get('repo')),Number(form.get('number')));}}><label>Open a known PR<input name="repo" placeholder="owner/repository" required aria-label="Repository owner and name"/></label><input name="number" type="number" min="1" required placeholder="PR number" aria-label="Pull request number"/><button type="submit">Read PR</button></form>
+        <details className="open-pr"><summary>Open a pull request</summary><form onSubmit={e=>{e.preventDefault();const form=new FormData(e.currentTarget);void select(String(form.get('repo')),Number(form.get('number')));}}><label>Open a known PR<input name="repo" placeholder="owner/repository" required aria-label="Repository owner and name"/></label><input name="number" type="number" min="1" required placeholder="PR number" aria-label="Pull request number"/><button type="submit">Read PR</button></form></details>
       </section>}
       <article className="detail" aria-label="Pull request reader">
         {selected?<>
-          <div className="detail-toolbar"><button className="back-to-list" onClick={()=>{setSelected(null);selectedRef.current=null;setDetail(null);}}><ArrowLeft size={14}/>Back</button><span>{selected.repo} / #{selected.number}</span><button disabled={!pr} onClick={()=>void action('open_pr',selected)}><ExternalLink size={13}/>Open in GitHub</button></div>
-          {detail?.error&&<p className="state-banner">{detail.error}</p>}
-          {pr?<><header className="pr-heading"><span className="open-badge">{(checks?.pr??pr).draft?'Draft':(checks?.pr??pr).state}</span><h1>{checks?.pr?.title??pr.title}</h1><p className="pr-byline">{pr.author??'Unavailable author'} · <code>{pr.base}</code> · head <code>{pr.head.slice(0,10)}</code></p></header>
-            <section className="stack-section" aria-label="Published native stack"><GitBranch size={16}/>{pr.stack.state==='published'?<div><span>Stack #{pr.stack.number} · trunk {pr.stack.trunk}</span><ol>{pr.stack.members.map(member=><li key={member.number}><button aria-current={member.number===pr.number?'page':undefined} onClick={()=>void select(pr.repo,member.number)}>#{member.number} {member.title}</button></li>)}</ol></div>:<p>{pr.stack.state==='none'?'Confirmed: this PR has no published native stack.':`Native stack unknown: ${pr.stack.reason}`}</p>}</section>
-            {checks?.head&&checks.head!==pr.head&&<p className="state-banner">Overview is from old head {pr.head.slice(0,10)}. Current head: {checks.head.slice(0,10)}. <button onClick={()=>void select(pr.repo,pr.number)}>Update overview</button></p>}
-            <div className="tabs" role="tablist" aria-label="Reader">{(['overview','checks'] as const).map(item=><button key={item} role="tab" aria-selected={tab===item} id={`${item}-tab`} aria-controls={item} onClick={()=>setTab(item)} onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();const next=tab==='overview'?'checks':'overview';setTab(next);document.getElementById(`${next}-tab`)?.focus();}}} tabIndex={tab===item?0:-1}>{item==='overview'?'Overview':'Checks'}</button>)}</div>
-            {tab==='overview'?<section className="overview" id="overview" role="tabpanel" aria-labelledby="overview-tab">{pr.bodyLimited?<p>Description exceeds the 128 KiB local body limit. Open the PR in GitHub.</p>:<pre className="description">{pr.body??'No description.'}</pre>}<p className="reader-note">Description is displayed as safe plain text. Changes, discussions, logs are still pending implementation.</p></section>:<CheckReader checks={checks} offset={checkOffset} setOffset={setCheckOffset}/>}
-            <footer className="detail-footer">{detail.fetchedAt?`Cached ${new Date(detail.fetchedAt*1000).toLocaleString()}`:'Not fetched'} · revision {detail.revision}</footer>
-          </>:<div className="empty">{detail?.error?'This PR is unavailable.':'Reading the authorized PR snapshot…'}</div>}
-        </>:<div className="empty reader-empty"><Layers3 size={30}/><h1>Your work, in context.</h1><p>Select a pull request to read its overview and published stack.</p></div>}
+          <div className="detail-toolbar"><button className="back-to-list" onClick={backToList}><ArrowLeft size={14}/>Back</button><span>{selected.repo} / #{selected.number}</span><button disabled={!pr} onClick={()=>void action('open_pr',selected)}><ExternalLink size={13}/>Open in GitHub</button></div>
+          {detail?.error&&<p className="state-banner">{friendlyError(detail.error,'Couldn’t update this pull request. Try refreshing.')}</p>}
+          {pr?<><header className="pr-heading"><PullRequestBadge pr={checks?.pr??pr}/><h1>{checks?.pr?.title??pr.title}</h1><p className="pr-byline">{pr.author??'Unknown author'}</p></header>
+            {pr.stack.state==='published'&&<section className="stack-section" aria-label="Pull request stack"><GitBranch size={16}/><div><span>Stack #{pr.stack.number}</span><ol reversed>{[...pr.stack.members].reverse().map(member=><li key={member.number}><button aria-current={member.number===pr.number?'page':undefined} onClick={()=>void select(pr.repo,member.number)}>#{member.number} {member.title}</button></li>)}</ol></div></section>}
+            {checks?.head&&checks.head!==pr.head&&<p className="state-banner">This pull request has new changes. <button onClick={()=>void select(pr.repo,pr.number)}>Update overview</button></p>}
+            <div className="tabs" role="tablist" aria-label="Reader">{(['overview','changes','conversation','checks'] as const).map(item=><button key={item} role="tab" aria-selected={tab===item} id={`${item}-tab`} aria-controls={item} onClick={()=>{if(item!=='changes'&&item!=='conversation')setDestination(null);setTab(item);}} onKeyDown={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const tabs=['overview','changes','conversation','checks'] as const;const next=e.key==='Home'?tabs[0]:e.key==='End'?tabs[3]:tabs[(tabs.indexOf(tab)+(e.key==='ArrowRight'?1:3))%4];if(next!=='changes'&&next!=='conversation')setDestination(null);setTab(next);document.getElementById(`${next}-tab`)?.focus();}}} tabIndex={tab===item?0:-1}>{item==='overview'?<FileText size={14}/>:item==='changes'?<FileDiff size={14}/>:item==='conversation'?<MessageSquare size={14}/>:<CircleCheck size={14}/>} {item==='overview'?'Overview':item==='changes'?'Changes':item==='conversation'?'Conversation':'Checks'}</button>)}</div>
+            {tab==='overview'?<section className="overview" id="overview" tabIndex={0} role="tabpanel" aria-labelledby="overview-tab">{pr.bodyLimited?<p>This description is too long to preview. View it on GitHub.</p>:<Markdown baseUrl={pr.url}>{pr.body||'No description.'}</Markdown>}</section>:tab==='changes'?<Changes key={`${pr.repo}:${pr.number}`} pr={pr} currentHead={checks?.head??pr.head} destination={destination?.id.slice(`github.com:${pr.repo}:${pr.number}:`.length)} onBack={backToList} onBrowse={browseConversation} paged={status?.settings.pagedChanges??false} revision={status?.revision??0} onMode={paged=>void action('set_changes_mode',{paged})}/>:tab==='conversation'?<Conversation key={`${pr.repo}:${pr.number}:${pr.head}:${destination?.id??'ordinary'}`} destination={destination?.id.startsWith(`github.com:${pr.repo}:${pr.number}:`)?destination.id.slice(`github.com:${pr.repo}:${pr.number}:`.length):undefined} onBack={backToList} onBrowse={browseConversation} pr={pr} currentHead={checks?.head??pr.head} revision={status?.revision??0}/>:<CheckReader revision={status?.revision??0} repo={pr.repo} number={pr.number} checks={checks} offset={checkOffset} setOffset={setCheckOffset}/>}
+
+          </>:<div className="empty">{detail?.error?'This PR is unavailable.':'Loading pull request…'}</div>}
+        </>:<div className="empty reader-empty"><GitPullRequest size={36}/><h1>Select a pull request</h1></div>}
       </article>
     </main>
-    {preferences&&<Preferences status={status} close={()=>setPreferences(false)} action={action}/>}
+    {status&&!status.settings.alerts?.onboarded&&<NotificationOnboarding settings={status.settings.alerts} action={action}/>}
+    {notificationRecord&&!status?.locked&&<ActivityDestination key={notificationRecord.id} record={notificationRecord} close={()=>setNotificationRecord(null)} report={setError}/>}
+    {queryEditor&&<QueryEditor query={editingQuery} close={()=>setQueryEditor(false)} onSaved={q=>{setQueryEditor(false);chooseQuery(q);requestAnimationFrame(()=>document.querySelector<HTMLElement>('[aria-label="Saved query results"]')?.focus());void load();}} onDeleted={()=>{setQueryEditor(false);setQuery(null);setView('mine');void load();}}/>}
+    {preferences&&<Preferences textSize={textSize} status={status} error={error} close={()=>{setPreferences(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>('button[title="Preferences"]')?.focus());}} action={action}/>}
   </div>;
 }
-function ActivityReader({locked,revision,report,health}:{locked:boolean;revision:number;report:(s:string)=>void;health?:string}){
+function NotificationOnboarding({settings,action}:{settings:import('./api').AlertSettings;action:(name:string,args?:Record<string,unknown>)=>Promise<void>}){
+ const dialog=useRef<HTMLDialogElement>(null);useEffect(()=>{dialog.current?.showModal();},[]);
+ return <dialog ref={dialog} className="dialog" aria-label="Enable notifications" onCancel={e=>{e.preventDefault();void action('set_alert_choices',{choices:{enabled:false,previews:false,categories:[true,true,true,true,true]}});}}><NotificationControls settings={settings} action={action} onboarding/></dialog>;
+}
+function ActivityReader({locked,revision,report,health,open,notificationUnavailable}:{notificationUnavailable?:boolean;locked:boolean;revision:number;report:(s:string)=>void;health?:string;open:(a:ActivityRecord)=>void}){
+  const region=useRef<HTMLElement>(null);
   const [offset,setOffset]=useState(0),[page,setPage]=useState<ActivityPage|null>(null),[opened,setOpened]=useState<ActivityRecord|null>(null);
   useEffect(()=>{let active=true;if(locked){setPage(null);setOpened(null);return;}
     void command<ActivityPage>('activity_page',{offset}).then(p=>{if(active&&p.revision>=revision){setPage(p);setOpened(current=>current?(p.items.find(a=>a.id===current.id)??null):null);}}).catch(e=>{if(active)report(String(e));});return()=>{active=false;};
   },[offset,revision,locked,report]);
-  return <section className="stack-navigator" aria-label="Personal activity"><div className="list-heading"><h1>Activity</h1></div>
-    {health&&<p className="state-banner" role="status">{health}</p>}
-    <p className="list-subhead">{page?.baseline?'Historical baseline established':'Historical baseline pending'}{page?.recovery?` · Recovery incomplete · ${page.pending} PRs pending`:''}</p>
-    <p className="reader-note">Records expire after 90 days, including unseen items. Native alerts and external-suite retry activity are unavailable in this build.</p>
-    {page?.error&&<p className="state-banner" role="status">{page.error}</p>}
-    <button disabled={!page?.items.length} onClick={()=>{const ids=page?.items.map(a=>a.id)??[];void command('activity_seen',{ids}).catch(e=>report(String(e)));}}>Mark loaded page seen</button>
-    <p className="reader-note">Applies to these {page?.items.length??0} loaded records only.</p>
-    <div className="pr-list">{page?.items.map(a=><button key={a.id} className="stack-node" onClick={()=>setOpened(a)}><span className="node-meta">{a.repo} · #{a.number} · {a.seen?'Seen':'Unseen'}</span><strong>{a.kind} · {a.actor??'Actor unavailable'}</strong><span className="node-meta">{new Date(a.occurred*1000).toLocaleString()} · {a.eligible?'Alert eligible':a.reason}</span></button>)}</div>
-    {!page?.items.length&&<p className="empty">{locked?'Original identity validation required.':page?.baseline?'No retained personal activity.':'Waiting for complete source hydration.'}</p>}
-    <div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous</button><button disabled={page?.nextOffset==null} onClick={()=>setOffset(page?.nextOffset??0)}>Next</button></div>
+  return <section ref={region} className="stack-navigator" tabIndex={-1} aria-label="Personal activity"><div className="list-heading"><div><h1>Activity</h1></div><Activity size={17}/></div>
+    {notificationUnavailable&&!locked&&<p className="state-banner" role="status">This notification is no longer available. You can still browse Activity.</p>}
+    {page?.recovery&&<p className="list-subhead" role="status">Some recent activity is still loading…</p>}
+    {health&&<p className="state-banner" role="status">{friendlyError(health)}</p>}
+    {page?.error&&<p className="state-banner" role="status">{friendlyError(page.error,'Couldn’t update Activity. Try again shortly.')}</p>}
+    <button disabled={!page?.items.length} onClick={()=>{const ids=page?.items.map(a=>a.id)??[];void command('activity_seen',{ids}).catch(e=>report(String(e)));}}>Mark page as read</button>
+
+    <div className="pr-list">{page?.items.map(a=><button key={a.id} id={`activity-${a.id}`} className="stack-node" onClick={()=>{if(['comment','review','mention'].includes(a.kind))open(a);else setOpened(a);}}><span className="node-meta">{a.repo} · #{a.number} · {a.seen?'Read':'Unread'}</span><strong>{activityLabel(a.kind)} · {a.actor??'Unknown author'}</strong><span className="node-meta">{new Date(a.occurred*1000).toLocaleString()}</span></button>)}</div>
+    {!page?.items.length&&<p className="empty">{locked?'Check your GitHub connection in Preferences.':page?.baseline?'You’re all caught up.':'Loading activity…'}</p>}
+    <div className="pagination"><button disabled={offset===0} onClick={()=>{setOffset(Math.max(0,offset-100));region.current?.focus();}}>Previous</button><button disabled={page?.nextOffset==null} onClick={()=>{setOffset(page?.nextOffset??0);region.current?.focus();}}>Next</button></div>
     {opened&&!locked&&<ActivityDestination key={opened.id} record={opened} close={()=>setOpened(null)} report={report}/>}
   </section>;
 }
@@ -127,47 +185,38 @@ function ActivityDestination({record,close,report}:{record:ActivityRecord;close:
   useEffect(()=>{dialog.current?.showModal();
     // This effect runs after this explicitly opened source destination has committed to the DOM.
     // An evicted/unavailable payload is not a successful source render.
-    if(record.text!==null)void command('activity_seen',{ids:[record.id]}).catch(e=>report(String(e)));
+    if(record.text!==null)void command('activity_rendered',{id:record.id,text:record.text}).catch(e=>report(String(e)));
   },[record.id,record.text,report]);
-  return <dialog ref={dialog} onClose={close} className="dialog"><div className="dialog-header"><h2>{record.kind}</h2><button onClick={()=>dialog.current?.close()} aria-label="Close activity">×</button></div><p>{record.repo} · #{record.number} · {record.actor??'Actor unavailable'}</p>{record.text!==null?<pre className="description">{record.text||'No text supplied by this source record.'}</pre>:<p className="state-banner">Source text is unavailable or exceeds the local preview limit. This item remains unseen.</p>}{record.head&&<p className="reader-note">Source head: <code>{record.head}</code></p>}<p className="reader-note">{new Date(record.occurred*1000).toLocaleString()}</p></dialog>;
+  return <dialog ref={dialog} onClose={close} aria-labelledby="activity-title" className="dialog"><div className="dialog-header"><h2 id="activity-title">{activityLabel(record.kind)}</h2><button onClick={()=>dialog.current?.close()} aria-label="Close activity"><X size={17}/></button></div><p>{record.repo} · #{record.number} · {record.actor??'Unknown author'}</p>{record.text!==null?<div tabIndex={0} role="region" aria-label="Activity source body"><Markdown baseUrl={`https://github.com/${record.repo}/pull/${record.number}`}>{record.text||'No additional details.'}</Markdown></div>:<p className="state-banner">This update can’t be previewed. Open the pull request on GitHub to see it.</p>}<p className="reader-note">{new Date(record.occurred*1000).toLocaleString()}</p></dialog>;
 }
-function CheckReader({checks,offset,setOffset}:{checks:CheckPage|null;offset:number;setOffset:(n:number)=>void}){
-  return <section id="checks" className="overview" role="tabpanel" aria-labelledby="checks-tab"><h2>Head checks</h2>{checks?.error&&<p className="state-banner">{checks.error} · cached results remain labeled by revision.</p>}<p className="dialog-note">{checks?.head??'Head snapshot pending'} · review {checks?.review??'unknown'}</p>
-    {checks?.commits.map(c=><p className="dialog-note" key={c.resource}>{c.resource.slice(0,10)} · {c.complete?'Complete cached contexts':'Incomplete contexts'} · {c.fetchedAt?new Date(c.fetchedAt*1000).toLocaleTimeString():'Not synced'} {c.error??''}</p>)}
-    {!checks?.items.length&&<p className="dialog-note">{checks?.commits.length&&checks.commits.every(c=>c.complete)?'No supplied check contexts. This does not infer a workflow completion.':'Check reconciliation pending.'}</p>}
-    {checks?.items.map(c=><div className="check-row" key={`${c.commit}:${c.id}`}><strong>{c.name}</strong><span>{c.conclusion??c.status}</span><small>{c.kind==='CheckRun'?'Check run':'Legacy status'} · {c.commit.slice(0,10)}{c.runId?` · run ${c.runId} · attempt ${c.attempt??'unknown'}`:''}</small></div>)}
-    <div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous checks</button><span>{checks?.items.length?offset+1:0}–{offset+(checks?.items.length??0)} loaded</span><button disabled={checks?.nextOffset==null} onClick={()=>setOffset(checks?.nextOffset??0)}>Next checks</button></div>
-  </section>;
-}
-function WatchInspector({revision}:{revision:number}){
-  const [offset,setOffset]=useState(0),[page,setPage]=useState<WatchPage|null>(null);
-  useEffect(()=>{let active=true;void command<WatchPage>('watch_page',{offset}).then(p=>{if(active)setPage(p);}).catch(()=>{if(active)setPage(null);});return()=>{active=false;};},[offset,revision]);
-  return <details><summary>Active watch reasons and freshness</summary>{page?.items.map(w=><p className="dialog-note" key={w.id}>{w.repo} #{w.number} · {w.reasons.map(s=>s.startsWith('team:')?'team request':s).join(', ')} · {w.refreshedAt?new Date(w.refreshedAt*1000).toLocaleTimeString():'Not refreshed'} {w.error??''}</p>)}<div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous watches</button><button disabled={page?.nextOffset==null} onClick={()=>setOffset(page?.nextOffset??0)}>Next watches</button></div></details>;
-}
-function Preferences({status,close,action}:{status:Status|null;close:()=>void;action:(name:string,args?:Record<string,unknown>)=>Promise<void>}){
+function Preferences({status,close,action,textSize,error}:{error?:string;textSize:{size:number;setSize:(size:number)=>void};status:Status|null;close:()=>void;action:(name:string,args?:Record<string,unknown>)=>Promise<void>}){
   const dialog=useRef<HTMLDialogElement>(null);
   useEffect(()=>{dialog.current?.showModal();},[]);
-  const theme=status?.settings.theme??presets.dark;
-  return <dialog ref={dialog} onClose={close} className="dialog"><div className="dialog-header"><h2>Preferences</h2><button onClick={()=>dialog.current?.close()} aria-label="Close preferences">×</button></div>
-    <h3>Appearance</h3><div className="theme-presets">{(['dark','light'] as const).map(mode=><button key={mode} aria-pressed={theme.mode===mode} onClick={()=>void action('set_theme',{theme:presets[mode]})}>{mode==='dark'?'Carbon · dark':'Parchment · light'}</button>)}</div>
-    {(['canvas','surface','accent','ink'] as const).map(key=><label className="color-field" key={key}>{({canvas:'Background',surface:'Surface',accent:'Accent',ink:'Text'})[key]}<input type="color" value={theme[key]} onChange={e=>void action('set_theme',{theme:{...theme,[key]:e.target.value} satisfies Theme})}/><code>{theme[key]}</code></label>)}
-    <h3>Monitoring</h3><p className="dialog-note">{status?.watchCount??0} active watches · {status?.delayedWatches??0} delayed. Discovery targets 60 seconds; head/check eligibility targets 10 seconds. Activity hydrates individual comments, reviews, requests and mentions; native alerts are unavailable.</p>
-    {status?.discovery.map(h=><p key={h.resource} className="dialog-note">{h.resource==='authored'?'Authored':h.resource==='direct'?'Direct requests':h.resource==='teams'?'Team membership':'Team requests'}: {h.complete?'Complete cached set':'Reconciliation pending'} · {h.fetchedAt?new Date(h.fetchedAt*1000).toLocaleTimeString():'Not synced'} {h.error??''}</p>)}
-    {status?.discoveryMore&&<p className="dialog-note">Showing the first 100 source statuses.</p>}
-    {status?.budgets.map(b=><p key={b.resource} className="dialog-note">{b.resource}: {b.requests} requests · {b.payloadBytes} bytes · {b.cost} points · {b.remaining} remaining {b.blockedUntil>Date.now()/1000?`· delayed until ${new Date(b.blockedUntil*1000).toLocaleTimeString()}`:''}</p>)}
-    <WatchInspector revision={status?.revision??0}/>
-    <h3>Stored gh context</h3><p className="dialog-note">{status?.ghVersion??'CLI not validated'} · {status?.identity?`github.com / ${status.identity.login} / ${status.identity.id}`:'Identity not validated'}</p>
+  const [section,setSection]=useState<'Appearance'|'Updates'|'GitHub'|'Storage'>('Appearance');
+  const theme=presets[status?.settings.theme.mode??'dark'];
+  return <dialog ref={dialog} onClose={close} aria-labelledby="preferences-title" className="dialog"><div className="dialog-header"><h2 id="preferences-title">Preferences</h2><button onClick={()=>dialog.current?.close()} aria-label="Close preferences"><X size={17}/></button></div>
+    <div className="settings-tabs" role="group" aria-label="Preferences sections">{(['Appearance','Updates','GitHub','Storage'] as const).map(item=><button key={item} aria-pressed={section===item} onClick={()=>setSection(item)}>{item}</button>)}</div>
+    {error&&<p className="state-banner" role="alert">{friendlyError(error)}</p>}
+    <section aria-label={section}>
+    {section==='Appearance'&&<><div className="theme-presets">{(['dark','light'] as const).map(mode=><button key={mode} aria-pressed={theme.mode===mode} onClick={()=>void action('set_theme',{theme:presets[mode]})}><span className={`theme-preview ${mode}`} aria-hidden="true"/><span className="theme-caption">{mode==='dark'?'Graphite':'Paper'}{theme.mode===mode?' · selected':''}</span></button>)}</div><Dropdown label="Reader text size" value={textSize.size} options={textSizes.map(size=>({value:size,label:`${size}%`}))} onChange={textSize.setSize}/><p className="dialog-note">⌘ + / − changes text size; ⌘ 0 resets it.</p></>}
+    {section==='Updates'&&<>
+    <LoginSettings/>
+    {(status?.settings.paused||status?.storageStopped)&&<p className="dialog-note">{status.settings.paused?'Updates are paused. Resume them from the sidebar.':'Updates are paused until storage is available.'}</p>}
+    {status&&<NotificationControls settings={status.settings.alerts} action={action}/>}
+    </>}
+    {section==='GitHub'&&<><p className="dialog-note">{status?.identity?(status.locked?`Check the connection for ${status.identity.login} to see your pull requests.`:`Connected as ${status.identity.login}`):'Connect your GitHub account to see your pull requests.'}</p>
     <form key={`${status?.ghPath}:${status?.configDir}`} onSubmit={e=>{e.preventDefault();const f=new FormData(e.currentTarget);void action('configure_gh',{path:String(f.get('path')),config:String(f.get('config'))});}}>
-      <label>Executable<input name="path" defaultValue={status?.ghPath??'/opt/homebrew/bin/gh'} required/></label><label>Configuration directory<input name="config" defaultValue={status?.configDir??''} required/></label><button type="submit">Validate original identity</button>
+      <details><summary>Connection settings</summary><label>GitHub command location<input name="path" defaultValue={status?.ghPath??'/opt/homebrew/bin/gh'} required/></label><label>Settings folder<input name="config" defaultValue={status?.configDir??''} required/></label></details><button type="submit">Check connection</button>
     </form>
-    <p className="dialog-note">GitJuke uses stored authentication. It never logs in, switches accounts or changes scopes. {status?.ignoredOverrides.length?`Ignored environment overrides: ${status.ignoredOverrides.join(', ')}.`:''}</p>
-    <h3>Local storage</h3>
-    {status&&<><p className="dialog-note">{(status.storage.managedBytes/1048576).toFixed(1)} MiB database and sidecars · {(status.storage.disposableBytes/1048576).toFixed(1)} / {status.storage.contentLimitBytes/1048576} MiB disposable content</p>
-      <p className="dialog-note">Database {(status.storage.databaseBytes/1048576).toFixed(1)} MiB · WAL {(status.storage.walBytes/1048576).toFixed(1)} MiB · shared memory and journal {((status.storage.sharedMemoryBytes+status.storage.journalBytes)/1048576).toFixed(1)} MiB</p>
-      {status.storage.warning&&<p role="status" className="state-banner">Local storage has reached {status.storage.warningAtBytes/1073741824} GiB. Durable history grows over time; clearing downloads preserves its replay prevention records.</p>}
-      {status.storageStopped&&<p role="status" className="state-banner">Storage protection stops remote reads and alerts. Cached reading remains available after identity validation. Local changes require a successful write; repair is checked each minute.</p>}</>}
-    <p className="dialog-note">File sizes cover the database, staged data and named SQLite sidecars. Transient SQLite sort files are not yet measured. Clearing downloads preserves identity, settings, Pause and durable history. It cannot erase growing identity, seen or delivery ledgers.</p><button onClick={()=>void action('clear_downloads')}>Clear downloaded content</button>
-    <p className="dialog-note">GitJuke 0.1.0 development · macOS 15+ / Apple Silicon target. Native alerts and launch at login are not available in this slice; no login registration or permission prompt occurs.</p>
+    </>}
+    {section==='Storage'&&<>
+    {status&&<><p className="dialog-note">Downloaded content: {(status.storage.disposableBytes/1000000).toFixed(1)} MB</p>
+      {status.storage.warning&&<p role="status" className="state-banner">Storage is running low. Clear downloaded content or free up space on your Mac.</p>}
+      {status.storageStopped&&<p role="status" className="state-banner">Updates and notifications are paused until storage is available. You can still read previously downloaded pull requests.</p>}</>}
+    <p className="dialog-note">Your account, preferences and read history will be kept.</p><button onClick={()=>void action('clear_downloads')}>Clear downloaded content</button>
+    </>}
+    </section>
   </dialog>;
 }
-createRoot(document.getElementById('root')!).render(<App/>);
+const container=document.getElementById('root');
+if(container)createRoot(container).render(<Startup><App/></Startup>);

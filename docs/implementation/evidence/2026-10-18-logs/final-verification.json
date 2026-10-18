@@ -1,0 +1,13 @@
+{
+  "automated_passing_entries": 73,
+  "live_test_ignored": 1,
+  "critical_log_backend_and_component_hashes_match_native_artifact_record": true,
+  "concurrent_main_tsx_integration_recorded_separately": true,
+  "integrated_frontend_pass": 28,
+  "integrated_build_pass": true,
+  "owned_rust_format_check_pass": true,
+  "late_workspace_formatting": "Independent alert additions flagged; see formatting.log. Not a log-source formatting failure.",
+  "native_bundle_hash_matches": true,
+  "storage_snapshot_checks_pass": true,
+  "grouped_release_scenarios_promoted": 0
+}

@@ -1,0 +1,108 @@
+Window: "GitJuke", App: GitJuke.
+0 standard window GitJuke, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container
+				4 text gitjuke.
+				5 container Primary
+					6 button My PRs
+					7 button Review requests
+					8 button Activity
+				9 text Watches + head/check snapshots Personal activity · alerts unavailable
+				10 button Preferences
+				11 text HM hmrguez GitHub.com
+				12 button Monitoring 0 watches · 0 delayed
+			13 container
+				14 container Personal activity
+					15 heading Activity, Value: 1
+						16 text Activity
+					17 text Historical baseline established · Recovery incomplete · 5 PRs pending
+					18 text Records expire after 90 days, including unseen items. Native alerts and external-suite retry activity are unavailable in this build.
+					19 text gh failed; response was not committed.
+					20 button Mark loaded page seen
+					21 text Applies to these 18 loaded records only.
+					22 button hmrguez/FantasyEditor · #5 · Seen comment · vercel[bot] 09/08/2026, 15:57:41 · routine bot comment
+					23 button hmrguez/FantasyEditor · #4 · Seen review · greptile-apps[bot] 09/08/2026, 12:38:12 · Alert eligible
+					24 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					25 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					26 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					27 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					28 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:08 · routine bot comment
+					29 button hmrguez/FantasyEditor · #4 · Seen comment · hmrguez 09/08/2026, 12:34:32 · own action
+					30 button hmrguez/FantasyEditor · #4 · Seen comment · vercel[bot] 09/08/2026, 12:34:24 · routine bot comment
+					31 button hmrguez/FantasyEditor · #3 · Seen comment · vercel[bot] 02/08/2026, 13:46:22 · routine bot comment
+					32 button hmrguez/FantasyEditor · #2 · Seen comment · greptile-apps[bot] 01/08/2026, 01:53:58 · routine bot comment
+					33 button hmrguez/FantasyEditor · #2 · Seen comment · hmrguez 01/08/2026, 01:52:58 · own action
+					34 button hmrguez/FantasyEditor · #2 · Seen comment · vercel[bot] 01/08/2026, 01:49:58 · routine bot comment
+					35 button hmrguez/FantasyEditor · #1 · Seen comment · hmrguez 01/08/2026, 01:40:09 · own action
+					36 button hmrguez/FantasyEditor · #1 · Seen review · greptile-apps[bot] 01/08/2026, 01:30:40 · Alert eligible
+					37 button hmrguez/FantasyEditor · #1 · Seen comment · greptile-apps[bot] 01/08/2026, 01:30:39 · routine bot comment
+					38 button hmrguez/FantasyEditor · #1 · Seen comment · greptile-apps[bot] 01/08/2026, 01:30:27 · routine bot comment
+					39 button hmrguez/FantasyEditor · #1 · Seen comment · vercel[bot] 01/08/2026, 01:26:08 · routine bot comment
+					40 button (disabled) Previous
+					41 button (disabled) Next
+				42 container Pull request reader
+					43 text hmrguez/FantasyEditor / #4
+					44 button Open in GitHub
+					45 container
+						46 text merged
+						47 heading codex/ai-project-import, Value: 1
+							48 text codex/ai-project-import
+						49 text hmrguez · staging · head 2fefba2b95
+					50 container Published native stack
+						51 text Confirmed: this PR has no published native stack.
+					52 tab group (selectable) Reader
+						53 tab (selectable) Overview
+						54 tab (selectable) Changes
+						55 tab (selected) Conversation
+						56 tab (selectable) Checks
+					57 container Conversation
+						58 text CONVERSATION
+						59 container
+							60 text Head 2fefba2b95 · safe plain text
+						61 button Refresh conversation
+						62 container Conversation sources
+							63 toggle button Comments, Value: on
+							64 toggle button Reviews, Value: off
+							65 toggle button Review threads, Value: off
+						66 text 3 loaded / 3 known · complete source
+						67 text Each source keeps its own pages and GitHub order. Replies replace this panel, up to 50 per page. Ordinary source navigation leaves Activity unseen.
+						68 container comments by vercel
+							69 container
+								70 text vercel comments 2026-08-09T10:34:24Z
+							71 text Escaped plain-text fallback · 2025 UTF-8 bytes
+							72 container Message body
+								73 text [vc]: #qcoC6HfSsLcFU52kYIT8/j5LyUWQg1ggFM9GP2JruZE=:eyJpc01vbm9yZXBvIjp0cnVlLCJ0eXBlIjoiZ2l0aHViIiwicHJvamVjdHMiOlt7Im5hbWUiOiJxdWlidSIsInByb2plY3RJZCI6InByal9HUk9ZVWFYTmw2UDE2a1AzTnlKaDFyUUFmR2JlIiwibGl2ZUZlZWRiYWNrIjp7InJlc29sdmVkIjowLCJ1bnJlc29sdmVkIjowLCJ0b3RhbCI6MCwibGluayI6InF1aWJ1LWdpdC1jb2RleC1haS1wcm9qZWN0LWltcG9ydC1obXJndWV6cy1wcm9qZWN0cy52ZXJjZWwuYXBwIn0sImluc3BlY3RvclVybCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9obXJndWV6cy1wcm9qZWN0cy9xdWlidS9CQVBiWkg3WnhaclNudnBBYnp3eUh2Nm8zVGNqIiwicHJldmlld1VybCI6InF1aWJ1
+							74 button Open source in GitHub
+						75 container comments by hmrguez
+							76 container
+								77 text hmrguez comments 2026-08-09T10:34:32Z
+							78 text Escaped plain-text fallback · 11 UTF-8 bytes
+							79 container Message body
+								80 text @greptileai
+							81 button Open source in GitHub
+						82 container comments by greptile-apps
+							83 container
+								84 text greptile-apps comments 2026-08-09T10:38:08Z
+							85 text Escaped plain-text fallback · 7315 UTF-8 bytes
+							86 container Message body
+								87 text <h3>Greptile Summary</h3>
+
+The PR adds an end-to-end AI-assisted project import system spanning desktop file selection/application, authenticated web APIs, storage and database persistence, import analysis/rendering workflows, and supporting UI and cloud-sync changes.
+- Adds desktop import selection, upload, progress, approval, and atomic local application flows.
+- Adds project-import schemas, repositories, storage artifacts, API routes, workflow steps, quotas, and AI usage accounting.
+- Extends project thu
+							88 button Open source in GitHub
+						89 button (disabled) Previous page
+						90 text First page
+						91 button (disabled) First page
+						92 button (disabled) Next page
+					93 text Cached 18/10/2026, 12:25:18 · revision 1806
+	94 close button
+	95 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	96 minimize button
+	97 text GitJuke
+98 menu bar
+	99 GitJuke
+
+The focused UI element is 57 container Conversation

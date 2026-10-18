@@ -1,0 +1,44 @@
+Diff in /Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core/src/lib.rs:1:
+ pub mod activity;
+[31m-pub mod alerts;
+(B[m[31m-mod runtime_alerts;
+(B[m #[cfg(test)]
+ mod activity_crash;
+ mod activity_due;
+Diff in /Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core/src/lib.rs:7:
+ mod activity_enrollment;
+ mod activity_store;
+ mod admission_query;
+[32m+pub mod alerts;
+(B[m pub mod changes;
+ mod changes_store;
+ mod check_purge;
+Diff in /Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core/src/lib.rs:27:
+ mod retention_window;
+ pub mod runtime;
+ mod runtime_activity;
+[32m+mod runtime_alerts;
+(B[m mod runtime_changes;
+ mod runtime_sync;
+ mod source_cleanup;
+Diff in /Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core/src/transport.rs:43:
+ }
+ 
+ pub enum ReadOp {
+[31m-    WorkflowRun {repo:String,run:u64},
+(B[m[32m+    WorkflowRun {
+(B[m[32m+        repo: String,
+(B[m[32m+        run: u64,
+(B[m[32m+    },
+(B[m     ActionCheck {
+         repo: String,
+         check: u64,
+Diff in /Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core/src/transport.rs:153:
+                 .to_vec();
+             }
+             Self::Identity => vec!["user".into()],
+[31m-            Self::WorkflowRun{repo,run}=>vec![format!("repos/{repo}/actions/runs/{run}")],
+(B[m[32m+            Self::WorkflowRun { repo, run } => vec![format!("repos/{repo}/actions/runs/{run}")],
+(B[m             Self::Authored { login, page } => vec![format!(
+                 "search/issues?q=is%3Apr%20is%3Aopen%20author%3A{}&per_page=100&page={page}",
+                 encode(&login)

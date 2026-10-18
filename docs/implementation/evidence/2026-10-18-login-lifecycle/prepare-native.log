@@ -1,0 +1,4 @@
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-login-lifecycle/crates/gitjuke-core)
+    Finished `dev` profile [unoptimized] target(s) in 31.45s
+     Running `/private/tmp/gitjuke-lifecycle-core-target/debug/examples/lifecycle_qualification '/Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.lifecycle-qualification'`
+Prepared isolated paused lifecycle state; no gh or remote reads.

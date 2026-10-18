@@ -1,0 +1,24 @@
+{
+  "original_npm_test": {
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exit_code": 101,
+    "library_reported_seconds": 275.58,
+    "passed": 222,
+    "failed": 3,
+    "note": "Failed library suite; Cargo did not proceed to integration/doc tests. Not a passing full-suite benchmark."
+  },
+  "bun_pr_purge_reproduction": {
+    "command": [
+      "bun",
+      "run",
+      "test:rust",
+      "--",
+      "pr_purge::tests"
+    ],
+    "wall_seconds": 1.1614579169545323,
+    "exit_code": 101
+  }
+}

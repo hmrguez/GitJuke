@@ -1,0 +1,13 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.73s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 5 tests
+test denial_identity_and_selected_pr_barriers ... ok
+test cancellation_clear_and_stale_revision_never_publish ... ok
+test explicit_seen_receipts_reject_changed_body_clear_and_placeholders ... ok
+test independent_pages_thread_replies_and_ipc_subdivision ... ok
+test replacement_ticket_and_moving_comparison_reject_late_results ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.17s
+

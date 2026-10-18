@@ -1,0 +1,11 @@
+{
+  "artifact": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app",
+  "kind": "unsigned debug development app",
+  "bytes": 35092632,
+  "sha256": "6149c41b8d3f00feedbc485d9b85384eb9ae4cfc7b4c102a9a01ddd211bd665b",
+  "architecture": "target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428",
+  "test_control_names_checked": 68,
+  "test_controls_found": [],
+  "synthetic_gh_fixture_in_binary": false
+}

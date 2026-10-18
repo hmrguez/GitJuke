@@ -1,0 +1,30 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling libsqlite3-sys v0.36.0
+   Compiling rusqlite v0.38.0
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/crates/gitjuke-core)
+warning: variable does not need to be mutable
+   --> crates/gitjuke-core/src/runtime.rs:736:19
+    |
+736 |         if let Ok(mut i) = self.lock() {
+    |                   ----^
+    |                   |
+    |                   help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `gitjuke-core` (lib test) generated 1 warning (run `cargo fix --lib -p gitjuke-core --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.54s
+     Running unittests src/lib.rs (/Users/hmrguez/Programming/Personal/GitJuke/target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 8 tests
+test content_budget::admission_tests::full_ceiling_many_victims_publish_atomically_and_survive_restart ... ok
+test content_budget::admission_tests::sigkill_full_ceiling_reclamation_and_publication_keep_only_committed_state ... ok
+test content_capacity::full_ceiling_late_delete_fault_restores_payloads_completeness_and_revision ... ok
+test content_capacity::full_ceiling_mixed_lru_is_inclusive_disk_backed_and_survives_restart ... ok
+test content_capacity::full_ceiling_non_evictable_staging_refuses_real_activity_ingestion_atomically ... ok
+test content_capacity::full_ceiling_sigkill_keeps_atomic_candidate_after_bounded_reclamation ... ok
+test runtime::tests::full_ceiling_bounded_admission_fault_protects_and_repairs_without_partial_registration ... ok
+test runtime::tests::full_ceiling_worker_publication_fault_stops_reads_and_repairs_while_paused ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 222 filtered out; finished in 240.69s
+

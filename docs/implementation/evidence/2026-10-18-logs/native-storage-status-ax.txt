@@ -1,0 +1,7 @@
+The following is a diff from the previous accessibility tree for Window: "GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 20-21
++					68 container (expanded) Secondary Actions: Collapse
++						69 summary Sync status, Value: on
++							70 text Sync status
++						71 text Storage recovered; reconciling activity before completing catch-up.
+The focused UI element is 69 summary Sync status, Value: on

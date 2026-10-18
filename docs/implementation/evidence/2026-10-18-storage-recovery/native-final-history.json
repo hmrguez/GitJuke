@@ -1,0 +1,16 @@
+{
+  "sameDurableRows": true,
+  "tables": [
+    "identity",
+    "settings",
+    "seen",
+    "dedup",
+    "due",
+    "activity_intent",
+    "intent_member",
+    "alert_attempt"
+  ],
+  "integrity": "ok",
+  "appStopped": true,
+  "finalArtifactReplay": true
+}

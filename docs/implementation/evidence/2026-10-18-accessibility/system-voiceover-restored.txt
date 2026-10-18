@@ -1,0 +1,2 @@
+The following is a diff from the previous accessibility tree for Window: "VoiceOver" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~			58 switch To toggle VoiceOver, quickly press Touch ID three times while holding the Command key., Value: off, ID: AX_VOICEOVER_ENABLED

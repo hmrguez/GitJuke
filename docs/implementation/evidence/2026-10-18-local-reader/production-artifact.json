@@ -1,0 +1,7 @@
+{
+  "artifact": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app",
+  "identifier": "dev.hmrguez.gitjuke",
+  "binarySha256": "6dff213b8e0e6e9143908a88650945653276e1a9fac819982a9a8b4600c15408",
+  "syntheticFixtureFallback": false,
+  "nativeLaunchThisSlice": false
+}

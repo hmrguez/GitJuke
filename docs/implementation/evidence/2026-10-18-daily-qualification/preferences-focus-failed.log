@@ -1,0 +1,26 @@
+bun test v1.4.2 (744846f84)
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [119.10ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [53.38ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [141.12ms]
+(pass) a later summary/unavailable route releases a previously opened check destination [1155.45ms]
+73 |   r.host.querySelector<HTMLButtonElement>('nav button[title="Activity"]')!.focus();
+74 |   await act(async()=>opener.click());
+75 |   const dialog=r.host.querySelector<HTMLDialogElement>('dialog[open]')!;
+76 |   expect(Boolean(dialog)).toBe(true);
+77 |   await act(async()=>{dialog.close();await new Promise(resolve=>setTimeout(resolve,20));});
+78 |   expect(document.activeElement===opener).toBe(true);
+                                               ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/integrated-routing.test.tsx:78:43)
+(fail) Preferences close restores its opener when native activation did not move focus [78.33ms]
+
+ 4 pass
+ 1 fail
+ 21 expect() calls
+Ran 5 tests across 1 file. [1.67s]

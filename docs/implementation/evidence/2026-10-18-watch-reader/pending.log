@@ -1,0 +1,16 @@
+$ cargo test -p gitjuke-core --lib --offline pending_selection::tests -- --skip sigkill
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 8 tests
+test pending_selection::tests::crash_child_entry ... ok
+test pending_selection::tests::exact_deadlines_pause_resources_integer_priority_and_signed_sequences_match_oracle ... ok
+test pending_selection::tests::selected_descriptor_decode_error_rolls_back_read_snapshot_and_can_retry ... ok
+test pending_selection::tests::publication_barrier_blocks_queue_selection_while_readers_keep_old_or_new_images ... ok
+test pending_selection::tests::late_candidate_and_descriptor_errors_return_no_partial_queue_and_retry_without_writes ... ok
+test pending_selection::tests::policy_candidates_background_reservation_and_bodies_share_one_snapshot ... ok
+test pending_selection::tests::fairness_page_boundaries_retry_coalescing_and_ack_preserve_exact_remainder ... ok
+test pending_selection::tests::candidate_windows_skip_large_rejected_prefixes_and_match_full_sort_fairness_oracle ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 211 filtered out; finished in 0.73s
+

@@ -1,0 +1,22 @@
+bun test v1.4.2 (744846f84)
+
+scripts/reader-shell.test.tsx:
+32 |   host.querySelector<HTMLElement>('nav button[title="Activity"]')!.focus();
+33 |   await act(async()=>origin.click());await settle();
+34 |   expect(host.textContent).toContain('Exact Activity destination');
+35 |   await act(async()=>[...host.querySelectorAll('button')].find(b=>b.textContent==='Browse Conversation sources')!.click());await settle();
+36 |   await click('.back-to-list');
+37 |   expect(document.activeElement?.id).toBe(`activity-${id}`);
+                                          ^
+error: expect(received).toBe(expected)
+
+Expected: "activity-github.com:a/b:1:target"
+Received: ""
+
+      at <anonymous> (/private/tmp/gitjuke-accessibility/scripts/reader-shell.test.tsx:37:38)
+(fail) Browse releases receipt authority but compact Back restores the exact Activity origin even without mouse focus [156.25ms]
+
+ 0 pass
+ 1 fail
+ 3 expect() calls
+Ran 1 test across 1 file. [291.00ms]

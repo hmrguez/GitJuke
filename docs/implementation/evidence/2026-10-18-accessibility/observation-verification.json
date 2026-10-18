@@ -1,0 +1,8 @@
+{
+  "observationChecks": 63,
+  "freshUiRerun": false,
+  "source": "captured synthetic-local native WebKit/IPC/SQLite",
+  "voiceOver": "unqualified; process did not start during enabled attempt",
+  "performance": "not qualified",
+  "releaseScenariosPromoted": 0
+}

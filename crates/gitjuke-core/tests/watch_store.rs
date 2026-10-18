@@ -32,6 +32,18 @@ fn schema_one_upgrade_preserves_identity_pause_and_watch_reasons() {
     s.publish_source("authored").unwrap();
     drop(s);
     let c = rusqlite::Connection::open(&p).unwrap();
+    let names = c
+        .prepare("SELECT name FROM sqlite_schema WHERE type='trigger' AND name GLOB 'shared_*'")
+        .unwrap()
+        .query_map([], |r| r.get::<_, String>(0))
+        .unwrap()
+        .collect::<rusqlite::Result<Vec<_>>>()
+        .unwrap();
+    for name in names {
+        c.execute_batch(&format!("DROP TRIGGER {name}")).unwrap();
+    }
+    c.execute_batch("DROP TABLE saved_query;DROP TABLE shared_bytes;DROP TABLE shared_check_lru")
+        .unwrap();
     for t in [
         "watch_locator",
         "watch_source",

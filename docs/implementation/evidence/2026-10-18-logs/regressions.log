@@ -1,0 +1,80 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 58s
+     Running tests/activity.rs (/private/tmp/gitjuke-logs-verified/debug/deps/activity-004b9f02f4b15ba8)
+
+running 3 tests
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/changes.rs (/private/tmp/gitjuke-logs-verified/debug/deps/changes-9afeeeedb393d05e)
+
+running 5 tests
+test moving_head_or_base_and_file_order_never_publish_mixed_revisions ... ok
+test cancellation_reaps_obsolete_file_and_late_results_cannot_replace_it ... ok
+test paginated_navigation_selected_only_patch_and_persisted_mode ... ok
+test clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results ... ok
+test metadata_transport_overflow_subdivides_and_large_tier_is_explicit has been running for over 60 seconds
+test metadata_transport_overflow_subdivides_and_large_tier_is_explicit ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 66.61s
+
+     Running tests/conversation.rs (/private/tmp/gitjuke-logs-verified/debug/deps/conversation-6359a5de008b5914)
+
+running 10 tests
+test live_existing_owned_destinations_and_cursor_pages ... ignored, requires authorized stored gh identity and live network
+test local_mixed_identity_fixture_preserves_seen_and_current_range ... ok
+test exact_destination_ownership_missing_cancellation_and_receipt_barriers ... ok
+test denial_identity_and_selected_pr_barriers ... ok
+test cancellation_clear_and_stale_revision_never_publish ... ok
+test independent_pages_thread_replies_and_ipc_subdivision ... ok
+test exact_coordinate_denial_and_edit_cannot_publish_mixed_destination has been running for over 60 seconds
+test exact_destinations_without_excerpts_or_history_scans has been running for over 60 seconds
+test explicit_seen_receipts_reject_changed_body_clear_and_placeholders has been running for over 60 seconds
+test explicit_seen_receipts_reject_changed_body_clear_and_placeholders ... ok
+test exact_destinations_without_excerpts_or_history_scans ... ok
+test exact_coordinate_denial_and_edit_cannot_publish_mixed_destination ... ok
+test replacement_ticket_and_moving_comparison_reject_late_results has been running for over 60 seconds
+test replacement_ticket_and_moving_comparison_reject_late_results ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 79.73s
+
+     Running tests/github.rs (/private/tmp/gitjuke-logs-verified/debug/deps/github-7a31b217d2fcdcbb)
+
+running 6 tests
+test api_error_and_partial_schema_are_not_successful_empty_sets ... ok
+test auth_loss_without_http_headers_is_recognized_without_exposing_diagnostics ... ok
+test auth_json_exit_zero_with_error_is_not_authenticated ... ok
+test read_response_requires_headers_and_never_accepts_cli_failure ... ok
+test server_deadlines_include_numeric_and_http_date_retry_after ... ok
+test stack_unknown_none_and_authoritative_order_are_distinct ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/transport.rs (/private/tmp/gitjuke-logs-verified/debug/deps/transport-4a1f23f4c201912c)
+
+running 5 tests
+test deliberate_environment_no_tokens_or_injection ... ok
+test inclusive_bounds_and_stdin_closed ... ok
+test cancellation_reaps_before_serialized_successor ... ok
+test stdout_and_stderr_overflow_rejected ... ok
+test timeout_kills_helpers_and_next_child_can_start ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.15s
+
+     Running tests/watch_store.rs (/private/tmp/gitjuke-logs-verified/debug/deps/watch_store-93f0dca65ab8ba9b)
+
+running 7 tests
+test budget_deadlines_and_exponential_backoff_survive_restart_and_do_not_cross_primary_buckets ... ok
+test head_reservations_exclude_exact_ids_without_null_or_unrelated_job_poisoning ... ok
+test complete_team_membership_removal_keeps_other_membership_reasons ... ok
+test restarting_paused_does_not_replay_prior_session_manual_jobs ... ok
+test head_generation_blocks_old_pages_and_clear_does_not_remove_watch_reasons ... ok
+test schema_one_upgrade_preserves_identity_pause_and_watch_reasons ... ok
+test durable_due_work_is_bounded_in_memory_fair_and_does_not_lose_the_129th ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+

@@ -1,0 +1,9 @@
+bun test v1.4.2 (744846f84)
+
+scripts/reader-shell.test.tsx:
+(pass) Browse releases receipt authority but compact Back restores the exact Activity origin even without mouse focus [152.89ms]
+
+ 1 pass
+ 0 fail
+ 3 expect() calls
+Ran 1 test across 1 file. [248.00ms]

@@ -1,0 +1,20 @@
+The following is a diff from the previous accessibility tree for Window: "GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 75
+~						40 tab (selectable) Overview
+~						43 tab (selected) Checks, Value: on
+~					73 container Checks
+~						74 heading Head checks, Value: 2
++							75 text Head checks
++						76 text aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa · review APPROVED
++						77 text aaaaaaaaaa · Complete cached contexts · 13:20:37
++						78 text Actions 0
++						79 text success Check run · aaaaaaaaaa · run 2 · attempt 1
++						80 button Read Actions log
++						81 button Open job details ↗
++						82 text External 1
++						83 text success Legacy status · aaaaaaaaaa
++						84 button Open provider details ↗
++						85 button (disabled) Previous checks
++						86 text 1–2 loaded
++						87 button (disabled) Next checks
+The focused UI element is 43 tab (selected) Checks, Value: on

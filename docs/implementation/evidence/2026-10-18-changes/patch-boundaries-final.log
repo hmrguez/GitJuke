@@ -1,0 +1,12 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 5 tests
+test changes::tests::source_completeness_is_not_inferred_from_presence_or_missing_text ... ok
+test changes::tests::fallback_rejects_untrusted_or_wrong_revision_file_links ... ok
+test changes::tests::metadata_pages_keep_indices_totals_and_upstream_ceiling_honest ... ok
+test changes::tests::inclusive_utf8_bytes_rows_and_logical_line_limits ... ok
+test changes::tests::chunks_preserve_every_utf8_byte_and_fit_worst_case_ipc_encoding ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 220 filtered out; finished in 0.26s
+

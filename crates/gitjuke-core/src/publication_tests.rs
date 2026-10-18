@@ -184,6 +184,7 @@ fn bounded_batches_keep_old_snapshot_until_atomic_visibility_commit() {
         COUNTS.with(|v| *v.borrow_mut() = Some(vec![]));
         while pending(&s.conn).unwrap() {
             batch(&mut s.conn).unwrap();
+            crate::admission_query::tests::assert_exact(&s.conn);
             transactions += 1;
             let cached = Store::open_cached(&path).unwrap();
             assert_eq!(durable(&cached.conn), history);
@@ -289,6 +290,7 @@ fn late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membe
         assert_eq!(visible(&cached.conn), old);
         drop(cached);
         let c = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&c).unwrap();
         c.execute_batch("DROP TRIGGER fail_applied; CREATE TRIGGER fail_commit BEFORE UPDATE ON publication WHEN NEW.phase='committed' BEGIN SELECT RAISE(ABORT,'fixture visibility'); END;").unwrap();
         drop(c);
         assert!(Store::open(&path).is_err());
@@ -297,6 +299,7 @@ fn late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membe
         assert_eq!(durable(&cached.conn), history);
         drop(cached);
         let c = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&c).unwrap();
         c.execute_batch("DROP TRIGGER fail_commit").unwrap();
         drop(c);
         let s = Store::open(&path).unwrap();
@@ -311,6 +314,7 @@ fn crash_child_entry() {
         return;
     };
     let mut c = Connection::open(path).unwrap();
+    crate::shared_storage::register(&c).unwrap();
     resume(&mut c).unwrap();
     panic!("child did not reach barrier")
 }
@@ -374,6 +378,7 @@ fn sigkill_publications_preserve_old_or_complete_new_snapshots() {
             use std::os::unix::process::ExitStatusExt;
             assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
             let c = Connection::open(&path).unwrap();
+            crate::shared_storage::register(&c).unwrap();
             assert_eq!(
                 c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
                     .unwrap(),
@@ -685,10 +690,12 @@ fn small_single_transaction_and_journal_paths_publish_identical_snapshots() {
             conn: Connection::open(&path).unwrap(),
             cache_writes: true,
         };
+        crate::shared_storage::register(&fast.conn).unwrap();
         let mut journal = Store {
             conn: Connection::open(&copy).unwrap(),
             cache_writes: true,
         };
+        crate::shared_storage::register(&journal.conn).unwrap();
         COUNTS.with(|v| *v.borrow_mut() = Some(vec![]));
         fast.apply_publication(kind, args.clone()).unwrap();
         let counts = COUNTS.with(|v| v.borrow_mut().take().unwrap());
@@ -756,6 +763,105 @@ fn empty_replacements_cannot_hide_large_deletions_behind_capped_preflight_counts
                     257
                 );
             }
+        }
+    }
+}
+
+#[test]
+fn maintained_accounting_sigkill_application_visibility_and_cleanup_are_exact() {
+    use std::{
+        os::unix::process::ExitStatusExt,
+        process::{Child, Command, Stdio},
+        time::{Duration, Instant},
+    };
+    struct Owned(Child);
+    impl Drop for Owned {
+        fn drop(&mut self) {
+            let _ = self.0.kill();
+            let _ = self.0.wait();
+        }
+    }
+    for journal in ["DELETE", "WAL"] {
+        for phase in [
+            "apply_before",
+            "apply_after",
+            "commit_before",
+            "commit_after",
+            "cleanup_after",
+        ] {
+            let d = tempfile::tempdir().unwrap();
+            let path = d.path().join("db");
+            let marker = d.path().join("marker");
+            let (mut s, args) = seed(&path, "checks");
+            let old = visible(&s.conn);
+            let history = durable(&s.conn);
+            let revision = s.revision().unwrap();
+            start(&mut s, "checks", &args);
+            s.conn.pragma_update(None, "journal_mode", journal).unwrap();
+            drop(s);
+            let mut child = Owned(
+                Command::new(std::env::current_exe().unwrap())
+                    .args([
+                        "--exact",
+                        "publication::tests::crash_child_entry",
+                        "--nocapture",
+                    ])
+                    .env("GITJUKE_TEST_PUBLICATION_DB", &path)
+                    .env("GITJUKE_TEST_BOUNDED_PHASE", phase)
+                    .env("GITJUKE_TEST_PUBLICATION_PHASE", phase)
+                    .env("GITJUKE_TEST_PUBLICATION_MARKER", &marker)
+                    .stdout(Stdio::null())
+                    .spawn()
+                    .unwrap(),
+            );
+            let start = Instant::now();
+            while !marker.exists() {
+                assert!(
+                    start.elapsed() < Duration::from_secs(10),
+                    "{journal}/{phase}"
+                );
+                assert!(child.0.try_wait().unwrap().is_none(), "{journal}/{phase}");
+                std::thread::sleep(Duration::from_millis(5));
+            }
+            child.0.kill().unwrap();
+            assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
+            let c = Connection::open(&path).unwrap();
+            assert_eq!(
+                c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
+                    .unwrap(),
+                "ok"
+            );
+            crate::admission_query::tests::assert_exact(&c);
+            assert_eq!(durable(&c), history);
+            let committed = matches!(phase, "commit_after" | "cleanup_after");
+            assert_eq!(
+                n(
+                    &c,
+                    "SELECT CAST(value AS INTEGER) FROM meta WHERE key='revision'"
+                ),
+                revision as i64 + i64::from(committed)
+            );
+            drop(c);
+            let cached = Store::open_cached(&path).unwrap();
+            if committed {
+                assert_ne!(visible(&cached.conn), old);
+            } else {
+                assert_eq!(visible(&cached.conn), old);
+            }
+            drop(cached);
+            let s = Store::open(&path).unwrap();
+            assert!(!pending(&s.conn).unwrap());
+            assert_eq!(s.revision().unwrap(), revision + 1);
+            assert_eq!(durable(&s.conn), history);
+            crate::admission_query::tests::assert_exact(&s.conn);
+            assert_eq!(
+                n(
+                    &s.conn,
+                    "SELECT COUNT(*) FROM check_context WHERE pr_id='P1' AND staged=0 AND id GLOB 'N*'"
+                ),
+                257
+            );
+            assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM publication_row"), 0);
         }
     }
 }

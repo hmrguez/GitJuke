@@ -5,12 +5,13 @@ pub(super) fn plans(kind: &str, x: &Value) -> Result<Vec<Plan>> {
     let time = x["time"].as_u64().unwrap();
     let cutoff = time.saturating_sub(crate::retention::ACTIVITY_AGE);
     let intent = x["intent"].as_i64().unwrap();
+    let state = lit(x["intentState"].as_str().unwrap_or("unavailable"));
     let mut out = vec![];
     if kind == "activity_summary" {
         let members = format!(
             "SELECT a.id FROM activity a JOIN progress p ON p.key='catchup:'||a.id JOIN seen s ON s.source_id=a.id WHERE s.seen=0 AND a.eligible=1 AND a.occurred>={cutoff}"
         );
-        out.push(plan("activity_intent",format!("SELECT json_array({intent}),json_array({intent},'summary','unavailable',{time}),NULL WHERE EXISTS({members})")));
+        out.push(plan("activity_intent",format!("SELECT json_array({intent}),json_array({intent},'summary',{state},{time}),NULL WHERE EXISTS({members})")));
         out.push(plan(
             "intent_member",
             format!("SELECT json_array({intent},id),json_array({intent},id),NULL FROM ({members})"),
@@ -52,7 +53,7 @@ pub(super) fn plans(kind: &str, x: &Value) -> Result<Vec<Plan>> {
         format!("SELECT json_array(id),json_array(id),NULL FROM ({fresh})"),
     ));
     out.push(plan("activity",format!("SELECT json_array(id),json_array(id,repo,number,kind,occurred,eligible,reason,{time}),NULL FROM ({retained})")));
-    out.push(plan("activity_intent",format!("SELECT json_array({intent}),json_array({intent},'pr','unavailable',{time}),NULL WHERE EXISTS({normal})")));
+    out.push(plan("activity_intent",format!("SELECT json_array({intent}),json_array({intent},'pr',{state},{time}),NULL WHERE EXISTS({normal})")));
     out.push(plan(
         "intent_member",
         format!("SELECT json_array({intent},id),json_array({intent},id),NULL FROM ({normal})"),

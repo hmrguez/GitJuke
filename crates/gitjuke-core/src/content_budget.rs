@@ -122,6 +122,9 @@ pub(super) fn publish_inner<T>(
                         }
                     }
                 }
+                if bounded {
+                    crate::shared_storage::bounded(&tx, before)?;
+                }
                 before_commit();
                 #[cfg(test)]
                 point("publication_before_commit");
@@ -209,6 +212,7 @@ fn evict_with_allowance(
 fn reclaim_batch(conn: &mut Connection, needed: i64) -> Result<(usize, i64)> {
     admit(conn)?;
     let tx = conn.transaction()?;
+    let before = tx.total_changes();
     // Reserve one row for the committed presentation revision. Check snapshot
     // invalidation shares this same global allowance with payload deletions.
     let (mut changed, freed) = prune(&tx, needed, ADMISSION_BATCH - 1, None)?;
@@ -218,6 +222,7 @@ fn reclaim_batch(conn: &mut Connection, needed: i64) -> Result<(usize, i64)> {
     }
     #[cfg(test)]
     point("reclaim_before_commit");
+    crate::shared_storage::bounded(&tx, before)?;
     tx.commit()?;
     #[cfg(test)]
     point("reclaim_after_commit");
@@ -238,28 +243,33 @@ fn prune(
         if changed == allowance || freed >= needed {
             break;
         }
+        let before = tx.total_changes();
         if kind == 1 {
             let dirty: bool = tx.query_row(
                 "SELECT EXISTS(SELECT 1 FROM check_state WHERE pr_id=? AND commit_sha=? AND (complete!=0 OR error IS NOT 'Cached checks evicted'))",
                 params![a,b], |r| r.get(0),
             )?;
             let shadow_dirty:bool=tx.query_row("SELECT EXISTS(SELECT 1 FROM publication_row WHERE tbl='check_state' AND k=json_array(?1,?2) AND old_json IS NOT NULL AND (json_extract(old_json,'$[3]')!=0 OR json_extract(old_json,'$[4]') IS NOT 'Cached checks evicted') AND EXISTS(SELECT 1 FROM publication WHERE phase!='committed'))",params![a,b],|r|r.get(0))?;
-            if allowance - changed < 1 + usize::from(dirty) + usize::from(shadow_dirty) {
+            if allowance - changed < 3 + usize::from(dirty) + usize::from(shadow_dirty) {
                 break;
             }
             if dirty {
-                changed+=tx.execute("UPDATE check_state SET complete=0,error='Cached checks evicted' WHERE pr_id=? AND commit_sha=?",params![a,b])?;
+                tx.execute("UPDATE check_state SET complete=0,error='Cached checks evicted' WHERE pr_id=? AND commit_sha=?",params![a,b])?;
             }
             if shadow_dirty {
-                changed+=tx.execute("UPDATE publication_row SET old_json=json_set(old_json,'$[3]',0,'$[4]','Cached checks evicted') WHERE tbl='check_state' AND k=json_array(?,?)",params![a,b])?;
+                tx.execute("UPDATE publication_row SET old_json=json_set(old_json,'$[3]',0,'$[4]','Cached checks evicted') WHERE tbl='check_state' AND k=json_array(?,?)",params![a,b])?;
             }
-            changed += tx.execute(
+            tx.execute(
                 "DELETE FROM check_context WHERE pr_id=? AND commit_sha=? AND id=? AND staged=0",
                 params![a, b, c],
             )?;
         } else {
-            changed += tx.execute("DELETE FROM content WHERE key=?", [a])?;
+            if allowance - changed < if bytes == 0 { 1 } else { 2 } {
+                break;
+            }
+            tx.execute("DELETE FROM content WHERE key=?", [a])?;
         }
+        changed += (tx.total_changes() - before) as usize;
         freed += bytes;
     }
     Ok((changed, freed))
@@ -424,7 +434,14 @@ mod tests {
         }
         content(&s, "exact-boundary", "x", cutoff);
         reclaim(&mut s, time, CONTENT_LIMIT).unwrap();
-        assert_eq!(keys(&s), ["exact-boundary", "expired-128"]);
+        assert_eq!(
+            keys(&s),
+            std::iter::once("exact-boundary".to_string())
+                .chain((64..129).map(|i| format!("expired-{i:03}")))
+                .collect::<Vec<_>>()
+        );
+        s.maintain_retention_at(time).unwrap();
+        assert_eq!(keys(&s), ["exact-boundary", "expired-127", "expired-128"]);
         s.maintain_retention_at(time).unwrap();
         assert_eq!(keys(&s), ["exact-boundary"]);
     }
@@ -558,7 +575,11 @@ mod tests {
         drop(s);
         let mut s = Store::open(&path).unwrap();
         s.maintain_retention_at(time + 1).unwrap();
-        assert_eq!(check_count(&s), 3);
+        assert_eq!(check_count(&s), 87);
+        s.maintain_retention_at(time + 1).unwrap();
+        assert_eq!(check_count(&s), 46);
+        s.maintain_retention_at(time + 1).unwrap();
+        assert_eq!(check_count(&s), 5);
         s.maintain_retention_at(time + 1).unwrap();
         assert_eq!(check_count(&s), 0);
     }
@@ -573,7 +594,7 @@ mod tests {
             .unwrap();
         let time = now() as i64;
         checks(&s, 1, time - 60);
-        s.conn.execute("UPDATE check_context SET json=?",[r#"{"id":"ctx","kind":"CheckRun","name":"CI","status":"COMPLETED","commit":"old","suiteStatus":"COMPLETED","suiteConclusion":"SUCCESS","suiteUpdatedAt":"2026-10-17T00:00:00Z","runId":42,"attempt":1}"#]).unwrap();
+        s.conn.execute("UPDATE check_context SET json=?",[r#"{"id":"ctx","kind":"CheckRun","name":"CI","status":"COMPLETED","commit":"old","suiteId":"CS_fixture","suiteStatus":"COMPLETED","suiteConclusion":"SUCCESS","suiteUpdatedAt":"2026-10-17T00:00:00Z","runId":42,"attempt":1}"#]).unwrap();
         assert_eq!(s.check_page("a/b", 1, 0).unwrap().items.len(), 1);
         assert_eq!(
             s.activity_check_records("a/b", 1, true, "old")

@@ -1,0 +1,23 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling bitflags v2.13.2
+   Compiling serde_json v1.0.154
+   Compiling serde v1.0.229
+   Compiling smallvec v1.16.3
+   Compiling rustix v1.1.5
+   Compiling rusqlite v0.38.0
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling tempfile v3.27.0
+   Compiling tokio-macros v2.7.2
+   Compiling futures-macro v0.3.34
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling tokio v1.53.3
+   Compiling futures-util v0.3.34
+   Compiling thiserror v2.0.21
+   Compiling tokio-util v0.7.20
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 11s
+  Executable unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_core-8558dfba880fe2d0)

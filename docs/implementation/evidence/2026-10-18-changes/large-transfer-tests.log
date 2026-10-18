@@ -1,0 +1,10 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.28s
+     Running tests/changes.rs (target/debug/deps/changes-9afeeeedb393d05e)
+
+running 1 test
+test metadata_transport_overflow_subdivides_and_large_tier_is_explicit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 10.46s
+

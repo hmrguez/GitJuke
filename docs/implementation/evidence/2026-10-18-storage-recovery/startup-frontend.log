@@ -1,0 +1,10 @@
+bun test v1.4.2 (744846f84)
+
+scripts/startup-recovery.test.tsx:
+(pass) failed startup exposes actionable location without mounting private readers; retry only mounts after success [24.38ms]
+(pass) all startup input states have distinct honest guidance [39.66ms]
+
+ 2 pass
+ 0 fail
+ 25 expect() calls
+Ran 2 tests across 1 file. [1045.00ms]

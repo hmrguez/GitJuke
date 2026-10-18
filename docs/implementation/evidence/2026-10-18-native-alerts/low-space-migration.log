@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.63s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-alerts-core-target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 1 test
+test migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure ... FAILED
+
+failures:
+
+---- migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure stdout ----
+
+thread 'migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure' (13780062) panicked at crates/gitjuke-core/src/migrations.rs:593:44:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 246 filtered out; finished in 0.50s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

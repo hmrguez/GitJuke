@@ -1,0 +1,6 @@
+{
+  "archive": "/private/tmp/gitjuke-daily-routing-later-failed.log.gz",
+  "sha256": "2e05a8cedcb24f654325d0fde9bfa8bb0101a9119f3d344ea42f335fcd52f5e1",
+  "compressedBytes": 81199282,
+  "reason": "Keep complete failed output without adding a 793-MiB recursive synthetic DOM dump to the repository."
+}

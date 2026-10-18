@@ -1,0 +1,13 @@
+GITJUKE_LIFECYCLE pid=43739 event=ready background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=43739 event=monitor background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=43739 event=monitor background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=43739 event=monitor background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=43739 event=monitor background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=43739 event=monitor background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=43739 event=reopen background=true visible=false paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=51278 event=ready background=false visible=true paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=51278 event=monitor background=false visible=true paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=51278 event=monitor background=false visible=true paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=51278 event=monitor background=false visible=true paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=51278 event=monitor background=false visible=true paused=Some(true) permission=NotDetermined
+GITJUKE_LIFECYCLE pid=51278 event=monitor background=false visible=true paused=Some(true) permission=NotDetermined

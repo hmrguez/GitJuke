@@ -1,0 +1,12 @@
+bun test v1.4.2 (744846f84)
+
+scripts/logs.test.tsx:
+(pass) logs require explicit action, render safe bounded line pages and release on close [278.36ms]
+(pass) external providers expose details without Actions affordance or automatic fetch [8.09ms]
+(pass) authoritative invalidation releases rendered text without requesting it again [6.67ms]
+(pass) late IPC responses after navigation cannot restore text and cancel only their own ticket [10.86ms]
+
+ 4 pass
+ 0 fail
+ 16 expect() calls
+Ran 4 tests across 1 file. [1.82s]

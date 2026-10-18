@@ -12,16 +12,30 @@ export type WatchRow={id:string;repo:string;number:number;reasons:string[];head:
 export type WatchPage={items:WatchRow[];nextOffset:number|null;revision:number};
 export type CheckContext={id:string;kind:string;name:string;status:string;conclusion:string|null;url:string|null;commit:string;suiteId:string|null;suiteStatus:string|null;suiteConclusion:string|null;runId:number|null;attempt:number|null};
 export type CheckPage={pr:PullRequest|null;error:string|null;review:string|null;items:CheckContext[];nextOffset:number|null;head:string|null;commits:ResourceHealth[];revision:number};
-export type Status = {settings:{paused:boolean;theme:Theme;ghPath:string|null;configDir:string|null};identity:{id:number;login:string}|null;locked:boolean;health:string;storageStopped:boolean;storage:{databaseBytes:number;walBytes:number;sharedMemoryBytes:number;journalBytes:number;managedBytes:number;disposableBytes:number;contentLimitBytes:number;warningAtBytes:number;warning:boolean};ghVersion:string|null;ghPath:string|null;configDir:string;ignoredOverrides:string[];revision:number;queued:number;busy:boolean;nextRemoteAt:number;discoveryMore:boolean;watchCount:number;delayedWatches:number;discovery:ResourceHealth[];budgets:Budget[];selected:[string,number]|null};
+export type AlertSettings={onboarded:boolean;enabled:boolean;previews:boolean;categories:boolean[];permission:'unknown'|'notDetermined'|'denied'|'granted'};
+export type Status = {settings:{alerts:AlertSettings;pagedChanges:boolean;paused:boolean;theme:Theme;ghPath:string|null;configDir:string|null};identity:{id:number;login:string}|null;locked:boolean;health:string;storageStopped:boolean;storage:{databaseBytes:number;walBytes:number;sharedMemoryBytes:number;journalBytes:number;managedBytes:number;transientBytes:number|null;disposableBytes:number;contentLimitBytes:number;warningAtBytes:number;warning:boolean};ghVersion:string|null;ghPath:string|null;configDir:string;ignoredOverrides:string[];revision:number;queued:number;busy:boolean;nextRemoteAt:number;discoveryMore:boolean;watchCount:number;delayedWatches:number;discovery:ResourceHealth[];budgets:Budget[];selected:[string,number]|null};
 export function command<T>(name:string,args?:Record<string,unknown>):Promise<T>{
   if(!isTauri())return Promise.reject(new Error('Open the native GitJuke app with npm run tauri dev. This browser view has no runtime or fixture fallback.'));
   return invoke<T>(name,args);
 }
 export const revisions=(handler:()=>void)=>listen<number>('cache-revision',handler);
 export const presets:Record<'dark'|'light',Theme> = {
-  dark:{mode:'dark',canvas:'#121512',surface:'#1c211b',accent:'#b8d68a',ink:'#e7ecdf'},
-  light:{mode:'light',canvas:'#e9ebe5',surface:'#fcfdf8',accent:'#6c8548',ink:'#293126'},
+  dark:{mode:'dark',canvas:'#171716',surface:'#111110',accent:'#d6b98c',ink:'#eeeeec'},
+  light:{mode:'light',canvas:'#efeeea',surface:'#fdfcf9',accent:'#8b6840',ink:'#272725'},
 };
 
 export type ActivityRecord={id:string;repo:string;number:number;kind:string;occurred:number;actor:string|null;url:string;text:string|null;eligible:boolean;reason:string;seen:boolean;head:string|null};
 export type ActivityPage={items:ActivityRecord[];nextOffset:number|null;revision:number;baseline:boolean;recovery:string|null;pending:number;error:string|null;nextPollAt:number};
+
+export type ChangesJob={repo:string;number:number;head:string;base:string|null;page:number;index:number|null;path:string|null;large:boolean;seq:number};
+export type ChangedFile={index:number;path:string;previousPath:string|null;status:string;additions:number;deletions:number;url:string|null};
+export type ChangedFiles={head:string;base:string;total:number;items:ChangedFile[];nextPage:number|null;complete:boolean;limited:boolean};
+export type Patch={head:string;base:string;file:ChangedFile;state:'missing'|'binary'|'tooLarge'|'incomplete'|'large'|'complete';bytes:number|null;rows:number|null;chunks:number;digest:string|null};
+export type ConversationJob={repo:string;number:number;head:string;source:'comments'|'reviews'|'threads'|'replies'|'destination';thread:string|null;after:string|null;seq:number};
+export type ConversationMessage={id:string;kind:string;author:string|null;time:string;url:string|null;body:string|null;state:'complete'|'oversized'|'unavailable';bytes:number|null;digest:string|null};
+export type ReviewThread={id:string;path:string;side:string;line:number|null;startLine:number|null;startSide:string|null;originalLine:number|null;originalStartLine:number|null;commit:string|null;originalCommit:string|null;outdated:boolean;resolved:boolean;url:string|null;time:string};
+export type ConversationPage={destinationAnchor?:ReviewThread|null;head:string;generation:number;source:string;messages:ConversationMessage[];threads:ReviewThread[];next:string|null;total:number;complete:boolean};
+
+export type SavedQuery={id:number;name:string;search:string;version:number};
+export type QueryList={items:SavedQuery[];nextOffset:number|null;revision:number};
+export type QueryPage={query:SavedQuery;items:PullRequest[];total:number|null;cachedCount:number;nextPage:number|null;fetchedAt:number|null;complete:boolean;error:string|null;revision:number};

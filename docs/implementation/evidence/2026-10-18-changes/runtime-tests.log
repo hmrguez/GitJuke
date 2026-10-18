@@ -1,0 +1,13 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.19s
+     Running tests/changes.rs (target/debug/deps/changes-9afeeeedb393d05e)
+
+running 5 tests
+test clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results ... ok
+test paginated_navigation_selected_only_patch_and_persisted_mode ... ok
+test moving_head_or_base_and_file_order_never_publish_mixed_revisions ... ok
+test metadata_transport_overflow_subdivides_and_large_tier_is_explicit ... ok
+test cancellation_reaps_obsolete_file_and_late_results_cannot_replace_it ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 31.97s
+

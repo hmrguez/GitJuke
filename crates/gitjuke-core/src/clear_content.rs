@@ -52,7 +52,9 @@ pub(crate) fn resume(c: &mut Connection) -> Result<()> {
 }
 fn batch(c: &mut Connection) -> Result<usize> {
     let tx = c.transaction()?;
+    let batch_before = tx.total_changes();
     let mut changed = 0;
+    let mut exhausted = false;
     for sql in [
         "DELETE FROM content WHERE rowid IN (SELECT rowid FROM content ORDER BY rowid LIMIT ?)",
         "DELETE FROM stage WHERE rowid IN (SELECT rowid FROM stage ORDER BY rowid LIMIT ?)",
@@ -65,12 +67,20 @@ fn batch(c: &mut Connection) -> Result<usize> {
         "UPDATE check_state SET complete=0,error='Downloaded content cleared' WHERE rowid IN (SELECT rowid FROM check_state WHERE complete!=0 OR error IS NOT 'Downloaded content cleared' ORDER BY rowid LIMIT ?)",
         "UPDATE resource_state SET complete=0,error='Downloaded content cleared' WHERE rowid IN (SELECT rowid FROM resource_state WHERE complete!=0 OR error IS NOT 'Downloaded content cleared' ORDER BY rowid LIMIT ?)",
     ] {
-        changed += tx.execute(sql, [(BATCH - changed) as i64])?;
-        if changed == BATCH {
+        let limit = (BATCH - changed) / crate::shared_storage::cost(sql);
+        if limit == 0 {
+            exhausted = true;
+            break;
+        }
+        let before = tx.total_changes();
+        let rows = tx.execute(sql, [limit as i64])?;
+        changed += (tx.total_changes() - before) as usize;
+        if rows == limit {
+            exhausted = true;
             break;
         }
     }
-    let finished = changed < BATCH;
+    let finished = !exhausted;
     if finished {
         changed += tx.execute("DELETE FROM content_clear", [])?;
     }
@@ -80,6 +90,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
     } else {
         "batch_before_commit"
     });
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     point(if finished {
@@ -309,7 +320,7 @@ mod tests {
             preserved(&s, g, r);
             batches += 1;
         }
-        assert_eq!(batches, 21);
+        assert_eq!(batches, 35);
         complete(&s);
         let before = s.conn.total_changes();
         resume(&mut s.conn).unwrap();
@@ -335,7 +346,7 @@ mod tests {
         assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM content"), 257);
         s.conn.execute_batch("DROP TRIGGER fail_barrier; CREATE TRIGGER fail_late BEFORE DELETE ON content WHEN OLD.key='200' BEGIN SELECT RAISE(ABORT,'fixture late'); END;").unwrap();
         assert!(s.clear().is_err());
-        assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM content"), 129);
+        assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM content"), 65);
         assert!(s.clear().is_err());
         preserved(&s, g + 1, r + 1);
         hidden(&mut s);
@@ -349,7 +360,7 @@ mod tests {
         assert!(pending(&c).unwrap());
         assert_eq!(
             n(&c, "SELECT COUNT(*) FROM resource_state WHERE complete=1"),
-            10
+            13
         );
         c.execute_batch("DROP TRIGGER fail_finish").unwrap();
         drop(c);
@@ -451,8 +462,8 @@ mod tests {
         for (phase, content, remaining, marked) in [
             ("barrier_committed", 257, 257, true),
             ("batch_before_commit", 257, 257, true),
-            ("batch_after_commit", 129, 257, true),
-            ("finish_before_commit", 0, 10, true),
+            ("batch_after_commit", 193, 257, true),
+            ("finish_before_commit", 0, 13, true),
             ("finish_after_commit", 0, 0, false),
         ] {
             let d = tempfile::tempdir().unwrap();

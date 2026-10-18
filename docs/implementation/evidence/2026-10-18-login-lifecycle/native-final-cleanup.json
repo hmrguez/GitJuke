@@ -1,0 +1,22 @@
+{
+  "identity": "dev.hmrguez.gitjuke.lifecycle-qualification",
+  "pids": [],
+  "preference": {
+    "enabled": false
+  },
+  "registeredPathExists": false,
+  "registrationFileValid": false,
+  "stablePath": "/private/tmp/GitJuke Lifecycle.app/Contents/MacOS/gitjuke",
+  "stablePathExists": true,
+  "noWatchdog": true,
+  "osDisabled": true,
+  "paused": true,
+  "integrity": "ok",
+  "schema": 15,
+  "ledgerCounts": {
+    "seen": 0,
+    "dedup": 0,
+    "activity_intent": 0,
+    "alert_attempt": 0
+  }
+}

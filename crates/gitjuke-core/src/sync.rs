@@ -140,6 +140,10 @@ fn contexts(cursor: bool) -> String {
 }
 #[derive(Clone, Debug)]
 pub enum GraphRead {
+    AlertHead {
+        repo: String,
+        number: u64,
+    },
     Authored {
         cursor: Option<String>,
         size: u16,
@@ -158,6 +162,7 @@ pub enum GraphRead {
 impl GraphRead {
     pub fn body(&self) -> Value {
         let (query,variables)=match self {
+            Self::AlertHead{repo,number}=>{let(owner,name)=repo.split_once('/').unwrap_or_default();("query AlertHead($owner:String!,$name:String!,$number:Int!){viewer{databaseId login}repository(owner:$owner,name:$name){pullRequest(number:$number){headRefOid potentialMergeCommit{oid}}}rateLimit{cost remaining resetAt}}".into(),json!({"owner":owner,"name":name,"number":number}))},
             Self::Authored{cursor,size}=>("query Authored($after:String,$first:Int!){viewer{databaseId login pullRequests(first:$first,after:$after,states:OPEN,orderBy:{field:CREATED_AT,direction:ASC}){totalCount pageInfo{hasNextPage endCursor}nodes{FIELDS}}}rateLimit{cost remaining resetAt}}".replace("FIELDS",PR_FIELDS),json!({"after":cursor,"first":size})),
             Self::Heads{ids,size}=>("query WatchHeads($ids:[ID!]!,$first:Int!){viewer{databaseId login}nodes(ids:$ids){... on PullRequest{FIELDS headRefOid reviewDecision potentialMergeCommit{oid CHECKS} commits(last:1){nodes{commit{oid CHECKS}}}}}rateLimit{cost remaining resetAt}}".replace("FIELDS",PR_FIELDS).replace("CHECKS",&contexts(false)),json!({"ids":ids,"first":size})),
             Self::Contexts{repo,commit,cursor,size}=>{let(owner,name)=repo.split_once('/').unwrap_or_default();("query CheckContexts($owner:String!,$name:String!,$oid:GitObjectID!,$after:String,$first:Int!){viewer{databaseId login}repository(owner:$owner,name:$name){object(oid:$oid){... on Commit{oid CHECKS}}}rateLimit{cost remaining resetAt}}".replace("CHECKS",&contexts(true)),json!({"owner":owner,"name":name,"oid":commit,"after":cursor,"first":size}))}

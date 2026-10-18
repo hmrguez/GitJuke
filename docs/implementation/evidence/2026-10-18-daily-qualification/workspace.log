@@ -1,0 +1,99 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.57s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_desktop-e6c310db3d156c8a)
+
+running 13 tests
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+test login::tests::os_disabled_requires_exact_label_and_valid_output ... ok
+test login::tests::preference_is_default_off_atomic_and_preserves_corruption ... ok
+test login::tests::stable_path_identity_and_no_watchdog_are_required ... ok
+test login::tests::status_never_confuses_desire_with_registration ... ok
+test notifications::tests::unbundled_notification_calls_are_safe ... ok
+test singleton::tests::child ... ok
+test singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths ... FAILED
+test singleton::tests::separate_processes_serialize_and_sigkill_releases_lock ... 
+thread 'singleton::tests::child' (13984303) panicked at src-tauri/src/singleton.rs:218:41:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership ... FAILED
+test singleton::tests::symlink_lock_is_rejected ... ok
+test startup::tests::corrupt_and_unreadable_files_survive_failed_startup ... ok
+test startup::tests::missing_directory_can_be_repaired_and_retried_without_reset ... ok
+
+failures:
+
+---- singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths stdout ----
+
+thread 'singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths' (13984299) panicked at src-tauri/src/singleton.rs:197:65:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- singleton::tests::separate_processes_serialize_and_sigkill_releases_lock stdout ----
+
+thread 'singleton::tests::separate_processes_serialize_and_sigkill_releases_lock' (13984300) panicked at src-tauri/src/singleton.rs:247:13:
+assertion failed: Instant::now() < until
+
+---- singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership stdout ----
+
+thread '<unnamed>' (13984435) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread '<unnamed>' (13984445) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread '<unnamed>' (13984439) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread '<unnamed>' (13984449) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread '<unnamed>' (13984441) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread '<unnamed>' (13984436) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread '<unnamed>' (13984438) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+
+thread 'singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership' (13984434) panicked at src-tauri/src/singleton.rs:170:75:
+called `Result::unwrap()` on an `Err` value: Any { .. }
+
+thread '<unnamed>' (13984437) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984448) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984443) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984440) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984447) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984442) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984450) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984444) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+thread '<unnamed>' (13984446) panicked at src-tauri/src/singleton.rs:144:54:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "GitJuke is starting or quitting. Retry after it finishes; no second monitor was started." }
+
+
+failures:
+    singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths
+    singleton::tests::separate_processes_serialize_and_sigkill_releases_lock
+    singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership
+
+test result: FAILED. 10 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.48s
+
+error: test failed, to rerun pass `-p gitjuke --lib`

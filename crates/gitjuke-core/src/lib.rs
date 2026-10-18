@@ -1,9 +1,13 @@
 pub mod activity;
 #[cfg(test)]
 mod activity_crash;
+mod activity_due;
 mod activity_enrollment;
 mod activity_store;
 mod admission_query;
+pub mod alerts;
+pub mod changes;
+mod changes_store;
 mod check_purge;
 mod clear_content;
 mod content_budget;
@@ -14,6 +18,7 @@ pub mod github;
 mod invalidation;
 mod migrations;
 pub mod model;
+mod pending_selection;
 mod pr_purge;
 mod publication;
 mod recovery_cleanup;
@@ -21,6 +26,8 @@ mod retention;
 mod retention_window;
 pub mod runtime;
 mod runtime_activity;
+mod runtime_alerts;
+mod runtime_changes;
 mod runtime_sync;
 mod source_cleanup;
 mod startup_cleanup;
@@ -28,6 +35,9 @@ mod storage_usage;
 pub mod store;
 pub mod sync;
 pub mod transport;
+mod watch_reader;
+mod watch_reservations;
+mod watch_scheduling;
 pub mod watch_store;
 
 pub type Result<T> = std::result::Result<T, Error>;
@@ -68,3 +78,18 @@ mod maintenance_tests;
 
 #[cfg(test)]
 mod query_work_tests;
+
+mod shared_storage;
+
+mod publication_completion;
+
+pub mod conversation;
+mod conversation_store;
+mod runtime_conversation;
+
+pub mod logs;
+pub mod saved_queries;
+
+#[cfg(test)]
+mod physical_storage_tests;
+pub mod recovery;

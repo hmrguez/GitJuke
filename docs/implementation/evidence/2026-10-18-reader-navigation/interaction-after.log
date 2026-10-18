@@ -1,0 +1,18 @@
+bun test v1.4.2 (744846f84)
+
+scripts/reader-interaction.test.tsx:
+(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [17.49ms]
+(pass) exact destination counts committed distinct segments without stealing focus on polling [12.85ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [4.39ms]
+(pass) return from replies restores the originating thread after asynchronous replacement [14.27ms]
+(pass) reply return does not steal focus if the user moves while the thread list loads [20.60ms]
+(pass) next and first source-page replacement keep stable reader focus and release old bodies [11.81ms]
+(pass) superseded source requests and unmounted readers cannot restore focus or commit old content [8.12ms]
+(pass) changed destination generation restarts segment coverage; stale head never submits seen [16.85ms]
+(pass) terminal patch pages focus the stable diff region; file pages focus the navigator [63.02ms]
+(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [5.93ms]
+
+ 10 pass
+ 0 fail
+ 64 expect() calls
+Ran 10 tests across 1 file. [299.00ms]

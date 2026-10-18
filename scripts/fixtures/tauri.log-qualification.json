@@ -1,0 +1,5 @@
+{
+  "productName": "GitJuke Log Qualification",
+  "identifier": "dev.hmrguez.gitjuke.logqualification",
+  "app": {"windows": [{"label":"main","title":"GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES","width":1280,"height":800,"minWidth":960,"minHeight":640}]}
+}

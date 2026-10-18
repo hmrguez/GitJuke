@@ -62,6 +62,7 @@ pub(crate) fn resume(c: &mut Connection) -> Result<()> {
 }
 fn batch(c: &mut Connection) -> Result<usize> {
     let tx = c.transaction()?;
+    let batch_before = tx.total_changes();
     // Process one identity per transaction, never an unbounded marker list.
     let id: Option<String> = tx
         .query_row(
@@ -74,6 +75,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
         return Ok(0);
     };
     let mut changed = 0;
+    let mut exhausted = false;
     for sql in [
         "DELETE FROM check_context WHERE rowid IN (SELECT rowid FROM check_context WHERE pr_id=? ORDER BY rowid LIMIT ?)",
         "DELETE FROM content WHERE rowid IN (SELECT c.rowid FROM content c JOIN activity a ON c.key='activity-payload:'||a.id JOIN watch_locator l ON l.repo=a.repo COLLATE NOCASE AND l.number=a.number WHERE l.id=? AND a.kind='check' ORDER BY c.rowid LIMIT ?)",
@@ -81,12 +83,20 @@ fn batch(c: &mut Connection) -> Result<usize> {
         "DELETE FROM pending WHERE rowid IN (SELECT rowid FROM pending WHERE substr(key,1,length(?1)+8)='checks:'||?1||':' ORDER BY rowid LIMIT ?2)",
         "UPDATE check_state SET complete=0,error='Checks unavailable' WHERE rowid IN (SELECT rowid FROM check_state WHERE pr_id=? AND (complete!=0 OR error IS NOT 'Checks unavailable') ORDER BY rowid LIMIT ?)",
     ] {
-        changed += tx.execute(sql, params![id, (BATCH - changed) as i64])?;
-        if changed == BATCH {
+        let limit = (BATCH - changed) / crate::shared_storage::cost(sql);
+        if limit == 0 {
+            exhausted = true;
+            break;
+        }
+        let before = tx.total_changes();
+        let rows = tx.execute(sql, params![id, limit as i64])?;
+        changed += (tx.total_changes() - before) as usize;
+        if rows == limit {
+            exhausted = true;
             break;
         }
     }
-    let finished = changed < BATCH;
+    let finished = !exhausted;
     if finished {
         changed += tx.execute("DELETE FROM check_purge WHERE pr_id=?", [id])?;
     }
@@ -96,6 +106,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
     } else {
         "batch_before_commit"
     });
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     point(if finished {
@@ -529,7 +540,7 @@ pub(crate) mod tests {
             preserved(&s, r);
             batches += 1;
         }
-        assert_eq!(batches, 11);
+        assert_eq!(batches, 21);
         complete(&s);
         hidden(&mut s);
         assert_eq!(
@@ -598,7 +609,7 @@ pub(crate) mod tests {
                 &s.conn,
                 "SELECT COUNT(*) FROM check_context WHERE pr_id='P_1'"
             ),
-            129
+            89
         );
         assert!(s.deny_checks(&target()).is_err());
         preserved(&s, r + 1);
@@ -610,14 +621,14 @@ pub(crate) mod tests {
         assert!(Store::open(&path).is_err());
         assert_eq!(
             n(&c, "SELECT COUNT(*) FROM check_context WHERE pr_id='P_1'"),
-            1
+            0
         );
         assert_eq!(
             n(
                 &c,
                 "SELECT COUNT(*) FROM content WHERE key GLOB 'activity-payload:check-*'"
             ),
-            257
+            200
         );
         c.execute_batch("DROP TRIGGER fail_payload; CREATE TRIGGER fail_finish BEFORE DELETE ON check_purge BEGIN SELECT RAISE(ABORT,'fixture finish'); END;").unwrap();
         assert!(Store::open(&path).is_err());
@@ -626,7 +637,7 @@ pub(crate) mod tests {
                 &c,
                 "SELECT COUNT(*) FROM check_state WHERE pr_id='P_1' AND complete=1"
             ),
-            5
+            11
         );
         let mut protected = Store::open_cached(&path).unwrap();
         hidden(&mut protected);
@@ -742,8 +753,8 @@ pub(crate) mod tests {
         for (phase, contexts, states, marked) in [
             ("barrier_committed", 257, 257, true),
             ("batch_before_commit", 257, 257, true),
-            ("batch_after_commit", 129, 257, true),
-            ("finish_before_commit", 0, 5, true),
+            ("batch_after_commit", 215, 257, true),
+            ("finish_before_commit", 0, 11, true),
             ("finish_after_commit", 0, 0, false),
         ] {
             let d = tempfile::tempdir().unwrap();

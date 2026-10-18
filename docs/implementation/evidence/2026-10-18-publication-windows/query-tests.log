@@ -1,0 +1,41 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.10s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 13 tests
+test publication::window_tests::crash_child ... ok
+test publication::window_tests::completion_crash_child ... ok
+test publication::window_tests::readiness_windows_hold_one_snapshot_and_do_not_publish_partial_completion ... ok
+test publication::window_tests::signed_native_positions_and_invalid_cursors_preserve_original_preparation ... ok
+windows=1050, max VM=1416, max scans=0, sorts=0, automatic indexes=0
+windows=5, max VM=776, max scans=0, sorts=0, automatic indexes=0
+test publication::window_tests::sigkill_late_readiness_window_never_commits_a_summary_or_completion_claim ... ok
+windows=4, max VM=1171, max scans=0, sorts=0, automatic indexes=0
+windows=369, max VM=141, max scans=0, sorts=0, automatic indexes=0
+test migrations::tests::schema_thirteen_planning_upgrade_rolls_back_late_failure_and_resets_preparation_safely ... ok
+windows=4158, max VM=1416, max scans=0, sorts=0, automatic indexes=0
+windows=11, max VM=776, max scans=0, sorts=0, automatic indexes=0
+windows=4, max VM=1171, max scans=0, sorts=0, automatic indexes=0
+test publication::window_tests::small_preflight_uses_scope_indexes_before_rejecting_large_valid_prefixes ... ok
+test publication::window_tests::completion_windows_and_maintained_counts_match_full_oracles_behind_protected_prefixes ... ok
+windows=3217, max VM=141, max scans=0, sorts=0, automatic indexes=0
+test migrations::tests::schema_thirteen_planning_sigkill_keeps_previous_or_complete_upgrade_and_resumes ... ok
+windows=1457, max VM=141, max scans=0, sorts=0, automatic indexes=0
+test publication::window_tests::cursor_late_fault_and_retry_keep_old_visibility_exact_accounting_and_history ... ok
+test publication::window_tests::unchanged_and_prepared_prefixes_advance_bounded_cursors_without_repeated_scans ... ok
+windows=1099, max VM=165, max scans=0, sorts=0, automatic indexes=0
+windows=2187, max VM=153, max scans=0, sorts=0, automatic indexes=0
+windows=2801, max VM=141, max scans=0, sorts=0, automatic indexes=0
+windows=2, max VM=20, max scans=0, sorts=0, automatic indexes=0
+test publication::window_tests::sigkill_late_cursor_and_journal_commit_together_then_resume_without_replay ... ok
+windows=413, max VM=249, max scans=0, sorts=0, automatic indexes=0
+windows=350, max VM=141, max scans=0, sorts=0, automatic indexes=0
+windows=538, max VM=117, max scans=0, sorts=0, automatic indexes=0
+windows=1674, max VM=153, max scans=0, sorts=0, automatic indexes=0
+windows=562, max VM=153, max scans=0, sorts=0, automatic indexes=0
+windows=32, max VM=32, max scans=0, sorts=0, automatic indexes=0
+windows=17, max VM=28, max scans=0, sorts=0, automatic indexes=0
+test publication::window_tests::native_windows_match_unrestricted_preparation_oracle_for_every_kind ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 165 filtered out; finished in 2.72s
+

@@ -1,0 +1,9 @@
+bun test v1.4.2 (744846f84)
+
+scripts/accessibility.test.tsx:
+(pass) native text commands reach actual 200% font scale, clamp, reset and detach [35.32ms]
+
+ 1 pass
+ 0 fail
+ 7 expect() calls
+Ran 1 test across 1 file. [246.00ms]

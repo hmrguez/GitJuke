@@ -1,0 +1,3 @@
+hdiutil: WARNING: 'hdiutil attach -readonly -nobrowse -mountpoint ...' is deprecated. Please use 'diskutil image attach --readOnly --mountOptions nobrowse --mountPoint ...' instead.
+/dev/disk11         	GUID_partition_scheme          	
+/dev/disk11s1       	Apple_HFS                      	/private/tmp/gitjuke-storage-fault-volume

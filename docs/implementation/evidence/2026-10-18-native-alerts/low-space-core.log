@@ -1,0 +1,71 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.26s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-alerts-core-target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 13 tests
+test alerts::tests::attempt_crash_child ... ok
+
+thread 'alerts::tests::authoritative_workflow_attempts_coalesce_jobs_keep_runs_distinct_and_external_unknown' (13779941) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'alerts::tests::head_and_retry_races_reject_reserved_terminal_results' (13779944) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::notification_destination_hides_expired_cleared_denied_and_unattempted_sources' (13779946) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::metadata_previews_require_explicit_opt_in_and_never_include_bodies' (13779945) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::actual_sigkill_before_and_after_attempt_commit' (13779939) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::opt_in_and_permission_boundaries_never_replay_backlog' (13779947) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::completed_batches_group_without_focus_suppression_and_previews_are_generic' (13779942) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::failed_attempt_commit_cannot_dispatch_and_ambiguous_attempt_stays_terminal' (13779943) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+test alerts::tests::opt_in_and_permission_boundaries_never_replay_backlog ... FAILED
+test alerts::tests::head_and_retry_races_reject_reserved_terminal_results ... FAILED
+test alerts::tests::notification_destination_hides_expired_cleared_denied_and_unattempted_sources ... FAILED
+test alerts::tests::metadata_previews_require_explicit_opt_in_and_never_include_bodies ... FAILED
+test alerts::tests::completed_batches_group_without_focus_suppression_and_previews_are_generic ... FAILED
+test alerts::tests::actual_sigkill_before_and_after_attempt_commit ... FAILED
+test alerts::tests::authoritative_workflow_attempts_coalesce_jobs_keep_runs_distinct_and_external_unknown ... FAILED
+test alerts::tests::failed_attempt_commit_cannot_dispatch_and_ambiguous_attempt_stays_terminal ... FAILED
+
+thread 'alerts::tests::reconstruction_is_bounded_idempotent_and_excludes_terminal_history' (13779948) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+thread 'alerts::tests::reservation_revalidates_seen_pause_permission_policy_generation_and_membership' (13779949) panicked at crates/gitjuke-core/src/alerts_tests.rs:8:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+test alerts::tests::reconstruction_is_bounded_idempotent_and_excludes_terminal_history ... FAILED
+test runtime_alerts::guard_tests::authoritative_source_guard_never_guesses_missing_attempt_or_superseded_head ... ok
+test alerts::tests::reservation_revalidates_seen_pause_permission_policy_generation_and_membership ... FAILED
+
+thread 'runtime_alerts::tests::worker_revalidates_identity_and_commits_attempt_before_platform_dispatch' (13779951) panicked at crates/gitjuke-core/src/runtime_alerts.rs:210:44:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+test runtime_alerts::tests::worker_revalidates_identity_and_commits_attempt_before_platform_dispatch ... FAILED
+
+failures:
+
+failures:
+    alerts::tests::actual_sigkill_before_and_after_attempt_commit
+    alerts::tests::authoritative_workflow_attempts_coalesce_jobs_keep_runs_distinct_and_external_unknown
+    alerts::tests::completed_batches_group_without_focus_suppression_and_previews_are_generic
+    alerts::tests::failed_attempt_commit_cannot_dispatch_and_ambiguous_attempt_stays_terminal
+    alerts::tests::head_and_retry_races_reject_reserved_terminal_results
+    alerts::tests::metadata_previews_require_explicit_opt_in_and_never_include_bodies
+    alerts::tests::notification_destination_hides_expired_cleared_denied_and_unattempted_sources
+    alerts::tests::opt_in_and_permission_boundaries_never_replay_backlog
+    alerts::tests::reconstruction_is_bounded_idempotent_and_excludes_terminal_history
+    alerts::tests::reservation_revalidates_seen_pause_permission_policy_generation_and_membership
+    runtime_alerts::tests::worker_revalidates_identity_and_commits_attempt_before_platform_dispatch
+
+test result: FAILED. 2 passed; 11 failed; 0 ignored; 0 measured; 234 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

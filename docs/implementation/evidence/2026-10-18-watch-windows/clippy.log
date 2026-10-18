@@ -1,0 +1,4 @@
+$ cargo clippy --workspace --all-targets --offline -- -D warnings
+    Checking gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Checking gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.09s

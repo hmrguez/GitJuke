@@ -1,0 +1,12 @@
+{
+  "beforeOwners": [
+    "67250 /Users/hmrguez/Programming/Personal/GitJuke/target/debug/gitjuke"
+  ],
+  "afterOwners": [
+    "67250 /Users/hmrguez/Programming/Personal/GitJuke/target/debug/gitjuke"
+  ],
+  "candidatePid": 88827,
+  "candidateExit": 0,
+  "executableSha256": "3dce61a181c74441146ecaf9f367e408a56e9964162c094b7c2580faf6cb34bc",
+  "cleanOwnerSmoke": false
+}

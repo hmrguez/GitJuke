@@ -12,10 +12,10 @@ use tokio_util::sync::CancellationToken;
 impl Runtime {
     pub(crate) fn job_resource(job: &Job) -> &'static str {
         match job {
-            Job::Heads(_) | Job::Contexts(_) => "graphql",
+            Job::Heads(_) | Job::Contexts(_) | Job::Conversation(_) => "graphql",
             Job::Discover(p) if p.source == "authored" => "graphql",
             Job::Discover(p) if p.source != "teams" => "search",
-            Job::Authored(_) => "search",
+            Job::Authored(_) | Job::Query(_) => "search",
             _ => "core",
         }
     }
@@ -73,6 +73,12 @@ impl Runtime {
             i.store.set_due("manual-boundary", now())?;
             crate::control_sweep::run(&mut i.store.conn, "manual", serde_json::json!({}))?;
             self.schedule_heads_locked(&mut i, true)?;
+        }
+        if manual
+            && i.reader_open
+            && let Some((id, version)) = i.active_query
+        {
+            Self::queue_query(&mut i, id, version, 1, true)?;
         }
         let selected = i.selected.clone();
         let open = i.reader_open;
@@ -410,7 +416,7 @@ impl Runtime {
                         true,
                     )?;
                 } else {
-                    i.health="Watch discovery reconciled; head/check snapshots follow their own freshness. Activity hydration follows changed threads; native alerts are unavailable.".into();
+                    i.health="Watch discovery reconciled; head/check snapshots follow their own freshness. Activity hydration follows changed threads; native alerts follow your permission and category choices.".into();
                     self.schedule_heads_locked(&mut i, w.manual)?;
                 }
             }
@@ -525,7 +531,7 @@ impl Runtime {
                         }
                     }
                 }
-                i.health="Head/check snapshots updated. Delayed freshness remains visible; no native alerts are dispatched in this slice.".into();
+                i.health="Head/check snapshots updated. Delayed freshness remains visible; eligible native alerts follow your permission and category choices.".into();
                 // Do not rescan watches until the current check traversals have completed.
             }
             Job::Contexts(target) => {

@@ -1,0 +1,10 @@
+{
+  "path": "/Applications/GitJuke.app",
+  "sha256": "cbda64710c4c5814a019e5e901b11f8ebf4cd6b2419b1992d37674af6a15331e",
+  "identifier": "dev.hmrguez.gitjuke",
+  "version": "0.1.0",
+  "build": "0.1.0",
+  "minimumSystem": "15.0",
+  "architecture": "/Applications/GitJuke.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+  "signingDisplay": "Executable=/Applications/GitJuke.app/Contents/MacOS/gitjuke\nIdentifier=gitjuke-9f1684f079c67991\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=290449 flags=0x20002(adhoc,linker-signed) hashes=9073+0 location=embedded\nSignature=adhoc\nInfo.plist=not bound\nTeamIdentifier=not set\nSealed Resources=none\nInternal requirements=none\n"
+}

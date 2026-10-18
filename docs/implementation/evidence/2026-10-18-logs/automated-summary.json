@@ -1,0 +1,21 @@
+{
+  "worker": {
+    "passed": 7,
+    "completed_suites": 1,
+    "failed": false
+  },
+  "core": {
+    "passed": 3,
+    "completed_suites": 1,
+    "failed": false
+  },
+  "regressions": {
+    "passed": 35,
+    "completed_suites": 6,
+    "failed": false
+  },
+  "frontend": {
+    "passed": 28,
+    "source": "frontend.log"
+  }
+}

@@ -1,0 +1,25 @@
+bun test v1.4.2 (744846f84)
+
+scripts/notification-controls.test.tsx:
+(pass) onboarding requests nothing until explicit Enable; Skip persists a disabled choice [267.00ms]
+(pass) denial offers settings without requesting permission again; toggles preserve opt-in [44.65ms]
+(pass) metadata preview requires its own explicit checkbox and bodies stay excluded [3.64ms]
+10 | test('denial offers settings without requesting permission again; toggles preserve opt-in',async()=>{await render(<NotificationControls settings={{...settings,enabled:true,permission:'Denied'}} action={action}/>);expect(calls).toHaveLength(0);await click('Open System Settings');expect(calls[0].name).toBe('notification_settings');const inputs=host.querySelectorAll<HTMLInputElement>('input');await act(async()=>inputs[0].click());expect(calls[1].args.choices.categories).toEqual([false,true,true,true,true]);expect(calls[1].args.choices.enabled).toBe(true);expect(calls.every(c=>c.name!=='enable_notifications')).toBe(true);});
+11 | test('metadata preview requires its own explicit checkbox and bodies stay excluded',async()=>{await render(<NotificationControls settings={settings} action={action}/>);const inputs=host.querySelectorAll<HTMLInputElement>('input');expect(inputs[5].checked).toBe(false);await act(async()=>inputs[5].click());expect(calls[0].args.choices.previews).toBe(true);expect(calls[0].args.choices.enabled).toBe(false);expect(host.textContent).toContain('Bodies and logs are always omitted');});
+12 | test('permission labels and denied settings action accept the actual camelCase IPC states',async()=>{
+13 |  for(const [permission,label] of [['unknown','Checking'],['notDetermined','Not requested'],['denied','Denied in System Settings'],['granted','Allowed']] as const){
+14 |   await render(<NotificationControls settings={{...settings,permission} as any} action={action}/>);
+15 |   expect(host.textContent).toContain(`macOS permission: ${label}.`);
+                                ^
+error: expect(received).toContain(expected)
+
+Expected to contain: "macOS permission: Checking."
+Received: "NotificationsComments and reviews on your PRs, review requests, mentions and terminal workflow attempts. Monitoring continues in the menu bar when the reader closes. Quit stops monitoring.Previews show only a generic category and count by default. Enabling starts future alerts; existing unseen Activity stays intact. Pause monitoring also pauses alerts. Focused reading does not mute alerts.macOS permission: . Alerts disabled; Activity continues.Enable notificationsAlert categoriesCommentsReviewsReview requestsMentionsTerminal checksInclude repository, PR title and actor in previewsExplicit metadata opt-in applies to private and unknown-visibility PRs too. Bodies and logs are always omitted. Some external checks cannot identify retries; those alerts stay off. Launch at login is configured separately."
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/notification-controls.test.tsx:15:28)
+(fail) permission labels and denied settings action accept the actual camelCase IPC states [3.54ms]
+
+ 3 pass
+ 1 fail
+ 15 expect() calls
+Ran 4 tests across 1 file. [447.00ms]

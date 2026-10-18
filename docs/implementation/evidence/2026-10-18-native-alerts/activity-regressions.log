@@ -1,0 +1,15 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 8 tests
+test activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure ... ok
+test activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure ... ok
+test activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them ... ok
+test activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay ... ok
+test activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents ... ok
+test activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back ... ok
+test activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart ... ok
+test activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 243 filtered out; finished in 1.53s
+

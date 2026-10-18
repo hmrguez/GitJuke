@@ -2,25 +2,28 @@
 //! counts/identity lists; larger operations use the durable publication journal.
 use super::*;
 use rusqlite::Transaction;
-fn count(c: &Connection, t: &str, filter: &str, args: &str) -> Result<i64> {
-    // Saturate above every decision threshold, including empty replacements.
-    // A lower cap could mistake an arbitrarily large deletion for small work.
-    Ok(c.query_row(
-        &format!(
-            "SELECT COUNT(*) FROM(SELECT 1 FROM {t} WHERE {filter} AND ?1 IS NOT NULL LIMIT 129)"
-        ),
-        [args],
-        |r| r.get(0),
-    )?)
+pub(super) fn count(c: &Connection, t: &str, filter: &str, args: &str) -> Result<i64> {
+    // Every small-path threshold is below 128. Saturation is safe for empty
+    // replacements too, and all scoped predicates have native prefix indexes.
+    let mut q = c.prepare(&format!(
+        "SELECT COUNT(*) FROM(SELECT 1 FROM {t} WHERE {filter} AND ?1 IS NOT NULL LIMIT 128)"
+    ))?;
+    let out = q.query_row([args], |r| r.get(0))?;
+    crate::publication_completion::observe(&q, 1);
+    Ok(out)
 }
+
 fn ids(c: &Connection, sql: &str, args: &str) -> Result<Vec<String>> {
     let mut q = c.prepare(&format!("SELECT id FROM ({sql}) LIMIT 17"))?;
-    Ok(q.query_map([args], |r| r.get(0))?
-        .collect::<std::result::Result<Vec<_>, _>>()?)
+    let out = q
+        .query_map([args], |r| r.get(0))?
+        .collect::<std::result::Result<Vec<_>, _>>()?;
+    crate::publication_completion::observe(&q, out.len());
+    Ok(out)
 }
 fn flags(tx: &Transaction<'_>, ids: &[String]) -> Result<()> {
     for id in ids {
-        tx.execute("INSERT INTO watch SELECT ?1,EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND source='authored'),EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND (source='direct' OR source LIKE 'team:%')),EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND source='selected') WHERE EXISTS(SELECT 1 FROM watch WHERE id=?1) OR EXISTS(SELECT 1 FROM watch_source WHERE id=?1) ON CONFLICT(id) DO UPDATE SET authored=excluded.authored,requested=excluded.requested,selected=excluded.selected",[id])?;
+        tx.execute("INSERT INTO watch SELECT ?1,EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND source='authored'),(EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND source='direct') OR EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND source LIKE 'team:%')),EXISTS(SELECT 1 FROM watch_source WHERE id=?1 AND source='selected') WHERE EXISTS(SELECT 1 FROM watch WHERE id=?1) OR EXISTS(SELECT 1 FROM watch_source WHERE id=?1) ON CONFLICT(id) DO UPDATE SET authored=excluded.authored,requested=excluded.requested,selected=excluded.selected",[id])?;
     }
     Ok(())
 }
@@ -63,7 +66,7 @@ pub(super) fn publish(c: &mut Connection, kind: &str, x: &Value) -> Result<bool>
     let mut affected = vec![];
     match kind {
         "source_page" => {
-            if x["prs"].as_array().unwrap().len() > 100 {
+            if x["prs"].as_array().unwrap().len() > 60 {
                 return Ok(false);
             }
         }
@@ -90,6 +93,16 @@ pub(super) fn publish(c: &mut Connection, kind: &str, x: &Value) -> Result<bool>
             )?;
         }
         "selection" => {
+            if count(c, "watch_source", "source='selected'", &args)? > 16
+                || count(
+                    c,
+                    "watch_locator",
+                    "repo=json_extract(?1,'$.repo') AND number=json_extract(?1,'$.number')",
+                    &args,
+                )? > 16
+            {
+                return Ok(false);
+            }
             affected = ids(
                 c,
                 "SELECT id FROM watch_source WHERE source='selected' UNION SELECT id FROM watch_locator WHERE repo=json_extract(?1,'$.repo') AND number=json_extract(?1,'$.number') AND state='open' AND json_extract(?1,'$.open')",
@@ -141,7 +154,7 @@ pub(super) fn publish(c: &mut Connection, kind: &str, x: &Value) -> Result<bool>
                     staged + incoming
                 };
             }
-            if changes > 112 {
+            if changes > 28 {
                 return Ok(false);
             }
         }
@@ -160,18 +173,8 @@ pub(super) fn publish(c: &mut Connection, kind: &str, x: &Value) -> Result<bool>
             if count(c, "teams", "1", &args)? > 8 || count(c, "teams_stage", "1", &args)? > 8 {
                 return Ok(false);
             }
-            if count(
-                c,
-                "watch_source",
-                "source LIKE 'team:%' AND substr(source,6) NOT IN(SELECT id FROM teams_stage)",
-                &args,
-            )? > 16
-                || count(
-                    c,
-                    "pending",
-                    "key LIKE 'discover:team:%' AND substr(key,15) NOT IN(SELECT id FROM teams_stage)",
-                    &args,
-                )? > 16
+            if count(c, "watch_source", "source LIKE 'team:%'", &args)? > 16
+                || count(c, "pending", "key LIKE 'discover:team:%'", &args)? > 16
             {
                 return Ok(false);
             }

@@ -1,0 +1,14 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.56s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 1 test
+live comments: distinct first/second cursor pages, total 3
+live threads: distinct first/second cursor pages, total 4
+live exact IssueComment: body 2025 bytes
+live exact COMMENTED: body 0 bytes
+live exact reply: body 2178 bytes; supplied side RIGHT; outdated true
+test live_existing_owned_destinations_and_cursor_pages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 5.95s
+

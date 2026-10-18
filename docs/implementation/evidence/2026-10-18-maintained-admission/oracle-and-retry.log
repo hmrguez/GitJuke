@@ -1,0 +1,40 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.02s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 17 tests
+test admission_query::tests::crash_child_entry ... ok
+test admission_query::tests::invalid_stored_request_stops_admission_without_writes_or_a_leaked_snapshot ... ok
+test admission_query::tests::raw_request_substrings_are_charged_once_and_moves_remain_exact ... ok
+test admission_query::tests::request_inputs_match_sqlite_utf8_charge_and_rollback ... ok
+test admission_query::tests::autocommit_totals_hold_one_snapshot_across_concurrent_window_changes ... ok
+test admission_query::tests::maintained_state_tracks_replacements_moves_rollbacks_and_late_counter_failure ... ok
+test admission_query::tests::retained_images_stay_charged_during_eviction_and_refuse_impossible_admission ... ok
+test admission_query::tests::late_batch_fault_preserves_exact_prefix_and_retries_atomically ... ok
+test check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume ... FAILED
+test maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes ... ok
+test clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume ... ok
+test startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches ... ok
+test maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history ... ok
+test admission_query::tests::sigkill_read_and_reclamation_keep_only_committed_prefixes ... ok
+test admission_query::tests::one_snapshot_timestamp_update_and_successor_seeks_skip_large_staged_prefixes ... ok
+test admission_query::tests::compact_large_sets_have_bounded_statements_and_exact_totals_and_lru ... ok
+test publication::tests::bounded_batches_keep_old_snapshot_until_atomic_visibility_commit ... ok
+
+failures:
+
+---- check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume stdout ----
+
+thread 'check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume' (13053455) panicked at crates/gitjuke-core/src/check_purge.rs:626:9:
+assertion `left == right` failed
+  left: 200
+ right: 257
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume
+
+test result: FAILED. 16 passed; 1 failed; 0 ignored; 0 measured; 144 filtered out; finished in 8.75s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

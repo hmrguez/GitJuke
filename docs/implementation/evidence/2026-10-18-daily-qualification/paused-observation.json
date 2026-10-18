@@ -1,0 +1,47 @@
+{
+  "intervalSeconds": 12,
+  "before": {
+    "helperReads": 170,
+    "paused": true,
+    "seen": {
+      "github.com:a/b:1:local-short": 1,
+      "github.com:a/b:1:local-segments": 1,
+      "github.com:a/b:1:local-anchor": 0,
+      "github.com:a/b:1:local-oversized": 0,
+      "github.com:a/b:1:local-empty": 0,
+      "github.com:a/b:1:local-neighbor": 0,
+      "github.com:a/b:1:local-unicode-limit": 0,
+      "github.com:a/b:1:local-left": 0,
+      "github.com:a/b:1:local-wrong-commit": 0,
+      "github.com:a/b:1:local-mixed-side": 0,
+      "github.com:a/b:1:local-negative-line": 0,
+      "github.com:a/b:1:local-outdated": 0,
+      "github.com:a/b:1:local-wrong-file": 0,
+      "github.com:a/b:1:status:SC_1:cccccccccccccccccccccccccccccccccccccccc:2026-10-17T00:00:00Z": 1,
+      "github.com:a/b:1:workflow:2:1:cccccccccccccccccccccccccccccccccccccccc": 1
+    }
+  },
+  "after": {
+    "helperReads": 170,
+    "paused": true,
+    "seen": {
+      "github.com:a/b:1:local-short": 1,
+      "github.com:a/b:1:local-segments": 1,
+      "github.com:a/b:1:local-anchor": 0,
+      "github.com:a/b:1:local-oversized": 0,
+      "github.com:a/b:1:local-empty": 0,
+      "github.com:a/b:1:local-neighbor": 0,
+      "github.com:a/b:1:local-unicode-limit": 0,
+      "github.com:a/b:1:local-left": 0,
+      "github.com:a/b:1:local-wrong-commit": 0,
+      "github.com:a/b:1:local-mixed-side": 0,
+      "github.com:a/b:1:local-negative-line": 0,
+      "github.com:a/b:1:local-outdated": 0,
+      "github.com:a/b:1:local-wrong-file": 0,
+      "github.com:a/b:1:status:SC_1:cccccccccccccccccccccccccccccccccccccccc:2026-10-17T00:00:00Z": 1,
+      "github.com:a/b:1:workflow:2:1:cccccccccccccccccccccccccccccccccccccccc": 1
+    }
+  },
+  "noAutomaticReads": true,
+  "seenUnchanged": true
+}

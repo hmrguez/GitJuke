@@ -1,0 +1,14 @@
+{
+  "dev.hmrguez.gitjuke.plist": {
+    "exists": false,
+    "sha256": null
+  },
+  "GitJuke.plist": {
+    "exists": false,
+    "sha256": null
+  },
+  "gitjuke.plist": {
+    "exists": false,
+    "sha256": null
+  }
+}

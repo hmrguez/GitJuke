@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-18",
+  "version": "0.1.0",
+  "schema": 15,
+  "platform": {
+    "macOS": "27.0",
+    "architecture": "arm64"
+  },
+  "scope": "Integrated alert slice; concurrent authorized CheckLog, accessibility and lifecycle sources retained. This is not release or signed delivery evidence.",
+  "sha256": {
+    "crates/gitjuke-core/src/alerts.rs": "7d30c4520bf786fd62e7d3614a86be4054832d3a108db1c8fccda4e5aac2d23c",
+    "crates/gitjuke-core/src/alerts_tests.rs": "0e177a61683fc6bfac842a85b7a06f3ce054212810d8818eb0ae20a5d952e921",
+    "crates/gitjuke-core/src/runtime_alerts.rs": "4baf944694ce8c45b8d43200473b22d07af0a24fcef0257dece75d4fdcad0e23",
+    "crates/gitjuke-core/src/activity_store.rs": "c2ab6da2d68e6c41363b3edea7a6880f0827436522d8df66cfa0186684c9fe0d",
+    "crates/gitjuke-core/src/activity_publication.rs": "58f2dacd58a40de03293173c7da5ac40c1c031e7fb71d9ba92a44f7b5580aca5",
+    "crates/gitjuke-core/src/publication_planning.rs": "cd6da3ad5ed498d85281f488ab68f6692ad68de05d6dc4c7f4d823558fbfa198",
+    "crates/gitjuke-core/src/model.rs": "1b87e7bb3e1bb29fe015d3740c30ac6d13132d3699b84217c24a1f77083ae6ce",
+    "crates/gitjuke-core/src/migrations.rs": "f560bf78412b110f1201956249bff04c4442ef661c0a952d3101de4084fd4ae5",
+    "crates/gitjuke-core/src/store.rs": "c4097018adbaf7740226326625c871b1d6f79708c7da747e2366a78978d67157",
+    "crates/gitjuke-core/src/sync.rs": "99a206194083181f24e7525a592dd51170b3e7bb9f5ee31333bd6cc2083ede50",
+    "crates/gitjuke-core/src/transport.rs": "4de2826fac01e02923fbca7942cca708ff8fcf056c19b88ea3dcd62dc3c82e4f",
+    "crates/gitjuke-core/src/runtime.rs": "6d513853c464a72f32fe5e4cba6f2d0131316387c17552ae6fa2248c6140c60b",
+    "src-tauri/src/lib.rs": "1959daa7ae4fb724a2465b24933362a651a19d9cea2172f4d77cb2abe8b748a5",
+    "src-tauri/src/notifications.rs": "b42c8485000f8ce43c715082e4f91dba3b0bde342a1053b4c71720fae78211a0",
+    "src-tauri/src/notifications.m": "6eac5710069bb820976b28ba76e0f80721f0270476822ea1556c684d34d3a596",
+    "src-tauri/build.rs": "d45e75d94dd8e340503a8115339b8ba97dea415830480a26d1166bab7abb19e4",
+    "src/NotificationControls.tsx": "6962ea97fc2dae921c2e69658367f5e33a9c95735b5eed9d4a4005673819a0a4",
+    "src/notifications.css": "7ddfcaebe02499acb6a1f92a9265ed5812778e28f14aa168ad4a419ffa9029aa",
+    "src/main.tsx": "d53f99aa751d584926dbd0852a473de7923bc025dc427f768ec8d4908edf71b0",
+    "src/api.ts": "0ac61b0d34a050f6c2d76460b97d73756cafedf37b85e39e97e7ecc57b904a5c"
+  },
+  "observedNativeAdapter": {
+    "identifier": "dev.hmrguez.gitjuke.alerts.qualification",
+    "binarySha256": "7d1513250929403bb4bf21c3017a0735e2390b921503fc95e5223d9f59d17d78",
+    "scope": "Earlier unsigned adapter build: no automatic request, pre-permission refusal, explicit request unresolved. Final bounded polling changes have compile/link evidence only.",
+    "processStopped": true
+  },
+  "automated": {
+    "coreAlertWorkerGuardEntries": 15,
+    "activityStoreEntries": 8,
+    "migrationEntries": 1,
+    "integrationEntries": 43,
+    "desktopIPCEntries": 1,
+    "frontendEntries": 36,
+    "distinctPassingEntries": 104,
+    "ignoredLiveEntries": 1,
+    "actualSigkillCasesWithinCoreEntries": 2,
+    "integrationPrefixNote": "Activity 3, Conversation 9 and Runtime 16 passed. That invocation later failed on an obsolete schema fixture. Store 8 and Watch 7 pass in the separate corrected store-watch log; the partial failed Store result is not counted.",
+    "lowSpaceNote": "Earlier runs refused writes below 1 GiB, with production guard unchanged. Only task-owned disposable build files were reclaimed before passing retries."
+  },
+  "nativeDelivery": "Blocked/Pending; user explicitly declined signed qualification",
+  "liveProviderEvidence": "None added",
+  "groupedReleaseScenarios": "All 29 Pending"
+}

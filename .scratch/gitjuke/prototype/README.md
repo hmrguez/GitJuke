@@ -7,11 +7,11 @@ Planning handoff settled 2026-10-17: Stacks and the appearance are human-approve
 From the repository root:
 
 ```sh
-npm install
-npm run prototype
+bun install
+bun run prototype
 ```
 
-Continue review at `/prototype?variant=stacks` using the localhost URL printed by Vite (normally http://127.0.0.1:5173; it selects another port if occupied). Build check: `npm run prototype:build`. The development-only review bar is hidden in the production build.
+Continue review at `/prototype?variant=stacks` using the localhost URL printed by Vite (normally http://127.0.0.1:5173; it selects another port if occupied). Build check: `bun run prototype:build`. The development-only review bar is hidden in the production build.
 
 ## Directions
 

@@ -1,0 +1,15 @@
+$ cargo test -p gitjuke-core --lib --offline activity_due::tests -- --skip sigkill
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 7 tests
+test activity_due::tests::crash_child_entry ... ok
+test activity_due::tests::exact_deadline_pending_key_source_case_and_native_tie_order ... ok
+test activity_due::tests::alias_windows_propagate_late_errors_and_preserve_membership_snapshot ... ok
+test activity_due::tests::late_read_failure_discards_partial_heap_and_retry_preserves_inputs_and_history ... ok
+test activity_due::tests::pending_publication_blocks_native_queries_behind_protected_reader_views ... ok
+test activity_due::tests::all_windows_and_point_checks_share_one_snapshot_including_caller_transactions ... ok
+test activity_due::tests::exact_oracle_and_bounded_statements_across_protected_targets_aliases_and_reasons ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 193 filtered out; finished in 3.10s
+

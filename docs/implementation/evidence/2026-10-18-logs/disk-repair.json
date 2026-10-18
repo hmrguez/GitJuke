@@ -1,0 +1,9 @@
+{
+  "free_bytes_before": 446464000,
+  "free_bytes_after": 8806400000,
+  "removed_only_task_build_outputs": [
+    "/private/tmp/gitjuke-logs-target",
+    "/private/tmp/gitjuke-logs-verified"
+  ],
+  "normal_app_data_untouched": true
+}

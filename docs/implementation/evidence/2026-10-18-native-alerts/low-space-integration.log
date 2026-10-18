@@ -1,0 +1,49 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-native-alerts/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 18s
+     Running tests/activity.rs (/private/tmp/gitjuke-alerts-core-target/debug/deps/activity-004b9f02f4b15ba8)
+
+running 3 tests
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conversation.rs (/private/tmp/gitjuke-alerts-core-target/debug/deps/conversation-6359a5de008b5914)
+
+running 10 tests
+test live_existing_owned_destinations_and_cursor_pages ... ignored, requires authorized stored gh identity and live network
+test exact_coordinate_denial_and_edit_cannot_publish_mixed_destination ... ok
+test exact_destinations_without_excerpts_or_history_scans ... ok
+test explicit_seen_receipts_reject_changed_body_clear_and_placeholders ... ok
+test cancellation_clear_and_stale_revision_never_publish ... ok
+test denial_identity_and_selected_pr_barriers ... ok
+test exact_destination_ownership_missing_cancellation_and_receipt_barriers ... ok
+test local_mixed_identity_fixture_preserves_seen_and_current_range ... ok
+test independent_pages_thread_replies_and_ipc_subdivision has been running for over 60 seconds
+test replacement_ticket_and_moving_comparison_reject_late_results has been running for over 60 seconds
+test independent_pages_thread_replies_and_ipc_subdivision ... FAILED
+test replacement_ticket_and_moving_comparison_reject_late_results ... FAILED
+
+failures:
+
+---- independent_pages_thread_replies_and_ipc_subdivision stdout ----
+
+thread 'independent_pages_thread_replies_and_ipc_subdivision' (13772274) panicked at crates/gitjuke-core/tests/conversation.rs:25:6:
+Conversation fixture reached expected state: Elapsed(())
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- replacement_ticket_and_moving_comparison_reject_late_results stdout ----
+
+thread 'replacement_ticket_and_moving_comparison_reject_late_results' (13772865) panicked at crates/gitjuke-core/tests/conversation.rs:33:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+
+failures:
+    independent_pages_thread_replies_and_ipc_subdivision
+    replacement_ticket_and_moving_comparison_reject_late_results
+
+test result: FAILED. 7 passed; 2 failed; 1 ignored; 0 measured; 0 filtered out; finished in 70.04s
+
+error: test failed, to rerun pass `-p gitjuke-core --test conversation`

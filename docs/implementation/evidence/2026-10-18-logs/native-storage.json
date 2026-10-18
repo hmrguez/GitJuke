@@ -1,0 +1,26 @@
+{
+  "schema": 14,
+  "log_pending_jobs": 0,
+  "integrity": "ok",
+  "files": [
+    {
+      "file": "gitjuke.sqlite3",
+      "bytes": 364544,
+      "sha256": "aac9ec165f9c15b2871f139bb88e7cbdbe9a4bb45ee62073f91899807e17507d",
+      "log_body_canary_present": false
+    },
+    {
+      "file": "gitjuke.sqlite3-shm",
+      "bytes": 32768,
+      "sha256": "66f55467bc039024bb4340079d72fd57b77a13d89ccea07019124c0229393504",
+      "log_body_canary_present": false
+    },
+    {
+      "file": "gitjuke.sqlite3-wal",
+      "bytes": 4000552,
+      "sha256": "0c737c4c271ccef63e241a15ded3483ee1f7a41a28b829728088b718e5992e65",
+      "log_body_canary_present": false
+    }
+  ],
+  "inspection": "Read-only copied SQLite main/WAL/SHM after native Quit; original files never opened by SQLite."
+}

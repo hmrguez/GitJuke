@@ -1,0 +1,21 @@
+bun test v1.4.2 (744846f84)
+
+scripts/conversation-render.test.tsx:
+(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [17.96ms]
+
+scripts/conversation.test.mjs:
+(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [3.87ms]
+(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.33ms]
+(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.05ms]
+(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.15ms]
+(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [0.68ms]
+(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [0.09ms]
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.09ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [8.80ms]
+
+ 9 pass
+ 0 fail
+ 3 expect() calls
+Ran 9 tests across 3 files. [63.00ms]

@@ -1,0 +1,34 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Preferences
+				4 heading Preferences, Value: 2
+					5 text Preferences
+				6 button Close preferences
+				7 container Preferences sections
+					8 toggle button Appearance, Value: off
+					9 toggle button Monitoring, Value: on
+					10 toggle button GitHub, Value: off
+					11 toggle button Storage, Value: off
+				12 container Monitoring
+					13 heading Monitoring, Value: 3
+						14 text Monitoring
+					15 text 1 active watches · 1 delayed. Discovery targets 60 seconds; head/check eligibility targets 10 seconds. Activity hydrates individual comments, reviews, requests and mentions; native alerts are unavailable.
+					16 text Authored: Complete cached set · 13:25:44
+					17 text Direct requests: Complete cached set · 13:25:45
+					18 text Team membership: Complete cached set · 13:25:45
+					19 text core: 175 requests · 225872 bytes · 0 points · 4900 remaining
+					20 text search: 2 requests · 346 bytes · 0 points · 4900 remaining
+					21 text graphql: 21 requests · 529129 bytes · 21 points · 4900 remaining
+					22 summary Active watch reasons and freshness, Value: off
+						23 text Active watch reasons and freshness
+				24 text GitJuke 0.1.0 · Your personal review desk.
+	25 close button
+	26 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	27 minimize button
+	28 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+29 menu bar
+	30 GitJuke Accessibility
+
+The focused UI element is 3 container Preferences

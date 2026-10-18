@@ -21,23 +21,25 @@ fn expire_activity(tx: &Transaction<'_>, time: u64, allowance: &mut usize) -> Re
         q.query_map(
             params![
                 time.saturating_sub(ACTIVITY_AGE) as i64,
-                (*allowance / 3) as i64
+                (*allowance / 4) as i64
             ],
             |r| r.get::<_, String>(0),
         )?
         .collect::<std::result::Result<Vec<_>, _>>()?
     };
+    let before = tx.total_changes();
     for id in &ids {
-        *allowance -= tx.execute(
+        tx.execute(
             "DELETE FROM content WHERE key=?",
             [format!("activity-payload:{id}")],
         )?;
-        *allowance -= tx.execute(
+        tx.execute(
             "DELETE FROM progress WHERE key=?",
             [format!("catchup:{id}")],
         )?;
-        *allowance -= tx.execute("DELETE FROM activity WHERE id=?", [id])?;
+        tx.execute("DELETE FROM activity WHERE id=?", [id])?;
     }
+    *allowance -= (tx.total_changes() - before) as usize;
     // seen, dedup, intent membership and attempt outcomes are identity-only
     // replay barriers. Expiration must never rewrite or delete them.
     Ok(ids.len())
@@ -58,14 +60,17 @@ impl Store {
         let tx = self.conn.transaction()?;
         let before = tx.total_changes();
         // Reserve revision before selecting any victims. Each Activity unit needs
-        // at most three mutations; never split its payload/progress/minimal row.
+        // at most four mutations; never split its payload/progress/minimal row.
         let mut allowance = RETENTION_BATCH - 1;
         let mut visible = expire_activity(&tx, time, &mut allowance)?;
         // Expiration is an index range, separate from orphan detection. LIMIT
         // now bounds candidates examined instead of filtering a combined OR.
         visible += tx.execute(
             EXPIRED_CONTENT,
-            params![time.saturating_sub(CONTENT_AGE) as i64, allowance as i64],
+            params![
+                time.saturating_sub(CONTENT_AGE) as i64,
+                (allowance / 2) as i64
+            ],
         )?;
         allowance = RETENTION_BATCH - 1 - (tx.total_changes() - before) as usize;
         use crate::retention_window::{Class, sweep};
@@ -198,7 +203,7 @@ pub(crate) mod tests {
         for table in ["api_validator", "check_state"] {
             assert_eq!(
                 count(&s, table),
-                if table == "api_validator" { 134 } else { 257 }
+                if table == "api_validator" { 135 } else { 257 }
             );
         }
         assert_eq!(count(&s, "resource_state"), 258);
@@ -206,9 +211,9 @@ pub(crate) mod tests {
         drop(s);
         let mut s = Store::open(&path).unwrap();
         s.maintain_retention_at(time).unwrap();
-        assert_eq!(count(&s, "api_validator"), 8);
+        assert_eq!(count(&s, "api_validator"), 9);
         assert_eq!(count(&s, "check_state"), 257);
-        for _ in 0..6 {
+        for _ in 0..8 {
             s.maintain_retention_at(time).unwrap();
         }
         assert_eq!(count(&s, "api_validator"), 0);
@@ -359,15 +364,15 @@ pub(crate) mod tests {
         seed(&mut s, total, time);
         let before = s.revision().unwrap();
         s.maintain_retention_at(time).unwrap();
-        assert_eq!(count(&s, "activity"), total - 42);
-        assert_eq!(count(&s, "content"), total - 42);
-        assert_eq!(count(&s, "progress"), total - 42 + 1);
+        assert_eq!(count(&s, "activity"), total - 31);
+        assert_eq!(count(&s, "content"), total - 31);
+        assert_eq!(count(&s, "progress"), total - 31 + 1);
         assert_eq!(s.revision().unwrap(), before + 1);
         drop(s);
         let mut s = Store::open(&path).unwrap();
         s.maintain_retention_at(time).unwrap();
-        assert_eq!(count(&s, "activity"), total - 84);
-        for _ in 0..5 {
+        assert_eq!(count(&s, "activity"), total - 62);
+        for _ in 0..7 {
             s.maintain_retention_at(time).unwrap();
         }
         assert_eq!(count(&s, "activity"), 0);
@@ -463,13 +468,15 @@ pub(crate) mod tests {
                 .unwrap();
         }
         s.maintain_retention_at(time).unwrap();
-        assert_eq!(count(&s, "content"), 2);
+        assert_eq!(count(&s, "content"), 66);
         s.conn
             .execute(
                 "INSERT INTO content VALUES('activity-payload:orphan','{}',?,?)",
                 params![time as i64, time as i64],
             )
             .unwrap();
+        s.maintain_retention_at(time).unwrap();
+        assert_eq!(count(&s, "content"), 4);
         s.maintain_retention_at(time).unwrap();
         assert_eq!(count(&s, "content"), 0);
     }

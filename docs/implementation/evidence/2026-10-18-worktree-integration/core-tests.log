@@ -1,0 +1,317 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 257 tests
+test activity_bounded::child ... ok
+test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... FAILED
+test activity_bounded::source_api_payload_publication_reserves_its_four_mutations_from_admission ... ok
+test activity_bounded::staging_restart_and_notification_progress_share_global_bounds ... ok
+test activity_crash::crash_child_entry ... ok
+test activity_bounded::large_baseline_completion_has_no_summary_and_one_visibility_commit ... ok
+test activity_bounded::journal_classifies_expired_historical_suppressed_and_post_boundary_without_replay ... ok
+test activity_due::tests::alias_windows_propagate_late_errors_and_preserve_membership_snapshot ... ok
+test activity_due::tests::all_windows_and_point_checks_share_one_snapshot_including_caller_transactions ... ok
+test activity_due::tests::crash_child_entry ... ok
+test activity_due::tests::exact_deadline_pending_key_source_case_and_native_tie_order ... ok
+test activity_crash::sigkill_summary_commits_membership_progress_and_baseline_together ... ok
+test activity_due::tests::late_read_failure_discards_partial_heap_and_retry_preserves_inputs_and_history ... ok
+test activity_due::tests::pending_publication_blocks_native_queries_behind_protected_reader_views ... ok
+test activity_due::tests::sigkill_late_read_has_no_persistent_selection_or_completion_prefix ... ok
+test activity_enrollment::tests::bounded_enrollment_deduplicates_and_gates_recovery_until_all_targets_finish ... ok
+test activity_enrollment::tests::concurrent_target_commit_aborts_stale_enrollment_then_retry_preserves_deadline ... ok
+test activity_enrollment::tests::crash_child_entry ... ok
+test activity_enrollment::tests::enrollment_guard_counts_dependent_trigger_mutations_and_rolls_back ... ok
+test activity_bounded::actual_sigkill_staging_reset_requires_fresh_complete_hydration ... ok
+test activity_enrollment::tests::later_enrollment_fault_rolls_back_batch_and_restarts_without_resetting_targets ... ok
+test activity_enrollment::tests::pending_publication_blocks_native_enrollment_without_bypassing_protected_reads ... ok
+test activity_enrollment::tests::sigkill_before_and_after_later_batch_commit_preserves_restart_progress ... ok
+test activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay ... ok
+test activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back ... ok
+test activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure ... ok
+test activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents ... ok
+test activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure ... ok
+test activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart ... ok
+test activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them ... ok
+test activity_crash::sigkill_publication_preserves_atomic_ledgers_and_reconciles_without_replay ... ok
+test admission_query::tests::autocommit_totals_hold_one_snapshot_across_concurrent_window_changes ... ok
+test activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids ... ok
+test admission_query::tests::crash_child_entry ... ok
+test admission_query::tests::invalid_stored_request_stops_admission_without_writes_or_a_leaked_snapshot ... ok
+test admission_query::tests::late_batch_fault_preserves_exact_prefix_and_retries_atomically ... ok
+test activity_bounded::late_apply_and_visibility_failure_protect_readers_and_exact_retry ... ok
+test admission_query::tests::maintained_state_tracks_replacements_moves_rollbacks_and_late_counter_failure ... ok
+test admission_query::tests::raw_request_substrings_are_charged_once_and_moves_remain_exact ... ok
+test admission_query::tests::request_inputs_match_sqlite_utf8_charge_and_rollback ... ok
+test admission_query::tests::retained_images_stay_charged_during_eviction_and_refuse_impossible_admission ... ok
+test admission_query::tests::sigkill_read_and_reclamation_keep_only_committed_prefixes ... ok
+test alerts::tests::actual_sigkill_before_and_after_attempt_commit ... ok
+test alerts::tests::attempt_crash_child ... ok
+test alerts::tests::authoritative_workflow_attempts_coalesce_jobs_keep_runs_distinct_and_external_unknown ... ok
+test activity_bounded::large_publication_modes_and_summary_are_bounded_and_idempotent ... ok
+test activity_enrollment::tests::enrollment_windows_match_distinct_oracle_through_large_rejected_prefixes ... ok
+test alerts::tests::completed_recovery_groups_across_prs_while_post_boundary_activity_alerts_normally ... ok
+test alerts::tests::failed_attempt_commit_cannot_dispatch_and_ambiguous_attempt_stays_terminal ... ok
+test alerts::tests::metadata_previews_require_explicit_opt_in_and_never_include_bodies ... ok
+test alerts::tests::head_and_retry_races_reject_reserved_terminal_results ... ok
+test alerts::tests::opt_in_and_permission_boundaries_never_replay_backlog ... ok
+test alerts::tests::notification_destination_hides_expired_cleared_denied_and_unattempted_sources ... ok
+test admission_query::tests::one_snapshot_timestamp_update_and_successor_seeks_skip_large_staged_prefixes ... ok
+test alerts::tests::summary_and_unavailable_notification_routes_remain_distinct_and_do_not_mark_seen ... ok
+test alerts::tests::reservation_revalidates_seen_pause_permission_policy_generation_and_membership ... ok
+test changes::tests::fallback_rejects_untrusted_or_wrong_revision_file_links ... ok
+test changes::tests::inclusive_utf8_bytes_rows_and_logical_line_limits ... ok
+test changes::tests::metadata_pages_keep_indices_totals_and_upstream_ceiling_honest ... ok
+test changes::tests::source_completeness_is_not_inferred_from_presence_or_missing_text ... ok
+test changes::tests::chunks_preserve_every_utf8_byte_and_fit_worst_case_ipc_encoding ... ok
+test alerts::tests::completed_batches_group_without_focus_suppression_and_previews_are_generic ... ok
+test check_purge::tests::check_purge_blocks_otherwise_ready_recovery ... ok
+test check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume ... ok
+test changes_store::tests::denied_changes_remain_hidden_through_partial_cleanup_and_restart ... ok
+test check_purge::tests::check_purge_global_bound_visibility_and_resource_isolation ... ok
+test check_purge::tests::crash_child_entry ... ok
+test check_purge::tests::check_purge_markers_and_unchanged_states_have_bounded_progress ... ok
+test clear_content::tests::clear_barrier_blocks_otherwise_ready_recovery_completion ... ok
+test clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume ... ok
+test clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history ... ok
+test clear_content::tests::clear_unchanged_rows_do_not_consume_the_batch_allowance ... ok
+test clear_content::tests::crash_child_entry ... ok
+test content_budget::admission_tests::compact_shared_snapshot_reclamation_matches_exact_revision_and_candidate_prefix ... ok
+test content_budget::admission_tests::crash_child_entry ... ok
+test alerts::tests::reconstruction_is_bounded_idempotent_and_excludes_terminal_history ... ok
+test content_budget::admission_tests::impossible_staging_does_not_commit_pointless_reclamation_or_candidate_progress ... ok
+test check_purge::tests::check_purge_sigkill_barrier_and_cleanup_commits_preserve_scope_and_history ... ok
+test content_budget::admission_tests::later_reclaim_and_publication_faults_preserve_prefix_but_never_candidate_state ... ok
+test clear_content::tests::clear_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test activity_due::tests::exact_oracle_and_bounded_statements_across_protected_targets_aliases_and_reasons ... ok
+test content_budget::admission_tests::repeated_candidates_do_not_publish_activity_dedup_progress_or_terminal_intents ... ok
+test content_budget::admission_tests::stale_optional_publication_has_no_admission_side_effects ... ok
+test content_budget::admission_tests::mixed_reclamation_has_one_global_budget_including_check_states_and_revision ... ok
+test content_budget::admission_tests::speculative_admission_shares_expiry_pressure_and_check_invalidation_allowance ... ok
+test content_budget::tests::exact_limit_utf8_and_tied_lru_prefix ... ok
+test content_budget::tests::head_eviction_failure_rolls_back_epoch_closure_and_check_invalidation ... ok
+test content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart ... ok
+test content_budget::tests::lru_check_delete_failure_rolls_back_snapshot_and_new_publication ... ok
+test content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness ... FAILED
+test content_budget::tests::each_staging_class_shares_admission_and_rollback ... ok
+test content_budget::tests::selected_registration_eviction_failure_rolls_back_membership_and_revision ... ok
+test content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it ... ok
+test content_capacity::crash_child_entry ... ok
+test content_budget::tests::shared_lru_reclaims_checks_without_touching_staging_or_watch_history ... ok
+test content_budget::tests::large_victim_prefix_preserves_activity_and_replay_barriers_after_reopen ... ok
+test admission_query::tests::compact_large_sets_have_bounded_statements_and_exact_totals_and_lru ... ok
+test activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads ... ok
+test conversation::tests::direct_identity_ownership_and_navigation_contract ... ok
+test conversation::tests::exact_coordinate_source_rejects_identity_owner_and_edited_body ... ok
+test conversation::tests::inclusive_utf8_and_unavailable_bodies ... ok
+test conversation::tests::stale_partial_cursor_and_source_urls ... ok
+test conversation_store::tests::partial_denial_cleanup_restarts_preserving_overview_neighbors_and_history ... ok
+test invalidation::tests::crash_child_entry ... ok
+test invalidation::tests::invalidation_global_bound_and_logical_read_barrier_preserve_history ... ok
+test invalidation::tests::invalidation_late_fault_is_restartable_and_protected_reads_stay_incomplete ... ok
+test invalidation::tests::invalidation_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test logs::tests::external_details_reject_unsafe_schemes_authorities_and_controls ... ok
+test logs::tests::log_utf8_inclusive_limit_and_worst_case_ipc_encoding ... ok
+test logs::tests::quota_errors_and_arbitrary_provider_diagnostics_are_never_empty_or_retained ... ok
+test maintenance_tests::cached_expired_checks_do_not_gain_completeness_while_cleanup_waits ... ok
+test maintenance_tests::crash_child_entry ... ok
+test maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope ... ok
+test maintenance_tests::late_metadata_and_check_faults_restore_complete_batch_after_committed_prefix ... ok
+test maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes ... ok
+test maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery ... ok
+test maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history ... ok
+test maintenance_tests::pending_control_work_cannot_falsely_complete_ready_recovery ... ok
+test content_budget::admission_tests::full_ceiling_many_victims_publish_atomically_and_survive_restart ... ok
+test migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure ... ok
+test migrations::tests::crash_child_entry ... ok
+test maintenance_tests::sigkill_maintenance_before_and_after_first_and_late_commits ... ok
+test migrations::tests::failed_legacy_migration_stops_runtime_then_reopens_paused_after_repair ... ok
+test migrations::tests::saved_query_schema_16_late_space_failure_preserves_15_and_retries ... ok
+test migrations::tests::schema_thirteen_planning_sigkill_keeps_previous_or_complete_upgrade_and_resumes ... ok
+test migrations::tests::schema_thirteen_planning_upgrade_rolls_back_late_failure_and_resets_preparation_safely ... ok
+test migrations::tests::schema_twelve_accounting_backfill_is_atomic_on_late_failure_and_resumes_pending_work ... ok
+test migrations::tests::schema_twelve_accounting_sigkill_is_previous_or_complete_and_restart_exact ... ok
+test activity_bounded::actual_sigkill_large_activity_and_summary ... ok
+test pending_selection::tests::candidate_windows_skip_large_rejected_prefixes_and_match_full_sort_fairness_oracle ... ok
+test pending_selection::tests::crash_child_entry ... ok
+test pending_selection::tests::exact_deadlines_pause_resources_integer_priority_and_signed_sequences_match_oracle ... ok
+test pending_selection::tests::fairness_page_boundaries_retry_coalescing_and_ack_preserve_exact_remainder ... ok
+test pending_selection::tests::late_candidate_and_descriptor_errors_return_no_partial_queue_and_retry_without_writes ... ok
+test pending_selection::tests::policy_candidates_background_reservation_and_bodies_share_one_snapshot ... ok
+test pending_selection::tests::publication_barrier_blocks_queue_selection_while_readers_keep_old_or_new_images ... ok
+test pending_selection::tests::selected_descriptor_decode_error_rolls_back_read_snapshot_and_can_retry ... ok
+test pending_selection::tests::sigkill_late_candidate_and_descriptor_reads_preserve_queue_and_durable_history ... ok
+test physical_storage_tests::actual_readonly_volume_rejects_writes_and_keeps_cache_readable ... ignored, requires the disposable fault volume remounted read-only
+test physical_storage_tests::actual_volume_exhaustion_rolls_back_and_preserves_history ... ignored, requires a disposable mounted 64-MiB fault volume
+test pr_purge::tests::crash_child_entry ... ok
+test pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume ... FAILED
+test pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation ... FAILED
+test pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches ... FAILED
+test pr_purge::tests::pr_purge_unknown_pr_overlap_and_recovery_barriers ... ok
+test content_budget::admission_tests::sigkill_full_ceiling_reclamation_and_publication_keep_only_committed_state ... ok
+test migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows ... FAILED
+test publication::tests::crash_child_entry ... ok
+test publication::tests::empty_replacements_cannot_hide_large_deletions_behind_capped_preflight_counts ... ok
+test content_capacity::full_ceiling_late_delete_fault_restores_payloads_completeness_and_revision ... ok
+test publication::tests::exact_retry_finishes_pending_publication_without_publishing_empty_or_advancing_epoch_twice ... ok
+test publication::tests::late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membership_loss ... ok
+test publication::tests::pending_publication_blocks_recovery_even_with_old_complete_health ... ok
+test content_capacity::full_ceiling_mixed_lru_is_inclusive_disk_backed_and_survives_restart ... ok
+test publication::tests::small_single_transaction_and_journal_paths_publish_identical_snapshots ... ok
+test publication::window_tests::completion_crash_child ... ok
+test publication::window_tests::completion_windows_and_maintained_counts_match_full_oracles_behind_protected_prefixes ... ok
+test publication::window_tests::crash_child ... ok
+test publication::window_tests::cursor_late_fault_and_retry_keep_old_visibility_exact_accounting_and_history ... ok
+test content_capacity::full_ceiling_non_evictable_staging_refuses_real_activity_ingestion_atomically ... ok
+test publication::window_tests::readiness_windows_hold_one_snapshot_and_do_not_publish_partial_completion ... ok
+test publication::tests::maintained_accounting_sigkill_application_visibility_and_cleanup_are_exact ... ok
+test publication::window_tests::sigkill_late_readiness_window_never_commits_a_summary_or_completion_claim ... ok
+test publication::window_tests::signed_native_positions_and_invalid_cursors_preserve_original_preparation ... ok
+test publication::window_tests::small_preflight_uses_scope_indexes_before_rejecting_large_valid_prefixes ... ok
+test publication::window_tests::unchanged_and_prepared_prefixes_advance_bounded_cursors_without_repeated_scans ... ok
+test query_work_tests::crash_child_entry ... ok
+test publication::window_tests::sigkill_late_cursor_and_journal_commit_together_then_resume_without_replay ... ok
+test query_work_tests::cursors_wrap_and_revisit_newly_expired_rows_behind_the_frontier ... ok
+test query_work_tests::cursor_fault_rolls_back_companion_deletes_and_restart_resumes_exact_tail ... ok
+test migrations::tests::late_space_admission_rolls_back_every_schema_step_in_both_journals ... ok
+test query_work_tests::publication_application_skips_large_applied_prefix_without_sorting ... ok
+test recovery::tests::diagnostics_preserve_missing_legacy_current_newer_corrupt_and_unreadable_inputs ... ok
+test recovery::tests::invalid_negative_schema_is_rejected_without_creating_a_baseline ... ok
+test recovery::tests::unreadable_posix_file_preserves_original_bytes_and_reports_recovery ... ok
+test recovery_cleanup::tests::crash_child_entry ... ok
+test recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history ... ok
+test recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary ... ok
+test publication::window_tests::native_windows_match_unrestricted_preparation_oracle_for_every_kind ... ok
+test recovery_cleanup::tests::sigkill_at_boundary_and_batch_commit_restarts_recovery ... ok
+test retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen ... ok
+test retention::tests::cleanup_fault_rolls_back_payload_membership_and_revision_together ... ok
+test retention::tests::content_expiry_and_orphan_cleanup_share_revision_reserved_budget ... ok
+test retention::tests::exact_age_boundaries_keep_minimal_activity_and_recent_payloads ... ok
+test retention::tests::metadata_failure_rolls_back_payload_cleanup_deadlines_and_revision ... ok
+test retention::tests::metadata_keeps_deadlines_payload_owners_and_current_or_unfinished_checks ... ok
+test retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay ... ok
+test runtime::lifecycle_tests::background_starts_closed_and_preserves_pause_selection_and_settings ... ok
+test query_work_tests::sigkill_cursor_and_dependent_tail_cleanup_commit_together ... ok
+test runtime::lifecycle_tests::shutdown_reaps_owned_process_group_and_never_reschedules ... ok
+test content_capacity::full_ceiling_sigkill_keeps_atomic_candidate_after_bounded_reclamation has been running for over 60 seconds
+test runtime::tests::all_writes_denied_preserves_cached_navigation_and_repair_does_not_replay ... ok
+test runtime::tests::check_purge_partial_startup_stays_locked_and_paused_until_repair ... ok
+test query_work_tests::indexed_windows_bound_scans_and_sorts_across_large_protected_prefixes ... ok
+test runtime::tests::durable_selection_reserves_oldest_background_for_three_foreground_dispatches ... ok
+test publication::tests::sigkill_publications_preserve_old_or_complete_new_snapshots ... ok
+test runtime::tests::check_purge_worker_denial_protects_and_repairs_paused_without_neighbor_loss ... ok
+test publication::tests::bounded_batches_keep_old_snapshot_until_atomic_visibility_commit ... ok
+test publication::tests::actual_ceiling_source_and_check_publications_transfer_staging_without_extra_budget has been running for over 60 seconds
+test runtime::tests::clear_partial_failure_repairs_paused_without_reads_or_old_generation_publication ... ok
+test runtime::tests::control_sweeps_protect_startup_and_resume_before_remote_eligibility ... ok
+test content_capacity::full_ceiling_sigkill_keeps_atomic_candidate_after_bounded_reclamation ... ok
+test runtime::tests::enrollment_fault_protects_paused_runtime_and_repair_preserves_history ... ok
+test publication::tests::actual_ceiling_source_and_check_publications_transfer_staging_without_extra_budget ... ok
+test runtime::tests::full_ceiling_bounded_admission_fault_protects_and_repairs_without_partial_registration ... ok
+test runtime::tests::full_ceiling_worker_publication_fault_stops_reads_and_repairs_while_paused ... ok
+test runtime::tests::interrupted_activity_and_summary_repair_before_remote_eligibility ... ok
+test runtime::tests::invalidation_partial_failure_repairs_paused_without_reads_or_old_generation_publication ... ok
+test runtime::tests::low_space_restart_defers_writes_and_preserves_pause_identity_and_deadlines ... ok
+test runtime::tests::manual_control_fault_preserves_cached_navigation_and_paused_repair ... ok
+test runtime::tests::metadata_cleanup_fault_repairs_paused_and_rehydrates_unconditionally ... ok
+test runtime::tests::partial_publication_startup_stays_locked_paused_and_repairs_before_reads ... ok
+test runtime::tests::partial_recovery_initialization_blocks_reads_and_repairs_without_resuming ... ok
+test runtime::tests::queue_bounds_coalescing_and_fairness ... ok
+test runtime::tests::partial_startup_cleanup_stays_locked_and_paused_until_repaired ... ok
+test runtime::tests::paused_check_reclamation_failure_rolls_back_and_repairs_without_reads ... ok
+test runtime::tests::pr_purge_discovery_restarts_before_reading_an_obsolete_page ... ok
+test runtime::tests::pr_purge_overview_fault_protects_paused_cache_and_repairs_without_neighbor_loss ... ok
+test runtime::tests::pr_purge_partial_startup_is_locked_paused_and_restartable ... ok
+test runtime_alerts::guard_tests::authoritative_source_guard_never_guesses_missing_attempt_or_superseded_head ... ok
+test runtime_alerts::tests::worker_revalidates_identity_and_commits_attempt_before_platform_dispatch ... ok
+test source_cleanup::tests::barrier_later_batch_and_final_marker_faults_preserve_committed_prefix ... ok
+test source_cleanup::tests::crash_child_entry ... ok
+test source_cleanup::tests::global_bound_guard_isolation_and_fresh_publication ... ok
+test source_cleanup::tests::restart_guard_blocks_otherwise_ready_recovery ... ok
+test source_cleanup::tests::sigkill_initialization_keeps_guard_until_last_cleanup_commit ... ok
+test startup_cleanup::tests::crash_child_entry ... ok
+test startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches ... ok
+test startup_cleanup::tests::global_mutation_bound_covers_every_startup_class_and_preserves_published_state ... ok
+test startup_cleanup::tests::sigkill_during_and_between_batches_recovers_only_committed_cleanup ... ok
+test storage_usage::tests::counts_only_owned_database_sidecars_and_warns_at_one_gib ... ok
+test store::storage_fault_tests::read_only_list_expiry_is_incomplete_and_preserves_membership ... ok
+test store::storage_fault_tests::sqlite_full_rolls_back_and_read_only_cache_filters_expired_payloads ... ok
+test watch_reader::tests::crash_child_entry ... ok
+test watch_reader::tests::exact_page_boundaries_and_inclusive_byte_guard_preserve_error_and_history ... ok
+test watch_reader::tests::interrupted_real_source_publication_keeps_old_pages_then_startup_exposes_new_once ... ok
+test runtime::tests::publication_failure_protects_old_source_and_repair_exposes_one_complete_result ... ok
+test watch_reader::tests::late_read_errors_return_no_partial_page_keep_history_and_retry_cached ... ok
+test watch_reader::tests::native_windows_preserve_deep_offset_membership_order_and_many_reasons ... ok
+test watch_reader::tests::row_reason_denial_and_revision_reads_share_snapshot_including_caller_transaction ... ok
+test watch_reader::tests::sigkill_late_protected_reads_preserve_exact_images_history_and_cached_pagination ... ok
+test watch_reader::tests::visibility_commit_during_protected_read_cannot_mix_old_rows_new_reasons_or_revision ... ok
+test runtime::tests::query_cursor_checkpoint_fault_protects_cached_session_and_repairs_paused ... ok
+test watch_scheduling::tests::crash_child_entry ... ok
+test watch_scheduling::tests::exact_selected_due_id_order_manual_boundary_case_insensitive_denial_and_limits ... ok
+test watch_scheduling::tests::late_json_entry_failure_keeps_original_input_and_retry_preserves_reserved_prefix ... ok
+test watch_scheduling::tests::late_watch_pending_and_reservation_failures_discard_partial_selection_then_retry ... ok
+test watch_scheduling::tests::pending_publication_blocks_native_selection_behind_old_and_new_watch_views ... ok
+test watch_scheduling::tests::repeated_disjoint_reservation_and_success_rotation_preserve_exact_due_prefix ... ok
+test watch_scheduling::tests::reservation_entries_preserve_sqlite_types_duplicate_keys_and_exact_identity ... ok
+test watch_scheduling::tests::sigkill_late_watch_and_reservation_reads_preserve_queue_accounting_and_history ... ok
+test watch_scheduling::tests::windows_membership_denials_boundary_and_reservations_share_one_snapshot ... ok
+test watch_scheduling::tests::candidate_and_reservation_windows_match_full_oracle_through_large_protected_prefixes ... ok
+test runtime::tests::retention_runs_while_paused_and_failure_protects_until_repair ... ok
+test runtime::tests::selected_publication_eviction_fault_protects_and_repairs_without_resuming ... ok
+test runtime::tests::source_initialization_failure_protects_membership_and_retries_fresh_after_repair ... ok
+test runtime::tests::startup_cleanup_failure_opens_protected_cache_until_cleanup_and_probe_succeed ... ok
+test watch_reader::tests::protected_pages_merge_deleted_images_hide_additions_and_keep_native_order ... ok
+test runtime::tests::write_fault_stops_children_and_recovery_requires_a_committed_probe ... ok
+
+failures:
+
+---- activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup stdout ----
+
+thread 'activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup' (13922242) panicked at crates/gitjuke-core/src/activity_bounded.rs:754:32:
+called `Result::unwrap()` on an `Err` value: Storage(SqliteFailure(Error { code: Unknown, extended_code: 1 }, Some("index activity_intent_dispatch already exists")))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness stdout ----
+
+thread 'content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness' (13923898) panicked at crates/gitjuke-core/src/content_budget.rs:599:9:
+assertion `left == right` failed
+  left: 0
+ right: 1
+
+---- pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume stdout ----
+
+thread 'pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume' (13925124) panicked at crates/gitjuke-core/src/pr_purge.rs:509:9:
+assertion `left == right` failed
+  left: 68
+ right: 132
+
+---- pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation stdout ----
+
+thread 'pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation' (13925127) panicked at crates/gitjuke-core/src/pr_purge.rs:457:9:
+assertion `left == right` failed
+  left: 43
+ right: 25
+
+---- pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches stdout ----
+
+thread 'pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches' (13925131) panicked at crates/gitjuke-core/src/pr_purge.rs:647:13:
+assertion `left == right` failed
+  left: 712
+ right: 648
+
+---- migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows stdout ----
+
+thread 'migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows' (13924941) panicked at crates/gitjuke-core/src/migrations.rs:701:25:
+child exited before after_commit
+
+
+failures:
+    activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup
+    content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness
+    migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows
+    pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume
+    pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation
+    pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches
+
+test result: FAILED. 249 passed; 6 failed; 2 ignored; 0 measured; 0 filtered out; finished in 221.47s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

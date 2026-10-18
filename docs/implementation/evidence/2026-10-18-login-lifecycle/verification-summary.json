@@ -1,0 +1,19 @@
+{
+  "automated": {
+    "frontend": 36,
+    "desktop": 10,
+    "runtime": 2,
+    "alertIntegration": 2
+  },
+  "totalEntries": 50,
+  "subprocessOnlyChildEntries": 1,
+  "actualOwnerSigkillCases": 1,
+  "frontendBuild": true,
+  "nativeBuildNoSign": true,
+  "clippyWarningsDenied": true,
+  "ownedFormatting": true,
+  "nativeIsolatedFinalStopped": true,
+  "normalLoginUnchanged": true,
+  "allGroupedReleaseScenarios": "Pending",
+  "nativeScope": "Synthetic-local sources in actual native app; no real login or delivered/cold-start notification claim"
+}

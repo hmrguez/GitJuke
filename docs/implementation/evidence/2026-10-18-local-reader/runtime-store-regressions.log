@@ -1,0 +1,38 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
+     Running tests/runtime.rs (target/debug/deps/runtime-a0b23bad9cacec17)
+
+running 16 tests
+test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 90.65s
+
+     Running tests/store.rs (target/debug/deps/store-f885d1b815b48502)
+
+running 8 tests
+test future_and_corrupt_databases_are_preserved ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... ok
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+

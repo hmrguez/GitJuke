@@ -1,0 +1,85 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+				15 button Preferences
+				16 text RE reader GitHub.com
+				17 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			18 container
+				19 container Personal activity
+					20 text ACROSS YOUR REPOSITORIES
+					21 heading Activity, Value: 1
+						22 text Activity
+					23 text Historical baseline pending · Recovery incomplete · 0 PRs pending
+					24 summary About this feed, Value: off
+						25 text About this feed
+					26 button Mark page as seen
+					27 text Applies to these 13 loaded records only.
+					28 button a/b · #1 · Unseen comment · LOCAL: Short complete body 18/10/2026, 14:33:20 · controlled local fixture
+					29 button a/b · #1 · Unseen comment · LOCAL: Three explicit body segments 18/10/2026, 14:33:19 · controlled local fixture
+					30 button a/b · #1 · Unseen comment · LOCAL: Current RIGHT range 199–201 18/10/2026, 14:33:18 · controlled local fixture
+					31 button a/b · #1 · Unseen comment · LOCAL: Oversized placeholder stays unseen 18/10/2026, 14:33:17 · controlled local fixture
+					32 button a/b · #1 · Unseen review · LOCAL: Complete textless review 18/10/2026, 14:33:16 · controlled local fixture
+					33 button a/b · #1 · Unseen comment · LOCAL: Unopened neighbor stays unseen 18/10/2026, 14:33:15 · controlled local fixture
+					34 button a/b · #1 · Unseen comment · LOCAL: Inclusive 128 KiB UTF-8 with crossing emoji 18/10/2026, 14:33:14 · controlled local fixture
+					35 button a/b · #1 · Unseen comment · LOCAL: Current LEFT range 199–201 18/10/2026, 14:33:13 · controlled local fixture
+					36 button a/b · #1 · Unseen comment · LOCAL: Wrong commit must not attach 18/10/2026, 14:33:12 · controlled local fixture
+					37 button a/b · #1 · Unseen comment · LOCAL: Mixed side range must not attach 18/10/2026, 14:33:11 · controlled local fixture
+					38 button a/b · #1 · Unseen comment · LOCAL: Negative line must not attach 18/10/2026, 14:33:10 · controlled local fixture
+					39 button a/b · #1 · Unseen comment · LOCAL: Outdated source must not attach 18/10/2026, 14:33:09 · controlled local fixture
+					40 button a/b · #1 · Unseen comment · LOCAL: Different path must not attach 18/10/2026, 14:33:08 · controlled local fixture
+					41 button (disabled) Previous
+					42 button (disabled) Next
+				43 container Pull request reader
+					44 text a/b / #1
+					45 button Open in GitHub
+					46 container
+						47 text Open
+						48 heading Change 1, Value: 1
+							49 text Change 1
+						50 text reader · main ← aaaaaaaaaa
+					51 container Published native stack
+						52 text No published stack
+					53 tab group (selectable) Reader
+						54 tab (selectable) Overview
+						55 tab (selectable) Changes
+						56 tab (selectable) Conversation
+						57 tab (selected) Checks
+					58 container Checks
+						59 heading Head checks, Value: 2
+							60 text Head checks
+						61 text aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa · review APPROVED
+						62 text aaaaaaaaaa · Complete cached contexts · 14:36:44
+						63 text Actions 0
+						64 text success
+						65 text Check run · aaaaaaaaaa · run 2 · attempt 1
+						66 button Read Actions log
+						67 button Open job details ↗
+						68 text External 1
+						69 text success
+						70 text Legacy status · aaaaaaaaaa
+						71 button Open provider details ↗
+						72 button (disabled) Previous checks
+						73 text 1–2 loaded
+						74 button (disabled) Next checks
+					75 text Cached 18/10/2026, 14:36:56 · revision 56
+	76 close button
+	77 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	78 minimize button
+	79 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+80 menu bar
+	81 GitJuke Daily Qualification
+
+The focused UI element is 2 HTML content Description: GitJuke, URL: tauri://localhost

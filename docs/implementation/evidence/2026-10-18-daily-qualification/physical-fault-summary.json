@@ -1,0 +1,96 @@
+[
+  {
+    "name": "volume-create",
+    "command": [
+      "hdiutil",
+      "create",
+      "-size",
+      "64m",
+      "-fs",
+      "HFS+",
+      "-volname",
+      "GitJukeDailyFault",
+      "-type",
+      "SPARSE",
+      "/private/tmp/gitjuke-daily-fault.sparseimage"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "volume-attach",
+    "command": [
+      "hdiutil",
+      "attach",
+      "-nobrowse",
+      "-mountpoint",
+      "/private/tmp/gitjuke-storage-fault-volume",
+      "/private/tmp/gitjuke-daily-fault.sparseimage"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "physical-full-current",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "gitjuke-core",
+      "--offline",
+      "--lib",
+      "physical_storage_tests::actual_volume_exhaustion_rolls_back_and_preserves_history",
+      "--",
+      "--ignored",
+      "--exact",
+      "--test-threads=1"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "volume-detach-write",
+    "command": [
+      "hdiutil",
+      "detach",
+      "/private/tmp/gitjuke-storage-fault-volume"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "volume-attach-readonly",
+    "command": [
+      "hdiutil",
+      "attach",
+      "-readonly",
+      "-nobrowse",
+      "-mountpoint",
+      "/private/tmp/gitjuke-storage-fault-volume",
+      "/private/tmp/gitjuke-daily-fault.sparseimage"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "physical-readonly-current",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "gitjuke-core",
+      "--offline",
+      "--lib",
+      "physical_storage_tests::actual_readonly_volume_rejects_writes_and_keeps_cache_readable",
+      "--",
+      "--ignored",
+      "--exact",
+      "--test-threads=1"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "volume-detach-final",
+    "command": [
+      "hdiutil",
+      "detach",
+      "/private/tmp/gitjuke-storage-fault-volume"
+    ],
+    "exit": 0
+  }
+]

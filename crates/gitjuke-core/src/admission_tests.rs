@@ -246,6 +246,7 @@ fn later_reclaim_and_publication_faults_preserve_prefix_but_never_candidate_stat
     assert_eq!(durable(&s.conn), original);
     drop(s);
     let raw = Connection::open(&path).unwrap();
+    crate::shared_storage::register(&raw).unwrap();
     consistent(&raw);
     assert_eq!(durable(&raw), original);
     raw.execute_batch("DROP TRIGGER fail_publication").unwrap();
@@ -359,6 +360,7 @@ fn sigkill_full_ceiling_reclamation_and_publication_keep_only_committed_state() 
         use std::os::unix::process::ExitStatusExt;
         assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
         let raw = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&raw).unwrap();
         assert_eq!(
             raw.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
                 .unwrap(),
@@ -369,11 +371,10 @@ fn sigkill_full_ceiling_reclamation_and_publication_keep_only_committed_state() 
         assert_eq!(old_count(&raw) < 513, reclaimed, "{phase}");
         let expected = match phase {
             "candidate_rolled_back" | "reclaim_before_commit" => 513,
-            "reclaim_after_commit" => 428,
-            // Store::put reserves content/health/revision from the candidate's
-            // allowance. Two additional old rows are reclaimed independently
-            // before the same final 384-KiB payload publication can fit.
-            "publication_before_commit" => 212,
+            "reclaim_after_commit" => 471,
+            // Four candidate writes leave room for 41 mixed victims.
+            // The preceding 343 victims commit in independent batches.
+            "publication_before_commit" => 170,
             "publication_after_commit" => 129,
             _ => unreachable!(),
         };
@@ -482,4 +483,88 @@ fn stale_optional_publication_has_no_admission_side_effects() {
     );
     assert_eq!(s.conn.total_changes(), before);
     assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM content"), 1);
+}
+
+#[test]
+fn compact_shared_snapshot_reclamation_matches_exact_revision_and_candidate_prefix() {
+    let d = tempfile::tempdir().unwrap();
+    let mut s = Store::open(&d.path().join("db")).unwrap();
+    let time = now() as i64;
+    s.conn
+        .execute(
+            "INSERT INTO check_state VALUES('P','sha',?,1,NULL,?)",
+            [time - 100; 2],
+        )
+        .unwrap();
+    for i in 0..64 {
+        s.conn
+            .execute(
+                "INSERT INTO content VALUES(?,'true',?,?)",
+                params![format!("small-{i:03}"), time - 200, time - 200],
+            )
+            .unwrap();
+        s.conn
+            .execute(
+                "INSERT INTO check_context VALUES('P','sha',?,'true',0)",
+                [format!("small-{i:03}")],
+            )
+            .unwrap();
+    }
+    let revision = s.revision().unwrap();
+    let write = |tx: &Transaction<'_>| -> Result<()> {
+        tx.execute(
+            "INSERT INTO content VALUES('new',?,4070908800,4070908800)",
+            [format!("\"{}\"", "x".repeat(382))],
+        )?;
+        tx.execute("INSERT INTO resource_state VALUES('new',1,1,NULL)", [])?;
+        crate::store::bump(tx)?;
+        Ok(())
+    };
+    s.conn.execute_batch("CREATE TRIGGER fail_late BEFORE DELETE ON content WHEN OLD.key='small-061' BEGIN SELECT RAISE(ABORT,'late'); END;").unwrap();
+    assert!(publish_inner(&mut s.conn, now(), 512, write, || {}, |_| true, true).is_err());
+    assert_eq!(s.revision().unwrap(), revision);
+    assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM content"), 64);
+    assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM check_context"), 64);
+    crate::admission_query::tests::assert_exact(&s.conn);
+    s.conn.execute_batch("DROP TRIGGER fail_late").unwrap();
+    let observer = Connection::open(d.path().join("db")).unwrap();
+    publish_inner(
+        &mut s.conn,
+        now(),
+        512,
+        write,
+        || {
+            assert_eq!(n(&observer, "SELECT COUNT(*) FROM content"), 13);
+            assert_eq!(n(&observer, "SELECT COUNT(*) FROM check_context"), 64);
+            assert_eq!(
+                n(
+                    &observer,
+                    "SELECT CAST(value AS INTEGER) FROM meta WHERE key='revision'"
+                ),
+                revision as i64 + 5
+            );
+            assert_eq!(disposable_bytes(&observer).unwrap(), 308);
+        },
+        |_| true,
+        true,
+    )
+    .unwrap();
+    assert_eq!(s.revision().unwrap(), revision + 6);
+    assert_eq!(
+        n(
+            &s.conn,
+            "SELECT COUNT(*) FROM content WHERE key GLOB 'small-*'"
+        ),
+        0
+    );
+    assert_eq!(
+        n(
+            &s.conn,
+            "SELECT COUNT(*) FROM check_context WHERE id<'small-032'"
+        ),
+        0
+    );
+    assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM check_context"), 32);
+    assert_eq!(disposable_bytes(&s.conn).unwrap(), 512);
+    crate::admission_query::tests::assert_exact(&s.conn);
 }

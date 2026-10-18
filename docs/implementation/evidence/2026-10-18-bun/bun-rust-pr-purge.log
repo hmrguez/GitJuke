@@ -1,0 +1,45 @@
+$ cargo test -p gitjuke-core pr_purge::tests
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 5 tests
+test pr_purge::tests::crash_child_entry ... ok
+test pr_purge::tests::pr_purge_unknown_pr_overlap_and_recovery_barriers ... ok
+test pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume ... FAILED
+test pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation ... FAILED
+test pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches ... FAILED
+
+failures:
+
+---- pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume stdout ----
+
+thread 'pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume' (13241003) panicked at crates/gitjuke-core/src/pr_purge.rs:509:9:
+assertion `left == right` failed
+  left: 68
+ right: 132
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation stdout ----
+
+thread 'pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation' (13241004) panicked at crates/gitjuke-core/src/pr_purge.rs:457:9:
+assertion `left == right` failed
+  left: 43
+ right: 25
+
+---- pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches stdout ----
+
+thread 'pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches' (13241005) panicked at crates/gitjuke-core/src/pr_purge.rs:647:13:
+assertion `left == right` failed
+  left: 712
+ right: 648
+
+
+failures:
+    pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume
+    pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation
+    pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches
+
+test result: FAILED. 2 passed; 3 failed; 0 ignored; 0 measured; 220 filtered out; finished in 0.95s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`
+error: script "test:rust" exited with code 101

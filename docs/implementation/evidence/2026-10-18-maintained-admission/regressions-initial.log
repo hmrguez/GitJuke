@@ -1,0 +1,245 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.50s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 60 tests
+test activity_bounded::source_api_payload_publication_reserves_its_three_mutations_from_admission ... FAILED
+test activity_bounded::staging_restart_and_notification_progress_share_global_bounds ... ok
+test check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume ... FAILED
+test check_purge::tests::check_purge_blocks_otherwise_ready_recovery ... ok
+test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... FAILED
+test check_purge::tests::check_purge_markers_and_unchanged_states_have_bounded_progress ... ok
+test clear_content::tests::clear_barrier_blocks_otherwise_ready_recovery_completion ... ok
+test clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume ... FAILED
+test check_purge::tests::check_purge_global_bound_visibility_and_resource_isolation ... FAILED
+test content_budget::admission_tests::impossible_staging_does_not_commit_pointless_reclamation_or_candidate_progress ... ok
+test clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history ... FAILED
+test clear_content::tests::clear_unchanged_rows_do_not_consume_the_batch_allowance ... ok
+test content_budget::admission_tests::speculative_admission_shares_expiry_pressure_and_check_invalidation_allowance ... ok
+test content_budget::admission_tests::later_reclaim_and_publication_faults_preserve_prefix_but_never_candidate_state ... ok
+test content_budget::admission_tests::stale_optional_publication_has_no_admission_side_effects ... ok
+test content_budget::admission_tests::mixed_reclamation_has_one_global_budget_including_check_states_and_revision ... ok
+test content_budget::admission_tests::repeated_candidates_do_not_publish_activity_dedup_progress_or_terminal_intents ... ok
+test content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart ... FAILED
+test content_budget::tests::exact_limit_utf8_and_tied_lru_prefix ... ok
+test content_budget::tests::head_eviction_failure_rolls_back_epoch_closure_and_check_invalidation ... ok
+test content_budget::tests::lru_check_delete_failure_rolls_back_snapshot_and_new_publication ... ok
+test content_budget::tests::large_victim_prefix_preserves_activity_and_replay_barriers_after_reopen ... ok
+test content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness ... ok
+test content_budget::tests::each_staging_class_shares_admission_and_rollback ... ok
+test content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it ... FAILED
+test content_budget::tests::selected_registration_eviction_failure_rolls_back_membership_and_revision ... ok
+test content_budget::tests::shared_lru_reclaims_checks_without_touching_staging_or_watch_history ... ok
+test invalidation::tests::invalidation_global_bound_and_logical_read_barrier_preserve_history ... FAILED
+test maintenance_tests::cached_expired_checks_do_not_gain_completeness_while_cleanup_waits ... ok
+test maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope ... FAILED
+test invalidation::tests::invalidation_late_fault_is_restartable_and_protected_reads_stay_incomplete ... FAILED
+test maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes ... FAILED
+test maintenance_tests::pending_control_work_cannot_falsely_complete_ready_recovery ... ok
+test maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history ... FAILED
+test maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery ... FAILED
+test activity_bounded::large_baseline_completion_has_no_summary_and_one_visibility_commit ... ok
+test activity_bounded::journal_classifies_expired_historical_suppressed_and_post_boundary_without_replay ... ok
+test publication::tests::pending_publication_blocks_recovery_even_with_old_complete_health ... ok
+test maintenance_tests::late_metadata_and_check_faults_restore_complete_batch_after_committed_prefix ... ok
+test recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history ... FAILED
+test recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary ... FAILED
+test retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen ... FAILED
+test retention::tests::cleanup_fault_rolls_back_payload_membership_and_revision_together ... ok
+test retention::tests::content_expiry_and_orphan_cleanup_share_revision_reserved_budget ... FAILED
+test retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay ... FAILED
+test retention::tests::exact_age_boundaries_keep_minimal_activity_and_recent_payloads ... ok
+test publication::tests::empty_replacements_cannot_hide_large_deletions_behind_capped_preflight_counts ... ok
+test retention::tests::metadata_failure_rolls_back_payload_cleanup_deadlines_and_revision ... ok
+test retention::tests::metadata_keeps_deadlines_payload_owners_and_current_or_unfinished_checks ... ok
+test source_cleanup::tests::barrier_later_batch_and_final_marker_faults_preserve_committed_prefix ... FAILED
+test source_cleanup::tests::global_bound_guard_isolation_and_fresh_publication ... FAILED
+test source_cleanup::tests::restart_guard_blocks_otherwise_ready_recovery ... ok
+test startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches ... FAILED
+test startup_cleanup::tests::global_mutation_bound_covers_every_startup_class_and_preserves_published_state ... ok
+test publication::tests::small_single_transaction_and_journal_paths_publish_identical_snapshots ... ok
+test publication::tests::exact_retry_finishes_pending_publication_without_publishing_empty_or_advancing_epoch_twice ... ok
+test publication::tests::late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membership_loss ... ok
+test activity_bounded::late_apply_and_visibility_failure_protect_readers_and_exact_retry ... ok
+test activity_bounded::large_publication_modes_and_summary_are_bounded_and_idempotent ... ok
+test publication::tests::bounded_batches_keep_old_snapshot_until_atomic_visibility_commit ... ok
+
+failures:
+
+---- activity_bounded::source_api_payload_publication_reserves_its_three_mutations_from_admission stdout ----
+
+thread 'activity_bounded::source_api_payload_publication_reserves_its_three_mutations_from_admission' (13050419) panicked at crates/gitjuke-core/src/activity_bounded.rs:713:5:
+assertion `left == right` failed
+  left: 195
+ right: 132
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume stdout ----
+
+thread 'check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume' (13050421) panicked at crates/gitjuke-core/src/check_purge.rs:605:9:
+assertion `left == right` failed
+  left: 89
+ right: 129
+
+---- activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup stdout ----
+
+thread 'activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup' (13050418) panicked at crates/gitjuke-core/src/activity_bounded.rs:735:32:
+called `Result::unwrap()` on an `Err` value: Storage(SqlInputError { error: Error { code: Unknown, extended_code: 1 }, msg: "table shared_bytes already exists", sql: "-- One atomic counter update per changed charge; no counter write for zero deltas.\nCREATE TABLE shared_bytes(id INTEGER PRIMARY KEY CHECK(id=1),total INTEGER NOT NULL CHECK(typeof(total)='integer' AND total>=0),protected INTEGER NOT NULL CHECK(typeof(protected)='integer' AND protected>=0 AND protected<=total),invalid INTEGER NOT NULL CHECK(invalid>=0));\nINSERT INTO shared_bytes VALUES(1,0,0,0);\nCREATE TABLE shared_check_lru(pr_id TEXT NOT NULL,commit_sha TEXT NOT NULL,accessed INTEGER NOT NULL,first_id TEXT NOT NULL,PRIMARY KEY(pr_id,commit_sha));\nCREATE INDEX shared_check_order ON shared_check_lru(accessed,pr_id,commit_sha);\nINSERT INTO shared_check_lru SELECT c.pr_id,c.commit_sha,COALESCE(s.accessed,0),MIN(c.id) FROM check_context c LEFT JOIN check_state s USING(pr_id,commit_sha) WHERE c.staged=0 GROUP BY c.pr_id,c.commit_sha;\n\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM content x),protected=protected+(SELECT COALESCE(SUM(0),0) FROM content x),invalid=invalid+(SELECT COALESCE(SUM(0),0) FROM content x);\nCREATE TRIGGER shared_content_insert AFTER INSERT ON content WHEN ((octet_length(NEW.json)))!=0 OR ((0))!=0 OR ((0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))),protected=protected+((0)),invalid=invalid+((0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_content_delete AFTER DELETE ON content WHEN (-(octet_length(OLD.json)))!=0 OR (-(0))!=0 OR (-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(octet_length(OLD.json))),protected=protected+(-(0)),invalid=invalid+(-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_content_update AFTER UPDATE ON content WHEN ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((0)-(0))!=0 OR ((0)-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))-(octet_length(OLD.json))),protected=protected+((0)-(0)),invalid=invalid+((0)-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM stage x),protected=protected+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM stage x),invalid=invalid+(SELECT COALESCE(SUM(0),0) FROM stage x);\nCREATE TRIGGER shared_stage_insert AFTER INSERT ON stage WHEN ((octet_length(NEW.json)))!=0 OR ((octet_length(NEW.json)))!=0 OR ((0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))),protected=protected+((octet_length(NEW.json))),invalid=invalid+((0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_stage_delete AFTER DELETE ON stage WHEN (-(octet_length(OLD.json)))!=0 OR (-(octet_length(OLD.json)))!=0 OR (-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(octet_length(OLD.json))),protected=protected+(-(octet_length(OLD.json))),invalid=invalid+(-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_stage_update AFTER UPDATE ON stage WHEN ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((0)-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))-(octet_length(OLD.json))),protected=protected+((octet_length(NEW.json))-(octet_length(OLD.json))),invalid=invalid+((0)-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM source_stage x),protected=protected+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM source_stage x),invalid=invalid+(SELECT COALESCE(SUM(0),0) FROM source_stage x);\nCREATE TRIGGER shared_source_stage_insert AFTER INSERT ON source_stage WHEN ((octet_length(NEW.json)))!=0 OR ((octet_length(NEW.json)))!=0 OR ((0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))),protected=protected+((octet_length(NEW.json))),invalid=invalid+((0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_source_stage_delete AFTER DELETE ON source_stage WHEN (-(octet_length(OLD.json)))!=0 OR (-(octet_length(OLD.json)))!=0 OR (-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(octet_length(OLD.json))),protected=protected+(-(octet_length(OLD.json))),invalid=invalid+(-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_source_stage_update AFTER UPDATE ON source_stage WHEN ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((0)-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))-(octet_length(OLD.json))),protected=protected+((octet_length(NEW.json))-(octet_length(OLD.json))),invalid=invalid+((0)-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM activity_stage x),protected=protected+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM activity_stage x),invalid=invalid+(SELECT COALESCE(SUM(0),0) FROM activity_stage x);\nCREATE TRIGGER shared_activity_stage_insert AFTER INSERT ON activity_stage WHEN ((octet_length(NEW.json)))!=0 OR ((octet_length(NEW.json)))!=0 OR ((0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))),protected=protected+((octet_length(NEW.json))),invalid=invalid+((0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_activity_stage_delete AFTER DELETE ON activity_stage WHEN (-(octet_length(OLD.json)))!=0 OR (-(octet_length(OLD.json)))!=0 OR (-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(octet_length(OLD.json))),protected=protected+(-(octet_length(OLD.json))),invalid=invalid+(-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_activity_stage_update AFTER UPDATE ON activity_stage WHEN ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((0)-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))-(octet_length(OLD.json))),protected=protected+((octet_length(NEW.json))-(octet_length(OLD.json))),invalid=invalid+((0)-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(octet_length(x.json)),0) FROM check_context x),protected=protected+(SELECT COALESCE(SUM(CASE WHEN x.staged=1 THEN octet_length(x.json) ELSE 0 END),0) FROM check_context x),invalid=invalid+(SELECT COALESCE(SUM(0),0) FROM check_context x);\nCREATE TRIGGER shared_check_context_insert AFTER INSERT ON check_context WHEN ((octet_length(NEW.json)))!=0 OR ((CASE WHEN NEW.staged=1 THEN octet_length(NEW.json) ELSE 0 END))!=0 OR ((0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))),protected=protected+((CASE WHEN NEW.staged=1 THEN octet_length(NEW.json) ELSE 0 END)),invalid=invalid+((0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_check_context_delete AFTER DELETE ON check_context WHEN (-(octet_length(OLD.json)))!=0 OR (-(CASE WHEN OLD.staged=1 THEN octet_length(OLD.json) ELSE 0 END))!=0 OR (-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(octet_length(OLD.json))),protected=protected+(-(CASE WHEN OLD.staged=1 THEN octet_length(OLD.json) ELSE 0 END)),invalid=invalid+(-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_check_context_update AFTER UPDATE ON check_context WHEN ((octet_length(NEW.json))-(octet_length(OLD.json)))!=0 OR ((CASE WHEN NEW.staged=1 THEN octet_length(NEW.json) ELSE 0 END)-(CASE WHEN OLD.staged=1 THEN octet_length(OLD.json) ELSE 0 END))!=0 OR ((0)-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+((octet_length(NEW.json))-(octet_length(OLD.json))),protected=protected+((CASE WHEN NEW.staged=1 THEN octet_length(NEW.json) ELSE 0 END)-(CASE WHEN OLD.staged=1 THEN octet_length(OLD.json) ELSE 0 END)),invalid=invalid+((0)-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(CASE WHEN (x.tbl='content' AND x.old_json IS NOT NULL) OR (x.tbl='check_context' AND json_extract(x.old_json,'$[4]')=0) THEN x.old_bytes ELSE 0 END),0) FROM publication_row x),protected=protected+(SELECT COALESCE(SUM(CASE WHEN (x.tbl='content' AND x.old_json IS NOT NULL) OR (x.tbl='check_context' AND json_extract(x.old_json,'$[4]')=0) THEN x.old_bytes ELSE 0 END),0) FROM publication_row x),invalid=invalid+(SELECT COALESCE(SUM(0),0) FROM publication_row x);\nCREATE TRIGGER shared_publication_row_insert AFTER INSERT ON publication_row WHEN ((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END))!=0 OR ((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END))!=0 OR ((0))!=0 BEGIN UPDATE shared_bytes SET total=total+((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END)),protected=protected+((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END)),invalid=invalid+((0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_publication_row_delete AFTER DELETE ON publication_row WHEN (-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END))!=0 OR (-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END))!=0 OR (-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END)),protected=protected+(-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END)),invalid=invalid+(-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_publication_row_update AFTER UPDATE ON publication_row WHEN ((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END)-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END))!=0 OR ((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END)-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END))!=0 OR ((0)-(0))!=0 BEGIN UPDATE shared_bytes SET total=total+((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END)-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END)),protected=protected+((CASE WHEN (NEW.tbl='content' AND NEW.old_json IS NOT NULL) OR (NEW.tbl='check_context' AND json_extract(NEW.old_json,'$[4]')=0) THEN NEW.old_bytes ELSE 0 END)-(CASE WHEN (OLD.tbl='content' AND OLD.old_json IS NOT NULL) OR (OLD.tbl='check_context' AND json_extract(OLD.old_json,'$[4]')=0) THEN OLD.old_bytes ELSE 0 END)),invalid=invalid+((0)-(0)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nUPDATE shared_bytes SET total=total+(SELECT COALESCE(SUM(COALESCE(gitjuke_input_bytes(x.kind,x.args),0)),0) FROM publication x),protected=protected+(SELECT COALESCE(SUM(COALESCE(gitjuke_input_bytes(x.kind,x.args),0)),0) FROM publication x),invalid=invalid+(SELECT COALESCE(SUM(gitjuke_input_bytes(x.kind,x.args) IS NULL),0) FROM publication x);\nCREATE TRIGGER shared_publication_insert AFTER INSERT ON publication WHEN ((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0)))!=0 OR ((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0)))!=0 OR ((gitjuke_input_bytes(NEW.kind,NEW.args) IS NULL))!=0 BEGIN UPDATE shared_bytes SET total=total+((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0))),protected=protected+((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0))),invalid=invalid+((gitjuke_input_bytes(NEW.kind,NEW.args) IS NULL)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_publication_delete AFTER DELETE ON publication WHEN (-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0)))!=0 OR (-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0)))!=0 OR (-(gitjuke_input_bytes(OLD.kind,OLD.args) IS NULL))!=0 BEGIN UPDATE shared_bytes SET total=total+(-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0))),protected=protected+(-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0))),invalid=invalid+(-(gitjuke_input_bytes(OLD.kind,OLD.args) IS NULL)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_publication_update AFTER UPDATE OF kind,args ON publication WHEN ((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0))-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0)))!=0 OR ((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0))-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0)))!=0 OR ((gitjuke_input_bytes(NEW.kind,NEW.args) IS NULL)-(gitjuke_input_bytes(OLD.kind,OLD.args) IS NULL))!=0 BEGIN UPDATE shared_bytes SET total=total+((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0))-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0))),protected=protected+((COALESCE(gitjuke_input_bytes(NEW.kind,NEW.args),0))-(COALESCE(gitjuke_input_bytes(OLD.kind,OLD.args),0))),invalid=invalid+((gitjuke_input_bytes(NEW.kind,NEW.args) IS NULL)-(gitjuke_input_bytes(OLD.kind,OLD.args) IS NULL)) WHERE id=1; SELECT CASE WHEN changes()!=1 THEN RAISE(ABORT,'Missing shared accounting') END; END;\nCREATE TRIGGER shared_context_insert AFTER INSERT ON check_context WHEN NEW.staged=0 BEGIN INSERT INTO shared_check_lru VALUES(NEW.pr_id,NEW.commit_sha,COALESCE((SELECT accessed FROM check_state WHERE pr_id=NEW.pr_id AND commit_sha=NEW.commit_sha),0),NEW.id) ON CONFLICT(pr_id,commit_sha) DO UPDATE SET first_id=MIN(first_id,excluded.first_id); END;\nCREATE TRIGGER shared_context_delete AFTER DELETE ON check_context WHEN OLD.staged=0 BEGIN DELETE FROM shared_check_lru WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND first_id=OLD.id AND NOT EXISTS(SELECT 1 FROM check_context WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND staged=0);\nUPDATE shared_check_lru SET first_id=(SELECT id FROM check_context WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND staged=0 ORDER BY id LIMIT 1) WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND first_id=OLD.id; END;\nCREATE TRIGGER shared_context_update AFTER UPDATE OF pr_id,commit_sha,id,staged ON check_context BEGIN DELETE FROM shared_check_lru WHERE OLD.staged=0 AND pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND first_id=OLD.id AND NOT EXISTS(SELECT 1 FROM check_context WHERE OLD.staged=0 AND pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND staged=0);\nUPDATE shared_check_lru SET first_id=(SELECT id FROM check_context WHERE OLD.staged=0 AND pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND staged=0 ORDER BY id LIMIT 1) WHERE OLD.staged=0 AND pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha AND first_id=OLD.id; INSERT INTO shared_check_lru SELECT NEW.pr_id,NEW.commit_sha,COALESCE((SELECT accessed FROM check_state WHERE pr_id=NEW.pr_id AND commit_sha=NEW.commit_sha),0),NEW.id WHERE NEW.staged=0 ON CONFLICT(pr_id,commit_sha) DO UPDATE SET first_id=MIN(first_id,excluded.first_id); END;\nCREATE TRIGGER shared_state_insert AFTER INSERT ON check_state BEGIN UPDATE shared_check_lru SET accessed=NEW.accessed WHERE pr_id=NEW.pr_id AND commit_sha=NEW.commit_sha; END;\nCREATE TRIGGER shared_state_update AFTER UPDATE OF accessed,pr_id,commit_sha ON check_state BEGIN UPDATE shared_check_lru SET accessed=COALESCE((SELECT accessed FROM check_state WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha),0) WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha; UPDATE shared_check_lru SET accessed=NEW.accessed WHERE pr_id=NEW.pr_id AND commit_sha=NEW.commit_sha AND (pr_id!=OLD.pr_id OR commit_sha!=OLD.commit_sha); END;\nCREATE TRIGGER shared_state_delete AFTER DELETE ON check_state BEGIN UPDATE shared_check_lru SET accessed=0 WHERE pr_id=OLD.pr_id AND commit_sha=OLD.commit_sha; END;\nPRAGMA user_version=13;\n", offset: 96 })
+
+---- clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume stdout ----
+
+thread 'clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume' (13050431) panicked at crates/gitjuke-core/src/clear_content.rs:347:9:
+assertion `left == right` failed
+  left: 65
+ right: 129
+
+---- check_purge::tests::check_purge_global_bound_visibility_and_resource_isolation stdout ----
+
+thread 'check_purge::tests::check_purge_global_bound_visibility_and_resource_isolation' (13050424) panicked at crates/gitjuke-core/src/check_purge.rs:541:9:
+assertion `left == right` failed
+  left: 21
+ right: 11
+
+---- clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history stdout ----
+
+thread 'clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history' (13050432) panicked at crates/gitjuke-core/src/clear_content.rs:321:9:
+assertion `left == right` failed
+  left: 35
+ right: 21
+
+---- content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart stdout ----
+
+thread 'content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart' (13050447) panicked at crates/gitjuke-core/src/content_budget.rs:566:9:
+assertion `left == right` failed
+  left: 87
+ right: 3
+
+---- content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it stdout ----
+
+thread 'content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it' (13050477) panicked at crates/gitjuke-core/src/content_budget.rs:432:9:
+assertion `left == right` failed
+  left: ["exact-boundary", "expired-064", "expired-065", "expired-066", "expired-067", "expired-068", "expired-069", "expired-070", "expired-071", "expired-072", "expired-073", "expired-074", "expired-075", "expired-076", "expired-077", "expired-078", "expired-079", "expired-080", "expired-081", "expired-082", "expired-083", "expired-084", "expired-085", "expired-086", "expired-087", "expired-088", "expired-089", "expired-090", "expired-091", "expired-092", "expired-093", "expired-094", "expired-095", "expired-096", "expired-097", "expired-098", "expired-099", "expired-100", "expired-101", "expired-102", "expired-103", "expired-104", "expired-105", "expired-106", "expired-107", "expired-108", "expired-109", "expired-110", "expired-111", "expired-112", "expired-113", "expired-114", "expired-115", "expired-116", "expired-117", "expired-118", "expired-119", "expired-120", "expired-121", "expired-122", "expired-123", "expired-124", "expired-125", "expired-126", "expired-127", "expired-128"]
+ right: ["exact-boundary", "expired-128"]
+
+---- invalidation::tests::invalidation_global_bound_and_logical_read_barrier_preserve_history stdout ----
+
+thread 'invalidation::tests::invalidation_global_bound_and_logical_read_barrier_preserve_history' (13050481) panicked at crates/gitjuke-core/src/invalidation.rs:292:9:
+assertion `left == right` failed
+  left: 27
+ right: 15
+
+---- maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope stdout ----
+
+thread 'maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope' (13050486) panicked at crates/gitjuke-core/src/maintenance_tests.rs:401:9:
+assertion `left == right` failed
+  left: [1, 126, 126, 126, 126, 11]
+ right: [1, 127, 127, 4]
+
+---- invalidation::tests::invalidation_late_fault_is_restartable_and_protected_reads_stay_incomplete stdout ----
+
+thread 'invalidation::tests::invalidation_late_fault_is_restartable_and_protected_reads_stay_incomplete' (13050482) panicked at crates/gitjuke-core/src/invalidation.rs:329:9:
+assertion `left == right` failed
+  left: 8
+ right: 7
+
+---- maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes stdout ----
+
+thread 'maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes' (13050488) panicked at crates/gitjuke-core/src/maintenance_tests.rs:230:5:
+assertion failed: s.maintain_retention_at(now()).is_err()
+
+---- maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history stdout ----
+
+thread 'maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history' (13050490) panicked at crates/gitjuke-core/src/maintenance_tests.rs:156:13:
+assertion `left == right` failed
+  left: 226
+ right: 215
+
+---- maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery stdout ----
+
+thread 'maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery' (13050489) panicked at crates/gitjuke-core/src/maintenance_tests.rs:183:9:
+assertion `left == right` failed
+  left: [1, 126, 126, 126]
+ right: [1, 127]
+
+---- recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history stdout ----
+
+thread 'recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history' (13050504) panicked at crates/gitjuke-core/src/recovery_cleanup.rs:241:9:
+assertion `left == right` failed
+  left: 12
+ right: 10
+
+---- recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary stdout ----
+
+thread 'recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary' (13050506) panicked at crates/gitjuke-core/src/recovery_cleanup.rs:267:9:
+assertion `left == right` failed
+  left: 5
+ right: 3
+
+---- retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen stdout ----
+
+thread 'retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen' (13050510) panicked at crates/gitjuke-core/src/retention.rs:367:9:
+assertion `left == right` failed
+  left: 226
+ right: 215
+
+---- retention::tests::content_expiry_and_orphan_cleanup_share_revision_reserved_budget stdout ----
+
+thread 'retention::tests::content_expiry_and_orphan_cleanup_share_revision_reserved_budget' (13050514) panicked at crates/gitjuke-core/src/retention.rs:471:9:
+assertion `left == right` failed
+  left: 66
+ right: 2
+
+---- retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay stdout ----
+
+thread 'retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay' (13050516) panicked at crates/gitjuke-core/src/retention.rs:204:13:
+assertion `left == right` failed
+  left: 135
+ right: 134
+
+---- source_cleanup::tests::barrier_later_batch_and_final_marker_faults_preserve_committed_prefix stdout ----
+
+thread 'source_cleanup::tests::barrier_later_batch_and_final_marker_faults_preserve_committed_prefix' (13050540) panicked at crates/gitjuke-core/src/source_cleanup.rs:243:9:
+assertion `left == right` failed
+  left: 65
+ right: 129
+
+---- source_cleanup::tests::global_bound_guard_isolation_and_fresh_publication stdout ----
+
+thread 'source_cleanup::tests::global_bound_guard_isolation_and_fresh_publication' (13050548) panicked at crates/gitjuke-core/src/source_cleanup.rs:203:13:
+assertion `left == right` failed
+  left: (128, false)
+ right: (2, true)
+
+---- startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches stdout ----
+
+thread 'startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches' (13050552) panicked at crates/gitjuke-core/src/startup_cleanup.rs:249:9:
+assertion failed: cleanup_batch(&mut s.conn).is_err()
+
+
+failures:
+    activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup
+    activity_bounded::source_api_payload_publication_reserves_its_three_mutations_from_admission
+    check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume
+    check_purge::tests::check_purge_global_bound_visibility_and_resource_isolation
+    clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume
+    clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history
+    content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart
+    content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it
+    invalidation::tests::invalidation_global_bound_and_logical_read_barrier_preserve_history
+    invalidation::tests::invalidation_late_fault_is_restartable_and_protected_reads_stay_incomplete
+    maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope
+    maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes
+    maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery
+    maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history
+    recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history
+    recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary
+    retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen
+    retention::tests::content_expiry_and_orphan_cleanup_share_revision_reserved_budget
+    retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay
+    source_cleanup::tests::barrier_later_batch_and_final_marker_faults_preserve_committed_prefix
+    source_cleanup::tests::global_bound_guard_isolation_and_fresh_publication
+    startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches
+
+test result: FAILED. 38 passed; 22 failed; 0 ignored; 0 measured; 98 filtered out; finished in 12.74s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

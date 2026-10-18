@@ -1,0 +1,326 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+					15 button Edit query…, Help: Edit selected query
+				16 button Preferences
+				17 text RE reader GitHub.com
+				18 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			19 container
+				20 container Saved query results (showing 0-100 of 111 items)
+					21 text SAVED QUERY
+					22 heading Daily qualification, Value: 1
+						23 text Daily qualification
+					24 button Refresh query
+					25 text repo:a/b is:open
+					26 button Edit query
+					27 text 100 cached · 150 reported by GitHub · Incomplete cached set
+					28 text Page cached 18/10/2026, 14:36:50 · Page 1
+					29 button a/b · #1 Change 1 open · reader
+					30 button a/b · #2 Change 2 open · reader
+					31 button a/b · #3 Change 3 open · reader
+					32 button a/b · #4 Change 4 open · reader
+					33 button a/b · #5 Change 5 open · reader
+					34 button a/b · #6 Change 6 open · reader
+					35 button a/b · #7 Change 7 open · reader
+					36 button a/b · #8 Change 8 open · reader
+					37 button a/b · #9 Change 9 open · reader
+					38 button a/b · #10 Change 10 open · reader
+					39 button a/b · #11 Change 11 open · reader
+					40 button a/b · #12 Change 12 open · reader
+					41 button a/b · #13 Change 13 open · reader
+					42 button a/b · #14 Change 14 open · reader
+					43 button a/b · #15 Change 15 open · reader
+					44 button a/b · #16 Change 16 open · reader
+					45 button a/b · #17 Change 17 open · reader
+					46 button a/b · #18 Change 18 open · reader
+					47 button a/b · #19 Change 19 open · reader
+					48 button a/b · #20 Change 20 open · reader
+					49 button a/b · #21 Change 21 open · reader
+					50 button a/b · #22 Change 22 open · reader
+					51 button a/b · #23 Change 23 open · reader
+					52 button a/b · #24 Change 24 open · reader
+					53 button a/b · #25 Change 25 open · reader
+					54 button a/b · #26 Change 26 open · reader
+					55 button a/b · #27 Change 27 open · reader
+					56 button a/b · #28 Change 28 open · reader
+					57 button a/b · #29 Change 29 open · reader
+					58 button a/b · #30 Change 30 open · reader
+					59 button a/b · #31 Change 31 open · reader
+					60 button a/b · #32 Change 32 open · reader
+					61 button a/b · #33 Change 33 open · reader
+					62 button a/b · #34 Change 34 open · reader
+					63 button a/b · #35 Change 35 open · reader
+					64 button a/b · #36 Change 36 open · reader
+					65 button a/b · #37 Change 37 open · reader
+					66 button a/b · #38 Change 38 open · reader
+					67 button a/b · #39 Change 39 open · reader
+					68 button a/b · #40 Change 40 open · reader
+					69 button a/b · #41 Change 41 open · reader
+					70 button a/b · #42 Change 42 open · reader
+					71 button a/b · #43 Change 43 open · reader
+					72 button a/b · #44 Change 44 open · reader
+					73 button a/b · #45 Change 45 open · reader
+					74 button a/b · #46 Change 46 open · reader
+					75 button a/b · #47 Change 47 open · reader
+					76 button a/b · #48 Change 48 open · reader
+					77 button a/b · #49 Change 49 open · reader
+					78 button a/b · #50 Change 50 open · reader
+					79 button a/b · #51 Change 51 open · reader
+					80 button a/b · #52 Change 52 open · reader
+					81 button a/b · #53 Change 53 open · reader
+					82 button a/b · #54 Change 54 open · reader
+					83 button a/b · #55 Change 55 open · reader
+					84 button a/b · #56 Change 56 open · reader
+					85 button a/b · #57 Change 57 open · reader
+					86 button a/b · #58 Change 58 open · reader
+					87 button a/b · #59 Change 59 open · reader
+					88 button a/b · #60 Change 60 open · reader
+					89 button a/b · #61 Change 61 open · reader
+					90 button a/b · #62 Change 62 open · reader
+					91 button a/b · #63 Change 63 open · reader
+					92 button a/b · #64 Change 64 open · reader
+					93 button a/b · #65 Change 65 open · reader
+					94 button a/b · #66 Change 66 open · reader
+					95 button a/b · #67 Change 67 open · reader
+					96 button a/b · #68 Change 68 open · reader
+					97 button a/b · #69 Change 69 open · reader
+					98 button a/b · #70 Change 70 open · reader
+					99 button a/b · #71 Change 71 open · reader
+					100 button a/b · #72 Change 72 open · reader
+					101 button a/b · #73 Change 73 open · reader
+					102 button a/b · #74 Change 74 open · reader
+					103 button a/b · #75 Change 75 open · reader
+					104 button a/b · #76 Change 76 open · reader
+					105 button a/b · #77 Change 77 open · reader
+					106 button a/b · #78 Change 78 open · reader
+					107 button a/b · #79 Change 79 open · reader
+					108 button a/b · #80 Change 80 open · reader
+					109 button a/b · #81 Change 81 open · reader
+					110 button a/b · #82 Change 82 open · reader
+					111 button a/b · #83 Change 83 open · reader
+					112 button a/b · #84 Change 84 open · reader
+					113 button a/b · #85 Change 85 open · reader
+					114 button a/b · #86 Change 86 open · reader
+					115 button a/b · #87 Change 87 open · reader
+					116 button a/b · #88 Change 88 open · reader
+					117 button a/b · #89 Change 89 open · reader
+					118 button a/b · #90 Change 90 open · reader
+					119 button a/b · #91 Change 91 open · reader
+					120 button a/b · #92 Change 92 open · reader
+					121 button a/b · #93 Change 93 open · reader
+				122 container Pull request reader
+					123 text a/b / #1
+					124 button Open in GitHub
+					125 container
+						126 text Open
+						127 heading Change 1, Value: 1
+							128 text Change 1
+						129 text reader · main ← aaaaaaaaaa
+					130 container Published native stack
+						131 text No published stack
+					132 tab group (selectable) Reader
+						133 tab (selectable) Overview
+						134 tab (selected) Changes
+						135 tab (selectable) Conversation
+						136 tab (selectable) Checks
+					137 container Changes
+						138 text CHANGES
+						139 container
+							140 text Head aaaaaaaaaa · base bbbbbbbbbb
+						141 button Update Changes
+						142 container Changed files
+							143 text Files 1–20 / 22 known · this page only · cached 14:36:59
+							144 button file-0.txt modified · +201 −201
+							145 button file-1.txt modified · +201 −201
+							146 button file-2.txt modified · +201 −201
+							147 button file-3.txt modified · +201 −201
+							148 button file-4.txt modified · +201 −201
+							149 button file-5.txt modified · +201 −201
+							150 button file-6.txt modified · +201 −201
+							151 button file-7.txt modified · +201 −201
+							152 button file-8.txt modified · +201 −201
+							153 button file-9.txt modified · +201 −201
+							154 button file-10.txt modified · +201 −201
+							155 button file-11.txt modified · +201 −201
+							156 button file-12.txt modified · +201 −201
+							157 button file-13.txt modified · +201 −201
+							158 button file-14.txt modified · +201 −201
+							159 button file-15.txt modified · +201 −201
+							160 button file-16.txt modified · +201 −201
+							161 button file-17.txt modified · +201 −201
+							162 button file-18.txt modified · +201 −201
+							163 button file-19.txt modified · +201 −201
+							164 button (disabled) Previous files
+							165 text Page 1
+							166 button Next files
+						167 heading file-0.txt, Value: 2
+							168 text file-0.txt
+						169 button Open revision file in GitHub
+						170 text Reading mode
+						171 container Reading mode
+							172 toggle button Continuous, Value: off
+							173 toggle button Paged, Value: on
+						174 button Reload file
+						175 text Complete supplied change hunks for this file and revision. · 7,843 UTF-8 bytes · 403 rows
+						176 container
+							177 text Hunk (1– 1 )
+							178 number field (settable) Jump to hunk number, Value: 1
+								179 stepper 0
+									180 unknown
+									181 unknown
+							182 button Go to hunk
+						183 text Rows 201–400 / 403
+						184 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.
+							185 table file-0.txt · supplied unified change hunks (showing 2-16 of 100 items)
+								186 row (selectable)
+									187 cell (selectable)
+									188 cell (selectable) 100
+									189 cell (selectable) added:
++NEW LOCAL LINE 100
+								190 row (selectable)
+									191 cell (selectable) 101
+									192 cell (selectable)
+									193 cell (selectable) deleted:
+-OLD LOCAL LINE 101
+								194 row (selectable)
+									195 cell (selectable)
+									196 cell (selectable) 101
+									197 cell (selectable) added:
++NEW LOCAL LINE 101
+								198 row (selectable)
+									199 cell (selectable) 102
+									200 cell (selectable)
+									201 cell (selectable) deleted:
+-OLD LOCAL LINE 102
+								202 row (selectable)
+									203 cell (selectable)
+									204 cell (selectable) 102
+									205 cell (selectable) added:
++NEW LOCAL LINE 102
+								206 row (selectable)
+									207 cell (selectable) 103
+									208 cell (selectable)
+									209 cell (selectable) deleted:
+-OLD LOCAL LINE 103
+								210 row (selectable)
+									211 cell (selectable)
+									212 cell (selectable) 103
+									213 cell (selectable) added:
++NEW LOCAL LINE 103
+								214 row (selectable)
+									215 cell (selectable) 104
+									216 cell (selectable)
+									217 cell (selectable) deleted:
+-OLD LOCAL LINE 104
+								218 row (selectable)
+									219 cell (selectable)
+									220 cell (selectable) 104
+									221 cell (selectable) added:
++NEW LOCAL LINE 104
+								222 row (selectable)
+									223 cell (selectable) 105
+									224 cell (selectable)
+									225 cell (selectable) deleted:
+-OLD LOCAL LINE 105
+								226 row (selectable)
+									227 cell (selectable)
+									228 cell (selectable) 105
+									229 cell (selectable) added:
++NEW LOCAL LINE 105
+								230 row (selectable)
+									231 cell (selectable) 106
+									232 cell (selectable)
+									233 cell (selectable) deleted:
+-OLD LOCAL LINE 106
+								234 row (selectable)
+									235 cell (selectable)
+									236 cell (selectable) 106
+									237 cell (selectable) added:
++NEW LOCAL LINE 106
+								238 row (selectable)
+									239 cell (selectable) 107
+									240 cell (selectable)
+									241 cell (selectable) deleted:
+-OLD LOCAL LINE 107
+						242 container Patch pages
+							243 button Previous rows
+							244 text Page 2 of 3
+							245 button Next rows
+						246 text Supplied change hunks only. Discussion coverage is paginated independently below. Reading files does not mark Activity seen.
+						247 container Inline discussions
+							248 text DISCUSSIONS
+							249 container
+								250 text Head aaaaaaaaaa · safe plain text
+							251 button Refresh conversation
+							252 container Conversation sources
+								253 toggle button Comments, Value: off
+								254 toggle button Reviews, Value: off
+								255 toggle button Review threads, Value: on
+							256 text 20 loaded / 55 known · this page only; other pages may exist
+							257 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+							258 button file-0.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							259 button GitHub source
+							260 button file-1.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							261 button GitHub source
+							262 button file-2.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							263 button GitHub source
+							264 button file-3.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							265 button GitHub source
+							266 button file-4.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							267 button GitHub source
+							268 button file-5.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							269 button GitHub source
+							270 button file-6.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							271 button GitHub source
+							272 button file-7.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							273 button GitHub source
+							274 button file-8.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							275 button GitHub source
+							276 button file-9.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							277 button GitHub source
+							278 button file-10.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							279 button GitHub source
+							280 button file-11.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							281 button GitHub source
+							282 button file-12.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							283 button GitHub source
+							284 button file-13.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							285 button GitHub source
+							286 button file-14.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							287 button GitHub source
+							288 button file-15.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							289 button GitHub source
+							290 button file-16.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							291 button GitHub source
+							292 button file-17.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							293 button GitHub source
+							294 button file-18.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+							295 button GitHub source
+							296 button file-19.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+							297 button GitHub source
+							298 button (disabled) Previous page
+							299 text First page
+							300 button (disabled) First page
+							301 button Next page
+					302 text Cached 18/10/2026, 14:36:56 · revision 51
+	303 close button
+	304 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	305 minimize button
+	306 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+307 menu bar
+	308 GitJuke Daily Qualification
+
+The focused UI element is 184 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.

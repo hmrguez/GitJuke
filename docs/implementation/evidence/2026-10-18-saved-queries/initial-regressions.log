@@ -1,0 +1,71 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.97s
+     Running tests/runtime.rs (/private/tmp/gitjuke-query-core-target/debug/deps/runtime-a0b23bad9cacec17)
+
+running 16 tests
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity has been running for over 60 seconds
+test closing_reader_keeps_authored_and_requested_snapshot_work has been running for over 60 seconds
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity has been running for over 60 seconds
+test fifty_and_more_watches_rotate_without_a_membership_cap has been running for over 60 seconds
+test independent_reasons_selected_lifetime_and_request_removal has been running for over 60 seconds
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache has been running for over 60 seconds
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery has been running for over 60 seconds
+test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch has been running for over 60 seconds
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test partial_activity_denial_keeps_progress_and_purges_payloads has been running for over 60 seconds
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync has been running for over 60 seconds
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches has been running for over 60 seconds
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test worker_to_sqlite_to_reader_and_identity_lock has been running for over 60 seconds
+test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped has been running for over 60 seconds
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 280.69s
+
+     Running tests/store.rs (/private/tmp/gitjuke-query-core-target/debug/deps/store-f885d1b815b48502)
+
+running 8 tests
+test future_and_corrupt_databases_are_preserved ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... FAILED
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... FAILED
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+
+failures:
+
+---- schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure stdout ----
+
+thread 'schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure' (13740496) panicked at crates/gitjuke-core/tests/store.rs:271:32:
+called `Result::unwrap()` on an `Err` value: Storage(SqlInputError { error: Error { code: Unknown, extended_code: 1 }, msg: "table saved_query already exists", sql: "CREATE TABLE saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); PRAGMA user_version=15;", offset: 13 })
+
+---- multi_version_migration_failure_rolls_back_to_original_committed_schema stdout ----
+
+thread 'multi_version_migration_failure_rolls_back_to_original_committed_schema' (13740494) panicked at crates/gitjuke-core/tests/store.rs:231:39:
+called `Result::unwrap()` on an `Err` value: Storage(SqlInputError { error: Error { code: Unknown, extended_code: 1 }, msg: "table saved_query already exists", sql: "CREATE TABLE saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); PRAGMA user_version=15;", offset: 13 })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    multi_version_migration_failure_rolls_back_to_original_committed_schema
+    schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure
+
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+
+error: test failed, to rerun pass `-p gitjuke-core --test store`

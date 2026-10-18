@@ -1,0 +1,29 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Preferences
+				4 heading Preferences, Value: 2
+					5 text Preferences
+				6 button Close preferences
+				7 container Preferences sections
+					8 toggle button Appearance, Value: off
+					9 toggle button Monitoring, Value: off
+					10 toggle button GitHub, Value: off
+					11 toggle button Storage, Value: on
+				12 container Storage
+					13 heading Local storage, Value: 3
+						14 text Local storage
+					15 text 4.0 MiB database and sidecars · 0.2 / 500 MiB disposable content
+					16 text Database 0.6 MiB · WAL 3.4 MiB · shared memory and journal 0.0 MiB
+					17 text File sizes cover the database, staged data and named SQLite sidecars. Transient SQLite sort files are not yet measured. Clearing downloads preserves identity, settings, Pause and durable history. It cannot erase growing identity, seen or delivery ledgers.
+					18 button Clear downloaded content
+				19 text GitJuke 0.1.0 · Your personal review desk.
+	20 close button
+	21 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	22 minimize button
+	23 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+24 menu bar
+	25 GitJuke Accessibility
+
+The focused UI element is 3 container Preferences

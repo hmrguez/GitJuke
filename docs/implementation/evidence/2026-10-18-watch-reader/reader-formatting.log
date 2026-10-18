@@ -1,0 +1,1 @@
+$ rustfmt --edition 2024 --check crates/gitjuke-core/src/watch_reader.rs crates/gitjuke-core/src/watch_reader_tests.rs

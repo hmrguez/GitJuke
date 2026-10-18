@@ -1,0 +1,26 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.37s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 3 tests
+test check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume ... FAILED
+test migrations::tests::schema_twelve_accounting_backfill_is_atomic_on_late_failure_and_resumes_pending_work ... ok
+test migrations::tests::schema_twelve_accounting_sigkill_is_previous_or_complete_and_restart_exact ... ok
+
+failures:
+
+---- check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume stdout ----
+
+thread 'check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume' (13056201) panicked at crates/gitjuke-core/src/check_purge.rs:635:9:
+assertion `left == right` failed
+  left: 11
+ right: 5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 161 filtered out; finished in 0.43s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

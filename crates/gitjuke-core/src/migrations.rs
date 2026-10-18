@@ -18,6 +18,7 @@ fn upgrade_checked(
 ) -> Result<()> {
     // Apply durability before any migration write, including databases that
     // still use rollback journals. Journal-mode conversion remains after commit.
+    crate::shared_storage::register(conn)?;
     conn.pragma_update(None, "synchronous", "FULL")?;
     if version == SCHEMA_VERSION {
         return Ok(());
@@ -44,7 +45,7 @@ fn upgrade_checked(
     Ok(())
 }
 
-const STEPS: [(i64, &str); 12] = [
+const STEPS: [(i64, &str); 16] = [
     (1, "CREATE TABLE meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);
                 INSERT INTO meta VALUES('revision','0'),('generation','0');
                 CREATE TABLE settings(id INTEGER PRIMARY KEY CHECK(id=1),json TEXT NOT NULL);
@@ -99,7 +100,16 @@ const STEPS: [(i64, &str); 12] = [
           CREATE INDEX check_published_keys ON check_context(pr_id,commit_sha,id) WHERE staged=0;
           CREATE INDEX publication_unapplied ON publication_row(seq) WHERE applied=0;
           PRAGMA user_version=12;"),
+    (13, include_str!("shared_storage.sql")),
+    (14, include_str!("publication_windows.sql")),
+    (15, "CREATE INDEX activity_intent_dispatch ON activity_intent(state,id); PRAGMA user_version=15;"),
+    (16, "CREATE INDEX IF NOT EXISTS activity_intent_dispatch ON activity_intent(state,id); CREATE TABLE IF NOT EXISTS saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); PRAGMA user_version=16;"),
 ];
+
+#[cfg(test)]
+pub(crate) fn upgrade_for_physical_test(conn: &mut Connection, directory: &Path) -> Result<()> {
+    upgrade_checked(conn, 0, directory, |_| Ok(()))
+}
 
 #[cfg(test)]
 mod tests {
@@ -222,6 +232,7 @@ mod tests {
     }
     fn seed(path: &Path, version: i64, journal: &str) -> Connection {
         let c = Connection::open(path).unwrap();
+        crate::shared_storage::register(&c).unwrap();
         c.pragma_update(None, "journal_mode", journal).unwrap();
         for (target, sql) in STEPS {
             if target <= version {
@@ -356,6 +367,244 @@ mod tests {
             assert_eq!(
                 integer(&s.conn, "SELECT next_at FROM api_validator"),
                 4070908800
+            );
+        }
+    }
+    fn seed_twelve_accounting(path: &Path, journal: &str) -> Connection {
+        let c = seed(path, 12, journal);
+        let pr: serde_json::Value = serde_json::from_str(
+            &c.query_row("SELECT json FROM content WHERE key='list:P'", [], |r| {
+                r.get::<_, String>(0)
+            })
+            .unwrap(),
+        )
+        .unwrap();
+        let time = now();
+        c.execute(
+            "UPDATE check_state SET fetched=?1,accessed=?1",
+            [time as i64],
+        )
+        .unwrap();
+        let args = serde_json::json!({"time":time,"pr":pr,"changed":false,"locator":["P","a/b",1,1,"open",null,"sha",null,0,time+10,time,null,0]});
+        c.execute(
+            "INSERT INTO publication(id,kind,args,phase) VALUES(1,'head',?,'planning')",
+            [args.to_string()],
+        )
+        .unwrap();
+        c.execute_batch("INSERT INTO publication_row(tbl,k,old_json,new_json,old_bytes) SELECT 'content',json_array(key),json_array(key,json,fetched,accessed),json_array(key,json,fetched,accessed),octet_length(json) FROM content;").unwrap();
+        c
+    }
+
+    #[test]
+    fn schema_twelve_accounting_backfill_is_atomic_on_late_failure_and_resumes_pending_work() {
+        for journal in ["DELETE", "WAL"] {
+            let d = tempfile::tempdir().unwrap();
+            let path = d.path().join("db");
+            let mut c = seed_twelve_accounting(&path, journal);
+            let before = snapshot(&c);
+            let mut checks = 0;
+            assert!(
+                upgrade_checked(&mut c, 12, d.path(), |_| {
+                    checks += 1;
+                    if checks == 2 {
+                        Err(Error::StorageUnavailable(
+                            "late backfill space fault".into(),
+                        ))
+                    } else {
+                        Ok(())
+                    }
+                })
+                .is_err()
+            );
+            assert_eq!(snapshot(&c), before);
+            upgrade(&mut c, 12, d.path()).unwrap();
+            crate::admission_query::tests::assert_exact(&c);
+            assert_eq!(integer(&c, "SELECT COUNT(*) FROM shared_check_lru"), 1);
+            drop(c);
+            let mut s = Store::open(&path).unwrap();
+            assert!(!crate::publication::pending(&s.conn).unwrap());
+            crate::admission_query::tests::assert_exact(&s.conn);
+            preserved(&mut s, 12, 18);
+        }
+    }
+
+    #[test]
+    fn schema_twelve_accounting_sigkill_is_previous_or_complete_and_restart_exact() {
+        use std::os::unix::process::ExitStatusExt;
+        for journal in ["DELETE", "WAL"] {
+            for phase in ["before_commit", "after_commit"] {
+                let d = tempfile::tempdir().unwrap();
+                let path = d.path().join("db");
+                let marker = d.path().join("marker");
+                let c = seed_twelve_accounting(&path, journal);
+                let before = snapshot(&c);
+                drop(c);
+                let mut child = OwnedChild(
+                    Command::new(std::env::current_exe().unwrap())
+                        .args([
+                            "--exact",
+                            "migrations::tests::crash_child_entry",
+                            "--nocapture",
+                        ])
+                        .env("GITJUKE_TEST_MIGRATION_DB", &path)
+                        .env("GITJUKE_TEST_MIGRATION_PHASE", phase)
+                        .env("GITJUKE_TEST_MIGRATION_MARKER", &marker)
+                        .stdout(Stdio::null())
+                        .spawn()
+                        .unwrap(),
+                );
+                let start = Instant::now();
+                while !marker.exists() {
+                    assert!(start.elapsed() < Duration::from_secs(10));
+                    assert!(child.0.try_wait().unwrap().is_none());
+                    std::thread::sleep(Duration::from_millis(5));
+                }
+                child.0.kill().unwrap();
+                assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
+                let c = Connection::open(&path).unwrap();
+                assert_eq!(
+                    c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
+                        .unwrap(),
+                    "ok"
+                );
+                if phase == "before_commit" {
+                    assert_snapshot(&snapshot(&c), &before, "schema12 backfill kill");
+                } else {
+                    assert_eq!(integer(&c, "PRAGMA user_version"), SCHEMA_VERSION);
+                    crate::admission_query::tests::assert_exact(&c);
+                }
+                drop(c);
+                let mut s = Store::open(&path).unwrap();
+                crate::admission_query::tests::assert_exact(&s.conn);
+                assert!(!crate::publication::pending(&s.conn).unwrap());
+                preserved(&mut s, 12, 18);
+            }
+        }
+    }
+
+    fn seed_thirteen_planning(path: &Path, journal: &str) -> Connection {
+        let c = seed_twelve_accounting(path, journal);
+        c.execute_batch(include_str!("shared_storage.sql")).unwrap();
+        c.execute("UPDATE publication SET step=1", []).unwrap();
+        c
+    }
+    #[test]
+    fn schema_thirteen_planning_upgrade_rolls_back_late_failure_and_resets_preparation_safely() {
+        for journal in ["DELETE", "WAL"] {
+            let d = tempfile::tempdir().unwrap();
+            let path = d.path().join("db");
+            let mut c = seed_thirteen_planning(&path, journal);
+            let old = snapshot(&c);
+            let mut checks = 0;
+            assert!(
+                upgrade_checked(&mut c, 13, d.path(), |_| {
+                    checks += 1;
+                    if checks == 2 {
+                        Err(Error::StorageUnavailable(
+                            "late planning migration space failure".into(),
+                        ))
+                    } else {
+                        Ok(())
+                    }
+                })
+                .is_err()
+            );
+            assert_eq!(snapshot(&c), old);
+            upgrade(&mut c, 13, d.path()).unwrap();
+            assert_eq!(integer(&c, "SELECT step FROM publication"), 0);
+            assert_eq!(integer(&c, "SELECT COUNT(*) FROM publication_row"), 1);
+            assert_eq!(integer(&c, "SELECT contexts FROM shared_check_lru"), 1);
+            crate::admission_query::tests::assert_exact(&c);
+            drop(c);
+            let mut s = Store::open(&path).unwrap();
+            assert!(!crate::publication::pending(&s.conn).unwrap());
+            crate::admission_query::tests::assert_exact(&s.conn);
+            preserved(&mut s, 13, 18);
+        }
+    }
+    #[test]
+    fn schema_thirteen_planning_sigkill_keeps_previous_or_complete_upgrade_and_resumes() {
+        use std::os::unix::process::ExitStatusExt;
+        for journal in ["DELETE", "WAL"] {
+            for phase in ["before_commit", "after_commit"] {
+                let d = tempfile::tempdir().unwrap();
+                let path = d.path().join("db");
+                let marker = d.path().join("marker");
+                let c = seed_thirteen_planning(&path, journal);
+                let old = snapshot(&c);
+                drop(c);
+                let mut child = OwnedChild(
+                    Command::new(std::env::current_exe().unwrap())
+                        .args([
+                            "--exact",
+                            "migrations::tests::crash_child_entry",
+                            "--nocapture",
+                        ])
+                        .env("GITJUKE_TEST_MIGRATION_DB", &path)
+                        .env("GITJUKE_TEST_MIGRATION_PHASE", phase)
+                        .env("GITJUKE_TEST_MIGRATION_MARKER", &marker)
+                        .stdout(Stdio::null())
+                        .spawn()
+                        .unwrap(),
+                );
+                let start = Instant::now();
+                while !marker.exists() {
+                    assert!(start.elapsed() < Duration::from_secs(10));
+                    assert!(child.0.try_wait().unwrap().is_none());
+                    std::thread::sleep(Duration::from_millis(5));
+                }
+                child.0.kill().unwrap();
+                assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
+                let c = Connection::open(&path).unwrap();
+                assert_eq!(
+                    c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
+                        .unwrap(),
+                    "ok"
+                );
+                if phase == "before_commit" {
+                    assert_snapshot(&snapshot(&c), &old, "planning migration");
+                } else {
+                    assert_eq!(integer(&c, "PRAGMA user_version"), SCHEMA_VERSION);
+                    assert_eq!(integer(&c, "SELECT step FROM publication"), 0);
+                    crate::admission_query::tests::assert_exact(&c);
+                }
+                drop(c);
+                let mut s = Store::open(&path).unwrap();
+                assert!(!crate::publication::pending(&s.conn).unwrap());
+                crate::admission_query::tests::assert_exact(&s.conn);
+                preserved(&mut s, 13, 18);
+            }
+        }
+    }
+
+    #[test]
+    fn alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure() {
+        for journal in ["DELETE", "WAL"] {
+            let d = tempfile::tempdir().unwrap();
+            let path = d.path().join("db");
+            let mut c = seed(&path, 14, journal);
+            let before = snapshot(&c);
+            let mut calls = 0;
+            let failure = upgrade_checked(&mut c, 14, d.path(), |_| {
+                calls += 1;
+                if calls == 2 {
+                    Err(Error::StorageUnavailable("fixture late admission".into()))
+                } else {
+                    Ok(())
+                }
+            });
+            assert!(failure.is_err());
+            assert_eq!(snapshot(&c), before);
+            drop(c);
+            let mut s = Store::open(&path).unwrap();
+            preserved(&mut s, 14, 17);
+            assert!(!s.settings().unwrap().alerts.enabled);
+            assert_eq!(
+                integer(
+                    &s.conn,
+                    "SELECT count(*) FROM sqlite_master WHERE type='index' AND name='activity_intent_dispatch'"
+                ),
+                1
             );
         }
     }
@@ -534,5 +783,76 @@ mod tests {
         runtime.shutdown().await;
         let mut s = Store::open(&path).unwrap();
         preserved(&mut s, 3, 18);
+    }
+    #[test]
+    fn saved_query_schema_16_late_space_failure_preserves_15_and_retries() {
+        for journal in ["DELETE", "WAL"] {
+            let d = tempfile::tempdir().unwrap();
+            let path = d.path().join("db");
+            let mut c = seed(&path, 15, journal);
+            let before = snapshot(&c);
+            let mut checks = 0;
+            let result = upgrade_checked(&mut c, 15, d.path(), |_| {
+                checks += 1;
+                if checks == 2 {
+                    Err(crate::Error::StorageUnavailable(
+                        "injected late space failure".into(),
+                    ))
+                } else {
+                    Ok(())
+                }
+            });
+            assert!(result.is_err());
+            assert_snapshot(&snapshot(&c), &before, journal);
+            assert_eq!(integer(&c, "PRAGMA user_version"), 15);
+            upgrade_checked(&mut c, 15, d.path(), |_| Ok(())).unwrap();
+            assert_eq!(integer(&c, "PRAGMA user_version"), 16);
+            c.execute(
+                "INSERT INTO saved_query(name,search,version) VALUES('Local','repo:a/b',1)",
+                [],
+            )
+            .unwrap();
+            drop(c);
+            let mut s = Store::open(&path).unwrap();
+            assert_eq!(s.saved_queries(0).unwrap().items[0].name, "Local");
+            preserved(&mut s, 15, 17);
+        }
+    }
+    #[test]
+    fn both_independent_schema_15_variants_upgrade_without_losing_configuration() {
+        for query_branch in [false, true] {
+            let d = tempfile::tempdir().unwrap();
+            let path = d.path().join("db");
+            let mut c = seed(&path, 14, "WAL");
+            if query_branch {
+                c.execute_batch("CREATE TABLE saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); INSERT INTO saved_query(name,search,version) VALUES('Keep me','repo:a/b',3); PRAGMA user_version=15;").unwrap();
+            } else {
+                c.execute_batch("CREATE INDEX activity_intent_dispatch ON activity_intent(state,id); PRAGMA user_version=15;").unwrap();
+            }
+            upgrade_checked(&mut c, 15, d.path(), |_| Ok(())).unwrap();
+            assert_eq!(integer(&c, "PRAGMA user_version"), 16);
+            assert_eq!(
+                integer(
+                    &c,
+                    "SELECT count(*) FROM sqlite_schema WHERE name='activity_intent_dispatch'"
+                ),
+                1
+            );
+            assert_eq!(
+                integer(&c, "SELECT count(*) FROM saved_query"),
+                i64::from(query_branch)
+            );
+            if query_branch {
+                let row: (String, String, i64) = c
+                    .query_row("SELECT name,search,version FROM saved_query", [], |r| {
+                        Ok((r.get(0)?, r.get(1)?, r.get(2)?))
+                    })
+                    .unwrap();
+                assert_eq!(row, ("Keep me".into(), "repo:a/b".into(), 3));
+            }
+            drop(c);
+            let mut store = Store::open(&path).unwrap();
+            preserved(&mut store, 14, 17);
+        }
     }
 }

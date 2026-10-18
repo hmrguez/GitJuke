@@ -1,0 +1,25 @@
+{
+  "beforePids": [
+    85006
+  ],
+  "action": "snapshot",
+  "afterPids": [
+    85006
+  ],
+  "loginPreferenceExists": true,
+  "launchAgentExists": false,
+  "watchReasons": [
+    [
+      "PR_1",
+      "authored"
+    ],
+    [
+      "PR_1",
+      "selected"
+    ]
+  ],
+  "paused": true,
+  "selection": [
+    "[\"a/b\",1]"
+  ]
+}

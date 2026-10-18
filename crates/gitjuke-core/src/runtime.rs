@@ -19,6 +19,10 @@ use tokio_util::sync::CancellationToken;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Job {
+    Logs(crate::logs::LogJob),
+    Query(crate::saved_queries::QueryJob),
+    Conversation(crate::conversation::ConversationJob),
+    Changes(crate::changes::ChangesJob),
     Activity(crate::activity::ActivityJob),
     Discover(Discovery),
     Heads(Vec<WatchTarget>),
@@ -32,6 +36,10 @@ pub enum Job {
 impl Job {
     pub(crate) fn key(&self) -> String {
         match self {
+            Self::Logs(p) => format!("log:{}", p.seq),
+            Self::Query(j) => j.key(),
+            Self::Conversation(p) => p.key(),
+            Self::Changes(p) => p.key(),
             Self::Activity(p) => p.key(),
             Self::Discover(p) => p.source.clone(),
             Self::Heads(targets) => format!(
@@ -59,11 +67,20 @@ pub(crate) struct Work {
 }
 #[derive(Default)]
 pub struct Queue {
-    jobs: VecDeque<Work>,
+    pub(crate) jobs: VecDeque<Work>,
     foreground_run: usize,
 }
 impl Queue {
-    fn push(&mut self, w: Work) -> bool {
+    pub(crate) fn discard_queries(&mut self) {
+        self.jobs.retain(|w| !matches!(w.job, Job::Query(_)));
+    }
+    pub(crate) fn discard_conversation(&mut self) {
+        self.jobs.retain(|w| !matches!(w.job, Job::Conversation(_)));
+    }
+    pub(crate) fn discard_changes(&mut self) {
+        self.jobs.retain(|w| !matches!(w.job, Job::Changes(_)));
+    }
+    pub(crate) fn push(&mut self, w: Work) -> bool {
         if self
             .jobs
             .iter()
@@ -109,8 +126,16 @@ pub(crate) struct Inner {
     pub(crate) batch_size: usize,
     pub(crate) context_size: u16,
     pub(crate) path: PathBuf,
+    pub(crate) conversation_seq: u64,
+    pub(crate) conversation_running: bool,
+    pub(crate) log_slot: Option<crate::logs::LogSlot>,
+    pub(crate) log_seq: u64,
+    pub(crate) log_running: bool,
+    pub(crate) changes_seq: u64,
+    pub(crate) changes_running: bool,
+    pub(crate) active_query: Option<(i64, u64)>,
     last_tick: u64,
-    storage_stopped: bool,
+    pub(crate) storage_stopped: bool,
     storage_check_at: u64,
     startup_deferred: bool,
     storage_check: StorageCheck,
@@ -119,9 +144,11 @@ type StorageCheck = Arc<dyn Fn(&std::path::Path) -> Result<()> + Send + Sync>;
 
 #[derive(Clone)]
 pub struct Runtime {
+    pub(crate) alert_probe: Arc<Mutex<Option<crate::runtime_alerts::Probe>>>,
+    pub(crate) alert_sink: Arc<Mutex<Option<Arc<dyn crate::alerts::AlertSink>>>>,
     pub(crate) inner: Arc<Mutex<Inner>>,
     notify: Arc<Notify>,
-    stop: CancellationToken,
+    pub(crate) stop: CancellationToken,
     finished: CancellationToken,
     pub(crate) on_revision: Arc<dyn Fn(u64) + Send + Sync>,
 }
@@ -129,10 +156,25 @@ impl Runtime {
     pub fn start(path: PathBuf, on_revision: impl Fn(u64) + Send + Sync + 'static) -> Result<Self> {
         Self::start_checked(path, on_revision, Arc::new(storage_healthy))
     }
+    /// Initialize hidden-reader membership before spawning the monitor worker.
+    pub fn start_background(
+        path: PathBuf,
+        on_revision: impl Fn(u64) + Send + Sync + 'static,
+    ) -> Result<Self> {
+        Self::start_mode(path, on_revision, Arc::new(storage_healthy), false)
+    }
     fn start_checked(
         path: PathBuf,
         on_revision: impl Fn(u64) + Send + Sync + 'static,
         storage_check: StorageCheck,
+    ) -> Result<Self> {
+        Self::start_mode(path, on_revision, storage_check, true)
+    }
+    fn start_mode(
+        path: PathBuf,
+        on_revision: impl Fn(u64) + Send + Sync + 'static,
+        storage_check: StorageCheck,
+        reader_open: bool,
     ) -> Result<Self> {
         let directory = path
             .parent()
@@ -165,6 +207,8 @@ impl Runtime {
             });
         }
         let runtime = Self {
+            alert_probe: Arc::new(Mutex::new(None)),
+            alert_sink: Arc::new(Mutex::new(None)),
             inner: Arc::new(Mutex::new(Inner {
                 store,
                 transport: transport.ok(),
@@ -175,11 +219,19 @@ impl Runtime {
                 busy: false,
                 current: CancellationToken::new(),
                 selected,
-                reader_open: true,
-                reader_visible: true,
+                reader_open,
+                reader_visible: reader_open,
                 batch_size: 10,
                 context_size: 25,
                 path,
+                conversation_seq: 0,
+                conversation_running: false,
+                log_slot: None,
+                log_seq: 0,
+                log_running: false,
+                changes_seq: 0,
+                changes_running: false,
+                active_query: None,
                 last_tick: now(),
                 storage_stopped: startup_deferred,
                 startup_deferred,
@@ -303,6 +355,9 @@ impl Runtime {
         if i.locked {
             return Err(Error::Safe(i.health.clone()));
         }
+        Self::cancel_logs_locked(&mut i);
+        Self::cancel_changes_locked(&mut i);
+        Self::cancel_conversation_locked(&mut i);
         i.selected = Some((repo.clone(), number));
         // During protection, cached navigation is in-memory only. Do not persist
         // a selection or queue a remote read when writes are unavailable.
@@ -333,6 +388,9 @@ impl Runtime {
     }
     pub fn reader_closed(&self) -> Result<()> {
         let mut i = self.lock()?;
+        Self::cancel_logs_locked(&mut i);
+        Self::cancel_changes_locked(&mut i);
+        Self::cancel_conversation_locked(&mut i);
         i.reader_open = false;
         i.reader_visible = false;
         let selected = i.selected.clone();
@@ -355,6 +413,7 @@ impl Runtime {
         settings.paused = paused;
         Self::store_operation(&mut i, |s| s.save_settings(&settings))?;
         if paused {
+            Self::cancel_logs_locked(&mut i);
             i.current.cancel();
             i.queue.jobs.retain(|w| w.manual);
             i.health = "Paused — cached reading and explicit refresh remain available.".into();
@@ -370,7 +429,10 @@ impl Runtime {
                     foreground: false,
                 });
             } else {
-                Self::store_operation(&mut i, |s| s.set_due("discovery", 0))?;
+                Self::store_operation(&mut i, |s| {
+                    s.set_due("saved-query", 0)?;
+                    s.set_due("discovery", 0)
+                })?;
             }
         }
         let revision = i.store.revision()?;
@@ -396,6 +458,7 @@ impl Runtime {
     }
     pub fn clear(&self) -> Result<()> {
         let mut i = self.lock()?;
+        Self::cancel_logs_locked(&mut i);
         i.current.cancel();
         i.queue.jobs.clear();
         let result = Self::store_operation(&mut i, |s| s.clear());
@@ -411,6 +474,7 @@ impl Runtime {
     pub fn configure(&self, path: String, config: String) -> Result<()> {
         let transport = Transport::discover(Some(&path), Some(&config))?;
         let mut i = self.lock()?;
+        Self::cancel_logs_locked(&mut i);
         i.current.cancel();
         Self::store_operation(&mut i, |s| s.invalidate())?;
         i.queue.jobs.clear();
@@ -431,9 +495,18 @@ impl Runtime {
         self.notify.notify_one();
         Ok(())
     }
-    pub async fn shutdown(&self) {
+    /// Stop eligibility and cancel active reads before the desktop schedules its async reap.
+    pub fn request_shutdown(&self) {
         self.stop.cancel();
-        if let Ok(i) = self.lock() {
+        self.notify.notify_one();
+    }
+    pub(crate) fn work_token(&self) -> CancellationToken {
+        self.stop.child_token()
+    }
+    pub async fn shutdown(&self) {
+        self.request_shutdown();
+        if let Ok(mut i) = self.lock() {
+            Self::cancel_logs_locked(&mut i);
             i.current.cancel();
         }
         self.notify.notify_one();
@@ -444,12 +517,26 @@ impl Runtime {
             if self.stop.is_cancelled() {
                 break;
             }
+            let result = self.dispatch_alert().await;
+            if let Err(err) = self.protect_storage(result)
+                && let Ok(mut i) = self.lock()
+                && !i.storage_stopped
+            {
+                i.health = err.to_string();
+                let _ = Self::store_operation(&mut i, |s| s.record_failure("core", now()));
+            }
             let work = self.next();
             match work {
                 Ok(Some((work, transport, token, generation))) => {
+                    if self.stop.is_cancelled() {
+                        break;
+                    }
                     let mut result = self.execute(&work, &transport, &token, generation).await;
                     if let Ok(mut i) = self.lock() {
                         i.busy = false;
+                        i.log_running = false;
+                        i.changes_running = false;
+                        i.conversation_running = false;
                         if result.is_ok() {
                             if let Some(seq) = work.ticket {
                                 result = i.store.ack(seq);
@@ -471,6 +558,12 @@ impl Runtime {
                                 continue;
                             }
                             let recovery_result = (|| -> Result<()> {
+                                if token.is_cancelled()
+                                    && matches!(work.job, Job::Changes(_) | Job::Conversation(_))
+                                    && let Some(seq) = work.ticket
+                                {
+                                    i.store.ack(seq)?;
+                                }
                                 if !token.is_cancelled() {
                                     i.store.error(&work.job.key(), &err.to_string())?;
                                     let at = now() + 60;
@@ -562,6 +655,17 @@ impl Runtime {
                                             retry,
                                             true,
                                         )?;
+                                    } else if let Job::Query(_) = &work.job {
+                                        if let Some(seq) = work.ticket {
+                                            i.store.ack(seq)?;
+                                        }
+                                    } else if matches!(
+                                        &work.job,
+                                        Job::Changes(_) | Job::Conversation(_)
+                                    ) {
+                                        if let Some(seq) = work.ticket {
+                                            i.store.ack(seq)?;
+                                        }
                                     } else if let Job::Contexts(target) = &work.job {
                                         if let Some(seq) = work.ticket {
                                             i.store.ack(seq)?;
@@ -736,6 +840,7 @@ impl Runtime {
         i.storage_stopped = true;
         i.store.cache_writes = false;
         i.storage_check_at = now() + 60;
+        Self::cancel_logs_locked(i);
         i.current.cancel();
         i.health = format!(
             "{err} Remote reads are stopped; cached reading remains available; local changes require a successful write. Storage will be checked again in one minute."
@@ -772,6 +877,8 @@ impl Runtime {
                 crate::clear_content::resume(&mut i.store.conn)?;
                 crate::invalidation::resume(&mut i.store.conn)?;
                 crate::control_sweep::resume(&mut i.store.conn)?;
+                i.store.resume_changes_cleanup()?;
+                i.store.resume_conversation_cleanup()?;
                 i.store.maintain_retention()?;
                 i.store.storage_probe()?;
             }
@@ -798,6 +905,9 @@ impl Runtime {
     }
     fn next(&self) -> Result<Option<(Work, Transport, CancellationToken, u64)>> {
         let mut i = self.lock()?;
+        if self.stop.is_cancelled() {
+            return Ok(None);
+        }
         if !Self::check_storage(&mut i)? {
             return Ok(None);
         }
@@ -821,6 +931,14 @@ impl Runtime {
                 manual: false,
                 foreground: false,
             });
+        }
+        if !paused
+            && !i.locked
+            && i.reader_open
+            && let Some((id, version)) = i.active_query
+            && i.store.due("saved-query")? <= now()
+        {
+            Self::queue_query(&mut i, id, version, 1, false)?;
         }
         if !paused && !i.locked {
             let offline: bool = i.store.conn.query_row(
@@ -872,16 +990,33 @@ impl Runtime {
                 ticket: Some(seq),
             });
         }
-        // Bootstrap/explicit detail jobs also use the persisted queue.
-        let Some(work) = i.queue.pop() else {
+        Self::maintain_logs(&mut i)?;
+        // A memory-only log request waits through core quota/backoff while other resources run.
+        let deferred_log = if !i.store.budget_eligible("core", now())? {
+            i.queue
+                .jobs
+                .iter()
+                .position(|w| matches!(w.job, Job::Logs(_)))
+                .and_then(|n| i.queue.jobs.remove(n))
+        } else {
+            None
+        };
+        let work = i.queue.pop();
+        if let Some(log) = deferred_log {
+            i.queue.push(log);
+        }
+        let Some(work) = work else {
             return Ok(None);
         };
         if paused && !work.manual {
             return Ok(None);
         }
         (i.storage_check)(i.path.parent().unwrap())?;
+        i.log_running = matches!(work.job, Job::Logs(_));
+        i.changes_running = matches!(work.job, Job::Changes(_));
+        i.conversation_running = matches!(work.job, Job::Conversation(_));
         i.busy = true;
-        i.current = CancellationToken::new();
+        i.current = self.work_token();
         Ok(Some((
             work,
             i.transport.clone().unwrap(),
@@ -895,6 +1030,7 @@ impl Runtime {
         op: ReadOp,
         c: &CancellationToken,
     ) -> Result<Response> {
+        let log_read = matches!(&op, ReadOp::ActionsLog { .. });
         let notification_url = match &op {
             ReadOp::Activity(read) if read.url.starts_with("notifications?") => {
                 Some(read.url.clone())
@@ -902,7 +1038,7 @@ impl Runtime {
             _ => None,
         };
         let resource = match &op {
-            ReadOp::Graph(_) => "graphql",
+            ReadOp::Graph(_) | ReadOp::Conversation(_) => "graphql",
             ReadOp::Search { .. } | ReadOp::Authored { .. } => "search",
             _ => "core",
         };
@@ -921,6 +1057,7 @@ impl Runtime {
         let output = t.read(op, c).await?;
         if transport::indicates_auth_loss(&output) {
             let mut i = self.lock()?;
+            Self::cancel_logs_locked(&mut i);
             i.locked = true;
             i.store.invalidate()?;
             i.queue.jobs.clear();
@@ -930,7 +1067,11 @@ impl Runtime {
             ));
         }
         let payload = output.stdout.len();
-        let r = Response::parse(output)?;
+        let r = if log_read {
+            Response::parse_log(output)?
+        } else {
+            Response::parse(output)?
+        };
         let mut i = self.lock()?;
         i.store.record_response(resource, &r, payload, now())?;
         if let Some(url) = notification_url {
@@ -946,6 +1087,7 @@ impl Runtime {
             i.store.conn.execute("INSERT INTO api_validator(url,next_at) VALUES(?,?) ON CONFLICT(url) DO UPDATE SET next_at=excluded.next_at",rusqlite::params![url,deadline as i64])?;
         }
         if r.status == 401 {
+            Self::cancel_logs_locked(&mut i);
             i.locked = true;
             i.store.invalidate()?;
             i.queue.jobs.clear();
@@ -968,6 +1110,7 @@ impl Runtime {
             return Err(Error::Safe("Obsolete identity result discarded.".into()));
         }
         if let Err(err) = i.store.bind(&id) {
+            Self::cancel_logs_locked(&mut i);
             i.locked = true;
             i.store.invalidate()?;
             i.queue.jobs.clear();
@@ -983,6 +1126,18 @@ impl Runtime {
         c: &CancellationToken,
         generation: u64,
     ) -> Result<()> {
+        if let Job::Logs(job) = &w.job {
+            return self.execute_logs(t, c, generation, job).await;
+        }
+        if let Job::Query(job) = &w.job {
+            return self.execute_query(t, c, generation, job, w.manual).await;
+        }
+        if let Job::Conversation(job) = &w.job {
+            return self.execute_conversation(t, c, generation, job).await;
+        }
+        if let Job::Changes(job) = &w.job {
+            return self.execute_changes(t, c, generation, job).await;
+        }
         if let Job::Activity(job) = &w.job {
             return self.execute_activity(w, t, c, generation, job).await;
         }
@@ -1049,7 +1204,11 @@ impl Runtime {
                 repo: repo.clone(),
                 number: *number,
             },
-            Job::Activity(_)
+            Job::Logs(_)
+            | Job::Query(_)
+            | Job::Conversation(_)
+            | Job::Changes(_)
+            | Job::Activity(_)
             | Job::Bootstrap
             | Job::Discover(_)
             | Job::Heads(_)
@@ -1164,7 +1323,11 @@ impl Runtime {
                     i.store.put(&key, &pr, generation)?;
                 }
             }
-            Job::Activity(_)
+            Job::Logs(_)
+            | Job::Query(_)
+            | Job::Conversation(_)
+            | Job::Changes(_)
+            | Job::Activity(_)
             | Job::Bootstrap
             | Job::Discover(_)
             | Job::Heads(_)
@@ -2174,7 +2337,7 @@ mod tests {
         wait_for(|| r.status().unwrap().storage_stopped).await;
         assert_eq!(
             n("SELECT COUNT(*) FROM source_stage WHERE source='authored'"),
-            129
+            65
         );
         assert_eq!(
             n("SELECT COUNT(*) FROM source_stage WHERE source='independent'"),
@@ -2444,7 +2607,7 @@ mod tests {
         assert!(!r.status().unwrap().locked);
         assert_eq!(
             count("SELECT COUNT(*) FROM check_context WHERE pr_id='PR_1'"),
-            original_contexts + 257 - 128
+            original_contexts + 257 - 168
         );
         assert_eq!(
             count("SELECT epoch FROM watch_locator WHERE id='PR_1'"),
@@ -3418,7 +3581,7 @@ mod tests {
         assert!(r.status().unwrap().locked);
         assert!(r.page(0).is_err());
         assert!(r.refresh().is_err());
-        // The first 128-row transaction committed; the failing second batch
+        // Two 64-row transactions committed; the failing next batch
         // rolled back its companion final stage row.
         assert_eq!(
             sql.query_row("SELECT COUNT(*) FROM stage", [], |r| r.get::<_, i64>(0))
@@ -3590,6 +3753,60 @@ mod tests {
         r.shutdown().await;
     }
     #[test]
+    fn durable_selection_reserves_oldest_background_for_three_foreground_dispatches() {
+        let d = tempfile::tempdir().unwrap();
+        let mut s = Store::open(&d.path().join("db")).unwrap();
+        for n in 0..140 {
+            s.enqueue(
+                &format!("persist:{n}"),
+                &Job::Overview("a/b".into(), n),
+                true,
+                true,
+                0,
+                false,
+            )
+            .unwrap();
+        }
+        for n in [1000, 1001] {
+            s.enqueue(
+                &format!("persist:bg:{n}"),
+                &Job::Overview("a/b".into(), n),
+                false,
+                false,
+                0,
+                false,
+            )
+            .unwrap();
+        }
+        let before = s.conn.total_changes();
+        let page = s.pending(1).unwrap();
+        assert_eq!(
+            page.iter().map(|r| r.0).collect::<Vec<_>>(),
+            (1..=127).chain([141]).collect::<Vec<_>>()
+        );
+        assert_eq!(s.conn.total_changes(), before);
+        let mut q = Queue::default();
+        for (seq, _, job, manual, foreground) in page {
+            assert!(q.push(Work {
+                ticket: Some(seq),
+                job: serde_json::from_str(&job).unwrap(),
+                manual,
+                foreground
+            }));
+        }
+        for seq in [1, 2, 3, 141, 4] {
+            let work = q.pop().unwrap();
+            assert_eq!(work.ticket, Some(seq));
+            assert_eq!(work.foreground, seq != 141);
+        }
+        assert_eq!(
+            s.conn
+                .query_row("SELECT COUNT(*) FROM pending", [], |r| r.get::<_, i64>(0))
+                .unwrap(),
+            142
+        );
+    }
+    #[test]
     fn queue_bounds_coalescing_and_fairness() {
         let mut q = Queue::default();
         for n in 0..128 {
@@ -3619,3 +3836,7 @@ mod tests {
         assert_eq!(q.jobs.len(), 124);
     }
 }
+
+#[cfg(test)]
+#[path = "runtime_lifecycle_tests.rs"]
+mod lifecycle_tests;

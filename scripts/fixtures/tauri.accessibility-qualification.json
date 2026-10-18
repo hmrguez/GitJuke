@@ -1,0 +1,16 @@
+{
+  "productName": "GitJuke Accessibility",
+  "identifier": "dev.hmrguez.gitjuke.qualification.accessibility",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "GitJuke Accessibility \u2014 LOCAL SYNTHETIC FIXTURES",
+        "width": 960,
+        "height": 672,
+        "minWidth": 960,
+        "minHeight": 672
+      }
+    ]
+  }
+}

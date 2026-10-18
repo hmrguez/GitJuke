@@ -1,0 +1,70 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-alerts-core-target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 8 tests
+test activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure ... FAILED
+test activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids ... FAILED
+test activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents ... FAILED
+test activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure ... FAILED
+test activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay ... FAILED
+test activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart ... FAILED
+test activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back ... FAILED
+test activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them ... FAILED
+
+failures:
+
+---- activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure stdout ----
+
+thread 'activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure' (13780193) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids stdout ----
+
+thread 'activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids' (13780198) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents stdout ----
+
+thread 'activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents' (13780194) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure stdout ----
+
+thread 'activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure' (13780195) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay stdout ----
+
+thread 'activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay' (13780191) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart stdout ----
+
+thread 'activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart' (13780196) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back stdout ----
+
+thread 'activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back' (13780192) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them stdout ----
+
+thread 'activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them' (13780197) panicked at crates/gitjuke-core/src/activity_store.rs:715:55:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+
+failures:
+    activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay
+    activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back
+    activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure
+    activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents
+    activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure
+    activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart
+    activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them
+    activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids
+
+test result: FAILED. 0 passed; 8 failed; 0 ignored; 0 measured; 239 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p gitjuke-core --lib`

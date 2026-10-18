@@ -1,0 +1,33 @@
+    Blocking waiting for file lock on artifact directory
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 17s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 25 tests
+test activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them ... ok
+test clear_content::tests::clear_barrier_blocks_otherwise_ready_recovery_completion ... ok
+test clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume ... ok
+test clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history ... ok
+test clear_content::tests::clear_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test clear_content::tests::clear_unchanged_rows_do_not_consume_the_batch_allowance ... ok
+test clear_content::tests::crash_child_entry ... ok
+test maintenance_tests::cached_expired_checks_do_not_gain_completeness_while_cleanup_waits ... ok
+test maintenance_tests::crash_child_entry ... ok
+test maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope ... ok
+test maintenance_tests::late_metadata_and_check_faults_restore_complete_batch_after_committed_prefix ... ok
+test maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes ... ok
+test maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery ... ok
+test maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history ... ok
+test maintenance_tests::pending_control_work_cannot_falsely_complete_ready_recovery ... ok
+test maintenance_tests::sigkill_maintenance_before_and_after_first_and_late_commits ... ok
+test retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen ... ok
+test retention::tests::cleanup_fault_rolls_back_payload_membership_and_revision_together ... ok
+test retention::tests::content_expiry_and_orphan_cleanup_share_revision_reserved_budget ... ok
+test retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay ... ok
+test retention::tests::exact_age_boundaries_keep_minimal_activity_and_recent_payloads ... ok
+test retention::tests::metadata_failure_rolls_back_payload_cleanup_deadlines_and_revision ... ok
+test retention::tests::metadata_keeps_deadlines_payload_owners_and_current_or_unfinished_checks ... ok
+test runtime::tests::retention_runs_while_paused_and_failure_protects_until_repair ... ok
+test storage_usage::tests::counts_only_owned_database_sidecars_and_warns_at_one_gib ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 209 filtered out; finished in 28.30s
+

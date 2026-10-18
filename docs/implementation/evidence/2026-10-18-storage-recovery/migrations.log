@@ -1,0 +1,27 @@
+    Blocking waiting for file lock on artifact directory
+warning: variable does not need to be mutable
+   --> crates/gitjuke-core/src/runtime.rs:736:19
+    |
+736 |         if let Ok(mut i) = self.lock() {
+    |                   ----^
+    |                   |
+    |                   help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `gitjuke-core` (lib test) generated 1 warning (run `cargo fix --lib -p gitjuke-core --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 36.03s
+     Running unittests src/lib.rs (/Users/hmrguez/Programming/Personal/GitJuke/target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 8 tests
+test migrations::tests::crash_child_entry ... ok
+test migrations::tests::failed_legacy_migration_stops_runtime_then_reopens_paused_after_repair ... ok
+test migrations::tests::late_space_admission_rolls_back_every_schema_step_in_both_journals ... ok
+test migrations::tests::schema_thirteen_planning_sigkill_keeps_previous_or_complete_upgrade_and_resumes ... ok
+test migrations::tests::schema_thirteen_planning_upgrade_rolls_back_late_failure_and_resets_preparation_safely ... ok
+test migrations::tests::schema_twelve_accounting_backfill_is_atomic_on_late_failure_and_resumes_pending_work ... ok
+test migrations::tests::schema_twelve_accounting_sigkill_is_previous_or_complete_and_restart_exact ... ok
+test migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 222 filtered out; finished in 311.88s
+

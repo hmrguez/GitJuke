@@ -1,0 +1,24 @@
+bun test v1.4.2 (744846f84)
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [110.32ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [52.07ms]
+48 |  }finally{await r.close();}
+49 | });
+50 | test('summary and unavailable notification routes open Activity without a seen mutation',async()=>{
+51 |  for(const kind of ['summary','unavailable'] as const){const r=await routed(kind);try{
+52 |   expect(r.host.querySelector('nav button[title="Activity"]')?.classList.contains('active')).toBe(true);
+53 |   expect(r.host.textContent?.includes("This notification's source is no longer available.")).toBe(kind==='unavailable');
+                                                                                                  ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/integrated-routing.test.tsx:53:94)
+(fail) summary and unavailable notification routes open Activity without a seen mutation [97.84ms]
+
+ 2 pass
+ 1 fail
+ 12 expect() calls
+Ran 3 tests across 1 file. [372.00ms]

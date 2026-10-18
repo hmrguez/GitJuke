@@ -1,0 +1,140 @@
+    Checking gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+error: function `missing` is never used
+  --> crates/gitjuke-core/src/activity_enrollment.rs:13:15
+   |
+13 | pub(crate) fn missing(conn: &Connection) -> Result<bool> {
+   |               ^^^^^^^
+   |
+   = note: `-D dead-code` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[expect(dead_code)]` or `#[allow(dead_code)]`
+
+error: this creates an owned instance just for comparison
+   --> crates/gitjuke-core/src/publication_planning.rs:356:21
+    |
+356 |         if saved != bits.to_string() {
+    |                     ^^^^^^^^^^^^^^^^ help: try: `bits`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#cmp_owned
+    = note: `-D clippy::cmp-owned` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::cmp_owned)]`
+
+error: this `if` can be collapsed into the outer `match`
+   --> crates/gitjuke-core/src/publication_planning.rs:538:13
+    |
+538 | /             if get(tx, "teams_stage", &json!([&d[1].as_str().unwrap()[5..]]))?.is_none() {
+539 | |                 set("watch_source", json!([d[0], d[1]]), None, None);
+540 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_match
+    = note: `-D clippy::collapsible-match` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_match)]`
+help: collapse nested if block
+    |
+537 ~         TeamSources if d[1].as_str().is_some_and(|s| ascii_prefix(s, "team:"))
+538 ~             && get(tx, "teams_stage", &json!([&d[1].as_str().unwrap()[5..]]))?.is_none() => {
+539 |                 set("watch_source", json!([d[0], d[1]]), None, None);
+540 ~             }
+    |
+
+error: this `if` can be collapsed into the outer `match`
+   --> crates/gitjuke-core/src/publication_planning.rs:547:13
+    |
+547 | /             if get(tx, "teams_stage", &json!([&d[1].as_str().unwrap()[14..]]))?.is_none() {
+548 | |                 set("pending", json!([d[0]]), None, None);
+549 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_match
+help: collapse nested if block
+    |
+545 ~                 .is_some_and(|s| ascii_prefix(s, "discover:team:"))
+546 ~             && get(tx, "teams_stage", &json!([&d[1].as_str().unwrap()[14..]]))?.is_none() => {
+547 |                 set("pending", json!([d[0]]), None, None);
+548 ~             }
+    |
+
+error: this `if` can be collapsed into the outer `match`
+   --> crates/gitjuke-core/src/publication_planning.rs:607:13
+    |
+607 | /             if x["complete"] == true || incoming(x, "contexts", &d[2]).is_none() {
+608 | |                 set("check_context", json!([d[0], d[1], d[2], 1]), None, None);
+609 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_match
+help: collapse nested if block
+    |
+606 ~         CheckClear if d[0] == x["id"] && d[1] == x["commit"] && d[4] == 1
+607 ~             && (x["complete"] == true || incoming(x, "contexts", &d[2]).is_none()) => {
+608 |                 set("check_context", json!([d[0], d[1], d[2], 1]), None, None);
+609 ~             }
+    |
+
+error: this `if` can be collapsed into the outer `match`
+   --> crates/gitjuke-core/src/publication_planning.rs:698:13
+    |
+698 | /             if get(tx, "activity_target", &json!([x["repo"], x["number"]]))?.is_some() {
+699 | |                 set(
+700 | |                     "activity_target",
+701 | |                     json!([x["repo"], x["number"]]),
+...   |
+704 | |                 );
+705 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_match
+help: collapse nested if block
+    |
+697 ~         Target
+698 ~             if get(tx, "activity_target", &json!([x["repo"], x["number"]]))?.is_some() => {
+699 |                 set(
+...
+704 |                 );
+705 ~             }
+    |
+
+error: this `if` can be collapsed into the outer `match`
+   --> crates/gitjuke-core/src/publication_planning.rs:761:13
+    |
+761 | /             if get(tx, "progress", &json!(["activity:baseline"]))?.is_none() {
+762 | |                 set(
+763 | |                     "progress",
+764 | |                     json!(["activity:baseline"]),
+...   |
+767 | |                 );
+768 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_match
+help: collapse nested if block
+    |
+760 ~         Baseline
+761 ~             if get(tx, "progress", &json!(["activity:baseline"]))?.is_none() => {
+762 |                 set(
+...
+767 |                 );
+768 ~             }
+    |
+
+error: could not compile `gitjuke-core` (lib) due to 7 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: very complex type used. Consider factoring parts into `type` definitions
+   --> crates/gitjuke-core/src/publication_completion.rs:310:44
+    |
+310 | thread_local! {pub(crate) static ON_WINDOW:std::cell::RefCell<Option<(String,Box<dyn FnOnce()>)>>=const{std::cell::RefCell::new(Non...
+    |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#type_complexity
+    = note: `-D clippy::type-complexity` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::type_complexity)]`
+
+error: very complex type used. Consider factoring parts into `type` definitions
+   --> crates/gitjuke-core/src/publication_completion.rs:310:44
+    |
+310 | thread_local! {pub(crate) static ON_WINDOW:std::cell::RefCell<Option<(String,Box<dyn FnOnce()>)>>=const{std::cell::RefCell::new(Non...
+    |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#type_complexity
+
+error: could not compile `gitjuke-core` (lib test) due to 8 previous errors

@@ -1,0 +1,11 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.81s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 3 tests
+test exact_destinations_without_excerpts_or_history_scans ... ok
+test exact_destination_ownership_missing_cancellation_and_receipt_barriers ... ok
+test exact_coordinate_denial_and_edit_cannot_publish_mixed_destination ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 17.20s
+

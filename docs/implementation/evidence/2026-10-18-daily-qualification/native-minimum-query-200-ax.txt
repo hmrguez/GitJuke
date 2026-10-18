@@ -1,0 +1,23 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container New saved query
+				4 heading New saved query, Value: 2
+					5 text New saved query
+				6 button Close query editor
+				7 container
+					8 text Name
+					9 text field (settable) Name
+					10 text GitHub PR search
+					11 search text field (settable) GitHub PR search, Placeholder: repo:owner/repository is:open
+					12 text Searches pull requests only. Saved on this Mac; no GitHub saved-view synchronization.
+					13 button Save query
+	14 close button
+	15 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	16 minimize button
+	17 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+18 menu bar
+	19 GitJuke Daily Qualification
+
+The focused UI element is 9 text field (settable) Name

@@ -1,0 +1,22 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container check
+				4 heading check, Value: 2
+					5 text check
+				6 button Close activity
+				7 text a/b · #1 · Actor unavailable
+				8 container Activity source body
+					9 text External 1 · SUCCESS
+				10 container
+					11 text Source head: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+				12 text 17/10/2026, 02:00:00
+	13 close button
+	14 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	15 minimize button
+	16 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+17 menu bar
+	18 GitJuke Accessibility
+
+The focused UI element is 6 button Close activity

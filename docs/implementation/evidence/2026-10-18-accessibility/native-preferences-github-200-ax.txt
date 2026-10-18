@@ -1,0 +1,33 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Preferences
+				4 heading Preferences, Value: 2
+					5 text Preferences
+				6 button Close preferences
+				7 container Preferences sections
+					8 toggle button Appearance, Value: off
+					9 toggle button Monitoring, Value: off
+					10 toggle button GitHub, Value: on
+					11 toggle button Storage, Value: off
+				12 container GitHub
+					13 heading GitHub connection, Value: 3
+						14 text GitHub connection
+					15 text gh version test-fixture · github.com / reader / 42
+					16 container
+						17 text Executable
+						18 text field (settable) Executable, Value: /private/tmp/gitjuke-accessibility-fixture-20261018/gh
+						19 text Configuration directory
+						20 text field (settable) Configuration directory, Value: /private/tmp/gitjuke-accessibility-fixture-20261018/config
+						21 button Validate original identity
+					22 text GitJuke uses stored authentication. It never logs in, switches accounts or changes scopes.
+				23 text GitJuke 0.1.0 · Your personal review desk.
+	24 close button
+	25 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	26 minimize button
+	27 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+28 menu bar
+	29 GitJuke Accessibility
+
+The focused UI element is 3 container Preferences

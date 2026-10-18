@@ -1,0 +1,72 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling libc v0.2.191
+   Compiling version_check v0.9.5
+   Compiling find-msvc-tools v0.1.14
+   Compiling typenum v1.20.1
+   Compiling shlex v2.0.1
+   Compiling serde_core v1.0.229
+   Compiling cc v1.8.0
+   Compiling pkg-config v0.3.34
+   Compiling vcpkg v0.2.15
+   Compiling pin-project-lite v0.2.17
+   Compiling zmij v1.0.23
+   Compiling generic-array v0.14.7
+   Compiling foldhash v0.2.0
+   Compiling cfg-if v1.0.5
+   Compiling bitflags v2.13.2
+   Compiling hashbrown v0.16.1
+   Compiling bytes v1.12.1
+   Compiling futures-task v0.3.34
+   Compiling serde v1.0.229
+   Compiling syn v3.0.9
+   Compiling futures-core v0.3.34
+   Compiling rustix v1.1.5
+   Compiling errno v0.3.14
+   Compiling mio v1.2.4
+   Compiling signal-hook-registry v1.4.8
+   Compiling getrandom v0.4.3
+   Compiling serde_json v1.0.154
+   Compiling thiserror v2.0.21
+   Compiling slab v0.4.12
+   Compiling cpufeatures v0.2.17
+   Compiling hashlink v0.11.1
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling fallible-iterator v0.3.0
+   Compiling digest v0.10.7
+   Compiling memchr v2.8.3
+   Compiling smallvec v1.16.3
+   Compiling futures-sink v0.3.34
+   Compiling itoa v1.0.18
+   Compiling sha2 v0.10.9
+   Compiling libsqlite3-sys v0.36.0
+   Compiling fastrand v2.5.0
+   Compiling httpdate v1.0.3
+   Compiling once_cell v1.21.4
+   Compiling tempfile v3.27.0
+   Compiling tokio-macros v2.7.2
+   Compiling futures-macro v0.3.34
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling futures-util v0.3.34
+   Compiling tokio v1.53.3
+   Compiling rusqlite v0.38.0
+   Compiling tokio-util v0.7.20
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 36s
+     Running tests/logs.rs (/private/tmp/gitjuke-logs-verified/debug/deps/logs-94bed4c9f0b5a9e8)
+
+running 7 tests
+test resource_epoch_backoff_provider_and_persistence_guards ... ok
+test explicit_memory_only_read_release_and_provider_details ... ok
+test navigation_cancels_child_and_old_cancel_cannot_release_replacement ... ok
+test exact_one_over_and_error_classification ... ok
+test in_flight_clear_epoch_and_storage_failure_drop_bodies ... ok
+test head_attempt_and_account_races_never_publish_body ... ok
+test clear_close_configuration_and_transport_overflow_release ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.43s
+

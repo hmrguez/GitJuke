@@ -1,0 +1,11 @@
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.99s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_desktop-9bd6a9f9680477dd)
+
+running 3 tests
+test startup::tests::corrupt_and_unreadable_files_survive_failed_startup ... ok
+test startup::tests::missing_directory_can_be_repaired_and_retried_without_reset ... ok
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+

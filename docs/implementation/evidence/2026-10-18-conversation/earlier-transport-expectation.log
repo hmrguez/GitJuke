@@ -1,0 +1,26 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.00s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 3 tests
+test independent_pages_thread_replies_and_ipc_subdivision ... FAILED
+test denial_identity_and_selected_pr_barriers ... ok
+test cancellation_clear_and_stale_revision_never_publish ... ok
+
+failures:
+
+---- independent_pages_thread_replies_and_ipc_subdivision stdout ----
+
+thread 'independent_pages_thread_replies_and_ipc_subdivision' (13336056) panicked at crates/gitjuke-core/tests/conversation.rs:120:5:
+assertion `left == right` failed
+  left: 25
+ right: 50
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    independent_pages_thread_replies_and_ipc_subdivision
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.72s
+
+error: test failed, to rerun pass `-p gitjuke-core --test conversation`

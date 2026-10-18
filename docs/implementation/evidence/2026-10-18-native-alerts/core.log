@@ -1,0 +1,23 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.19s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 15 tests
+test alerts::tests::attempt_crash_child ... ok
+test alerts::tests::metadata_previews_require_explicit_opt_in_and_never_include_bodies ... ok
+test alerts::tests::completed_recovery_groups_across_prs_while_post_boundary_activity_alerts_normally ... ok
+test alerts::tests::authoritative_workflow_attempts_coalesce_jobs_keep_runs_distinct_and_external_unknown ... ok
+test alerts::tests::failed_attempt_commit_cannot_dispatch_and_ambiguous_attempt_stays_terminal ... ok
+test alerts::tests::opt_in_and_permission_boundaries_never_replay_backlog ... ok
+test runtime_alerts::guard_tests::authoritative_source_guard_never_guesses_missing_attempt_or_superseded_head ... ok
+test alerts::tests::summary_and_unavailable_notification_routes_remain_distinct_and_do_not_mark_seen ... ok
+test alerts::tests::actual_sigkill_before_and_after_attempt_commit ... ok
+test alerts::tests::head_and_retry_races_reject_reserved_terminal_results ... ok
+test alerts::tests::notification_destination_hides_expired_cleared_denied_and_unattempted_sources ... ok
+test alerts::tests::reservation_revalidates_seen_pause_permission_policy_generation_and_membership ... ok
+test alerts::tests::completed_batches_group_without_focus_suppression_and_previews_are_generic ... ok
+test alerts::tests::reconstruction_is_bounded_idempotent_and_excludes_terminal_history ... ok
+test runtime_alerts::tests::worker_revalidates_identity_and_commits_attempt_before_platform_dispatch ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 234 filtered out; finished in 5.98s
+

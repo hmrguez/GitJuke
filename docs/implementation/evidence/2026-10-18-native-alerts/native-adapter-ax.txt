@@ -1,0 +1,12 @@
+Window: "GitJuke Alerts Qualification — LOCAL ADAPTER ONLY", App: GitJuke Alerts Qualification.
+0 standard window GitJuke Alerts Qualification — LOCAL ADAPTER ONLY, Secondary Actions: Raise
+	1 text Isolated local notification adapter. No account or source data. Permission applies only to dev.hmrguez.gitjuke.alerts.qualification. Enable is explicit; Send uses generic synthetic text. Reader routing and durable attempts are tested separately. Permission: 1 (1 not determined, 2 denied, 3 granted)
+	2 button Enable qualification notifications
+	3 button Send generic qualification alert
+	4 close button
+	5 zoom button (disabled)
+	6 text GitJuke Alerts Qualification — LOCAL ADAPTER ONLY
+7 menu bar
+	8 GitJuke Alerts Qualification
+
+The focused UI element is 2 button Enable qualification notifications

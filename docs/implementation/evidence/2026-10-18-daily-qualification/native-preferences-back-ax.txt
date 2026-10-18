@@ -1,0 +1,59 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 200%
+				4 text Text size 200%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+				15 button Preferences
+				16 text RE reader GitHub.com
+				17 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			18 container Pull request reader
+				19 button Back
+				20 text a/b / #1
+				21 button Open in GitHub
+				22 container
+					23 text Open
+					24 heading Change 1, Value: 1
+						25 text Change 1
+					26 text reader · main ← aaaaaaaaaa
+				27 container Published native stack
+					28 text No published stack
+				29 tab group (selectable) Reader
+					30 tab (selectable) Overview
+					31 tab (selectable) Changes
+					32 tab (selected) Conversation
+					33 tab (selectable) Checks
+				34 container Conversation
+					35 button Back to Activity
+					36 button Browse Conversation sources
+					37 text Exact Activity destination · parent source and thread coverage are not inferred. Patch anchor unavailable: source supplies no verified coordinates.
+					38 text CONVERSATION
+					39 container
+						40 text Head aaaaaaaaaa · safe plain text
+					41 button Refresh conversation
+					42 text 1 loaded / 1 known · exact record only
+					43 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+					44 container Comment by unavailable author
+						45 container
+							46 text Unavailable author Comment 2026-10-18T00:00:00Z
+						47 text Body too large: exceeds 128 KiB. Placeholder remains unseen.
+						48 button Open source in GitHub
+				49 text Cached 18/10/2026, 14:39:34 · revision 77
+	50 close button
+	51 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	52 minimize button
+	53 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+54 menu bar
+	55 GitJuke Daily Qualification
+
+The focused UI element is 2 HTML content Description: GitJuke, URL: tauri://localhost

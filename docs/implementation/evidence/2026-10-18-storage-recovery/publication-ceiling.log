@@ -1,0 +1,10 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.69s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_core-3323ab9129d514c4)
+
+running 2 tests
+test activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads ... ok
+test publication::tests::actual_ceiling_source_and_check_publications_transfer_staging_without_extra_budget ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 232 filtered out; finished in 17.52s
+

@@ -1,0 +1,42 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+				15 button Preferences
+				16 text RE reader GitHub.com
+				17 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			18 container Pull requests
+				19 text AUTHORED BY YOU
+				20 heading Pull requests, Value: 1
+					21 text Pull requests
+				22 button Refresh pull requests
+				23 text No successful sync yet
+				24 summary Sync status, Value: off
+					25 text Sync status
+				26 text field (settable) Filter loaded pull requests, Placeholder: Filter this page…
+				27 text Validate your GitHub connection in Preferences.
+				28 button (disabled) Previous
+				29 text 0–0
+				30 button (disabled) Next
+				31 summary Open a pull request, Value: off
+					32 text Open a pull request
+	33 close button
+	34 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	35 minimize button
+	36 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+37 menu bar
+	38 GitJuke Daily Qualification
+
+The focused UI element is 2 HTML content Description: GitJuke, URL: tauri://localhost

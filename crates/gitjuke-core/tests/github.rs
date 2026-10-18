@@ -25,6 +25,36 @@ fn api_error_and_partial_schema_are_not_successful_empty_sets() {
     assert!(page.incomplete);
 }
 #[test]
+fn search_preserves_merged_state_for_pull_request_readers() {
+    let items: Vec<_> = [
+        ("open", serde_json::Value::Null),
+        ("closed", serde_json::Value::Null),
+        ("closed", json!("2026-10-18T10:00:00Z")),
+    ]
+    .into_iter()
+    .enumerate()
+    .map(|(i, (state, merged_at))| {
+        let number = i + 1;
+        json!({
+            "node_id":format!("PR_{number}"),"number":number,"title":"Change",
+            "repository_url":"https://api.github.com/repos/a/b",
+            "html_url":format!("https://github.com/a/b/pull/{number}"),
+            "state":state,"draft":false,"user":{"login":"reader"},
+            "updated_at":"2026-10-18T10:00:00Z","pull_request":{"merged_at":merged_at}
+        })
+    })
+    .collect();
+    let page = parse_search(&response(
+        200,
+        json!({"total_count":3,"incomplete_results":false,"items":items}),
+    ))
+    .unwrap();
+    assert_eq!(
+        page.prs.iter().map(|p| p.state.as_str()).collect::<Vec<_>>(),
+        vec!["open", "closed", "merged"]
+    );
+}
+#[test]
 fn stack_unknown_none_and_authoritative_order_are_distinct() {
     assert!(stack_number(&response(404, json!({}))).is_err());
     assert_eq!(stack_number(&response(200, json!([]))).unwrap(), None);

@@ -1,0 +1,16 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.86s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 8 tests
+test changes::tests::fallback_rejects_untrusted_or_wrong_revision_file_links ... ok
+test changes::tests::source_completeness_is_not_inferred_from_presence_or_missing_text ... ok
+test changes::tests::metadata_pages_keep_indices_totals_and_upstream_ceiling_honest ... ok
+test admission_query::tests::autocommit_totals_hold_one_snapshot_across_concurrent_window_changes ... ok
+test changes::tests::inclusive_utf8_bytes_rows_and_logical_line_limits ... ok
+test maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes ... ok
+test changes_store::tests::denied_changes_remain_hidden_through_partial_cleanup_and_restart ... ok
+test changes::tests::chunks_preserve_every_utf8_byte_and_fit_worst_case_ipc_encoding ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 217 filtered out; finished in 0.27s
+

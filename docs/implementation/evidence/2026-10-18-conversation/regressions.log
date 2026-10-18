@@ -1,0 +1,106 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.97s
+     Running tests/activity.rs (target/debug/deps/activity-004b9f02f4b15ba8)
+
+running 3 tests
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/changes.rs (target/debug/deps/changes-9afeeeedb393d05e)
+
+running 5 tests
+test paginated_navigation_selected_only_patch_and_persisted_mode ... ok
+test cancellation_reaps_obsolete_file_and_late_results_cannot_replace_it ... ok
+test metadata_transport_overflow_subdivides_and_large_tier_is_explicit ... ok
+test clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results ... ok
+test moving_head_or_base_and_file_order_never_publish_mixed_revisions ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.72s
+
+     Running tests/github.rs (target/debug/deps/github-7a31b217d2fcdcbb)
+
+running 6 tests
+test server_deadlines_include_numeric_and_http_date_retry_after ... ok
+test api_error_and_partial_schema_are_not_successful_empty_sets ... ok
+test auth_loss_without_http_headers_is_recognized_without_exposing_diagnostics ... ok
+test read_response_requires_headers_and_never_accepts_cli_failure ... ok
+test auth_json_exit_zero_with_error_is_not_authenticated ... ok
+test stack_unknown_none_and_authoritative_order_are_distinct ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-a0b23bad9cacec17)
+
+running 16 tests
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity has been running for over 60 seconds
+test closing_reader_keeps_authored_and_requested_snapshot_work has been running for over 60 seconds
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success has been running for over 60 seconds
+test fifty_and_more_watches_rotate_without_a_membership_cap has been running for over 60 seconds
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
+test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache has been running for over 60 seconds
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery has been running for over 60 seconds
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch has been running for over 60 seconds
+test partial_activity_denial_keeps_progress_and_purges_payloads has been running for over 60 seconds
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync has been running for over 60 seconds
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches has been running for over 60 seconds
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test worker_to_sqlite_to_reader_and_identity_lock has been running for over 60 seconds
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped has been running for over 60 seconds
+test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 187.92s
+
+     Running tests/store.rs (target/debug/deps/store-f885d1b815b48502)
+
+running 8 tests
+test future_and_corrupt_databases_are_preserved ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... ok
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/transport.rs (target/debug/deps/transport-4a1f23f4c201912c)
+
+running 5 tests
+test deliberate_environment_no_tokens_or_injection ... ok
+test inclusive_bounds_and_stdin_closed ... ok
+test cancellation_reaps_before_serialized_successor ... ok
+test stdout_and_stderr_overflow_rejected ... ok
+test timeout_kills_helpers_and_next_child_can_start ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.14s
+
+     Running tests/watch_store.rs (target/debug/deps/watch_store-93f0dca65ab8ba9b)
+
+running 7 tests
+test head_reservations_exclude_exact_ids_without_null_or_unrelated_job_poisoning ... ok
+test complete_team_membership_removal_keeps_other_membership_reasons ... ok
+test head_generation_blocks_old_pages_and_clear_does_not_remove_watch_reasons ... ok
+test restarting_paused_does_not_replay_prior_session_manual_jobs ... ok
+test budget_deadlines_and_exponential_backoff_survive_restart_and_do_not_cross_primary_buckets ... ok
+test schema_one_upgrade_preserves_identity_pause_and_watch_reasons ... ok
+test durable_due_work_is_bounded_in_memory_fair_and_does_not_lose_the_129th ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+

@@ -286,6 +286,7 @@ fn cursor_fault_rolls_back_companion_deletes_and_restart_resumes_exact_tail() {
         assert_eq!(history(&cached.conn), original);
         drop(cached);
         let c = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&c).unwrap();
         assert_eq!(cursors(&c), before);
         c.execute_batch("DROP TRIGGER fail_cursor").unwrap();
         drop(c);
@@ -372,6 +373,7 @@ fn crash_child_entry() {
         conn: Connection::open(path).unwrap(),
         cache_writes: true,
     };
+    crate::shared_storage::register(&s.conn).unwrap();
     s.maintain_retention_at(now()).unwrap();
     panic!("missed query barrier");
 }
@@ -435,6 +437,7 @@ fn sigkill_cursor_and_dependent_tail_cleanup_commit_together() {
             child.0.kill().unwrap();
             assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
             let c = Connection::open(&path).unwrap();
+            crate::shared_storage::register(&c).unwrap();
             assert_eq!(
                 c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
                     .unwrap(),

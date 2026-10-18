@@ -38,7 +38,9 @@ fn begin(conn: &mut Connection, directory: &Path, time: u64) -> Result<()> {
 
 fn cleanup_batch(conn: &mut Connection) -> Result<usize> {
     let tx = conn.transaction()?;
+    let batch_before = tx.total_changes();
     let mut changed = 0;
+
     for sql in [
         "UPDATE activity_target SET done=0,due=0 WHERE rowid IN (SELECT rowid FROM activity_target WHERE done!=0 OR due!=0 ORDER BY rowid LIMIT ?)",
         "DELETE FROM activity_stage WHERE rowid IN (SELECT rowid FROM activity_stage ORDER BY rowid LIMIT ?)",
@@ -47,13 +49,20 @@ fn cleanup_batch(conn: &mut Connection) -> Result<usize> {
         // Attempted/unavailable history must never become a replay backlog.
         "UPDATE activity_intent SET state='recovery' WHERE rowid IN (SELECT rowid FROM activity_intent WHERE state='pending' ORDER BY rowid LIMIT ?)",
     ] {
-        changed += tx.execute(sql, [(RECOVERY_BATCH - changed) as i64])?;
-        if changed == RECOVERY_BATCH {
+        let limit = (RECOVERY_BATCH - changed) / crate::shared_storage::cost(sql);
+        if limit == 0 {
+            break;
+        }
+        let before = tx.total_changes();
+        let rows = tx.execute(sql, [limit as i64])?;
+        changed += (tx.total_changes() - before) as usize;
+        if rows == limit {
             break;
         }
     }
     #[cfg(test)]
     crash_point("before_commit");
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     crash_point("after_commit");
@@ -231,7 +240,7 @@ mod tests {
                 break;
             }
         }
-        assert_eq!(passes, 10);
+        assert_eq!(passes, 12);
         complete(&s);
         let before = s.conn.total_changes();
         s.activity_recovery(999).unwrap();
@@ -255,14 +264,14 @@ mod tests {
         preserved(&s, 123);
         s.conn.execute_batch("DROP TRIGGER fail_recovery; CREATE TRIGGER fail_intent BEFORE UPDATE ON activity_intent WHEN OLD.state='pending' BEGIN SELECT RAISE(ABORT,'fixture intent fault'); END;").unwrap();
         assert!(s.activity_recovery(999).is_err());
-        // 1 target + 257 stage + 257 pending: four full batches commit;
-        // the fifth batch's remaining pending deletions roll back with intents.
+        // Stage deletions include counter writes. Five pending rows remain
+        // in the failing final transaction beside provisional intent changes.
         assert_eq!(
             count(
                 &s.conn,
                 "SELECT COUNT(*) FROM pending WHERE key LIKE 'activity:%'"
             ),
-            3
+            5
         );
         preserved(&s, 123);
         drop(s);

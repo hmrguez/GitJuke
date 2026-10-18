@@ -1,0 +1,9 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.05s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 1 test
+test exact_destinations_without_excerpts_or_history_scans ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 4.46s
+

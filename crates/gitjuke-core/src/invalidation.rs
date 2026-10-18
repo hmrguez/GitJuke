@@ -50,7 +50,9 @@ pub(crate) fn resume(c: &mut Connection) -> Result<()> {
 }
 fn batch(c: &mut Connection) -> Result<usize> {
     let tx = c.transaction()?;
+    let batch_before = tx.total_changes();
     let mut changed = 0;
+    let mut exhausted = false;
     for sql in [
         "DELETE FROM stage WHERE rowid IN (SELECT rowid FROM stage ORDER BY rowid LIMIT ?)",
         "DELETE FROM activity_stage WHERE rowid IN (SELECT rowid FROM activity_stage ORDER BY rowid LIMIT ?)",
@@ -60,14 +62,22 @@ fn batch(c: &mut Connection) -> Result<usize> {
         "DELETE FROM check_context WHERE rowid IN (SELECT rowid FROM check_context WHERE staged=1 ORDER BY rowid LIMIT ?)",
         "UPDATE check_state SET complete=0,error='Content invalidated' WHERE rowid IN (SELECT rowid FROM check_state WHERE complete!=0 OR error IS NOT 'Content invalidated' ORDER BY rowid LIMIT ?)",
     ] {
-        changed += tx.execute(sql, [(BATCH - changed) as i64])?;
-        if changed == BATCH {
+        let limit = (BATCH - changed) / crate::shared_storage::cost(sql);
+        if limit == 0 {
+            exhausted = true;
+            break;
+        }
+        let before = tx.total_changes();
+        let rows = tx.execute(sql, [limit as i64])?;
+        changed += (tx.total_changes() - before) as usize;
+        if rows == limit {
+            exhausted = true;
             break;
         }
     }
     // Marker removal shares the transaction allowance. Until it commits,
     // readers treat all checks as incomplete, including untouched later rows.
-    let finished = changed < BATCH;
+    let finished = !exhausted;
     if finished {
         changed += tx.execute("DELETE FROM invalidation", [])?;
     }
@@ -77,6 +87,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
     } else {
         "batch_before_commit"
     });
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     point(if finished {
@@ -280,7 +291,7 @@ mod tests {
             preserved(&s, generation, revision);
             passes += 1;
         }
-        assert_eq!(passes, 15); // 7 * 257 rows, plus marker removal
+        assert_eq!(passes, 27); // Includes counter writes and conservative per-row reservation.
         complete(&s);
         let before = s.conn.total_changes();
         resume(&mut s.conn).unwrap();
@@ -301,7 +312,7 @@ mod tests {
         let r = s.revision().unwrap() + 1;
         s.conn.execute_batch("CREATE TRIGGER fail_invalidation BEFORE DELETE ON activity_stage BEGIN SELECT RAISE(ABORT,'fixture invalidation fault'); END;").unwrap();
         assert!(s.invalidate().is_err());
-        // Two 128-row batches committed; the next batch's last legacy row
+        // Four 64-row batches committed; the next batch's last legacy row
         // deletion rolled back with its first Activity-stage deletion.
         assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM stage"), 1);
         assert_eq!(n(&s.conn, "SELECT COUNT(*) FROM activity_stage"), 257);
@@ -319,7 +330,7 @@ mod tests {
         assert!(pending(&c).unwrap());
         assert_eq!(
             n(&c, "SELECT COUNT(*) FROM check_state WHERE complete=1"),
-            7
+            8
         );
         c.execute_batch("DROP TRIGGER fail_finish").unwrap();
         drop(c);
@@ -361,8 +372,8 @@ mod tests {
         for (phase, remaining, incomplete, marked) in [
             ("barrier_committed", 257, 257, true),
             ("batch_before_commit", 257, 257, true),
-            ("batch_after_commit", 129, 257, true),
-            ("finish_before_commit", 0, 7, true),
+            ("batch_after_commit", 193, 257, true),
+            ("finish_before_commit", 0, 8, true),
             ("finish_after_commit", 0, 0, false),
         ] {
             let d = tempfile::tempdir().unwrap();

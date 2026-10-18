@@ -1,0 +1,16 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.85s
+     Running tests/conversation.rs (target/debug/deps/conversation-6359a5de008b5914)
+
+running 8 tests
+test live_existing_owned_destinations_and_cursor_pages ... ignored, requires authorized stored gh identity and live network
+test exact_destinations_without_excerpts_or_history_scans ... ok
+test cancellation_clear_and_stale_revision_never_publish ... ok
+test independent_pages_thread_replies_and_ipc_subdivision ... ok
+test denial_identity_and_selected_pr_barriers ... ok
+test explicit_seen_receipts_reject_changed_body_clear_and_placeholders ... ok
+test exact_destination_ownership_missing_cancellation_and_receipt_barriers ... ok
+test replacement_ticket_and_moving_comparison_reject_late_results ... ok
+
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 57.64s
+

@@ -1,0 +1,22 @@
+bun test v1.4.2 (744846f84)
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [103.25ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [54.07ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [141.51ms]
+(fail) a later summary/unavailable route releases a previously opened check destination [7270.42ms]
+  ^ this test timed out after 5000ms.
+
+# Unhandled error between tests
+-------------------------------
+60 | test('a later summary/unavailable route releases a previously opened check destination',async()=>{
+61 |  const r=await routed('check');try{
+62 |   expect(r.host.querySelector('dialog[open]')).not.toBeNull();
+63 |   const receipts=r.calls.filter(c=>c.name==='activity_rendered').length;
+64 |   await r.nextRoute('unavailable');
+65 |   expect(r.host.querySelector('dialog[open]')).toBeNull();
+                                                    ^
+error: expect(received).toBeNull()
+
+
+[Large recursive synthetic DOM dump archived intact; see routing-failure-archive.json.]

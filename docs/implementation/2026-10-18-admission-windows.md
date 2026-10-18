@@ -47,7 +47,7 @@ An initial new late-fault fixture called `take_counts()` without enabling the op
 
 Final scoped logs and artifact details are in [the evidence directory](evidence/2026-10-18-admission-windows/).
 
-- **Pass: 55 test entries across scoped invocations**, comprising 37 core unit entries and 18 integration tests. The eight new admission-query entries include seven behavioral scenarios and the inert child entry; the parent process-kill scenario executes six real kills. [Query/counter/fault/restart log](evidence/2026-10-18-admission-windows/admission-query-tests.log).
+- **Pass: 56 test entries across scoped invocations**, comprising 38 core unit entries and 18 integration tests. The eight new admission-query entries include seven behavioral scenarios and the inert child entry; the parent process-kill scenario executes six real kills. [Query/counter/fault/restart log](evidence/2026-10-18-admission-windows/admission-query-tests.log).
 - **Pass: 16 compact admission regressions**, excluding full-ceiling and inert older crash-child entries. [Log](evidence/2026-10-18-admission-windows/compact-admission-regressions.log).
 - **Pass: seven source/watch/check publication entries**, excluding actual-ceiling and the larger publication kill matrix. [Log](evidence/2026-10-18-admission-windows/publication-regressions.log).
 - **Pass: seven Activity publication entries**, excluding actual-ceiling, older kill matrices and the full-ceiling admission-reservation fixture. [Log](evidence/2026-10-18-admission-windows/activity-regressions.log).

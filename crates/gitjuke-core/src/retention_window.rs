@@ -24,7 +24,11 @@ impl Class {
         }
     }
     fn cost(self) -> usize {
-        if matches!(self, Self::Checks) { 2 } else { 1 }
+        match self {
+            Self::Checks => 4,
+            Self::Orphans | Self::States => 2,
+            _ => 1,
+        }
     }
     fn width(self) -> usize {
         if matches!(self, Self::Checks | Self::States) {
@@ -276,7 +280,7 @@ pub(crate) fn sweep(
     let mut processed = 0;
     for (key, eligible) in &rows {
         // Reserve cursor bookkeeping even if this is the final partial window.
-        if *eligible && visible + class.cost() + 1 > *allowance {
+        if *eligible && (tx.total_changes() - before) as usize + class.cost() + 1 > *allowance {
             break;
         }
         if *eligible {

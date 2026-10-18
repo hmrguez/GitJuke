@@ -1,0 +1,90 @@
+bun test v1.4.2 (744846f84)
+
+scripts/login-settings.test.tsx:
+(pass) default-off inspection does not register or request notification permission [14.13ms]
+(pass) explicit enable, OS-disabled repair and disable use only login commands [9.44ms]
+(pass) registration failure rereads actual saved preference and exposes explicit repair [5.68ms]
+(pass) moved copy cannot enable or repair but can disable existing registration [4.23ms]
+(pass) a delayed registration inspection cannot overwrite a newer explicit choice [4.87ms]
+
+scripts/conversation-render.test.tsx:
+(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [17.16ms]
+(pass) ordinary messages have no seen control and destination placeholders stay labeled [0.20ms]
+
+scripts/saved-queries.test.tsx:
+(pass) native-style query form submits create, versioned edit and delete IPC [39.88ms]
+(pass) navigation selects persisted query and result opens standard PR reader; paging requests one page [33.31ms]
+(pass) obsolete async result cannot replace a newly edited query or locked content [27.57ms]
+(pass) successful cached reads never erase a failed fetch or storage-protection message [14.50ms]
+
+scripts/logs.test.tsx:
+(pass) logs require explicit action, render safe bounded line pages and release on close [8.52ms]
+(pass) external providers expose details without Actions affordance or automatic fetch [3.10ms]
+(pass) authoritative invalidation releases rendered text without requesting it again [3.68ms]
+(pass) late IPC responses after navigation cannot restore text and cancel only their own ticket [4.17ms]
+(pass) a read crossing a newer revision cannot restore an obsolete body [4.27ms]
+
+scripts/accessibility.test.tsx:
+(pass) native text commands reach actual 200% font scale, clamp, reset and detach [2.93ms]
+(pass) list shortcuts respect editing, modifiers, modal boundaries, hidden lists and exact rows [2.72ms]
+
+scripts/notification-controls.test.tsx:
+(pass) onboarding requests nothing until explicit Enable; Skip persists a disabled choice [4.50ms]
+(pass) denial offers settings without requesting permission again; toggles preserve opt-in [2.60ms]
+(pass) metadata preview requires its own explicit checkbox and bodies stay excluded [2.20ms]
+(pass) permission labels and denied settings action accept the actual camelCase IPC states [1.62ms]
+
+scripts/reader-contrast.test.mjs:
+(pass) metadata remains at least 4.5:1 across approved reader surfaces in both palettes [1.46ms]
+(pass) old/new line guides retain 4.5:1 on normal, added and deleted diff backgrounds [0.34ms]
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [60.14ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [49.78ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [141.49ms]
+(pass) a later summary/unavailable route releases a previously opened check destination [1155.62ms]
+(pass) Preferences close restores its opener when native activation did not move focus [87.85ms]
+(pass) query editor close restores the invoked New query control after native-style activation [84.18ms]
+
+scripts/reader-shell.test.tsx:
+(pass) Browse releases receipt authority but compact Back restores the exact Activity origin even without mouse focus [70.91ms]
+
+scripts/conversation.test.mjs:
+(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [2.99ms]
+(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.20ms]
+(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.07ms]
+(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.28ms]
+(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [0.67ms]
+(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [0.07ms]
+(pass) exact opened destination traversal counts distinct committed segments only [0.04ms]
+(pass) inclusive Unicode body preserves crossing emoji across all distinct receipt segments [0.47ms]
+(pass) LEFT and RIGHT ranges across semantic page boundaries require every unique coordinate [1.28ms]
+
+scripts/reader-interaction.test.tsx:
+(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [4.36ms]
+(pass) exact destination counts committed distinct segments without stealing focus on polling [9.36ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [3.18ms]
+(pass) return from replies restores the originating thread after asynchronous replacement [12.82ms]
+(pass) reply return does not steal focus if the user moves while the thread list loads [10.72ms]
+(pass) next and first source-page replacement keep stable reader focus and release old bodies [7.99ms]
+(pass) superseded source requests and unmounted readers cannot restore focus or commit old content [6.51ms]
+(pass) changed destination generation restarts segment coverage; stale head never submits seen [14.48ms]
+(pass) terminal patch pages focus the stable diff region; file pages focus the navigator [58.53ms]
+(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [5.86ms]
+(pass) segmented exact destinations retain traversal across current-anchor patch loading and jump to semantic page two [42.69ms]
+(pass) leaving a partial exact destination releases authorization and remounts fresh segment coverage [14.20ms]
+(pass) thread page two and reply pages retain independent cursors and restore the exact originating button [14.62ms]
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.16ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [11.05ms]
+
+scripts/startup-recovery.test.tsx:
+(pass) failed startup exposes actionable location without mounting private readers; retry only mounts after success [7.84ms]
+(pass) all startup input states have distinct honest guidance [8.83ms]
+(pass) late startup status cannot replace a successful newer retry [4.27ms]
+
+ 58 pass
+ 0 fail
+ 248 expect() calls
+Ran 58 tests across 13 files. [2.36s]

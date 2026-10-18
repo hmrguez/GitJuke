@@ -1,0 +1,22 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.14s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 14 tests
+test admission_query::tests::crash_child_entry ... ok
+test admission_query::tests::invalid_stored_request_stops_admission_without_writes_or_a_leaked_snapshot ... ok
+test admission_query::tests::raw_request_substrings_are_charged_once_and_moves_remain_exact ... ok
+test admission_query::tests::request_inputs_match_sqlite_utf8_charge_and_rollback ... ok
+test admission_query::tests::autocommit_totals_hold_one_snapshot_across_concurrent_window_changes ... ok
+test admission_query::tests::maintained_state_tracks_replacements_moves_rollbacks_and_late_counter_failure ... ok
+test admission_query::tests::retained_images_stay_charged_during_eviction_and_refuse_impossible_admission ... ok
+test admission_query::tests::late_batch_fault_preserves_exact_prefix_and_retries_atomically ... ok
+test content_budget::admission_tests::compact_shared_snapshot_reclamation_matches_exact_revision_and_candidate_prefix ... ok
+test migrations::tests::schema_twelve_accounting_backfill_is_atomic_on_late_failure_and_resumes_pending_work ... ok
+test admission_query::tests::sigkill_read_and_reclamation_keep_only_committed_prefixes ... ok
+test migrations::tests::schema_twelve_accounting_sigkill_is_previous_or_complete_and_restart_exact ... ok
+test admission_query::tests::one_snapshot_timestamp_update_and_successor_seeks_skip_large_staged_prefixes ... ok
+test admission_query::tests::compact_large_sets_have_bounded_statements_and_exact_totals_and_lru ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 151 filtered out; finished in 2.46s
+

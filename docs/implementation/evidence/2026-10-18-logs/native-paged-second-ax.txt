@@ -1,0 +1,39 @@
+The following is a diff from the previous accessibility tree for Window: "GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~								78 text LOCAL LINE 200
+LOCAL LINE 201
+LOCAL LINE 202
+LOCAL LINE 203
+LOCAL LINE 204
+LOCAL LINE 205
+LOCAL LINE 206
+LOCAL LINE 207
+LOCAL LINE 208
+LOCAL LINE 209
+LOCAL LINE 210
+LOCAL LINE 211
+LOCAL LINE 212
+LOCAL LINE 213
+LOCAL LINE 214
+LOCAL LINE 215
+LOCAL LINE 216
+LOCAL LINE 217
+LOCAL LINE 218
+LOCAL LINE 219
+LOCAL LINE 220
+LOCAL LINE 221
+LOCAL LINE 222
+LOCAL LINE 223
+LOCAL LINE 224
+LOCAL LINE 225
+LOCAL LINE 226
+LOCAL LINE 227
+LOCAL LINE 228
+LOCAL LINE 229
+LOCAL LINE 230
+LOCAL LINE 231
+LOCAL LINE 232
+LOCAL LINE 233
+LO
+~							79 button Previous log lines
+~							80 text Page 2 of 3
+The focused UI element is 77 container Log text

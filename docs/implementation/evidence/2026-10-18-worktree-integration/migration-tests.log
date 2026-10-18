@@ -1,0 +1,19 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 11 tests
+test migrations::tests::crash_child_entry ... ok
+test migrations::tests::both_independent_schema_15_variants_upgrade_without_losing_configuration ... ok
+test migrations::tests::schema_twelve_accounting_backfill_is_atomic_on_late_failure_and_resumes_pending_work ... ok
+test migrations::tests::saved_query_schema_16_late_space_failure_preserves_15_and_retries ... ok
+test migrations::tests::alert_dispatch_index_upgrade_preserves_history_and_rolls_back_late_failure ... ok
+test migrations::tests::schema_thirteen_planning_upgrade_rolls_back_late_failure_and_resets_preparation_safely ... ok
+test migrations::tests::failed_legacy_migration_stops_runtime_then_reopens_paused_after_repair ... ok
+test migrations::tests::schema_thirteen_planning_sigkill_keeps_previous_or_complete_upgrade_and_resumes ... ok
+test migrations::tests::schema_twelve_accounting_sigkill_is_previous_or_complete_and_restart_exact ... ok
+test migrations::tests::late_space_admission_rolls_back_every_schema_step_in_both_journals ... ok
+test migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows has been running for over 60 seconds
+test migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 247 filtered out; finished in 64.73s
+

@@ -1,0 +1,5 @@
+{
+  "explicit_log_reads": 4,
+  "after_second_tab_round_trip": 4,
+  "no_automatic_refetch": true
+}

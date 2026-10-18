@@ -1,0 +1,121 @@
+$ tauri build --debug --bundles app --target "aarch64-apple-darwin" --no-sign --config scripts/fixtures/tauri.log-qualification.json
+        Warn --no-sign flag detected: Signing will be skipped.
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `bun run build`
+$ tsc --noEmit && vite build
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1593 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                               0.35 kB │ gzip:  0.26 kB
+dist/assets/diff-worker-BPqJHpWc.js                           1.04 kB
+dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2   21.17 kB
+dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2   21.83 kB
+dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2   21.86 kB
+dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff    27.50 kB
+dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff    28.18 kB
+dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff    28.21 kB
+dist/assets/index-CFxbSFCr.css                               24.21 kB │ gzip:  5.15 kB
+dist/assets/index-DB_W9GO6.js                               249.12 kB │ gzip: 79.17 kB
+✓ built in 9.94s
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling libc v0.2.191
+   Compiling serde_core v1.0.229
+   Compiling icu_properties_data v2.3.0
+   Compiling phf_shared v0.13.1
+   Compiling zmij v1.0.23
+   Compiling icu_normalizer_data v2.3.0
+   Compiling serde v1.0.229
+   Compiling thiserror v2.0.21
+   Compiling phf_generator v0.13.1
+   Compiling objc2-exception-helper v0.1.1
+   Compiling typeid v1.0.3
+   Compiling phf_codegen v0.13.1
+   Compiling erased-serde v0.4.10
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling serde_json v1.0.154
+   Compiling objc2 v0.6.5
+   Compiling parking_lot_core v0.9.12
+   Compiling generic-array v0.14.7
+   Compiling anyhow v1.0.104
+   Compiling lock_api v0.4.14
+   Compiling string_cache_codegen v0.6.1
+   Compiling getrandom v0.4.3
+   Compiling crc32fast v1.5.2
+   Compiling parking_lot v0.12.5
+   Compiling web_atoms v0.2.6
+   Compiling string_cache v0.9.0
+   Compiling block2 v0.6.2
+   Compiling indexmap v1.9.3
+   Compiling semver v1.0.28
+   Compiling bitflags v2.13.2
+   Compiling serde_spanned v1.1.2
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling uuid v1.28.0
+   Compiling objc2-core-foundation v0.3.2
+   Compiling selectors v0.38.0
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling camino v1.2.6
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling alloc-stdlib v0.3.0
+   Compiling web-time v1.1.0
+   Compiling hashbrown v0.17.1
+   Compiling schemars v0.8.22
+   Compiling rustc-hash v2.1.3
+   Compiling fnv v1.0.7
+   Compiling bit-set v0.8.0
+   Compiling cfb v0.14.0
+   Compiling objc2-foundation v0.3.2
+   Compiling synstructure v0.14.0
+   Compiling darling_core v0.24.1
+   Compiling serde_derive_internals v0.29.1
+   Compiling indexmap v2.14.2
+   Compiling brotli-decompressor v6.0.1
+   Compiling tauri-utils v2.10.2
+   Compiling simd-adler32 v0.3.10
+   Compiling same-file v1.0.6
+   Compiling brotli v9.0.0
+   Compiling walkdir v2.5.0
+   Compiling http v1.5.0
+   Compiling infer v0.22.0
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling serde_derive v1.0.229
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling thiserror-impl v2.0.21
+   Compiling phf_macros v0.13.1
+   Compiling zerofrom v0.1.8
+   Compiling yoke v0.8.3
+   Compiling darling_macro v0.24.1
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling phf v0.13.1
+   Compiling darling v0.24.1
+   Compiling serde_with_macros v3.24.0
+   Compiling derive_more-impl v2.1.1
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling cssparser-macros v0.7.1
+   Compiling derive_more v2.1.1
+   Compiling markup5ever v0.39.0
+   Compiling cssparser v0.37.0
+   Compiling swift-rs v1.0.9
+   Compiling icu_provider v2.3.1
+   Compiling html5ever v0.39.0
+   Compiling jsonptr v0.7.1
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling cargo-platform v0.1.9
+   Compiling objc2-quartz-core v0.3.2
+   Compiling schemars_derive v0.8.22
+   Compiling cargo_metadata v0.19.2
+   Compiling json-patch v4.2.0
+   Compiling objc2-app-kit v0.3.2
+   Compiling plist v1.10.1
+error: script "tauri" was terminated by signal SIGTERM (Polite quit request)

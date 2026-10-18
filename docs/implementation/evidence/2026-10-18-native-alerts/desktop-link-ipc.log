@@ -1,0 +1,32 @@
+   Compiling objc2-foundation v0.3.2
+   Compiling tauri-utils v2.10.2
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+   Compiling tauri-build v2.7.3
+   Compiling tauri-plugin v2.7.2
+   Compiling tauri-codegen v2.7.3
+   Compiling tauri v2.12.4
+   Compiling tauri-plugin-autostart v2.7.0
+   Compiling tauri-macros v2.7.3
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+   Compiling objc2-quartz-core v0.3.2
+   Compiling objc2-service-management v0.3.2
+   Compiling os_info v3.15.0
+   Compiling smappservice-rs v0.1.3
+   Compiling objc2-app-kit v0.3.2
+   Compiling auto-launch v0.6.0
+   Compiling objc2-web-kit v0.3.2
+   Compiling tao v0.37.1
+   Compiling muda v0.20.0
+   Compiling window-vibrancy v0.8.1
+   Compiling wry v0.57.0
+   Compiling tauri-runtime v2.12.2
+   Compiling tray-icon v0.25.1
+   Compiling tauri-runtime-wry v2.12.2
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.00s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_desktop-69a2089673bc365f)
+
+running 1 test
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.05s
+

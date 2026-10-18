@@ -1,0 +1,9 @@
+{
+  "observationChecks": 54,
+  "unattendedUiRerun": false,
+  "scope": "captured synthetic-local native WebKit/IPC/worker/SQLite plus filesystem/process metadata",
+  "voiceOver": "Blocked: process did not start",
+  "referencePerformance": "Blocked: required M1/8-GB/macOS-15 reference unavailable",
+  "normalCleanOwnerSmoke": "unqualified: existing tauri dev owner preserved",
+  "groupedReleaseScenariosPromoted": 0
+}

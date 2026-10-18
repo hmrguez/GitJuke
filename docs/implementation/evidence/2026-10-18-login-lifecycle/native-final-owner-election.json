@@ -1,0 +1,25 @@
+{"contenders": 8, "beforePids": [], "afterPids": [51278], "contenderExitCodes": [0, 0, 0, 0, 0, 0, 0, null]}
+{
+  "identity": "dev.hmrguez.gitjuke.lifecycle-qualification",
+  "pids": [
+    51278
+  ],
+  "preference": {
+    "enabled": false
+  },
+  "registeredPathExists": false,
+  "registrationFileValid": false,
+  "stablePath": "/private/tmp/GitJuke Lifecycle.app/Contents/MacOS/gitjuke",
+  "stablePathExists": true,
+  "noWatchdog": true,
+  "osDisabled": true,
+  "paused": true,
+  "integrity": "ok",
+  "schema": 15,
+  "ledgerCounts": {
+    "seen": 0,
+    "dedup": 0,
+    "activity_intent": 0,
+    "alert_attempt": 0
+  }
+}

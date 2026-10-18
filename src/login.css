@@ -1,0 +1,4 @@
+.login-preferences{padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.login-preferences .login-toggle{display:flex;flex-direction:row;align-items:center;gap:12px;line-height:1.6}
+.login-preferences input[type=checkbox]{width:16px;height:16px;flex-shrink:0;padding:0;accent-color:var(--theme-accent)}
+.login-preferences .login-actions{display:flex;flex-wrap:wrap;gap:8px}

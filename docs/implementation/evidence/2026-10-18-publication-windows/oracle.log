@@ -1,0 +1,21 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.54s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 1 test
+windows=3217, max VM=141, max scans=0, sorts=0, automatic indexes=0
+windows=1099, max VM=165, max scans=0, sorts=0, automatic indexes=0
+windows=2187, max VM=153, max scans=0, sorts=0, automatic indexes=0
+windows=2801, max VM=141, max scans=0, sorts=0, automatic indexes=0
+windows=2, max VM=20, max scans=0, sorts=0, automatic indexes=0
+windows=413, max VM=249, max scans=0, sorts=0, automatic indexes=0
+windows=350, max VM=141, max scans=0, sorts=0, automatic indexes=0
+windows=538, max VM=117, max scans=0, sorts=0, automatic indexes=0
+windows=1674, max VM=153, max scans=0, sorts=0, automatic indexes=0
+windows=562, max VM=153, max scans=0, sorts=0, automatic indexes=0
+windows=32, max VM=32, max scans=0, sorts=0, automatic indexes=0
+windows=17, max VM=28, max scans=0, sorts=0, automatic indexes=0
+test publication::window_tests::native_windows_match_unrestricted_preparation_oracle_for_every_kind ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 172 filtered out; finished in 1.84s
+

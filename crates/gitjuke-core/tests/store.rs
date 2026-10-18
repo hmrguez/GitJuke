@@ -186,6 +186,7 @@ fn multi_version_migration_failure_rolls_back_to_original_committed_schema() {
     s.save_settings(&settings).unwrap();
     drop(s);
     let c = rusqlite::Connection::open(&path).unwrap();
+    remove_shared_schema(&c);
     // Reconstruct schema 1, with a collision reached only after the schema-2
     // steps have executed. A failed later step must roll back both versions.
     c.execute_batch(
@@ -194,7 +195,7 @@ fn multi_version_migration_failure_rolls_back_to_original_committed_schema() {
         DROP TABLE pending; DROP TABLE check_context; DROP TABLE check_state;
         DROP TABLE activity_stage; DROP TABLE activity_target;
         DROP TABLE activity_cycle; DROP TABLE activity_intent;
-        DROP TABLE intent_member; DROP TABLE api_validator; DROP TABLE invalidation; DROP TABLE content_clear; DROP TABLE check_purge; DROP TABLE pr_purge; DROP TABLE source_restart; DROP TABLE publication_row; DROP TABLE publication; DROP TABLE retention_cursor; DROP INDEX IF EXISTS activity_expiry; DROP INDEX IF EXISTS check_expiry; DROP INDEX IF EXISTS check_published_keys; DROP INDEX IF EXISTS publication_unapplied; DROP TABLE control_sweep; DROP INDEX content_lru;
+        DROP TABLE intent_member; DROP TABLE api_validator; DROP TABLE invalidation; DROP TABLE content_clear; DROP TABLE check_purge; DROP TABLE pr_purge; DROP TABLE source_restart; DROP TABLE publication_row; DROP TABLE publication; DROP TABLE retention_cursor; DROP INDEX IF EXISTS activity_expiry; DROP INDEX IF EXISTS check_expiry; DROP INDEX IF EXISTS check_published_keys; DROP INDEX IF EXISTS publication_unapplied; DROP TABLE control_sweep; DROP INDEX content_lru; DROP INDEX IF EXISTS check_staged_keys; DROP INDEX IF EXISTS watch_source_source; DROP INDEX IF EXISTS watch_source_source_nocase; DROP INDEX IF EXISTS watch_source_reason; DROP INDEX IF EXISTS watch_locator_location; DROP INDEX IF EXISTS pending_key_nocase;
         PRAGMA user_version=1;",
     )
     .unwrap();
@@ -248,7 +249,8 @@ fn schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure() 
     s.save_settings(&settings).unwrap();
     drop(s);
     let c = rusqlite::Connection::open(&path).unwrap();
-    c.execute_batch("DROP TABLE invalidation; DROP TABLE content_clear; DROP TABLE check_purge; DROP TABLE pr_purge; DROP TABLE source_restart; DROP TABLE publication_row; DROP TABLE publication; DROP TABLE retention_cursor; DROP INDEX IF EXISTS activity_expiry; DROP INDEX IF EXISTS check_expiry; DROP INDEX IF EXISTS check_published_keys; DROP INDEX IF EXISTS publication_unapplied; DROP TABLE control_sweep; DROP INDEX content_lru; ALTER TABLE check_state DROP COLUMN accessed; ALTER TABLE watch_locator DROP COLUMN purged_generation;
+    remove_shared_schema(&c);
+    c.execute_batch("DROP TABLE invalidation; DROP TABLE content_clear; DROP TABLE check_purge; DROP TABLE pr_purge; DROP TABLE source_restart; DROP TABLE publication_row; DROP TABLE publication; DROP TABLE retention_cursor; DROP INDEX IF EXISTS activity_expiry; DROP INDEX IF EXISTS check_expiry; DROP INDEX IF EXISTS check_published_keys; DROP INDEX IF EXISTS publication_unapplied; DROP TABLE control_sweep; DROP INDEX content_lru; DROP INDEX IF EXISTS check_staged_keys; DROP INDEX IF EXISTS watch_source_source; DROP INDEX IF EXISTS watch_source_source_nocase; DROP INDEX IF EXISTS watch_source_reason; DROP INDEX IF EXISTS watch_locator_location; DROP INDEX IF EXISTS pending_key_nocase; ALTER TABLE check_state DROP COLUMN accessed; ALTER TABLE watch_locator DROP COLUMN purged_generation;
         INSERT INTO check_state VALUES('P','sha',123,1,NULL);
         PRAGMA user_version=3;
         CREATE TRIGGER migration_fault BEFORE UPDATE ON check_state BEGIN SELECT RAISE(ABORT,'fixture'); END;").unwrap();
@@ -275,4 +277,21 @@ fn schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure() 
     );
     assert!(s.settings().unwrap().paused);
     assert_eq!(s.identity().unwrap(), Some(identity()));
+}
+
+fn remove_shared_schema(c: &rusqlite::Connection) {
+    c.execute_batch("DROP INDEX IF EXISTS activity_intent_dispatch")
+        .unwrap();
+    let names = c
+        .prepare("SELECT name FROM sqlite_schema WHERE type='trigger' AND name GLOB 'shared_*'")
+        .unwrap()
+        .query_map([], |r| r.get::<_, String>(0))
+        .unwrap()
+        .collect::<rusqlite::Result<Vec<_>>>()
+        .unwrap();
+    for name in names {
+        c.execute_batch(&format!("DROP TRIGGER {name}")).unwrap();
+    }
+    c.execute_batch("DROP TABLE saved_query;DROP TABLE shared_bytes;DROP TABLE shared_check_lru")
+        .unwrap();
 }

@@ -1,0 +1,86 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selectable) Changes
+					29 tab (selected) Conversation
+					30 tab (selectable) Checks
+				31 container Conversation
+					32 text CONVERSATION
+					33 container
+						34 text Head aaaaaaaaaa · safe plain text
+					35 button Refresh conversation
+					36 container Conversation sources
+						37 toggle button Comments, Value: off
+						38 toggle button Reviews, Value: off
+						39 toggle button Review threads, Value: on
+					40 text 15 loaded / 55 known · this page only; other pages may exist
+					41 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+					42 button file-40.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					43 button GitHub source
+					44 button file-41.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					45 button GitHub source
+					46 button file-42.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					47 button GitHub source
+					48 button file-43.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					49 button GitHub source
+					50 button file-44.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					51 button GitHub source
+					52 button file-45.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					53 button GitHub source
+					54 button file-46.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					55 button GitHub source
+					56 button file-47.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					57 button GitHub source
+					58 button file-48.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					59 button GitHub source
+					60 button file-49.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					61 button GitHub source
+					62 button file-50.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					63 button GitHub source
+					64 button file-51.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					65 button GitHub source
+					66 button file-52.txt Resolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					67 button GitHub source
+					68 button file-53.txt Unresolved · Patch unavailable · select the matching file in Changes 2026-10-18T00:00:00Z
+					69 button GitHub source
+					70 button file-54.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+					71 button GitHub source
+					72 button Previous page
+					73 text Source cursor page
+					74 button First page
+					75 button (disabled) Next page
+				76 text Cached 18/10/2026, 13:30:03 · revision 146
+	77 close button
+	78 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	79 minimize button
+	80 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+81 menu bar
+	82 GitJuke Accessibility
+
+The focused UI element is 31 container Conversation

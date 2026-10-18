@@ -1,0 +1,11 @@
+bun test v1.4.2 (744846f84)
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [104.22ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [51.78ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [136.22ms]
+
+ 3 pass
+ 0 fail
+ 15 expect() calls
+Ran 3 tests across 1 file. [364.00ms]

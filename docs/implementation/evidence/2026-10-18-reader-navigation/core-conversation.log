@@ -1,0 +1,12 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.50s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 4 tests
+test conversation::tests::stale_partial_cursor_and_source_urls ... ok
+test conversation::tests::exact_coordinate_source_rejects_identity_owner_and_edited_body ... ok
+test conversation::tests::direct_identity_ownership_and_navigation_contract ... ok
+test conversation::tests::inclusive_utf8_and_unavailable_bodies ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 226 filtered out; finished in 0.01s
+

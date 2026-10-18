@@ -1,0 +1,46 @@
+   Compiling objc2-exception-helper v0.1.1
+   Compiling objc2 v0.6.5
+   Compiling objc2-core-foundation v0.3.2
+   Compiling block2 v0.6.2
+   Compiling objc2-foundation v0.3.2
+   Compiling wry v0.57.0
+   Compiling objc2-security v0.3.2
+   Compiling dispatch2 v0.3.1
+   Compiling libsqlite3-sys v0.36.0
+   Compiling objc2-core-graphics v0.3.2
+   Compiling tauri-macros v2.7.3
+   Compiling rusqlite v0.38.0
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-login-lifecycle/crates/gitjuke-core)
+   Compiling objc2-quartz-core v0.3.2
+   Compiling objc2-app-kit v0.3.2
+   Compiling objc2-service-management v0.3.2
+   Compiling smappservice-rs v0.1.3
+   Compiling os_info v3.15.0
+   Compiling auto-launch v0.6.0
+   Compiling gitjuke v0.1.0 (/private/tmp/gitjuke-login-lifecycle/src-tauri)
+   Compiling objc2-web-kit v0.3.2
+   Compiling tauri-runtime v2.12.2
+   Compiling muda v0.20.0
+   Compiling tao v0.37.1
+   Compiling tray-icon v0.25.1
+   Compiling window-vibrancy v0.8.1
+   Compiling tauri-runtime-wry v2.12.2
+   Compiling tauri v2.12.4
+   Compiling tauri-plugin-autostart v2.7.0
+    Finished `test` profile [unoptimized] target(s) in 22.91s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-lifecycle-target/debug/deps/gitjuke_desktop-3fd9a8496005a7b2)
+
+running 10 tests
+test login::tests::status_never_confuses_desire_with_registration ... ok
+test singleton::tests::child ... ok
+test login::tests::os_disabled_requires_exact_label_and_valid_output ... ok
+test singleton::tests::symlink_lock_is_rejected ... ok
+test singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership ... ok
+test login::tests::preference_is_default_off_atomic_and_preserves_corruption ... ok
+test singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths ... ok
+test login::tests::stable_path_identity_and_no_watchdog_are_required ... ok
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+test singleton::tests::separate_processes_serialize_and_sigkill_releases_lock ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

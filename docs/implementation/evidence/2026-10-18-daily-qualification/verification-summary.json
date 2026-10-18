@@ -1,0 +1,223 @@
+{
+  "rustSourcesUnchangedDuringWorkspaceRun": true,
+  "changedRustInputs": [],
+  "workspace": {
+    "passed": 343,
+    "failed": 0,
+    "ignored": 3,
+    "exit": 0,
+    "coreUnitPassed": 256,
+    "desktopPassed": 13,
+    "integrationPassed": 74
+  },
+  "frontendFinal": {
+    "passed": 58,
+    "failed": 0
+  },
+  "schema": 16,
+  "migrationBroadSigkillCases": 368,
+  "migrationSpecificSigkillCases": 8,
+  "migrationBroadInjectedSpaceCases": 304,
+  "physicalFaults": [
+    {
+      "name": "volume-create",
+      "command": [
+        "hdiutil",
+        "create",
+        "-size",
+        "64m",
+        "-fs",
+        "HFS+",
+        "-volname",
+        "GitJukeDailyFault",
+        "-type",
+        "SPARSE",
+        "/private/tmp/gitjuke-daily-fault.sparseimage"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "volume-attach",
+      "command": [
+        "hdiutil",
+        "attach",
+        "-nobrowse",
+        "-mountpoint",
+        "/private/tmp/gitjuke-storage-fault-volume",
+        "/private/tmp/gitjuke-daily-fault.sparseimage"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "physical-full-current",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "gitjuke-core",
+        "--offline",
+        "--lib",
+        "physical_storage_tests::actual_volume_exhaustion_rolls_back_and_preserves_history",
+        "--",
+        "--ignored",
+        "--exact",
+        "--test-threads=1"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "volume-detach-write",
+      "command": [
+        "hdiutil",
+        "detach",
+        "/private/tmp/gitjuke-storage-fault-volume"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "volume-attach-readonly",
+      "command": [
+        "hdiutil",
+        "attach",
+        "-readonly",
+        "-nobrowse",
+        "-mountpoint",
+        "/private/tmp/gitjuke-storage-fault-volume",
+        "/private/tmp/gitjuke-daily-fault.sparseimage"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "physical-readonly-current",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "gitjuke-core",
+        "--offline",
+        "--lib",
+        "physical_storage_tests::actual_readonly_volume_rejects_writes_and_keeps_cache_readable",
+        "--",
+        "--ignored",
+        "--exact",
+        "--test-threads=1"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "volume-detach-final",
+      "command": [
+        "hdiutil",
+        "detach",
+        "/private/tmp/gitjuke-storage-fault-volume"
+      ],
+      "exit": 0
+    }
+  ],
+  "capacityCases": [
+    "test activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads ... ok",
+    "test content_budget::admission_tests::full_ceiling_many_victims_publish_atomically_and_survive_restart ... ok",
+    "test content_budget::admission_tests::sigkill_full_ceiling_reclamation_and_publication_keep_only_committed_state ... ok",
+    "test content_capacity::full_ceiling_late_delete_fault_restores_payloads_completeness_and_revision ... ok",
+    "test content_capacity::full_ceiling_mixed_lru_is_inclusive_disk_backed_and_survives_restart ... ok",
+    "test content_capacity::full_ceiling_non_evictable_staging_refuses_real_activity_ingestion_atomically ... ok",
+    "test content_capacity::full_ceiling_sigkill_keeps_atomic_candidate_after_bounded_reclamation ... ok",
+    "test publication::tests::actual_ceiling_source_and_check_publications_transfer_staging_without_extra_budget ... ok",
+    "test runtime::tests::full_ceiling_bounded_admission_fault_protects_and_repairs_without_partial_registration ... ok",
+    "test runtime::tests::full_ceiling_worker_publication_fault_stops_reads_and_repairs_while_paused ... ok"
+  ],
+  "sourceManifestSha256": "31d55dae8a2ff6bfb8fea9cdcdccc4bb59e00b01fa752137343e09ef87ab370e",
+  "demonstratedDefectsFixed": 6,
+  "staticChecks": [
+    {
+      "name": "frontend-final",
+      "command": [
+        "bun",
+        "test"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "build-final",
+      "command": [
+        "bun",
+        "run",
+        "build"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "clippy-final",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "format-final",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "whitespace-final",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0
+    }
+  ],
+  "nativeObservationVerification": {
+    "observationChecks": 54,
+    "unattendedUiRerun": false,
+    "scope": "captured synthetic-local native WebKit/IPC/worker/SQLite plus filesystem/process metadata",
+    "voiceOver": "Blocked: process did not start",
+    "referencePerformance": "Blocked: required M1/8-GB/macOS-15 reference unavailable",
+    "normalCleanOwnerSmoke": "unqualified: existing tauri dev owner preserved",
+    "groupedReleaseScenariosPromoted": 0
+  },
+  "normalCleanOwnerSmoke": "unqualified; existing normal tauri dev PID 67250 preserved",
+  "artifactManifest": "artifacts-final.json",
+  "signing": "No Developer ID signing, notarization or distribution; no-sign app builds only",
+  "acceptance": {
+    "groupedScenarios": 29,
+    "pending": 29,
+    "promoted": 0
+  },
+  "toolVersions": {
+    "rust": {
+      "exit": 0,
+      "version": [
+        "rustc 1.95.0 (59807616e 2026-04-14) (Homebrew)"
+      ]
+    },
+    "bun": {
+      "exit": 0,
+      "version": [
+        "1.4.2"
+      ]
+    },
+    "gh": {
+      "exit": 0,
+      "version": [
+        "gh version 2.92.0 (2026-04-28)",
+        "https://github.com/cli/cli/releases/tag/v2.92.0"
+      ]
+    }
+  },
+  "normalFinalInvocation": "normal-final-invocation.json"
+}

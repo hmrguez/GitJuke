@@ -1,0 +1,42 @@
+bun test v1.4.2 (744846f84)
+
+scripts/conversation-render.test.tsx:
+(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [109.13ms]
+(pass) ordinary messages have no seen control and destination placeholders stay labeled [0.36ms]
+
+scripts/conversation.test.mjs:
+(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [10.15ms]
+(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.60ms]
+(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.06ms]
+(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.20ms]
+(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [1.95ms]
+(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [0.43ms]
+(pass) exact opened destination traversal counts distinct committed segments only [0.37ms]
+
+scripts/reader-interaction.test.tsx:
+(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [155.41ms]
+(pass) exact destination counts committed distinct segments without stealing focus on polling [50.66ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [23.15ms]
+(pass) return from replies restores the originating thread after asynchronous replacement [52.34ms]
+(pass) reply return does not steal focus if the user moves while the thread list loads [100.14ms]
+(pass) next and first source-page replacement keep stable reader focus and release old bodies [107.52ms]
+(pass) superseded source requests and unmounted readers cannot restore focus or commit old content [10.12ms]
+(pass) changed destination generation restarts segment coverage; stale head never submits seen [57.22ms]
+(pass) terminal patch pages focus the stable diff region; file pages focus the navigator [186.74ms]
+(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [13.34ms]
+(pass) segmented exact destinations retain traversal across current-anchor patch loading and jump to semantic page two [115.11ms]
+(pass) leaving a partial exact destination releases authorization and remounts fresh segment coverage [27.13ms]
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.54ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [27.24ms]
+
+scripts/startup-recovery.test.tsx:
+(pass) failed startup exposes actionable location without mounting private readers; retry only mounts after success [22.48ms]
+(pass) all startup input states have distinct honest guidance [36.61ms]
+(pass) late startup status cannot replace a successful newer retry [11.88ms]
+
+ 26 pass
+ 0 fail
+ 123 expect() calls
+Ran 26 tests across 5 files. [1.61s]

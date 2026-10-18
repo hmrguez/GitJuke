@@ -1,0 +1,409 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+				15 button Preferences
+				16 text RE reader GitHub.com
+				17 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			18 container Pull request reader
+				19 button Back
+				20 text a/b / #1
+				21 button Open in GitHub
+				22 container
+					23 text Open
+					24 heading Change 1, Value: 1
+						25 text Change 1
+					26 text reader · main ← cccccccccc
+				27 container Published native stack
+					28 text No published stack
+				29 tab group (selectable) Reader
+					30 tab (selectable) Overview
+					31 tab (selectable) Changes
+					32 tab (selected) Conversation, Value: on
+					33 tab (selectable) Checks
+				34 container Conversation
+					35 text CONVERSATION
+					36 container
+						37 text Head cccccccccc · safe plain text
+					38 button Refresh conversation
+					39 container Conversation sources
+						40 toggle button Comments, Value: on
+						41 toggle button Reviews, Value: off
+						42 toggle button Review threads, Value: off
+					43 text 50 loaded / 55 known · this page only; other pages may exist
+					44 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+					45 container comments by reader
+						46 container
+							47 text reader comments 2026-10-18T00:00:00Z
+						48 text Plain text · 7 UTF-8 bytes
+						49 container Message body
+							50 text hello 0
+						51 button Open source in GitHub
+					52 container comments by reader
+						53 container
+							54 text reader comments 2026-10-18T00:00:00Z
+						55 text Plain text · 7 UTF-8 bytes
+						56 container Message body
+							57 text hello 1
+						58 button Open source in GitHub
+					59 container comments by reader
+						60 container
+							61 text reader comments 2026-10-18T00:00:00Z
+						62 text Plain text · 7 UTF-8 bytes
+						63 container Message body
+							64 text hello 2
+						65 button Open source in GitHub
+					66 container comments by reader
+						67 container
+							68 text reader comments 2026-10-18T00:00:00Z
+						69 text Plain text · 7 UTF-8 bytes
+						70 container Message body
+							71 text hello 3
+						72 button Open source in GitHub
+					73 container comments by reader
+						74 container
+							75 text reader comments 2026-10-18T00:00:00Z
+						76 text Plain text · 7 UTF-8 bytes
+						77 container Message body
+							78 text hello 4
+						79 button Open source in GitHub
+					80 container comments by reader
+						81 container
+							82 text reader comments 2026-10-18T00:00:00Z
+						83 text Plain text · 7 UTF-8 bytes
+						84 container Message body
+							85 text hello 5
+						86 button Open source in GitHub
+					87 container comments by reader
+						88 container
+							89 text reader comments 2026-10-18T00:00:00Z
+						90 text Plain text · 7 UTF-8 bytes
+						91 container Message body
+							92 text hello 6
+						93 button Open source in GitHub
+					94 container comments by reader
+						95 container
+							96 text reader comments 2026-10-18T00:00:00Z
+						97 text Plain text · 7 UTF-8 bytes
+						98 container Message body
+							99 text hello 7
+						100 button Open source in GitHub
+					101 container comments by reader
+						102 container
+							103 text reader comments 2026-10-18T00:00:00Z
+						104 text Plain text · 7 UTF-8 bytes
+						105 container Message body
+							106 text hello 8
+						107 button Open source in GitHub
+					108 container comments by reader
+						109 container
+							110 text reader comments 2026-10-18T00:00:00Z
+						111 text Plain text · 7 UTF-8 bytes
+						112 container Message body
+							113 text hello 9
+						114 button Open source in GitHub
+					115 container comments by reader
+						116 container
+							117 text reader comments 2026-10-18T00:00:00Z
+						118 text Plain text · 8 UTF-8 bytes
+						119 container Message body
+							120 text hello 10
+						121 button Open source in GitHub
+					122 container comments by reader
+						123 container
+							124 text reader comments 2026-10-18T00:00:00Z
+						125 text Plain text · 8 UTF-8 bytes
+						126 container Message body
+							127 text hello 11
+						128 button Open source in GitHub
+					129 container comments by reader
+						130 container
+							131 text reader comments 2026-10-18T00:00:00Z
+						132 text Plain text · 8 UTF-8 bytes
+						133 container Message body
+							134 text hello 12
+						135 button Open source in GitHub
+					136 container comments by reader
+						137 container
+							138 text reader comments 2026-10-18T00:00:00Z
+						139 text Plain text · 8 UTF-8 bytes
+						140 container Message body
+							141 text hello 13
+						142 button Open source in GitHub
+					143 container comments by reader
+						144 container
+							145 text reader comments 2026-10-18T00:00:00Z
+						146 text Plain text · 8 UTF-8 bytes
+						147 container Message body
+							148 text hello 14
+						149 button Open source in GitHub
+					150 container comments by reader
+						151 container
+							152 text reader comments 2026-10-18T00:00:00Z
+						153 text Plain text · 8 UTF-8 bytes
+						154 container Message body
+							155 text hello 15
+						156 button Open source in GitHub
+					157 container comments by reader
+						158 container
+							159 text reader comments 2026-10-18T00:00:00Z
+						160 text Plain text · 8 UTF-8 bytes
+						161 container Message body
+							162 text hello 16
+						163 button Open source in GitHub
+					164 container comments by reader
+						165 container
+							166 text reader comments 2026-10-18T00:00:00Z
+						167 text Plain text · 8 UTF-8 bytes
+						168 container Message body
+							169 text hello 17
+						170 button Open source in GitHub
+					171 container comments by reader
+						172 container
+							173 text reader comments 2026-10-18T00:00:00Z
+						174 text Plain text · 8 UTF-8 bytes
+						175 container Message body
+							176 text hello 18
+						177 button Open source in GitHub
+					178 container comments by reader
+						179 container
+							180 text reader comments 2026-10-18T00:00:00Z
+						181 text Plain text · 8 UTF-8 bytes
+						182 container Message body
+							183 text hello 19
+						184 button Open source in GitHub
+					185 container comments by reader
+						186 container
+							187 text reader comments 2026-10-18T00:00:00Z
+						188 text Plain text · 8 UTF-8 bytes
+						189 container Message body
+							190 text hello 20
+						191 button Open source in GitHub
+					192 container comments by reader
+						193 container
+							194 text reader comments 2026-10-18T00:00:00Z
+						195 text Plain text · 8 UTF-8 bytes
+						196 container Message body
+							197 text hello 21
+						198 button Open source in GitHub
+					199 container comments by reader
+						200 container
+							201 text reader comments 2026-10-18T00:00:00Z
+						202 text Plain text · 8 UTF-8 bytes
+						203 container Message body
+							204 text hello 22
+						205 button Open source in GitHub
+					206 container comments by reader
+						207 container
+							208 text reader comments 2026-10-18T00:00:00Z
+						209 text Plain text · 8 UTF-8 bytes
+						210 container Message body
+							211 text hello 23
+						212 button Open source in GitHub
+					213 container comments by reader
+						214 container
+							215 text reader comments 2026-10-18T00:00:00Z
+						216 text Plain text · 8 UTF-8 bytes
+						217 container Message body
+							218 text hello 24
+						219 button Open source in GitHub
+					220 container comments by reader
+						221 container
+							222 text reader comments 2026-10-18T00:00:00Z
+						223 text Plain text · 8 UTF-8 bytes
+						224 container Message body
+							225 text hello 25
+						226 button Open source in GitHub
+					227 container comments by reader
+						228 container
+							229 text reader comments 2026-10-18T00:00:00Z
+						230 text Plain text · 8 UTF-8 bytes
+						231 container Message body
+							232 text hello 26
+						233 button Open source in GitHub
+					234 container comments by reader
+						235 container
+							236 text reader comments 2026-10-18T00:00:00Z
+						237 text Plain text · 8 UTF-8 bytes
+						238 container Message body
+							239 text hello 27
+						240 button Open source in GitHub
+					241 container comments by reader
+						242 container
+							243 text reader comments 2026-10-18T00:00:00Z
+						244 text Plain text · 8 UTF-8 bytes
+						245 container Message body
+							246 text hello 28
+						247 button Open source in GitHub
+					248 container comments by reader
+						249 container
+							250 text reader comments 2026-10-18T00:00:00Z
+						251 text Plain text · 8 UTF-8 bytes
+						252 container Message body
+							253 text hello 29
+						254 button Open source in GitHub
+					255 container comments by reader
+						256 container
+							257 text reader comments 2026-10-18T00:00:00Z
+						258 text Plain text · 8 UTF-8 bytes
+						259 container Message body
+							260 text hello 30
+						261 button Open source in GitHub
+					262 container comments by reader
+						263 container
+							264 text reader comments 2026-10-18T00:00:00Z
+						265 text Plain text · 8 UTF-8 bytes
+						266 container Message body
+							267 text hello 31
+						268 button Open source in GitHub
+					269 container comments by reader
+						270 container
+							271 text reader comments 2026-10-18T00:00:00Z
+						272 text Plain text · 8 UTF-8 bytes
+						273 container Message body
+							274 text hello 32
+						275 button Open source in GitHub
+					276 container comments by reader
+						277 container
+							278 text reader comments 2026-10-18T00:00:00Z
+						279 text Plain text · 8 UTF-8 bytes
+						280 container Message body
+							281 text hello 33
+						282 button Open source in GitHub
+					283 container comments by reader
+						284 container
+							285 text reader comments 2026-10-18T00:00:00Z
+						286 text Plain text · 8 UTF-8 bytes
+						287 container Message body
+							288 text hello 34
+						289 button Open source in GitHub
+					290 container comments by reader
+						291 container
+							292 text reader comments 2026-10-18T00:00:00Z
+						293 text Plain text · 8 UTF-8 bytes
+						294 container Message body
+							295 text hello 35
+						296 button Open source in GitHub
+					297 container comments by reader
+						298 container
+							299 text reader comments 2026-10-18T00:00:00Z
+						300 text Plain text · 8 UTF-8 bytes
+						301 container Message body
+							302 text hello 36
+						303 button Open source in GitHub
+					304 container comments by reader
+						305 container
+							306 text reader comments 2026-10-18T00:00:00Z
+						307 text Plain text · 8 UTF-8 bytes
+						308 container Message body
+							309 text hello 37
+						310 button Open source in GitHub
+					311 container comments by reader
+						312 container
+							313 text reader comments 2026-10-18T00:00:00Z
+						314 text Plain text · 8 UTF-8 bytes
+						315 container Message body
+							316 text hello 38
+						317 button Open source in GitHub
+					318 container comments by reader
+						319 container
+							320 text reader comments 2026-10-18T00:00:00Z
+						321 text Plain text · 8 UTF-8 bytes
+						322 container Message body
+							323 text hello 39
+						324 button Open source in GitHub
+					325 container comments by reader
+						326 container
+							327 text reader comments 2026-10-18T00:00:00Z
+						328 text Plain text · 8 UTF-8 bytes
+						329 container Message body
+							330 text hello 40
+						331 button Open source in GitHub
+					332 container comments by reader
+						333 container
+							334 text reader comments 2026-10-18T00:00:00Z
+						335 text Plain text · 8 UTF-8 bytes
+						336 container Message body
+							337 text hello 41
+						338 button Open source in GitHub
+					339 container comments by reader
+						340 container
+							341 text reader comments 2026-10-18T00:00:00Z
+						342 text Plain text · 8 UTF-8 bytes
+						343 container Message body
+							344 text hello 42
+						345 button Open source in GitHub
+					346 container comments by reader
+						347 container
+							348 text reader comments 2026-10-18T00:00:00Z
+						349 text Plain text · 8 UTF-8 bytes
+						350 container Message body
+							351 text hello 43
+						352 button Open source in GitHub
+					353 container comments by reader
+						354 container
+							355 text reader comments 2026-10-18T00:00:00Z
+						356 text Plain text · 8 UTF-8 bytes
+						357 container Message body
+							358 text hello 44
+						359 button Open source in GitHub
+					360 container comments by reader
+						361 container
+							362 text reader comments 2026-10-18T00:00:00Z
+						363 text Plain text · 8 UTF-8 bytes
+						364 container Message body
+							365 text hello 45
+						366 button Open source in GitHub
+					367 container comments by reader
+						368 container
+							369 text reader comments 2026-10-18T00:00:00Z
+						370 text Plain text · 8 UTF-8 bytes
+						371 container Message body
+							372 text hello 46
+						373 button Open source in GitHub
+					374 container comments by reader
+						375 container
+							376 text reader comments 2026-10-18T00:00:00Z
+						377 text Plain text · 8 UTF-8 bytes
+						378 container Message body
+							379 text hello 47
+						380 button Open source in GitHub
+					381 container comments by reader
+						382 container
+							383 text reader comments 2026-10-18T00:00:00Z
+						384 text Plain text · 8 UTF-8 bytes
+						385 container Message body
+							386 text hello 48
+						387 button Open source in GitHub
+					388 container comments by reader
+						389 container
+							390 text reader comments 2026-10-18T00:00:00Z
+						391 text Plain text · 8 UTF-8 bytes
+						392 container Message body
+							393 text hello 49
+						394 button Open source in GitHub
+					395 button (disabled) Previous page
+					396 text First page
+					397 button (disabled) First page
+					398 button Next page
+				399 text Cached 18/10/2026, 14:42:42 · revision 221
+	400 close button
+	401 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	402 minimize button
+	403 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+404 menu bar
+	405 GitJuke Daily Qualification
+
+The focused UI element is 32 tab (selected) Conversation, Value: on

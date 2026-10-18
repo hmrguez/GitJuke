@@ -1,0 +1,71 @@
+Window: "GitJuke Qualification — LOCAL SYNTHETIC FIXTURES", App: GitJuke Qualification.
+0 standard window GitJuke Qualification — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container
+				4 text gitjuke.
+				5 container Primary
+					6 button My PRs
+					7 button Review requests
+					8 button Activity
+				9 text Watches + head/check snapshots Personal activity · alerts unavailable
+				10 button Preferences
+				11 text RE reader GitHub.com
+				12 button Paused 1 watches · 1 delayed
+			13 container
+				14 container Personal activity
+					15 heading Activity, Value: 1
+						16 text Activity
+					17 text Historical baseline pending · Recovery incomplete · 0 PRs pending
+					18 text Records expire after 90 days, including unseen items. Native alerts and external-suite retry activity are unavailable in this build.
+					19 button Mark loaded page seen
+					20 text Applies to these 6 loaded records only.
+					21 button a/b · #1 · Seen comment · LOCAL: Short complete body 18/10/2026, 12:32:42 · controlled local fixture
+					22 button a/b · #1 · Seen comment · LOCAL: Three explicit body segments 18/10/2026, 12:32:41 · controlled local fixture
+					23 button a/b · #1 · Seen comment · LOCAL: Current RIGHT range 199–201 18/10/2026, 12:32:40 · controlled local fixture
+					24 button a/b · #1 · Unseen comment · LOCAL: Oversized placeholder stays unseen 18/10/2026, 12:32:39 · controlled local fixture
+					25 button a/b · #1 · Seen review · LOCAL: Complete textless review 18/10/2026, 12:32:38 · controlled local fixture
+					26 button a/b · #1 · Unseen comment · LOCAL: Unopened neighbor stays unseen 18/10/2026, 12:32:37 · controlled local fixture
+					27 button (disabled) Previous
+					28 button (disabled) Next
+				29 container Pull request reader
+					30 text a/b / #1
+					31 button Open in GitHub
+					32 container
+						33 text open
+						34 heading Change 1, Value: 1
+							35 text Change 1
+						36 text reader · main · head aaaaaaaaaa
+					37 container Published native stack
+						38 text Confirmed: this PR has no published native stack.
+					39 tab group (selectable) Reader
+						40 tab (selectable) Overview
+						41 tab (selectable) Changes
+						42 tab (selected) Conversation
+						43 tab (selectable) Checks
+					44 container Conversation
+						45 button Back to Activity
+						46 button Browse Conversation sources
+						47 text Exact Activity destination · parent source and thread coverage are not inferred. Patch unavailable · select the matching file in Changes
+						48 text CONVERSATION
+						49 container
+							50 text Head aaaaaaaaaa · safe plain text
+						51 button Refresh conversation
+						52 text 1 loaded / 1 known · exact record only
+						53 text Each source keeps its own pages and GitHub order. Replies replace this panel, up to 50 per page. Ordinary source navigation leaves Activity unseen.
+						54 container Review comment by unavailable author
+							55 container
+								56 text Unavailable author Review comment 2026-10-18T00:00:00Z
+							57 text Escaped plain-text fallback · 62 UTF-8 bytes
+							58 container Message body
+								59 text LOCAL CURRENT ANCHOR — exact file-0.txt / RIGHT / 199–201.
+							60 button Open source in GitHub
+					61 text Cached 18/10/2026, 12:38:13 · revision 59
+	62 close button
+	63 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	64 minimize button
+	65 text GitJuke Qualification — LOCAL SYNTHETIC FIXTURES
+66 menu bar
+	67 GitJuke Qualification
+
+The focused UI element is 54 container Review comment by unavailable author

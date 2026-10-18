@@ -1,0 +1,5 @@
+.notification-controls{margin-top:24px}
+.notification-controls fieldset{display:grid;gap:12px;border:1px solid var(--line);border-radius:var(--radius-panel);padding:16px;margin:16px 0;color:var(--secondary-text)}
+.notification-controls legend{padding:0 8px;font-size:var(--text-base)}
+.notification-controls label{display:flex;flex-direction:row;align-items:flex-start;gap:12px;font-size:var(--text-base);line-height:1.8;margin:0}
+.notification-controls input[type=checkbox]{width:auto;flex:0 0 auto;margin:4px 0 0;padding:0;accent-color:var(--theme-accent)}

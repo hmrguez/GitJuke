@@ -1,0 +1,14 @@
+{
+  "productName": "GitJuke Qualification",
+  "identifier": "dev.hmrguez.gitjuke.qualification",
+  "app": {
+    "windows": [{
+      "label": "main",
+      "title": "GitJuke Qualification — LOCAL SYNTHETIC FIXTURES",
+      "width": 1280,
+      "height": 800,
+      "minWidth": 960,
+      "minHeight": 672
+    }]
+  }
+}

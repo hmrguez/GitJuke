@@ -1,0 +1,92 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selectable) Changes
+					29 tab (selected) Conversation
+					30 tab (selectable) Checks
+				31 container Conversation
+					32 text CONVERSATION
+					33 container
+						34 text Head aaaaaaaaaa · safe plain text
+					35 button Refresh conversation
+					36 button Back to thread list
+					37 heading file-40.txt, Value: 2
+						38 text file-40.txt
+					39 text Resolved · Patch unavailable · select the matching file in Changes
+					40 button Open thread source in GitHub
+					41 text 5 loaded / 55 known · this page only; other pages may exist
+					42 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+					43 container replies by reader
+						44 container
+							45 text reader replies 2026-10-18T00:00:00Z
+						46 text Plain text · 8 UTF-8 bytes
+						47 container Message body
+							48 text hello 50
+						49 button Open source in GitHub
+					50 container replies by reader
+						51 container
+							52 text reader replies 2026-10-18T00:00:00Z
+						53 text Plain text · 8 UTF-8 bytes
+						54 container Message body
+							55 text hello 51
+						56 button Open source in GitHub
+					57 container replies by reader
+						58 container
+							59 text reader replies 2026-10-18T00:00:00Z
+						60 text Plain text · 8 UTF-8 bytes
+						61 container Message body
+							62 text hello 52
+						63 button Open source in GitHub
+					64 container replies by reader
+						65 container
+							66 text reader replies 2026-10-18T00:00:00Z
+						67 text Plain text · 8 UTF-8 bytes
+						68 container Message body
+							69 text hello 53
+						70 button Open source in GitHub
+					71 container replies by reader
+						72 container
+							73 text reader replies 2026-10-18T00:00:00Z
+						74 text Plain text · 8 UTF-8 bytes
+						75 container Message body
+							76 text hello 54
+						77 button Open source in GitHub
+					78 button Previous replies
+					79 text Source cursor page
+					80 button First page
+					81 button (disabled) Next replies
+				82 text Cached 18/10/2026, 13:30:03 · revision 150
+	83 close button
+	84 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	85 minimize button
+	86 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+87 menu bar
+	88 GitJuke Accessibility
+
+The focused UI element is 31 container Conversation

@@ -1,0 +1,5 @@
+{
+  "log_endpoint_reads_after_relaunch_and_explicit_identity_validation": 3,
+  "expected_prior_explicit_requests": 3,
+  "no_log_replay": true
+}

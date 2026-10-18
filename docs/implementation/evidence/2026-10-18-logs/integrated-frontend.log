@@ -1,0 +1,44 @@
+bun test v1.4.2 (744846f84)
+
+scripts/conversation-render.test.tsx:
+(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [47.98ms]
+(pass) ordinary messages have no seen control and destination placeholders stay labeled [0.61ms]
+
+scripts/logs.test.tsx:
+(pass) logs require explicit action, render safe bounded line pages and release on close [41.12ms]
+(pass) external providers expose details without Actions affordance or automatic fetch [13.44ms]
+(pass) authoritative invalidation releases rendered text without requesting it again [7.03ms]
+(pass) late IPC responses after navigation cannot restore text and cancel only their own ticket [69.17ms]
+(pass) a read crossing a newer revision cannot restore an obsolete body [22.14ms]
+
+scripts/conversation.test.mjs:
+(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [6.96ms]
+(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.36ms]
+(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.11ms]
+(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.29ms]
+(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [0.93ms]
+(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [1.84ms]
+(pass) exact opened destination traversal counts distinct committed segments only [0.24ms]
+
+scripts/reader-interaction.test.tsx:
+(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [7.09ms]
+(pass) exact destination counts committed distinct segments without stealing focus on polling [20.02ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [7.88ms]
+(pass) return from replies restores the originating thread after asynchronous replacement [20.29ms]
+(pass) reply return does not steal focus if the user moves while the thread list loads [18.79ms]
+(pass) next and first source-page replacement keep stable reader focus and release old bodies [12.39ms]
+(pass) superseded source requests and unmounted readers cannot restore focus or commit old content [27.52ms]
+(pass) changed destination generation restarts segment coverage; stale head never submits seen [17.75ms]
+(pass) terminal patch pages focus the stable diff region; file pages focus the navigator [261.46ms]
+(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [30.62ms]
+(pass) segmented exact destinations retain traversal across current-anchor patch loading and jump to semantic page two [55.64ms]
+(pass) leaving a partial exact destination releases authorization and remounts fresh segment coverage [49.24ms]
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.18ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [72.30ms]
+
+ 28 pass
+ 0 fail
+ 110 expect() calls
+Ran 28 tests across 5 files. [1125.00ms]

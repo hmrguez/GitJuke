@@ -1,0 +1,55 @@
+{
+  "stage": "initial",
+  "schema": 16,
+  "integrity": "ok",
+  "paused": true,
+  "alerts": {
+    "onboarded": true,
+    "enabled": false,
+    "previews": false,
+    "categories": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "since": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "permission": "notDetermined",
+    "floor": 0
+  },
+  "seen": {
+    "github.com:a/b:1:local-short": 0,
+    "github.com:a/b:1:local-segments": 0,
+    "github.com:a/b:1:local-anchor": 0,
+    "github.com:a/b:1:local-oversized": 0,
+    "github.com:a/b:1:local-empty": 0,
+    "github.com:a/b:1:local-neighbor": 0,
+    "github.com:a/b:1:local-unicode-limit": 0,
+    "github.com:a/b:1:local-left": 0,
+    "github.com:a/b:1:local-wrong-commit": 0,
+    "github.com:a/b:1:local-mixed-side": 0,
+    "github.com:a/b:1:local-negative-line": 0,
+    "github.com:a/b:1:local-outdated": 0,
+    "github.com:a/b:1:local-wrong-file": 0
+  },
+  "queries": [],
+  "watchReasons": [],
+  "ledgerCounts": {
+    "seen": 13,
+    "dedup": 0,
+    "activity_intent": 0,
+    "intent_member": 0,
+    "alert_attempt": 0
+  },
+  "pendingLogs": 0,
+  "helperReads": 0,
+  "logReads": 0,
+  "logCanaryPersisted": false
+}

@@ -1,0 +1,66 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 51.23s
+     Running tests/store.rs (/private/tmp/gitjuke-storage-target/debug/deps/store-f885d1b815b48502)
+
+running 8 tests
+test only_complete_traversal_replaces_membership_and_100_item_pages ... FAILED
+test clear_and_denial_cannot_resurrect_pending_content ... FAILED
+test stable_identity_survives_restart_and_refuses_different_user ... FAILED
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... FAILED
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... FAILED
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... FAILED
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... FAILED
+test future_and_corrupt_databases_are_preserved ... ok
+
+failures:
+
+---- only_complete_traversal_replaces_membership_and_100_item_pages stdout ----
+
+thread 'only_complete_traversal_replaces_membership_and_100_item_pages' (13780180) panicked at crates/gitjuke-core/tests/store.rs:75:36:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- clear_and_denial_cannot_resurrect_pending_content stdout ----
+
+thread 'clear_and_denial_cannot_resurrect_pending_content' (13780176) panicked at crates/gitjuke-core/tests/store.rs:56:51:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- stable_identity_survives_restart_and_refuses_different_user stdout ----
+
+thread 'stable_identity_survives_restart_and_refuses_different_user' (13780182) panicked at crates/gitjuke-core/tests/store.rs:28:40:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- eviction_preserves_durable_ledgers_and_empty_failure_is_not_success stdout ----
+
+thread 'eviction_preserves_durable_ledgers_and_empty_failure_is_not_success' (13780177) panicked at crates/gitjuke-core/tests/store.rs:127:36:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure stdout ----
+
+thread 'schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure' (13780181) panicked at crates/gitjuke-core/tests/store.rs:245:36:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state stdout ----
+
+thread 'checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state' (13780175) panicked at crates/gitjuke-core/tests/store.rs:159:36:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+---- multi_version_migration_failure_rolls_back_to_original_committed_schema stdout ----
+
+thread 'multi_version_migration_failure_rolls_back_to_original_committed_schema' (13780179) panicked at crates/gitjuke-core/tests/store.rs:182:36:
+called `Result::unwrap()` on an `Err` value: StorageUnavailable("Less than 1 GiB is free. Remote ingestion is stopped; cached reading remains available.")
+
+
+failures:
+    checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state
+    clear_and_denial_cannot_resurrect_pending_content
+    eviction_preserves_durable_ledgers_and_empty_failure_is_not_success
+    multi_version_migration_failure_rolls_back_to_original_committed_schema
+    only_complete_traversal_replaces_membership_and_100_item_pages
+    schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure
+    stable_identity_survives_restart_and_refuses_different_user
+
+test result: FAILED. 1 passed; 7 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p gitjuke-core --test store`

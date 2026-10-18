@@ -1,0 +1,9 @@
+$ cargo test -p gitjuke-core --lib --offline runtime::tests::interrupted_activity_and_summary_repair_before_remote_eligibility -- --exact
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 1 test
+test runtime::tests::interrupted_activity_and_summary_repair_before_remote_eligibility ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 199 filtered out; finished in 3.04s
+

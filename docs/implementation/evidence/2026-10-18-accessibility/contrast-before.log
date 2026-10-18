@@ -1,0 +1,28 @@
+bun test v1.4.2 (744846f84)
+
+scripts/reader-contrast.test.mjs:
+17 |  const opacity=Number(thread.match(/opacity:([\d.]+)/)?.[1]??1);
+18 |  for(const palette of Object.values(presets)){
+19 |   const ink=rgb(palette.ink),surface=rgb(palette.surface),canvas=rgb(palette.canvas);
+20 |   const p=palette.mode==='light'&&Number.isFinite(weight(light,'muted-text'))?weight(light,'muted-text'):weight(theme,'muted-text');
+21 |   const muted=mix(ink,surface,p);
+22 |   for(const [name,bg] of [['canvas',canvas],['surface',surface],['quiet',mix(ink,surface,.04)],['hover',mix(ink,surface,.07)]])assert.ok(contrast(muted,bg)>=4.5,`${palette.mode} ${name} metadata contrast ${contrast(muted,bg).toFixed(2)}`);
+                                                                                                                                           ^
+AssertionError: light canvas metadata contrast 3.10
+ generatedMessage: false,
+     actual: false,
+   expected: true,
+   operator: "==",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /private/tmp/gitjuke-accessibility/scripts/reader-contrast.test.mjs:22:135
+      at run (node:async_hooks:144:29)
+      at node:test:1445:26
+      at executeTestNode (node:test:1448:45)
+      at node:test:1591:20
+(fail) metadata remains at least 4.5:1 across approved reader surfaces in both palettes [4.06ms]
+
+ 0 pass
+ 1 fail
+Ran 1 test across 1 file. [23.00ms]

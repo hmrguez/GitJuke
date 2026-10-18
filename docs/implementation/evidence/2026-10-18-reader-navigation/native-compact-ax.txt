@@ -1,0 +1,62 @@
+Window: "GitJuke", App: GitJuke.
+0 standard window GitJuke, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container
+				4 text gitjuke.
+				5 container Primary
+					6 button My PRs
+					7 button Review requests
+					8 button Activity
+				9 text Watches + head/check snapshots Personal activity · alerts unavailable
+				10 button Preferences
+				11 text HM hmrguez GitHub.com
+				12 button Monitoring 0 watches · 0 delayed
+			13 container Pull request reader
+				14 button Back
+				15 text hmrguez/FantasyEditor / #4
+				16 button Open in GitHub
+				17 container
+					18 text merged
+					19 heading codex/ai-project-import, Value: 1
+						20 text codex/ai-project-import
+					21 text hmrguez · staging · head 2fefba2b95
+				22 container Published native stack
+					23 text Confirmed: this PR has no published native stack.
+				24 tab group (selectable) Reader
+					25 tab (selectable) Overview
+					26 tab (selectable) Changes
+					27 tab (selected) Conversation
+					28 tab (selectable) Checks
+				29 container Conversation
+					30 text CONVERSATION
+					31 container
+						32 text Head 2fefba2b95 · safe plain text
+					33 button Refresh conversation
+					34 container Conversation sources
+						35 toggle button Comments, Value: off
+						36 toggle button Reviews, Value: off
+						37 toggle button Review threads, Value: on
+					38 text 4 loaded / 4 known · complete source
+					39 text Each source keeps its own pages and GitHub order. Replies replace this panel, up to 50 per page. Ordinary source navigation leaves Activity unseen.
+					40 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:46 2026-08-09T10:38:11Z
+					41 button GitHub source
+					42 button apps/web/app/api/imports/[id]/complete/route.ts Resolved · Outdated · original b764bc3ef8:22 2026-08-09T10:38:11Z
+					43 button GitHub source
+					44 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:52 2026-08-09T10:38:11Z
+					45 button GitHub source
+					46 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:102 2026-08-09T10:38:11Z
+					47 button GitHub source
+					48 button (disabled) Previous page
+					49 text First page
+					50 button (disabled) First page
+					51 button (disabled) Next page
+				52 text Cached 18/10/2026, 12:25:18 · revision 1806
+	53 close button
+	54 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	55 minimize button
+	56 text GitJuke
+57 menu bar
+	58 GitJuke
+
+The focused UI element is 40 button apps/web/app/api/imports/[id]/artifacts/route.ts Resolved · Outdated · original b764bc3ef8:46 2026-08-09T10:38:11Z

@@ -1,0 +1,12 @@
+{
+  "path": "/private/tmp/GitJuke Storage Recovery.app",
+  "identifier": "dev.hmrguez.gitjuke.storage-recovery",
+  "version": "0.1.0",
+  "schema": 14,
+  "sha256": "041c979b6f28ba3c86acb6c4f2a0922d10df2766af5da08ccf9529f0b3175511",
+  "executableBytes": 35784856,
+  "architecture": "/private/tmp/GitJuke Storage Recovery.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+  "faultTestHooksAbsent": true,
+  "embeddedFrontend": "index-CAD0tVmv.js",
+  "appStopped": true
+}

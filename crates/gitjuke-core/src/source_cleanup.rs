@@ -43,11 +43,14 @@ pub(crate) fn initialize(c: &mut Connection, source: &str) -> Result<()> {
 
 fn cleanup_batch(c: &mut Connection, source: &str) -> Result<(usize, bool)> {
     let tx = c.transaction()?;
-    let mut changed = tx.execute(
+    let batch_before = tx.total_changes();
+    let before = tx.total_changes();
+    let rows = tx.execute(
         "DELETE FROM source_stage WHERE rowid IN (SELECT rowid FROM source_stage WHERE source=? ORDER BY rowid LIMIT ?)",
-        params![source, BATCH as i64],
+        params![source, (BATCH / 2) as i64],
     )?;
-    let finished = changed < BATCH;
+    let mut changed = (tx.total_changes() - before) as usize;
+    let finished = rows < BATCH / 2;
     if finished {
         changed += tx.execute("DELETE FROM source_restart WHERE source=?", [source])?;
     }
@@ -57,6 +60,7 @@ fn cleanup_batch(c: &mut Connection, source: &str) -> Result<(usize, bool)> {
     } else {
         "batch_before_commit"
     });
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     point(if finished {
@@ -195,7 +199,13 @@ mod tests {
         let before = s.conn.total_changes();
         begin(&mut s.conn, "authored").unwrap();
         assert_eq!(s.conn.total_changes(), before);
-        for expected in [(128, false), (128, false), (2, true)] {
+        for expected in [
+            (128, false),
+            (128, false),
+            (128, false),
+            (128, false),
+            (3, true),
+        ] {
             let before = s.conn.total_changes();
             let result = cleanup_batch(&mut s.conn, "authored").unwrap();
             assert_eq!(result, expected);
@@ -238,7 +248,7 @@ mod tests {
         s.conn.execute_batch("DROP TRIGGER fail_barrier;
             CREATE TRIGGER fail_batch BEFORE DELETE ON source_stage WHEN OLD.id='old-200' BEGIN SELECT RAISE(ABORT,'fixture cleanup'); END;").unwrap();
         assert!(s.begin_source("authored").is_err());
-        assert_eq!(remaining(&s.conn), 129);
+        assert_eq!(remaining(&s.conn), 65);
         assert_eq!(s.revision().unwrap(), revision + 1);
         assert!(s.begin_source("authored").is_err());
         assert_eq!(s.revision().unwrap(), revision + 1);
@@ -322,7 +332,7 @@ mod tests {
             ("barrier_before_commit", 257, false, 0),
             ("barrier_committed", 257, true, 1),
             ("batch_before_commit", 257, true, 1),
-            ("batch_after_commit", 129, true, 1),
+            ("batch_after_commit", 193, true, 1),
             ("finish_before_commit", 1, true, 1),
             ("finish_after_commit", 0, false, 1),
         ] {

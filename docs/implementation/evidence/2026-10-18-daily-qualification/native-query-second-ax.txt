@@ -1,0 +1,91 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 200%
+				4 text Text size 200%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+					15 button Edit query…, Help: Edit selected query
+				16 button Preferences
+				17 text RE reader GitHub.com
+				18 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			19 container Saved query results
+				20 text SAVED QUERY
+				21 heading Daily qualification, Value: 1
+					22 text Daily qualification
+				23 button Refresh query
+				24 text repo:a/b is:open
+				25 button Edit query
+				26 text 150 cached · 150 reported by GitHub · Complete cached set
+				27 text Page cached 18/10/2026, 14:41:49 · Page 2
+				28 button a/b · #101 Change 101 open · reader
+				29 button a/b · #102 Change 102 open · reader
+				30 button a/b · #103 Change 103 open · reader
+				31 button a/b · #104 Change 104 open · reader
+				32 button a/b · #105 Change 105 open · reader
+				33 button a/b · #106 Change 106 open · reader
+				34 button a/b · #107 Change 107 open · reader
+				35 button a/b · #108 Change 108 open · reader
+				36 button a/b · #109 Change 109 open · reader
+				37 button a/b · #110 Change 110 open · reader
+				38 button a/b · #111 Change 111 open · reader
+				39 button a/b · #112 Change 112 open · reader
+				40 button a/b · #113 Change 113 open · reader
+				41 button a/b · #114 Change 114 open · reader
+				42 button a/b · #115 Change 115 open · reader
+				43 button a/b · #116 Change 116 open · reader
+				44 button a/b · #117 Change 117 open · reader
+				45 button a/b · #118 Change 118 open · reader
+				46 button a/b · #119 Change 119 open · reader
+				47 button a/b · #120 Change 120 open · reader
+				48 button a/b · #121 Change 121 open · reader
+				49 button a/b · #122 Change 122 open · reader
+				50 button a/b · #123 Change 123 open · reader
+				51 button a/b · #124 Change 124 open · reader
+				52 button a/b · #125 Change 125 open · reader
+				53 button a/b · #126 Change 126 open · reader
+				54 button a/b · #127 Change 127 open · reader
+				55 button a/b · #128 Change 128 open · reader
+				56 button a/b · #129 Change 129 open · reader
+				57 button a/b · #130 Change 130 open · reader
+				58 button a/b · #131 Change 131 open · reader
+				59 button a/b · #132 Change 132 open · reader
+				60 button a/b · #133 Change 133 open · reader
+				61 button a/b · #134 Change 134 open · reader
+				62 button a/b · #135 Change 135 open · reader
+				63 button a/b · #136 Change 136 open · reader
+				64 button a/b · #137 Change 137 open · reader
+				65 button a/b · #138 Change 138 open · reader
+				66 button a/b · #139 Change 139 open · reader
+				67 button a/b · #140 Change 140 open · reader
+				68 button a/b · #141 Change 141 open · reader
+				69 button a/b · #142 Change 142 open · reader
+				70 button a/b · #143 Change 143 open · reader
+				71 button a/b · #144 Change 144 open · reader
+				72 button a/b · #145 Change 145 open · reader
+				73 button a/b · #146 Change 146 open · reader
+				74 button a/b · #147 Change 147 open · reader
+				75 button a/b · #148 Change 148 open · reader
+				76 button a/b · #149 Change 149 open · reader
+				77 button a/b · #150 Change 150 open · reader
+				78 button Previous results
+				79 text Page 2
+				80 button (disabled) Next results
+				81 text GitHub Search exposes at most 1,000 results. Each page is fetched on demand; results can move while paging. Query results join active watches only when opened.
+	82 close button
+	83 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	84 minimize button
+	85 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+86 menu bar
+	87 GitJuke Daily Qualification
+
+The focused UI element is 19 container Saved query results

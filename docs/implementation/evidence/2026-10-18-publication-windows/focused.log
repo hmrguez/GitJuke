@@ -1,0 +1,46 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 39 tests
+test admission_query::tests::autocommit_totals_hold_one_snapshot_across_concurrent_window_changes ... ok
+test activity_bounded::source_api_payload_publication_reserves_its_four_mutations_from_admission ... ok
+test activity_bounded::staging_restart_and_notification_progress_share_global_bounds ... ok
+test admission_query::tests::invalid_stored_request_stops_admission_without_writes_or_a_leaked_snapshot ... ok
+test admission_query::tests::maintained_state_tracks_replacements_moves_rollbacks_and_late_counter_failure ... ok
+test admission_query::tests::late_batch_fault_preserves_exact_prefix_and_retries_atomically ... ok
+test admission_query::tests::raw_request_substrings_are_charged_once_and_moves_remain_exact ... ok
+test admission_query::tests::request_inputs_match_sqlite_utf8_charge_and_rollback ... ok
+test admission_query::tests::retained_images_stay_charged_during_eviction_and_refuse_impossible_admission ... ok
+test content_budget::admission_tests::compact_shared_snapshot_reclamation_matches_exact_revision_and_candidate_prefix ... ok
+test content_budget::admission_tests::impossible_staging_does_not_commit_pointless_reclamation_or_candidate_progress ... ok
+test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... ok
+test content_budget::admission_tests::later_reclaim_and_publication_faults_preserve_prefix_but_never_candidate_state ... ok
+test content_budget::admission_tests::mixed_reclamation_has_one_global_budget_including_check_states_and_revision ... ok
+test content_budget::admission_tests::repeated_candidates_do_not_publish_activity_dedup_progress_or_terminal_intents ... ok
+test content_budget::admission_tests::stale_optional_publication_has_no_admission_side_effects ... ok
+test content_budget::admission_tests::speculative_admission_shares_expiry_pressure_and_check_invalidation_allowance ... ok
+test activity_bounded::large_baseline_completion_has_no_summary_and_one_visibility_commit ... ok
+test content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart ... ok
+test content_budget::tests::exact_limit_utf8_and_tied_lru_prefix ... ok
+test content_budget::tests::head_eviction_failure_rolls_back_epoch_closure_and_check_invalidation ... ok
+test content_budget::tests::lru_check_delete_failure_rolls_back_snapshot_and_new_publication ... ok
+test content_budget::tests::large_victim_prefix_preserves_activity_and_replay_barriers_after_reopen ... ok
+test content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness ... ok
+test content_budget::tests::each_staging_class_shares_admission_and_rollback ... ok
+test content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it ... ok
+test content_budget::tests::selected_registration_eviction_failure_rolls_back_membership_and_revision ... ok
+test content_budget::tests::shared_lru_reclaims_checks_without_touching_staging_or_watch_history ... ok
+test activity_bounded::journal_classifies_expired_historical_suppressed_and_post_boundary_without_replay ... ok
+test admission_query::tests::one_snapshot_timestamp_update_and_successor_seeks_skip_large_staged_prefixes ... ok
+test publication::tests::pending_publication_blocks_recovery_even_with_old_complete_health ... ok
+test publication::tests::empty_replacements_cannot_hide_large_deletions_behind_capped_preflight_counts ... ok
+test publication::tests::small_single_transaction_and_journal_paths_publish_identical_snapshots ... ok
+test publication::tests::exact_retry_finishes_pending_publication_without_publishing_empty_or_advancing_epoch_twice ... ok
+test publication::tests::late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membership_loss ... ok
+test activity_bounded::late_apply_and_visibility_failure_protect_readers_and_exact_retry ... ok
+test admission_query::tests::compact_large_sets_have_bounded_statements_and_exact_totals_and_lru ... ok
+test activity_bounded::large_publication_modes_and_summary_are_bounded_and_idempotent ... ok
+test publication::tests::bounded_batches_keep_old_snapshot_until_atomic_visibility_commit ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 138 filtered out; finished in 19.04s
+

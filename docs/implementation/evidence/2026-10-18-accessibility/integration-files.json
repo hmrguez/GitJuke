@@ -1,0 +1,36 @@
+{
+  "worktree": "/private/tmp/gitjuke-accessibility",
+  "baseCommit": "5599c29",
+  "scope": [
+    "src/main.tsx",
+    "src/app.css",
+    "src/theme.css",
+    "src/changes.css",
+    "src/conversation.css",
+    "scripts/reader-interaction.test.tsx",
+    "scripts/conversation.test.mjs",
+    "scripts/reader-qualification-snapshot.py",
+    "crates/gitjuke-core/examples/reader_qualification.rs",
+    "scripts/fixtures/tauri.reader-qualification.json",
+    "docs/design/system.md",
+    "README.md",
+    ".scratch/gitjuke/acceptance.md",
+    "crates/gitjuke-core/tests/support/gh.py",
+    "src-tauri/tauri.conf.json",
+    "src/reader-accessibility.ts",
+    "scripts/accessibility.test.tsx",
+    "scripts/reader-shell.test.tsx",
+    "scripts/reader-contrast.test.mjs",
+    "scripts/verify-accessibility-fixture.py",
+    "scripts/verify-reader-accessibility.py",
+    "scripts/fixtures/tauri.accessibility-qualification.json",
+    "docs/implementation/2026-10-18-accessibility.md"
+  ],
+  "evidenceCopy": "docs/implementation/evidence/2026-10-18-accessibility/",
+  "manualMerge": [
+    "src/main.tsx",
+    "crates/gitjuke-core/tests/support/gh.py",
+    "src-tauri/tauri.conf.json"
+  ],
+  "noRuntimeStoreSchemaOrIpcChanges": true
+}

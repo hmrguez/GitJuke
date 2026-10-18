@@ -1,0 +1,7 @@
+{
+  "shared_files_changed_since_native_capture": [
+    "src/main.tsx"
+  ],
+  "change": "Concurrent notification controls/route integration; existing Checks LogJob/revision wiring retained. Recheck frontend/build separately; final native binary remains scoped to artifact.json source hashes.",
+  "current_source_sha256": "347468cc8944e8eb65612cba90f54834a1251436df8a82bdb6d5c01409bfeb99"
+}

@@ -1,0 +1,22 @@
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-login-lifecycle/crates/gitjuke-core)
+warning: associated function `maintain_logs` is never used
+   --> crates/gitjuke-core/src/logs.rs:182:19
+    |
+ 79 | impl Runtime {
+    | ------------ associated function in this implementation
+...
+182 |     pub(crate) fn maintain_logs(i: &mut Inner) -> Result<()> {
+    |                   ^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `gitjuke-core` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized] target(s) in 36.98s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-lifecycle-core-target/debug/deps/gitjuke_core-e8c686999d5acf2e)
+
+running 2 tests
+test runtime::lifecycle_tests::background_starts_closed_and_preserves_pause_selection_and_settings ... ok
+test runtime::lifecycle_tests::shutdown_reaps_owned_process_group_and_never_reschedules ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 233 filtered out; finished in 3.52s
+

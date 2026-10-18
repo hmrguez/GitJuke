@@ -1,0 +1,59 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 0 delayed, Help: Toggle monitoring
+			15 container
+				16 container Pull requests
+					17 text AUTHORED BY YOU
+					18 heading Pull requests, Value: 1
+						19 text Pull requests
+					20 button Refresh pull requests
+					21 text Cached 13:20:33
+					22 summary Sync status, Value: off
+						23 text Sync status
+					24 text field (settable) Filter loaded pull requests, Placeholder: Filter this page…
+					25 button a/b · #1 Change 1 open · reader
+					26 button (disabled) Previous
+					27 text 1–1
+					28 button (disabled) Next
+					29 summary Open a pull request, Value: off
+						30 text Open a pull request
+				31 container Pull request reader
+					32 text a/b / #1
+					33 button Open in GitHub
+					34 container
+						35 text Open
+						36 heading Change 1, Value: 1
+							37 text Change 1
+						38 text reader · main ← aaaaaaaaaa
+					39 container Published native stack
+						40 text No published stack
+					41 tab group (selectable) Reader
+						42 tab (selected) Overview, Value: on
+						43 tab (selectable) Changes
+						44 tab (selectable) Conversation
+						45 tab (selectable) Checks
+					46 container Overview
+						47 text <script>untrusted</script>
+						48 text Plain-text description · Comments and reviews are in Conversation.
+					49 text Cached 18/10/2026, 13:20:41 · revision 33
+	50 close button
+	51 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	52 minimize button
+	53 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+54 menu bar
+	55 GitJuke Accessibility
+
+The focused UI element is 42 tab (selected) Overview, Value: on

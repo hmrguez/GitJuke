@@ -1,0 +1,33 @@
+{
+  "databaseExists": true,
+  "loginFileExists": false,
+  "launchAgentExists": false,
+  "schema": 16,
+  "paused": false,
+  "alerts": {
+    "onboarded": true,
+    "enabled": true,
+    "previews": false,
+    "categories": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "since": [
+      1792325794,
+      1792325794,
+      1792325794,
+      1792325794,
+      1792325794
+    ],
+    "permission": "unknown",
+    "floor": 0
+  },
+  "customGh": false,
+  "customConfig": false,
+  "choiceFieldsUnchanged": true,
+  "pauseUnchanged": true,
+  "normalLoginUnchanged": true
+}

@@ -1,0 +1,123 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content inspector-resource:///Main.html
+			3 button Close
+			4 button Dock to left of window
+			5 button Dock to right of window
+			6 button Detach into separate window
+			7 button Start element selection (⇧⌘C)
+			8 button Device Settings
+			9 tab group (selectable)
+				10 tab (selectable) Elements
+				11 tab (selected) Console
+				12 tab (selectable) Sources
+				13 tab (selectable) Network
+				14 tab (selectable) Timelines
+				15 tab (selectable) Storage
+				16 tab (selectable) Graphics
+				17 tab (selectable) Layers
+				18 tab (selectable) Audit
+				19 tab (selectable) Search (⇧⌘F)
+				20 tab (selectable) Settings (⌘,)
+			21 container Console
+				22 search text field (settable)  
+				23 button (disabled) Find Previous (⇧⌘G)
+				24 button (disabled) Find Next (⌘G)
+				25 text All
+				26 text Evaluations
+				27 text Errors
+				28 text Warnings
+				29 text Logs
+				30 button Other filter options…
+				31 checkbox (settable, integer) Emulate User Gesture, Help: Run console commands as if inside a user gesture, Value: 0
+				32 button Run Console Snippet…
+				33 button Collect garbage
+				34 button Clear log (⌘K or ⌃L)
+				35 container
+					36 text Console opened at 13:21:07
+					37 image
+					38 text Selected Element
+					39 image
+					40 outline (selectable)
+						41 row (selectable) Description: <pre class=​"description">​<script>untrusted</script>​</pre>, Value: <pre class=​"description">​<script>untrusted</script>​</pre>
+<pre class=​"description">​<script>untrusted</script>​</pre>
+pre
+class
+=
+"
+description
+"
+>
+<script>untrusted</script>
+<
+/pre
+>
+					42 text  = $1
+					43 image
+					44 text JSON.stringify({viewport:[innerWidth,innerHeight],root:getComputedStyle(document.documentElement).fontSize,body:getComputedStyle(document.querySelector(".description")).fontSize,reduced:matchMedia("(prefers-reduced-motion: reduce)").matches})
+					45 image
+					46 text "{\"viewport\":[1280,268],\"root\":\"12px\",\"body\":\"13px\",\"reduced\":true}" = $2
+					47 image
+					48 text [innerWidth,innerHeight]
+					49 image
+					50 text [1280, 268] (2) = $3
+			51 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools
+			52 container
+	53 scroll area
+		54 HTML content Description: GitJuke, URL: tauri://localhost
+			55 container Text size 100%
+				56 text Text size 100%
+			57 container
+				58 text gitjuke.
+				59 container Primary
+					60 text Workspace
+					61 button My PRs
+					62 button Review requests
+					63 button Activity
+				64 button Preferences
+				65 text RE reader GitHub.com
+				66 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			67 container
+				68 container Pull requests
+					69 text AUTHORED BY YOU
+					70 heading Pull requests, Value: 1
+						71 text Pull requests
+					72 button Refresh pull requests
+					73 text Cached 13:20:33
+					74 summary Sync status, Value: off
+						75 text Sync status
+					76 text field (settable) Filter loaded pull requests, Placeholder: Filter this page…
+					77 button a/b · #1 Change 1 open · reader
+					78 button (disabled) Previous
+					79 text 1–1
+					80 button (disabled) Next
+					81 summary Open a pull request, Value: off
+						82 text Open a pull request
+				83 container Pull request reader
+					84 text a/b / #1
+					85 button Open in GitHub
+					86 container
+						87 text Open
+						88 heading Change 1, Value: 1
+							89 text Change 1
+						90 text reader · main ← aaaaaaaaaa
+					91 container Published native stack
+						92 text No published stack
+					93 tab group (selectable) Reader
+						94 tab (selected) Overview
+						95 tab (selectable) Changes
+						96 tab (selectable) Conversation
+						97 tab (selectable) Checks
+					98 container Overview
+						99 text <script>untrusted</script>
+						100 text Plain-text description · Comments and reviews are in Conversation.
+					101 text Cached 18/10/2026, 13:20:41 · revision 34
+	102 close button
+	103 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	104 minimize button
+	105 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+106 menu bar
+	107 GitJuke Accessibility
+
+The focused UI element is 51 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools

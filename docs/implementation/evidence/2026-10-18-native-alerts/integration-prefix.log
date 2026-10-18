@@ -1,0 +1,85 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.93s
+     Running tests/activity.rs (target/debug/deps/activity-109a3f98d913bf7b)
+
+running 3 tests
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/conversation.rs (target/debug/deps/conversation-b4146382ec58e379)
+
+running 10 tests
+test live_existing_owned_destinations_and_cursor_pages ... ignored, requires authorized stored gh identity and live network
+test local_mixed_identity_fixture_preserves_seen_and_current_range ... ok
+test independent_pages_thread_replies_and_ipc_subdivision ... ok
+test exact_destination_ownership_missing_cancellation_and_receipt_barriers ... ok
+test exact_coordinate_denial_and_edit_cannot_publish_mixed_destination ... ok
+test exact_destinations_without_excerpts_or_history_scans ... ok
+test cancellation_clear_and_stale_revision_never_publish ... ok
+test explicit_seen_receipts_reject_changed_body_clear_and_placeholders ... ok
+test denial_identity_and_selected_pr_barriers ... ok
+test replacement_ticket_and_moving_comparison_reject_late_results ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 40.73s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-add2454d304be512)
+
+running 16 tests
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test independent_reasons_selected_lifetime_and_request_removal has been running for over 60 seconds
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache has been running for over 60 seconds
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery has been running for over 60 seconds
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch has been running for over 60 seconds
+test partial_activity_denial_keeps_progress_and_purges_payloads has been running for over 60 seconds
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync has been running for over 60 seconds
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches has been running for over 60 seconds
+test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
+test worker_to_sqlite_to_reader_and_identity_lock has been running for over 60 seconds
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped has been running for over 60 seconds
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 138.15s
+
+     Running tests/store.rs (target/debug/deps/store-8ca756147b6fc590)
+
+running 8 tests
+test future_and_corrupt_databases_are_preserved ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... FAILED
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+
+failures:
+
+---- schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure stdout ----
+
+thread 'schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure' (13817297) panicked at crates/gitjuke-core/tests/store.rs:271:32:
+called `Result::unwrap()` on an `Err` value: Storage(SqliteFailure(Error { code: Unknown, extended_code: 1 }, Some("index activity_intent_dispatch already exists")))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+error: test failed, to rerun pass `-p gitjuke-core --test store`

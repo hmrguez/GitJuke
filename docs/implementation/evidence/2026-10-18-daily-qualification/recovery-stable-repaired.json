@@ -1,0 +1,12 @@
+{
+  "pid": 85006,
+  "sameOwnerAlive": true,
+  "filesUnchanged": true,
+  "helperReadsBefore": 201,
+  "helperReadsAfter": 201,
+  "filesAfterFailedRetry": {
+    "gitjuke.sqlite3-shm": "2f59a91d5e7ce2a2edab10208723d618b4ba59cbdb7e7384fdbe5be61654acfe",
+    "gitjuke.sqlite3-wal": "7381714beacb27414de944053411b1468b91a90abf1547d6ac1a1adabddadfcf",
+    "gitjuke.sqlite3": "f009ffeffb96627c6288efd535bf9bf6f6d90f2868c965a50f46ad551b92c5b3"
+  }
+}

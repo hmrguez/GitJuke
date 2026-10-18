@@ -1,0 +1,30 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Preferences
+				4 heading Preferences, Value: 2
+					5 text Preferences
+				6 button Close preferences
+				7 container Preferences sections
+					8 toggle button Appearance, Value: off
+					9 toggle button Monitoring, Value: off
+					10 toggle button GitHub, Value: off
+					11 toggle button Storage, Value: on
+				12 container Storage
+					13 heading Local storage, Value: 3
+						14 text Local storage
+					15 text 3.2 MiB database and sidecars · 0.1 / 500 MiB disposable content
+					16 text Database 0.5 MiB · WAL 2.7 MiB · shared memory and journal 0.0 MiB
+					17 text Transient SQLite temporary-file storage is unmeasured; reported files are a lower bound on total storage. The warning may understate peak use.
+					18 text File sizes cover the database, staged data and named SQLite sidecars. Transient SQLite sort files are not yet measured. Clearing downloads preserves identity, settings, Pause and durable history. It cannot erase growing identity, seen or delivery ledgers.
+					19 button Clear downloaded content
+				20 text GitJuke 0.1.0 · Your personal review desk.
+	21 close button
+	22 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	23 minimize button
+	24 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+25 menu bar
+	26 GitJuke Daily Qualification
+
+The focused UI element is 3 container Preferences

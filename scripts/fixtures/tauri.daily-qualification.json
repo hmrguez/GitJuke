@@ -1,0 +1,17 @@
+{
+  "productName": "GitJuke Daily Qualification",
+  "identifier": "dev.hmrguez.gitjuke.dailyqualification",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "GitJuke Daily Qualification \u2014 LOCAL SYNTHETIC SOURCES",
+        "width": 960,
+        "height": 672,
+        "minWidth": 960,
+        "minHeight": 672,
+        "visible": false
+      }
+    ]
+  }
+}

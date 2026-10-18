@@ -43,17 +43,62 @@ impl Default for Limits {
 }
 
 pub enum ReadOp {
+    WorkflowRun {
+        repo: String,
+        run: u64,
+    },
+    ActionCheck {
+        repo: String,
+        check: u64,
+    },
+    ActionsRun {
+        repo: String,
+        run: u64,
+    },
+    ActionsJob {
+        repo: String,
+        job: u64,
+    },
+    ActionsLog {
+        repo: String,
+        job: u64,
+    },
+    Conversation(serde_json::Value),
     Activity(crate::activity::ActivityRead),
     Graph(crate::sync::GraphRead),
-    Teams { page: u32 },
-    Search { query: String, page: u32, size: u16 },
+    Teams {
+        page: u32,
+    },
+    Search {
+        query: String,
+        page: u32,
+        size: u16,
+    },
     Version,
     AuthStatus,
     Identity,
-    Authored { login: String, page: u32 },
-    Overview { repo: String, number: u64 },
-    Stacks { repo: String, number: u64 },
-    StackDetail { repo: String, number: u64 },
+    Files {
+        repo: String,
+        number: u64,
+        page: u32,
+        size: u16,
+    },
+    Authored {
+        login: String,
+        page: u32,
+    },
+    Overview {
+        repo: String,
+        number: u64,
+    },
+    Stacks {
+        repo: String,
+        number: u64,
+    },
+    StackDetail {
+        repo: String,
+        number: u64,
+    },
 }
 impl ReadOp {
     fn args(self) -> Vec<String> {
@@ -76,8 +121,21 @@ impl ReadOp {
             return args;
         }
         let args: Vec<String> = match self {
+            Self::ActionCheck { repo, check } => vec![format!("repos/{repo}/check-runs/{check}")],
+            Self::ActionsRun { repo, run } => vec![format!("repos/{repo}/actions/runs/{run}")],
+            Self::ActionsJob { repo, job } => vec![format!("repos/{repo}/actions/jobs/{job}")],
+            Self::ActionsLog { repo, job } => vec![format!("repos/{repo}/actions/jobs/{job}/logs")],
             Self::Activity(_) => unreachable!(),
+            Self::Conversation(_) => unreachable!("GraphQL is sent on stdin"),
             Self::Graph(_) => unreachable!("GraphQL is sent on stdin"),
+            Self::Files {
+                repo,
+                number,
+                page,
+                size,
+            } => vec![format!(
+                "repos/{repo}/pulls/{number}/files?per_page={size}&page={page}"
+            )],
             Self::Teams { page } => vec![format!("user/teams?per_page=100&page={page}")],
             Self::Search { query, page, size } => vec![format!(
                 "search/issues?q={}&per_page={size}&page={page}",
@@ -98,6 +156,7 @@ impl ReadOp {
                 .to_vec();
             }
             Self::Identity => vec!["user".into()],
+            Self::WorkflowRun { repo, run } => vec![format!("repos/{repo}/actions/runs/{run}")],
             Self::Authored { login, page } => vec![format!(
                 "search/issues?q=is%3Apr%20is%3Aopen%20author%3A{}&per_page=100&page={page}",
                 encode(&login)
@@ -247,6 +306,22 @@ impl Transport {
             return Err(Error::Safe("Read cancelled.".into()));
         }
         let (args, input) = match op {
+            ReadOp::Conversation(body) => (
+                [
+                    "api",
+                    "graphql",
+                    "--hostname",
+                    "github.com",
+                    "--method",
+                    "POST",
+                    "--include",
+                    "--input",
+                    "-",
+                ]
+                .map(String::from)
+                .to_vec(),
+                Some(serde_json::to_vec(&body)?),
+            ),
             ReadOp::Graph(read) => (
                 [
                     "api",

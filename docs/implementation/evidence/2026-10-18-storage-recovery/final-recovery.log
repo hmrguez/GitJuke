@@ -1,0 +1,33 @@
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/src-tauri)
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/.codex/worktrees/storage-recovery/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.88s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_desktop-9bd6a9f9680477dd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/private/tmp/gitjuke-storage-target/debug/deps/gitjuke_core-2f36bd087d18e520)
+
+running 18 tests
+test activity_enrollment::tests::bounded_enrollment_deduplicates_and_gates_recovery_until_all_targets_finish ... ok
+test activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure ... ok
+test activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart ... ok
+test check_purge::tests::check_purge_blocks_otherwise_ready_recovery ... ok
+test clear_content::tests::clear_barrier_blocks_otherwise_ready_recovery_completion ... ok
+test maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery ... ok
+test maintenance_tests::pending_control_work_cannot_falsely_complete_ready_recovery ... ok
+test pr_purge::tests::pr_purge_unknown_pr_overlap_and_recovery_barriers ... ok
+test publication::tests::pending_publication_blocks_recovery_even_with_old_complete_health ... ok
+test recovery::tests::diagnostics_preserve_missing_legacy_current_newer_corrupt_and_unreadable_inputs ... ok
+test recovery::tests::invalid_negative_schema_is_rejected_without_creating_a_baseline ... ok
+test recovery_cleanup::tests::crash_child_entry ... ok
+test recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history ... ok
+test recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary ... ok
+test recovery_cleanup::tests::sigkill_at_boundary_and_batch_commit_restarts_recovery ... ok
+test runtime::tests::partial_recovery_initialization_blocks_reads_and_repairs_without_resuming ... ok
+test runtime::tests::write_fault_stops_children_and_recovery_requires_a_committed_probe ... ok
+test source_cleanup::tests::restart_guard_blocks_otherwise_ready_recovery ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 216 filtered out; finished in 18.59s
+

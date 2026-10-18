@@ -1,0 +1,183 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selected) Changes
+					29 tab (selectable) Conversation
+					30 tab (selectable) Checks
+				31 container Changes
+					32 text CHANGES
+					33 container
+						34 text Head aaaaaaaaaa · base bbbbbbbbbb
+					35 button Update Changes
+					36 container Changed files
+						37 text Files 1–20 / 22 known · this page only · cached 13:27:42
+						38 button file-0.txt modified · +201 −201
+						39 button file-1.txt modified · +201 −201
+						40 button file-2.txt modified · +201 −201
+						41 button file-3.txt modified · +201 −201
+						42 button file-4.txt modified · +201 −201
+						43 button file-5.txt modified · +201 −201
+						44 button file-6.txt modified · +201 −201
+						45 button file-7.txt modified · +201 −201
+						46 button file-8.txt modified · +201 −201
+						47 button file-9.txt modified · +201 −201
+						48 button file-10.txt modified · +201 −201
+						49 button file-11.txt modified · +201 −201
+						50 button file-12.txt modified · +201 −201
+						51 button file-13.txt modified · +201 −201
+						52 button file-14.txt modified · +201 −201
+						53 button file-15.txt modified · +201 −201
+						54 button file-16.txt modified · +201 −201
+						55 button file-17.txt modified · +201 −201
+						56 button file-18.txt modified · +201 −201
+						57 button file-19.txt modified · +201 −201
+						58 button (disabled) Previous files
+						59 text Page 1
+						60 button Next files
+					61 heading file-0.txt, Value: 2
+						62 text file-0.txt
+					63 button Open revision file in GitHub
+					64 text Reading mode
+					65 container Reading mode
+						66 toggle button Continuous, Value: off
+						67 toggle button Paged, Value: on
+					68 button Reload file
+					69 text Complete supplied change hunks for this file and revision. · 7,843 UTF-8 bytes · 403 rows
+					70 container
+						71 text Hunk (1– 1 )
+						72 number field (settable) Jump to hunk number, Value: 1
+							73 stepper 0
+								74 unknown
+								75 unknown
+						76 button Go to hunk
+					77 text Rows 1–200 / 403
+					78 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.
+						79 table file-0.txt · supplied unified change hunks (showing 2-16 of 100 items)
+							80 row (selectable)
+								81 cell (selectable)
+								82 cell (selectable)
+								83 cell (selectable) hunk:
+@@ -1,201 +1,201 @@
+							84 row (selectable)
+								85 cell (selectable) 1
+								86 cell (selectable)
+								87 cell (selectable) deleted:
+-OLD LOCAL LINE 1
+							88 row (selectable)
+								89 cell (selectable)
+								90 cell (selectable) 1
+								91 cell (selectable) added:
++NEW LOCAL LINE 1
+							92 row (selectable)
+								93 cell (selectable) 2
+								94 cell (selectable)
+								95 cell (selectable) deleted:
+-OLD LOCAL LINE 2
+							96 row (selectable)
+								97 cell (selectable)
+								98 cell (selectable) 2
+								99 cell (selectable) added:
++NEW LOCAL LINE 2
+							100 row (selectable)
+								101 cell (selectable) 3
+								102 cell (selectable)
+								103 cell (selectable) deleted:
+-OLD LOCAL LINE 3
+							104 row (selectable)
+								105 cell (selectable)
+								106 cell (selectable) 3
+								107 cell (selectable) added:
++NEW LOCAL LINE 3
+							108 row (selectable)
+								109 cell (selectable) 4
+								110 cell (selectable)
+								111 cell (selectable) deleted:
+-OLD LOCAL LINE 4
+							112 row (selectable)
+								113 cell (selectable)
+								114 cell (selectable) 4
+								115 cell (selectable) added:
++NEW LOCAL LINE 4
+							116 row (selectable)
+								117 cell (selectable) 5
+								118 cell (selectable)
+								119 cell (selectable) deleted:
+-OLD LOCAL LINE 5
+							120 row (selectable)
+								121 cell (selectable)
+								122 cell (selectable) 5
+								123 cell (selectable) added:
++NEW LOCAL LINE 5
+							124 row (selectable)
+								125 cell (selectable) 6
+								126 cell (selectable)
+								127 cell (selectable) deleted:
+-OLD LOCAL LINE 6
+							128 row (selectable)
+								129 cell (selectable)
+								130 cell (selectable) 6
+								131 cell (selectable) added:
++NEW LOCAL LINE 6
+							132 row (selectable)
+								133 cell (selectable) 7
+								134 cell (selectable)
+								135 cell (selectable) deleted:
+-OLD LOCAL LINE 7
+					136 container Patch pages
+						137 button (disabled) Previous rows
+						138 text Page 1 of 3
+						139 button Next rows
+					140 text Supplied change hunks only. Discussion coverage is paginated independently below. Reading files does not mark Activity seen.
+					141 container Inline discussions
+						142 button Back to Activity
+						143 button Browse Conversation sources
+						144 text Exact Activity destination · parent source and thread coverage are not inferred. Attached · left line 201
+						145 button Return to diff · line 201
+						146 text DISCUSSIONS
+						147 container
+							148 text Head aaaaaaaaaa · safe plain text
+						149 button Refresh conversation
+						150 text 1 loaded / 1 known · exact record only
+						151 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+						152 container Review comment by unavailable author
+							153 container
+								154 text Unavailable author Review comment 2026-10-18T00:00:00Z
+							155 text Plain text · 16 UTF-8 bytes
+							156 container Message body
+								157 text LOCAL LEFT RANGE
+							158 button Open source in GitHub
+				159 text Cached 18/10/2026, 13:27:39 · revision 87
+	160 close button
+	161 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	162 minimize button
+	163 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+164 menu bar
+	165 GitJuke Accessibility
+
+The focused UI element is 78 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.

@@ -1,0 +1,5 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.82s
+     Running `target/debug/examples/reader_qualification /private/tmp/gitjuke-daily-20261018/fixture /private/tmp/gitjuke-daily-20261018/dev.hmrguez.gitjuke.qualification.accessibility`
+{"allUnseen":true,"database":"/private/tmp/gitjuke-daily-20261018/dev.hmrguez.gitjuke.qualification.accessibility/gitjuke.sqlite3","fixtureDirectory":"/private/tmp/gitjuke-daily-20261018/fixture","records":13,"remoteAccess":false}
+{"fixture": "/private/tmp/gitjuke-daily-20261018/fixture", "database": "/Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.dailyqualification/gitjuke.sqlite3", "schema": 16, "paused": true, "remoteAccess": false, "alertsEnabled": false}

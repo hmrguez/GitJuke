@@ -1,0 +1,422 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selected) Changes
+					29 tab (selectable) Conversation
+					30 tab (selectable) Checks
+				31 container Changes
+					32 text CHANGES
+					33 container
+						34 text Head aaaaaaaaaa · base bbbbbbbbbb
+					35 button Update Changes
+					36 container Changed files
+						37 text Files 1–20 / 22 known · this page only · cached 13:27:42
+						38 button file-0.txt modified · +201 −201
+						39 button file-1.txt modified · +201 −201
+						40 button file-2.txt modified · +201 −201
+						41 button file-3.txt modified · +201 −201
+						42 button file-4.txt modified · +201 −201
+						43 button file-5.txt modified · +201 −201
+						44 button file-6.txt modified · +201 −201
+						45 button file-7.txt modified · +201 −201
+						46 button file-8.txt modified · +201 −201
+						47 button file-9.txt modified · +201 −201
+						48 button file-10.txt modified · +201 −201
+						49 button file-11.txt modified · +201 −201
+						50 button file-12.txt modified · +201 −201
+						51 button file-13.txt modified · +201 −201
+						52 button file-14.txt modified · +201 −201
+						53 button file-15.txt modified · +201 −201
+						54 button file-16.txt modified · +201 −201
+						55 button file-17.txt modified · +201 −201
+						56 button file-18.txt modified · +201 −201
+						57 button file-19.txt modified · +201 −201
+						58 button (disabled) Previous files
+						59 text Page 1
+						60 button Next files
+					61 heading file-0.txt, Value: 2
+						62 text file-0.txt
+					63 button Open revision file in GitHub
+					64 text Reading mode
+					65 container Reading mode
+						66 toggle button Continuous, Value: on
+						67 toggle button Paged, Value: off
+					68 button Reload file
+					69 text Complete supplied change hunks for this file and revision. · 7,843 UTF-8 bytes · 403 rows
+					70 container
+						71 text Hunk (1– 1 )
+						72 number field (settable) Jump to hunk number, Value: 1
+							73 stepper 0
+								74 unknown
+								75 unknown
+						76 button Go to hunk
+					77 text Rows 335–396 / 403
+					78 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.
+						79 table file-0.txt · supplied unified change hunks
+							80 text file-0.txt · supplied unified change hunks
+							81 row (selectable) Old line
+New line
+Change and code
+							82 row (selectable)
+								83 cell (selectable)
+								84 cell (selectable) 167
+								85 cell (selectable) added:
++NEW LOCAL LINE 167
+							86 row (selectable)
+								87 cell (selectable) 168
+								88 cell (selectable)
+								89 cell (selectable) deleted:
+-OLD LOCAL LINE 168
+							90 row (selectable)
+								91 cell (selectable)
+								92 cell (selectable) 168
+								93 cell (selectable) added:
++NEW LOCAL LINE 168
+							94 row (selectable)
+								95 cell (selectable) 169
+								96 cell (selectable)
+								97 cell (selectable) deleted:
+-OLD LOCAL LINE 169
+							98 row (selectable)
+								99 cell (selectable)
+								100 cell (selectable) 169
+								101 cell (selectable) added:
++NEW LOCAL LINE 169
+							102 row (selectable)
+								103 cell (selectable) 170
+								104 cell (selectable)
+								105 cell (selectable) deleted:
+-OLD LOCAL LINE 170
+							106 row (selectable)
+								107 cell (selectable)
+								108 cell (selectable) 170
+								109 cell (selectable) added:
++NEW LOCAL LINE 170
+							110 row (selectable)
+								111 cell (selectable) 171
+								112 cell (selectable)
+								113 cell (selectable) deleted:
+-OLD LOCAL LINE 171
+							114 row (selectable)
+								115 cell (selectable)
+								116 cell (selectable) 171
+								117 cell (selectable) added:
++NEW LOCAL LINE 171
+							118 row (selectable)
+								119 cell (selectable) 172
+								120 cell (selectable)
+								121 cell (selectable) deleted:
+-OLD LOCAL LINE 172
+							122 row (selectable)
+								123 cell (selectable)
+								124 cell (selectable) 172
+								125 cell (selectable) added:
++NEW LOCAL LINE 172
+							126 row (selectable)
+								127 cell (selectable) 173
+								128 cell (selectable)
+								129 cell (selectable) deleted:
+-OLD LOCAL LINE 173
+							130 row (selectable)
+								131 cell (selectable)
+								132 cell (selectable) 173
+								133 cell (selectable) added:
++NEW LOCAL LINE 173
+							134 row (selectable)
+								135 cell (selectable) 174
+								136 cell (selectable)
+								137 cell (selectable) deleted:
+-OLD LOCAL LINE 174
+							138 row (selectable)
+								139 cell (selectable)
+								140 cell (selectable) 174
+								141 cell (selectable) added:
++NEW LOCAL LINE 174
+							142 row (selectable)
+								143 cell (selectable) 175
+								144 cell (selectable)
+								145 cell (selectable) deleted:
+-OLD LOCAL LINE 175
+							146 row (selectable)
+								147 cell (selectable)
+								148 cell (selectable) 175
+								149 cell (selectable) added:
++NEW LOCAL LINE 175
+							150 row (selectable)
+								151 cell (selectable) 176
+								152 cell (selectable)
+								153 cell (selectable) deleted:
+-OLD LOCAL LINE 176
+							154 row (selectable)
+								155 cell (selectable)
+								156 cell (selectable) 176
+								157 cell (selectable) added:
++NEW LOCAL LINE 176
+							158 row (selectable)
+								159 cell (selectable) 177
+								160 cell (selectable)
+								161 cell (selectable) deleted:
+-OLD LOCAL LINE 177
+							162 row (selectable)
+								163 cell (selectable)
+								164 cell (selectable) 177
+								165 cell (selectable) added:
++NEW LOCAL LINE 177
+							166 row (selectable)
+								167 cell (selectable) 178
+								168 cell (selectable)
+								169 cell (selectable) deleted:
+-OLD LOCAL LINE 178
+							170 row (selectable)
+								171 cell (selectable)
+								172 cell (selectable) 178
+								173 cell (selectable) added:
++NEW LOCAL LINE 178
+							174 row (selectable)
+								175 cell (selectable) 179
+								176 cell (selectable)
+								177 cell (selectable) deleted:
+-OLD LOCAL LINE 179
+							178 row (selectable)
+								179 cell (selectable)
+								180 cell (selectable) 179
+								181 cell (selectable) added:
++NEW LOCAL LINE 179
+							182 row (selectable)
+								183 cell (selectable) 180
+								184 cell (selectable)
+								185 cell (selectable) deleted:
+-OLD LOCAL LINE 180
+							186 row (selectable)
+								187 cell (selectable)
+								188 cell (selectable) 180
+								189 cell (selectable) added:
++NEW LOCAL LINE 180
+							190 row (selectable)
+								191 cell (selectable) 181
+								192 cell (selectable)
+								193 cell (selectable) deleted:
+-OLD LOCAL LINE 181
+							194 row (selectable)
+								195 cell (selectable)
+								196 cell (selectable) 181
+								197 cell (selectable) added:
++NEW LOCAL LINE 181
+							198 row (selectable)
+								199 cell (selectable) 182
+								200 cell (selectable)
+								201 cell (selectable) deleted:
+-OLD LOCAL LINE 182
+							202 row (selectable)
+								203 cell (selectable)
+								204 cell (selectable) 182
+								205 cell (selectable) added:
++NEW LOCAL LINE 182
+							206 row (selectable)
+								207 cell (selectable) 183
+								208 cell (selectable)
+								209 cell (selectable) deleted:
+-OLD LOCAL LINE 183
+							210 row (selectable)
+								211 cell (selectable)
+								212 cell (selectable) 183
+								213 cell (selectable) added:
++NEW LOCAL LINE 183
+							214 row (selectable)
+								215 cell (selectable) 184
+								216 cell (selectable)
+								217 cell (selectable) deleted:
+-OLD LOCAL LINE 184
+							218 row (selectable)
+								219 cell (selectable)
+								220 cell (selectable) 184
+								221 cell (selectable) added:
++NEW LOCAL LINE 184
+							222 row (selectable)
+								223 cell (selectable) 185
+								224 cell (selectable)
+								225 cell (selectable) deleted:
+-OLD LOCAL LINE 185
+							226 row (selectable)
+								227 cell (selectable)
+								228 cell (selectable) 185
+								229 cell (selectable) added:
++NEW LOCAL LINE 185
+							230 row (selectable)
+								231 cell (selectable) 186
+								232 cell (selectable)
+								233 cell (selectable) deleted:
+-OLD LOCAL LINE 186
+							234 row (selectable)
+								235 cell (selectable)
+								236 cell (selectable) 186
+								237 cell (selectable) added:
++NEW LOCAL LINE 186
+							238 row (selectable)
+								239 cell (selectable) 187
+								240 cell (selectable)
+								241 cell (selectable) deleted:
+-OLD LOCAL LINE 187
+							242 row (selectable)
+								243 cell (selectable)
+								244 cell (selectable) 187
+								245 cell (selectable) added:
++NEW LOCAL LINE 187
+							246 row (selectable)
+								247 cell (selectable) 188
+								248 cell (selectable)
+								249 cell (selectable) deleted:
+-OLD LOCAL LINE 188
+							250 row (selectable)
+								251 cell (selectable)
+								252 cell (selectable) 188
+								253 cell (selectable) added:
++NEW LOCAL LINE 188
+							254 row (selectable)
+								255 cell (selectable) 189
+								256 cell (selectable)
+								257 cell (selectable) deleted:
+-OLD LOCAL LINE 189
+							258 row (selectable)
+								259 cell (selectable)
+								260 cell (selectable) 189
+								261 cell (selectable) added:
++NEW LOCAL LINE 189
+							262 row (selectable)
+								263 cell (selectable) 190
+								264 cell (selectable)
+								265 cell (selectable) deleted:
+-OLD LOCAL LINE 190
+							266 row (selectable)
+								267 cell (selectable)
+								268 cell (selectable) 190
+								269 cell (selectable) added:
++NEW LOCAL LINE 190
+							270 row (selectable)
+								271 cell (selectable) 191
+								272 cell (selectable)
+								273 cell (selectable) deleted:
+-OLD LOCAL LINE 191
+							274 row (selectable)
+								275 cell (selectable)
+								276 cell (selectable) 191
+								277 cell (selectable) added:
++NEW LOCAL LINE 191
+							278 row (selectable)
+								279 cell (selectable) 192
+								280 cell (selectable)
+								281 cell (selectable) deleted:
+-OLD LOCAL LINE 192
+							282 row (selectable)
+								283 cell (selectable)
+								284 cell (selectable) 192
+								285 cell (selectable) added:
++NEW LOCAL LINE 192
+							286 row (selectable)
+								287 cell (selectable) 193
+								288 cell (selectable)
+								289 cell (selectable) deleted:
+-OLD LOCAL LINE 193
+							290 row (selectable)
+								291 cell (selectable)
+								292 cell (selectable) 193
+								293 cell (selectable) added:
++NEW LOCAL LINE 193
+							294 row (selectable)
+								295 cell (selectable) 194
+								296 cell (selectable)
+								297 cell (selectable) deleted:
+-OLD LOCAL LINE 194
+							298 row (selectable)
+								299 cell (selectable)
+								300 cell (selectable) 194
+								301 cell (selectable) added:
++NEW LOCAL LINE 194
+							302 row (selectable)
+								303 cell (selectable) 195
+								304 cell (selectable)
+								305 cell (selectable) deleted:
+-OLD LOCAL LINE 195
+							306 row (selectable)
+								307 cell (selectable)
+								308 cell (selectable) 195
+								309 cell (selectable) added:
++NEW LOCAL LINE 195
+							310 row (selectable)
+								311 cell (selectable) 196
+								312 cell (selectable)
+								313 cell (selectable) deleted:
+-OLD LOCAL LINE 196
+							314 row (selectable)
+								315 cell (selectable)
+								316 cell (selectable) 196
+								317 cell (selectable) added:
++NEW LOCAL LINE 196
+							318 row (selectable)
+								319 cell (selectable) 197
+								320 cell (selectable)
+								321 cell (selectable) deleted:
+-OLD LOCAL LINE 197
+							322 row (selectable)
+								323 cell (selectable)
+								324 cell (selectable) 197
+								325 cell (selectable) added:
++NEW LOCAL LINE 197
+							326 row (selectable)
+								327 cell (selectable) 198
+								328 cell (selectable)
+								329 cell (selectable) deleted:
+-OLD LOCAL LINE 198
+					330 text Supplied change hunks only. Discussion coverage is paginated independently below. Reading files does not mark Activity seen.
+					331 container Inline discussions
+						332 button Back to Activity
+						333 button Browse Conversation sources
+						334 text Exact Activity destination · parent source and thread coverage are not inferred. File-level or unavailable line
+						335 text DISCUSSIONS
+						336 container
+							337 text Head aaaaaaaaaa · safe plain text
+						338 button Refresh conversation
+						339 text 1 loaded / 1 known · exact record only
+						340 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+						341 container Review comment by unavailable author
+							342 container
+								343 text Unavailable author Review comment 2026-10-18T00:00:00Z
+							344 text Plain text · 25 UTF-8 bytes
+							345 container Message body
+								346 text LOCAL NEGATIVE COORDINATE
+							347 button Open source in GitHub
+				348 text Cached 18/10/2026, 13:29:52 · revision 114
+	349 close button
+	350 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	351 minimize button
+	352 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+353 menu bar
+	354 GitJuke Accessibility
+
+The focused UI element is 341 container Review comment by unavailable author

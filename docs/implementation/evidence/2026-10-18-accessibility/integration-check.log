@@ -1,0 +1,6 @@
+error: patch failed: src/main.tsx:9
+error: src/main.tsx: patch does not apply
+error: patch failed: crates/gitjuke-core/tests/support/gh.py:97
+error: crates/gitjuke-core/tests/support/gh.py: patch does not apply
+error: patch failed: src-tauri/tauri.conf.json:17
+error: src-tauri/tauri.conf.json: patch does not apply

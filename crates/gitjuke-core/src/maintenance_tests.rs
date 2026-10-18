@@ -153,8 +153,8 @@ fn mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_histor
             break;
         }
         if passes == 1 {
-            assert_eq!(remaining(&s.conn, "retention"), 215);
-            assert_eq!(counts[0], 127);
+            assert_eq!(remaining(&s.conn, "retention"), 226);
+            assert_eq!(counts[0], 128);
         }
         drop(s);
         s = Store::open(&path).unwrap();
@@ -180,8 +180,18 @@ fn late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery() {
         s.conn.execute_batch(&format!("CREATE TRIGGER fail_sweep BEFORE {action} ON {table} WHEN {pred} BEGIN SELECT RAISE(ABORT,'late sweep'); END;")).unwrap();
         publication::start_counts();
         assert!(control_sweep::run(&mut s.conn, kind, json!({"repo":"a/b","number":1})).is_err());
-        assert_eq!(publication::take_counts(), vec![1, 127]);
-        assert_eq!(remaining(&s.conn, kind), 130);
+        assert_eq!(
+            publication::take_counts(),
+            if kind == "activity" {
+                vec![1, 126, 126, 126]
+            } else {
+                vec![1, 127]
+            }
+        );
+        assert_eq!(
+            remaining(&s.conn, kind),
+            if kind == "activity" { 68 } else { 130 }
+        );
         assert!(control_sweep::pending(&s.conn).unwrap());
         assert_eq!(history(&s.conn), original);
         drop(s);
@@ -191,7 +201,11 @@ fn late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery() {
         assert_eq!(history(&cached.conn), original);
         drop(cached);
         let c = Connection::open(&path).unwrap();
-        assert_eq!(remaining(&c, kind), 130);
+        crate::shared_storage::register(&c).unwrap();
+        assert_eq!(
+            remaining(&c, kind),
+            if kind == "activity" { 68 } else { 130 }
+        );
         c.execute_batch("DROP TRIGGER fail_sweep").unwrap();
         drop(c);
         let mut s = Store::open(&path).unwrap();
@@ -225,33 +239,34 @@ fn late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_ch
     let original = history(&s.conn);
     s.maintain_retention_at(now()).unwrap();
     let revision = s.revision().unwrap();
-    s.conn.execute_batch("CREATE TRIGGER fail_late BEFORE DELETE ON activity WHEN OLD.id='old-0080' BEGIN SELECT RAISE(ABORT,'late retention'); END;").unwrap();
+    s.conn.execute_batch("CREATE TRIGGER fail_late BEFORE DELETE ON activity WHEN OLD.id='old-0060' BEGIN SELECT RAISE(ABORT,'late retention'); END;").unwrap();
     assert!(s.maintain_retention_at(now()).is_err());
-    assert_eq!(remaining(&s.conn, "retention"), 215);
+    assert_eq!(remaining(&s.conn, "retention"), 226);
     assert_eq!(s.revision().unwrap(), revision);
     assert_eq!(
         n(
             &s.conn,
-            "SELECT COUNT(*) FROM content WHERE key='activity-payload:old-0080'"
+            "SELECT COUNT(*) FROM content WHERE key='activity-payload:old-0060'"
         ),
         1
     );
     assert_eq!(
         n(
             &s.conn,
-            "SELECT COUNT(*) FROM progress WHERE key='catchup:old-0080'"
+            "SELECT COUNT(*) FROM progress WHERE key='catchup:old-0060'"
         ),
         1
     );
-    s.activity_seen(&["old-0080".into()]).unwrap();
+    s.activity_seen(&["old-0060".into()]).unwrap();
     assert_eq!(history(&s.conn), original);
     drop(s);
     let c = Connection::open(&path).unwrap();
+    crate::shared_storage::register(&c).unwrap();
     c.execute_batch("DROP TRIGGER fail_late").unwrap();
     drop(c);
     let mut s = Store::open(&path).unwrap();
     s.maintain_retention_at(now()).unwrap();
-    assert_eq!(remaining(&s.conn, "retention"), 173);
+    assert_eq!(remaining(&s.conn, "retention"), 195);
     assert_eq!(history(&s.conn), original);
 }
 #[test]
@@ -263,6 +278,7 @@ fn crash_child_entry() {
         conn: Connection::open(path).unwrap(),
         cache_writes: true,
     };
+    crate::shared_storage::register(&s.conn).unwrap();
     let kind = std::env::var("GITJUKE_TEST_MAINTENANCE_KIND").unwrap();
     for _ in 0..3 {
         run(&mut s, &kind);
@@ -327,6 +343,7 @@ fn sigkill_maintenance_before_and_after_first_and_late_commits() {
                 child.0.kill().unwrap();
                 assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
                 let c = Connection::open(&path).unwrap();
+                crate::shared_storage::register(&c).unwrap();
                 assert_eq!(
                     c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
                         .unwrap(),
@@ -336,9 +353,10 @@ fn sigkill_maintenance_before_and_after_first_and_late_commits() {
                 assert_eq!(
                     remaining(&c, kind),
                     if kind == "retention" {
-                        257 - (committed * 42) as i64
+                        257 - (committed * 31) as i64
                     } else {
-                        (257 - (committed * 127) as i64).max(0)
+                        (257 - (committed * if kind == "activity" { 63 } else { 127 }) as i64)
+                            .max(0)
                     }
                 );
                 assert_eq!(history(&c), original);
@@ -355,7 +373,10 @@ fn sigkill_maintenance_before_and_after_first_and_late_commits() {
                         }
                 );
                 if kind != "retention" {
-                    assert_eq!(control_sweep::pending(&c).unwrap(), committed < 3);
+                    assert_eq!(
+                        control_sweep::pending(&c).unwrap(),
+                        committed < if kind == "activity" { 5 } else { 3 }
+                    );
                 }
                 let mut cached = Store::open_cached(&path).unwrap();
                 assert!(cached.activity_page(0).unwrap().items.is_empty());
@@ -394,7 +415,14 @@ fn every_control_transaction_includes_final_marker_and_preserves_unrelated_scope
         let original = history(&s.conn);
         publication::start_counts();
         run(&mut s, kind);
-        assert_eq!(publication::take_counts(), vec![1, 127, 127, 4]);
+        assert_eq!(
+            publication::take_counts(),
+            if kind == "activity" {
+                vec![1, 126, 126, 126, 126, 11]
+            } else {
+                vec![1, 127, 127, 4]
+            }
+        );
         assert_eq!(history(&s.conn), original);
         assert_eq!(remaining(&s.conn, kind), 0);
         assert_eq!(
@@ -497,6 +525,7 @@ fn late_metadata_and_check_faults_restore_complete_batch_after_committed_prefix(
         assert_eq!(history(&s.conn), original);
         drop(s);
         let c = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&c).unwrap();
         c.execute_batch("DROP TRIGGER fail_metadata_late").unwrap();
         drop(c);
         let mut s = Store::open(&path).unwrap();

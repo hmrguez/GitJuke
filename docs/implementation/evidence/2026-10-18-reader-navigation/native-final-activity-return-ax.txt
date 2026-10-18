@@ -1,0 +1,55 @@
+Window: "GitJuke", App: GitJuke.
+0 standard window GitJuke, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container
+				4 text gitjuke.
+				5 container Primary
+					6 button My PRs
+					7 button Review requests
+					8 button Activity
+				9 text Watches + head/check snapshots Personal activity · alerts unavailable
+				10 button Preferences
+				11 text HM hmrguez GitHub.com
+				12 button Monitoring 0 watches · 0 delayed
+			13 container
+				14 container Personal activity
+					15 heading Activity, Value: 1
+						16 text Activity
+					17 text Historical baseline established · Recovery incomplete · 5 PRs pending
+					18 text Records expire after 90 days, including unseen items. Native alerts and external-suite retry activity are unavailable in this build.
+					19 text gh failed; response was not committed.
+					20 button Mark loaded page seen
+					21 text Applies to these 18 loaded records only.
+					22 button hmrguez/FantasyEditor · #5 · Seen comment · vercel[bot] 09/08/2026, 15:57:41 · routine bot comment
+					23 button hmrguez/FantasyEditor · #4 · Seen review · greptile-apps[bot] 09/08/2026, 12:38:12 · Alert eligible
+					24 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					25 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					26 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					27 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					28 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:08 · routine bot comment
+					29 button hmrguez/FantasyEditor · #4 · Seen comment · hmrguez 09/08/2026, 12:34:32 · own action
+					30 button hmrguez/FantasyEditor · #4 · Seen comment · vercel[bot] 09/08/2026, 12:34:24 · routine bot comment
+					31 button hmrguez/FantasyEditor · #3 · Seen comment · vercel[bot] 02/08/2026, 13:46:22 · routine bot comment
+					32 button hmrguez/FantasyEditor · #2 · Seen comment · greptile-apps[bot] 01/08/2026, 01:53:58 · routine bot comment
+					33 button hmrguez/FantasyEditor · #2 · Seen comment · hmrguez 01/08/2026, 01:52:58 · own action
+					34 button hmrguez/FantasyEditor · #2 · Seen comment · vercel[bot] 01/08/2026, 01:49:58 · routine bot comment
+					35 button hmrguez/FantasyEditor · #1 · Seen comment · hmrguez 01/08/2026, 01:40:09 · own action
+					36 button hmrguez/FantasyEditor · #1 · Seen review · greptile-apps[bot] 01/08/2026, 01:30:40 · Alert eligible
+					37 button hmrguez/FantasyEditor · #1 · Seen comment · greptile-apps[bot] 01/08/2026, 01:30:39 · routine bot comment
+					38 button hmrguez/FantasyEditor · #1 · Seen comment · greptile-apps[bot] 01/08/2026, 01:30:27 · routine bot comment
+					39 button hmrguez/FantasyEditor · #1 · Seen comment · vercel[bot] 01/08/2026, 01:26:08 · routine bot comment
+					40 button (disabled) Previous
+					41 button (disabled) Next
+				42 container Pull request reader
+					43 heading Your work, in context., Value: 1
+						44 text Your work, in context.
+					45 text Select a pull request to read its overview and published stack.
+	46 close button
+	47 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	48 minimize button
+	49 text GitJuke
+50 menu bar
+	51 GitJuke
+
+The focused UI element is 24 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment

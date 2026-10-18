@@ -1,0 +1,7 @@
+{
+  "chip_type": "Apple M3",
+  "machine_model": "Mac15,3",
+  "machine_name": "MacBook Pro",
+  "number_processors": "proc 8:0:4:4",
+  "physical_memory": "16 GB"
+}

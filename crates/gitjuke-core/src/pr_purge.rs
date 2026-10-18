@@ -117,6 +117,7 @@ pub(crate) fn resume(c: &mut Connection) -> Result<()> {
 }
 fn batch(c: &mut Connection) -> Result<usize> {
     let tx = c.transaction()?;
+    let batch_before = tx.total_changes();
     let marker: Option<(String, i64, i64, i64)> = tx
         .query_row(
             "SELECT repo,number,generation,retry_at FROM pr_purge ORDER BY repo,number LIMIT 1",
@@ -131,6 +132,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
     let stages = staged("?1", "?2");
     let payloads = payload("key", "?1", "?2");
     let mut changed = 0;
+    let mut exhausted = false;
     #[cfg(test)]
     let mut payload_changed = false;
     for sql in [
@@ -141,23 +143,26 @@ fn batch(c: &mut Connection) -> Result<usize> {
         format!("DELETE FROM stage WHERE rowid IN (SELECT rowid FROM stage WHERE {stages} ORDER BY rowid LIMIT ?3)"),
         format!("DELETE FROM source_stage WHERE rowid IN (SELECT rowid FROM source_stage WHERE {stages} ORDER BY rowid LIMIT ?3)"),
         format!("DELETE FROM check_context WHERE rowid IN (SELECT rowid FROM check_context WHERE pr_id IN ({ids}) ORDER BY rowid LIMIT ?3)"),
-        format!("DELETE FROM pending WHERE rowid IN (SELECT rowid FROM pending WHERE key='pr:'||?1||':'||?2 COLLATE NOCASE OR key='activity:pr:'||?1||':'||?2 COLLATE NOCASE OR EXISTS(SELECT 1 FROM watch_locator l WHERE l.id IN ({ids}) AND substr(pending.key,1,length(l.id)+8)='checks:'||l.id||':') OR (json_extract(job,'$.Overview[0]')=?1 COLLATE NOCASE AND json_extract(job,'$.Overview[1]')=?2) OR (json_extract(job,'$.Stacks[0]')=?1 COLLATE NOCASE AND json_extract(job,'$.Stacks[1]')=?2) OR (json_extract(job,'$.StackDetail[0]')=?1 COLLATE NOCASE AND json_extract(job,'$.StackDetail[1]')=?2) OR (json_extract(job,'$.Activity.Hydrate.repo')=?1 COLLATE NOCASE AND json_extract(job,'$.Activity.Hydrate.number')=?2) ORDER BY rowid LIMIT ?3)"),
+        format!("DELETE FROM pending WHERE rowid IN (SELECT rowid FROM pending WHERE key='pr:'||?1||':'||?2 COLLATE NOCASE OR key='activity:pr:'||?1||':'||?2 COLLATE NOCASE OR EXISTS(SELECT 1 FROM watch_locator l WHERE l.id IN ({ids}) AND substr(pending.key,1,length(l.id)+8)='checks:'||l.id||':') OR (json_extract(job,'$.Overview[0]')=?1 COLLATE NOCASE AND json_extract(job,'$.Overview[1]')=?2) OR (json_extract(job,'$.Stacks[0]')=?1 COLLATE NOCASE AND json_extract(job,'$.Stacks[1]')=?2) OR (json_extract(job,'$.StackDetail[0]')=?1 COLLATE NOCASE AND json_extract(job,'$.StackDetail[1]')=?2) OR (json_extract(job,'$.Changes.repo')=?1 COLLATE NOCASE AND json_extract(job,'$.Changes.number')=?2) OR (json_extract(job,'$.Activity.Hydrate.repo')=?1 COLLATE NOCASE AND json_extract(job,'$.Activity.Hydrate.number')=?2) ORDER BY rowid LIMIT ?3)"),
         format!("UPDATE check_state SET complete=0,error='Resource unavailable' WHERE rowid IN (SELECT rowid FROM check_state WHERE pr_id IN ({ids}) AND (complete!=0 OR error IS NOT 'Resource unavailable') ORDER BY rowid LIMIT ?3)"),
         // The generation watermark makes per-alias epoch updates restartable.
         "UPDATE watch_locator SET epoch=epoch+1,purged_generation=?4,error='Resource unavailable',review=NULL,due=?5 WHERE rowid IN (SELECT rowid FROM watch_locator WHERE repo=?1 COLLATE NOCASE AND number=?2 AND purged_generation!=?4 ORDER BY rowid LIMIT ?3)".into(),
         "UPDATE activity_target SET done=0 WHERE rowid IN (SELECT rowid FROM activity_target WHERE repo=?1 COLLATE NOCASE AND number=?2 AND done!=0 ORDER BY rowid LIMIT ?3)".into(),
         format!("DELETE FROM check_purge WHERE rowid IN (SELECT rowid FROM check_purge WHERE pr_id IN ({ids}) ORDER BY rowid LIMIT ?3)"),
     ] {
+        let limit = (BATCH-changed) / crate::shared_storage::cost(&sql);
+        if limit == 0 { exhausted = true; break; }
+        let before = tx.total_changes();
         let mut stmt=tx.prepare(&sql)?;
         // Most statements need only the shared first three parameters.
         let count=stmt.parameter_count();
-        let rows=if count==5{stmt.execute(params![repo,number,(BATCH-changed) as i64,generation,retry])?}else{stmt.execute(params![repo,number,(BATCH-changed) as i64])?};
+        let rows=if count==5{stmt.execute(params![repo,number,limit as i64,generation,retry])?}else{stmt.execute(params![repo,number,limit as i64])?};
         #[cfg(test)]
         {payload_changed |= sql.starts_with("DELETE FROM content") && rows>0;}
-        changed+=rows;
-        if changed==BATCH{break;}
+        changed+=(tx.total_changes()-before) as usize;
+        if rows==limit{exhausted=true;break;}
     }
-    let finished = changed < BATCH;
+    let finished = !exhausted;
     if finished {
         changed += tx.execute(
             "DELETE FROM pr_purge WHERE repo=? AND number=?",
@@ -174,6 +179,7 @@ fn batch(c: &mut Connection) -> Result<usize> {
     if payload_changed {
         point("payload_before_commit");
     }
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     if payload_changed {
@@ -448,7 +454,8 @@ mod tests {
             preserved(&s, r);
             batches += 1;
         }
-        assert_eq!(batches, 25);
+        // Shared-byte triggers charge dependent mutations within each 128-write batch.
+        assert_eq!(batches, 43);
         complete(&s);
         hidden(&mut s);
         assert_eq!(
@@ -505,7 +512,7 @@ mod tests {
                 &s.conn,
                 "SELECT COUNT(*) FROM content WHERE key GLOB 'activity-payload:check-*'"
             ),
-            132
+            68
         );
         assert!(s.activity_purge("A/B", 1).is_err());
         hidden(&mut s);
@@ -519,7 +526,7 @@ mod tests {
                 &c,
                 "SELECT COUNT(*) FROM watch_locator WHERE number=1 AND purged_generation=0"
             ),
-            15
+            18
         );
         assert_eq!(n(&c, "SELECT done FROM activity_target"), 1);
         let mut protected = Store::open_cached(&path).unwrap();
@@ -596,8 +603,8 @@ mod tests {
             ("batch_before_commit", 0, 775, 257, true),
             ("batch_after_commit", 128, 775, 257, true),
             ("payload_before_commit", 256, 775, 257, true),
-            ("payload_after_commit", 257, 648, 257, true),
-            ("finish_before_commit", 257, 2, 15, true),
+            ("payload_after_commit", 257, 712, 257, true),
+            ("finish_before_commit", 257, 2, 18, true),
             ("finish_after_commit", 257, 2, 0, false),
         ] {
             let d = tempfile::tempdir().unwrap();

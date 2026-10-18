@@ -1,0 +1,29 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling bitflags v2.13.2
+   Compiling libsqlite3-sys v0.36.0
+   Compiling serde_json v1.0.154
+   Compiling rustix v1.1.5
+   Compiling serde v1.0.229
+   Compiling getrandom v0.4.3
+   Compiling smallvec v1.16.3
+   Compiling memchr v2.8.3
+   Compiling once_cell v1.21.4
+   Compiling fastrand v2.5.0
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling tempfile v3.27.0
+   Compiling tokio-macros v2.7.2
+   Compiling futures-macro v0.3.34
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling rusqlite v0.38.0
+   Compiling tokio v1.53.3
+   Compiling futures-util v0.3.34
+   Compiling thiserror v2.0.21
+   Compiling tokio-util v0.7.20
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-accessibility/crates/gitjuke-core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 30s
+     Running `target/aarch64-apple-darwin/debug/examples/reader_qualification /private/tmp/gitjuke-accessibility-fixture-20261018 '/Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.qualification.accessibility'`
+{"allUnseen":true,"database":"/Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.qualification.accessibility/gitjuke.sqlite3","fixtureDirectory":"/private/tmp/gitjuke-accessibility-fixture-20261018","records":13,"remoteAccess":false}

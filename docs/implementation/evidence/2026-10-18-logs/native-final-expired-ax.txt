@@ -1,0 +1,4 @@
+The following is a diff from the previous accessibility tree for Window: "GitJuke Log Qualification — LOCAL SYNTHETIC FIXTURES" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~							89 text Log expired (HTTP 410).
+~					66 text Cached 18/10/2026, 13:20:45 · revision 43
+The focused UI element is 2 HTML content Description: GitJuke, URL: tauri://localhost

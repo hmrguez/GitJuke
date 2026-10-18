@@ -1,0 +1,15 @@
+{
+  "sameDurableRows": true,
+  "tables": [
+    "identity",
+    "settings",
+    "seen",
+    "dedup",
+    "due",
+    "activity_intent",
+    "intent_member",
+    "alert_attempt"
+  ],
+  "integrity": "ok",
+  "originalCorruptSha256": "8830bfa9f75481abe4f0b2490ddb3a57a0761c3d3c294a6f4968eacc67d9d4a8"
+}

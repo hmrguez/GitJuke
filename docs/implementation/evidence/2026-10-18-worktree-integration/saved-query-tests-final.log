@@ -1,0 +1,16 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.71s
+     Running tests/saved_queries.rs (target/debug/deps/saved_queries-182620c2e75c7ca2)
+
+running 8 tests
+test crud_restart_compare_and_swap_and_clear_preserve_configuration ... ok
+test navigation_pages_and_upgrade_from_14 ... ok
+test oversized_page_is_limited_without_clipping_or_automatic_retry ... ok
+test partial_denied_and_search_ceiling_are_honest ... ok
+test edits_and_deletion_during_fetch_reject_late_results ... ok
+test transient_failure_retains_cache_quota_blocks_search_and_inactive_queries_do_not_run ... ok
+test clear_and_identity_change_reject_inflight_query ... ok
+test pagination_counts_restart_empty_and_no_watch_enrollment ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.54s
+

@@ -1,0 +1,10 @@
+{
+  "artifact": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke",
+  "sha256": "a7c76c413664c3e400176361b072b24c0bdd679b284f69d9c1627c3185f84ac1",
+  "bytes": 35483656,
+  "architecture": "arm64",
+  "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428\n",
+  "build": "arm64 debug unsigned development 0.1.0",
+  "sqliteSchema": 14,
+  "releaseQualification": false
+}

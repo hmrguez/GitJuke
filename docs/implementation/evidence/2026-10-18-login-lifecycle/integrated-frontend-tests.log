@@ -1,0 +1,13 @@
+bun test v1.4.2 (744846f84)
+
+scripts/login-settings.test.tsx:
+(pass) default-off inspection does not register or request notification permission [13.08ms]
+(pass) explicit enable, OS-disabled repair and disable use only login commands [8.62ms]
+(pass) registration failure rereads actual saved preference and exposes explicit repair [5.43ms]
+(pass) moved copy cannot enable or repair but can disable existing registration [4.05ms]
+(pass) a delayed registration inspection cannot overwrite a newer explicit choice [5.05ms]
+
+ 5 pass
+ 0 fail
+ 13 expect() calls
+Ran 5 tests across 1 file. [140.00ms]

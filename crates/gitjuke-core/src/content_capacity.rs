@@ -285,14 +285,14 @@ fn full_ceiling_mixed_lru_is_inclusive_disk_backed_and_survives_restart() {
     assert!(s.put("new", &value(), generation).unwrap());
     publication(&s.conn, true);
     assert_eq!(disposable_bytes(&s.conn).unwrap(), CONTENT_LIMIT);
-    preserved(&s.conn, revision + 1);
+    preserved(&s.conn, revision + 6);
     let payload = s.get::<String>("new").unwrap().data.unwrap();
     assert_eq!(payload, value());
     let published = published_bytes(&s.conn);
     drop(s);
     let mut s = Store::open(&path).unwrap();
     publication(&s.conn, true);
-    preserved(&s.conn, revision + 1);
+    preserved(&s.conn, revision + 6);
     // Startup intentionally discards abandoned staging, never published data.
     assert_eq!(disposable_bytes(&s.conn).unwrap(), published);
     assert_eq!(s.get::<String>("new").unwrap().data.unwrap(), value());
@@ -308,16 +308,15 @@ fn full_ceiling_late_delete_fault_restores_payloads_completeness_and_revision() 
     disk_backed(&s, &path);
     let revision = s.revision().unwrap();
     let generation = s.generation().unwrap();
-    // Check invalidation/deletion executes before the content delete. Failing
-    // its final victim must restore both payload classes and the new resource.
-    s.conn.execute_batch("CREATE TRIGGER fail_capacity BEFORE DELETE ON content WHEN OLD.key='small-063' BEGIN SELECT RAISE(ABORT,'fixture full-capacity fault'); END;").unwrap();
+    // Fail late in the first candidate, before independent reclamation.
+    // Payloads, charge updates and the new resource must roll back together.
+    s.conn.execute_batch("CREATE TRIGGER fail_capacity BEFORE DELETE ON content WHEN OLD.key='small-061' BEGIN SELECT RAISE(ABORT,'fixture full-capacity fault'); END;").unwrap();
     let changes = s.conn.total_changes();
     assert!(matches!(
         s.put("new", &value(), generation),
         Err(crate::Error::Storage(_))
     ));
-    // Successful statements preceding the abort include 32 check deletes and
-    // their snapshot invalidation, even though the transaction rolls back.
+    // Earlier payload/charge writes ran, although the transaction rolls back.
     assert!(s.conn.total_changes() - changes >= 35);
     publication(&s.conn, false);
     preserved(&s.conn, revision);
@@ -325,7 +324,7 @@ fn full_ceiling_late_delete_fault_restores_payloads_completeness_and_revision() 
     s.conn.execute_batch("DROP TRIGGER fail_capacity").unwrap();
     assert!(s.put("new", &value(), generation).unwrap());
     publication(&s.conn, true);
-    preserved(&s.conn, revision + 1);
+    preserved(&s.conn, revision + 6);
     assert_eq!(disposable_bytes(&s.conn).unwrap(), CONTENT_LIMIT);
 }
 
@@ -434,7 +433,7 @@ fn crash_child_entry() {
 }
 
 #[test]
-fn full_ceiling_sigkill_publication_is_all_or_nothing_after_disk_writes() {
+fn full_ceiling_sigkill_keeps_atomic_candidate_after_bounded_reclamation() {
     use std::{
         process::{Child, Command, Stdio},
         time::{Duration, Instant},
@@ -489,22 +488,56 @@ fn full_ceiling_sigkill_publication_is_all_or_nothing_after_disk_writes() {
         use std::os::unix::process::ExitStatusExt;
         assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
         let raw = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&raw).unwrap();
         assert_eq!(
             raw.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
                 .unwrap(),
             "ok"
         );
-        publication(&raw, committed);
-        preserved(&raw, revision + u64::from(committed));
-        assert_eq!(disposable_bytes(&raw).unwrap(), CONTENT_LIMIT);
+        if committed {
+            publication(&raw, true);
+        } else {
+            reclaimed_before_candidate(&raw);
+        }
+        preserved(&raw, revision + 5 + u64::from(committed));
+        assert_eq!(
+            disposable_bytes(&raw).unwrap(),
+            CONTENT_LIMIT - if committed { 0 } else { 51 * SMALL as i64 }
+        );
         drop(raw);
         let mut s = Store::open(&path).unwrap();
-        publication(&s.conn, committed);
-        preserved(&s.conn, revision + u64::from(committed));
-        assert_eq!(disposable_bytes(&s.conn).unwrap(), CONTENT_LIMIT);
+        if committed {
+            publication(&s.conn, true);
+        } else {
+            reclaimed_before_candidate(&s.conn);
+        }
+        preserved(&s.conn, revision + 5 + u64::from(committed));
+        assert_eq!(
+            disposable_bytes(&s.conn).unwrap(),
+            CONTENT_LIMIT - if committed { 0 } else { 51 * SMALL as i64 }
+        );
         let generation = s.generation().unwrap();
         assert!(s.put("new", &value(), generation).unwrap());
         publication(&s.conn, true);
         assert_eq!(disposable_bytes(&s.conn).unwrap(), CONTENT_LIMIT);
     }
+}
+
+// Derived and checked by the compact shared-snapshot fixture. The candidate
+// remains atomic; five prior disposable-only reclamation commits survive it.
+fn reclaimed_before_candidate(c: &Connection) {
+    assert_eq!(small_content(c), 13);
+    assert_eq!(small_checks(c), 64);
+    assert_eq!(
+        count(
+            c,
+            "SELECT complete FROM check_state WHERE pr_id='P' AND commit_sha='sha'"
+        ),
+        1
+    );
+    assert_eq!(count(c, "SELECT COUNT(*) FROM content WHERE key='new'"), 0);
+    assert_eq!(
+        count(c, "SELECT COUNT(*) FROM resource_state WHERE key='new'"),
+        0
+    );
 }

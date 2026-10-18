@@ -1,0 +1,10 @@
+$ cargo test -p gitjuke-core --offline --test runtime fifty_and_more_watches_rotate_without_a_membership_cap -- --exact
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running tests/runtime.rs (target/debug/deps/runtime-a0b23bad9cacec17)
+
+running 1 test
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 7.16s
+

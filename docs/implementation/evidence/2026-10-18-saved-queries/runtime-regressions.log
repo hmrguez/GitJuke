@@ -1,0 +1,38 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.97s
+     Running tests/runtime.rs (/private/tmp/gitjuke-query-core-target/debug/deps/runtime-a0b23bad9cacec17)
+
+running 16 tests
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity has been running for over 60 seconds
+test closing_reader_keeps_authored_and_requested_snapshot_work has been running for over 60 seconds
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity has been running for over 60 seconds
+test fifty_and_more_watches_rotate_without_a_membership_cap has been running for over 60 seconds
+test independent_reasons_selected_lifetime_and_request_removal has been running for over 60 seconds
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache has been running for over 60 seconds
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery has been running for over 60 seconds
+test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch has been running for over 60 seconds
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test partial_activity_denial_keeps_progress_and_purges_payloads has been running for over 60 seconds
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync has been running for over 60 seconds
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches has been running for over 60 seconds
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test worker_to_sqlite_to_reader_and_identity_lock has been running for over 60 seconds
+test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped has been running for over 60 seconds
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 280.69s
+

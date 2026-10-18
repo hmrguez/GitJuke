@@ -241,12 +241,14 @@ fn late_apply_and_visibility_failure_protect_readers_and_exact_retry() {
             );
             drop(cached);
             let c = Connection::open(&path).unwrap();
+            crate::shared_storage::register(&c).unwrap();
             c.execute_batch("DROP TRIGGER fail").unwrap();
             drop(c);
             let mut s = Store {
                 conn: Connection::open(&path).unwrap(),
                 cache_writes: true,
             };
+            crate::shared_storage::register(&s.conn).unwrap();
             // Same request must finish the persisted input, even after payload consumption.
             run(&mut s, kind);
             assert_new(&mut s, kind, "recovery");
@@ -276,6 +278,7 @@ fn child() {
         conn: Connection::open(Path::new(&path)).unwrap(),
         cache_writes: true,
     };
+    crate::shared_storage::register(&s.conn).unwrap();
     s.conn.pragma_update(None, "synchronous", "FULL").unwrap();
     if kind == "reset" {
         s.activity_stage("a/b", 1, &[], true).unwrap();
@@ -329,6 +332,7 @@ fn actual_sigkill_large_activity_and_summary() {
             use std::os::unix::process::ExitStatusExt;
             assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
             let raw = Connection::open(&path).unwrap();
+            crate::shared_storage::register(&raw).unwrap();
             assert_eq!(text(&raw, "PRAGMA integrity_check"), "ok");
             let committed = matches!(
                 phase,
@@ -518,6 +522,7 @@ fn actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads() {
     );
     drop(s);
     let c = Connection::open(&path).unwrap();
+    crate::shared_storage::register(&c).unwrap();
     c.execute_batch("DROP TRIGGER fail_visible").unwrap();
     drop(c);
     let mut s = Store::open(&path).unwrap();
@@ -648,13 +653,14 @@ fn actual_sigkill_staging_reset_requires_fresh_complete_hydration() {
         use std::os::unix::process::ExitStatusExt;
         assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
         let raw = Connection::open(&path).unwrap();
+        crate::shared_storage::register(&raw).unwrap();
         assert_eq!(text(&raw, "PRAGMA integrity_check"), "ok");
         assert_eq!(
             n(&raw, "SELECT COUNT(*) FROM activity_stage"),
             if phase.ends_with("before_commit") {
                 257
             } else {
-                129
+                193
             }
         );
         assert_eq!(
@@ -684,7 +690,7 @@ fn actual_sigkill_staging_reset_requires_fresh_complete_hydration() {
     }
 }
 #[test]
-fn source_api_payload_publication_reserves_its_three_mutations_from_admission() {
+fn source_api_payload_publication_reserves_its_four_mutations_from_admission() {
     let d = tempfile::tempdir().unwrap();
     let mut s = seed(&d.path().join("db"), "normal", now());
     for i in 0..257 {
@@ -709,7 +715,7 @@ fn source_api_payload_publication_reserves_its_three_mutations_from_admission() 
             &s.conn,
             "SELECT COUNT(*) FROM content WHERE key LIKE 'expired-%'"
         ),
-        132
+        195
     );
     preserved(&s, false);
 }
@@ -721,8 +727,27 @@ fn schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup() 
     let (mut s, args) = publication::tests::seed(&path, "head");
     publication::tests::start(&mut s, "head", &args);
     s.conn
-        .execute_batch("DROP TABLE retention_cursor; DROP INDEX IF EXISTS activity_expiry; DROP INDEX IF EXISTS check_expiry; DROP INDEX IF EXISTS check_published_keys; DROP INDEX IF EXISTS publication_unapplied; DROP TABLE control_sweep; DROP INDEX content_lru")
+        .execute_batch("DROP TABLE retention_cursor; DROP INDEX IF EXISTS activity_expiry; DROP INDEX IF EXISTS check_expiry; DROP INDEX IF EXISTS check_published_keys; DROP INDEX IF EXISTS publication_unapplied; DROP TABLE control_sweep; DROP INDEX content_lru; DROP INDEX IF EXISTS check_staged_keys; DROP INDEX IF EXISTS watch_source_source; DROP INDEX IF EXISTS watch_source_source_nocase; DROP INDEX IF EXISTS watch_source_reason; DROP INDEX IF EXISTS watch_locator_location; DROP INDEX IF EXISTS pending_key_nocase")
         .unwrap();
+    let triggers = s
+        .conn
+        .prepare("SELECT name FROM sqlite_schema WHERE type='trigger' AND name GLOB 'shared_*'")
+        .unwrap()
+        .query_map([], |r| r.get::<_, String>(0))
+        .unwrap()
+        .collect::<rusqlite::Result<Vec<_>>>()
+        .unwrap();
+    for trigger in triggers {
+        s.conn
+            .execute_batch(&format!("DROP TRIGGER {trigger}"))
+            .unwrap();
+    }
+    s.conn
+        .execute_batch(
+            "DROP INDEX IF EXISTS activity_intent_dispatch; DROP TABLE saved_query; DROP TABLE shared_bytes; DROP TABLE shared_check_lru",
+        )
+        .unwrap();
+    s.conn.execute_batch("ALTER TABLE publication DROP COLUMN scan_after; ALTER TABLE publication DROP COLUMN scan_ceiling").unwrap();
     s.conn.pragma_update(None, "user_version", 9).unwrap();
     let rev = s.revision().unwrap();
     drop(s);

@@ -1,0 +1,88 @@
+Window: "GitJuke", App: GitJuke.
+0 standard window GitJuke, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container
+				4 text gitjuke.
+				5 container Primary
+					6 button My PRs
+					7 button Review requests
+					8 button Activity
+				9 text Watches + head/check snapshots Personal activity · alerts unavailable
+				10 button Preferences
+				11 text HM hmrguez GitHub.com
+				12 button Monitoring 0 watches · 0 delayed
+			13 container
+				14 container Personal activity
+					15 heading Activity, Value: 1
+						16 text Activity
+					17 text Historical baseline established · Recovery incomplete · 5 PRs pending
+					18 text Records expire after 90 days, including unseen items. Native alerts and external-suite retry activity are unavailable in this build.
+					19 text gh failed; response was not committed.
+					20 button Mark loaded page seen
+					21 text Applies to these 18 loaded records only.
+					22 button hmrguez/FantasyEditor · #5 · Seen comment · vercel[bot] 09/08/2026, 15:57:41 · routine bot comment
+					23 button hmrguez/FantasyEditor · #4 · Seen review · greptile-apps[bot] 09/08/2026, 12:38:12 · Alert eligible
+					24 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					25 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					26 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					27 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:11 · routine bot comment
+					28 button hmrguez/FantasyEditor · #4 · Seen comment · greptile-apps[bot] 09/08/2026, 12:38:08 · routine bot comment
+					29 button hmrguez/FantasyEditor · #4 · Seen comment · hmrguez 09/08/2026, 12:34:32 · own action
+					30 button hmrguez/FantasyEditor · #4 · Seen comment · vercel[bot] 09/08/2026, 12:34:24 · routine bot comment
+					31 button hmrguez/FantasyEditor · #3 · Seen comment · vercel[bot] 02/08/2026, 13:46:22 · routine bot comment
+					32 button hmrguez/FantasyEditor · #2 · Seen comment · greptile-apps[bot] 01/08/2026, 01:53:58 · routine bot comment
+					33 button hmrguez/FantasyEditor · #2 · Seen comment · hmrguez 01/08/2026, 01:52:58 · own action
+					34 button hmrguez/FantasyEditor · #2 · Seen comment · vercel[bot] 01/08/2026, 01:49:58 · routine bot comment
+					35 button hmrguez/FantasyEditor · #1 · Seen comment · hmrguez 01/08/2026, 01:40:09 · own action
+					36 button hmrguez/FantasyEditor · #1 · Seen review · greptile-apps[bot] 01/08/2026, 01:30:40 · Alert eligible
+					37 button hmrguez/FantasyEditor · #1 · Seen comment · greptile-apps[bot] 01/08/2026, 01:30:39 · routine bot comment
+					38 button hmrguez/FantasyEditor · #1 · Seen comment · greptile-apps[bot] 01/08/2026, 01:30:27 · routine bot comment
+					39 button hmrguez/FantasyEditor · #1 · Seen comment · vercel[bot] 01/08/2026, 01:26:08 · routine bot comment
+					40 button (disabled) Previous
+					41 button (disabled) Next
+				42 container Pull request reader
+					43 text hmrguez/FantasyEditor / #4
+					44 button Open in GitHub
+					45 container
+						46 text merged
+						47 heading codex/ai-project-import, Value: 1
+							48 text codex/ai-project-import
+						49 text hmrguez · staging · head 2fefba2b95
+					50 container Published native stack
+						51 text Confirmed: this PR has no published native stack.
+					52 tab group (selectable) Reader
+						53 tab (selectable) Overview
+						54 tab (selectable) Changes
+						55 tab (selected) Conversation
+						56 tab (selectable) Checks
+					57 container Conversation
+						58 button Back to Activity
+						59 button Browse Conversation sources
+						60 text Exact Activity destination · parent source and thread coverage are not inferred. Outdated · original b764bc3ef8:22
+						61 text CONVERSATION
+						62 container
+							63 text Head 2fefba2b95 · safe plain text
+						64 button Refresh conversation
+						65 text 1 loaded / 1 known · exact record only
+						66 text Each source keeps its own pages and GitHub order. Replies replace this panel, up to 50 per page. Ordinary source navigation leaves Activity unseen.
+						67 container Review comment by greptile-apps
+							68 container
+								69 text greptile-apps Review comment 2026-08-09T10:38:11Z
+							70 text Escaped plain-text fallback · 2042 UTF-8 bytes
+							71 container Message body
+								72 text <a href="#"><img alt="P1" src="https://greptile-static-assets.s3.amazonaws.com/badges/p1.svg?v=9" align="top"></a> **Terminal status transition races**
+
+If cancellation and completion overlap for an import in `ready`, both handlers pass their status checks and perform unconditional updates and cleanup. They can delete the same artifacts and overwrite each other's terminal status, leaving the import `cancelled` or `applied` according to request timing.
+
+<a href="https://app.greptile.com/api/ide/codex?prompt=
+							73 button Open source in GitHub
+					74 text Cached 18/10/2026, 12:25:18 · revision 1806
+	75 close button
+	76 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	77 minimize button
+	78 text GitJuke
+79 menu bar
+	80 GitJuke
+
+The focused UI element is 71 container Message body

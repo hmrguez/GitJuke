@@ -5,10 +5,10 @@ use std::path::Path;
 fn n(c: &Connection, sql: &str) -> i64 {
     c.query_row(sql, [], |r| r.get(0)).unwrap()
 }
-fn reference_bytes(c: &Connection) -> (i64, i64) {
+pub(crate) fn reference_bytes(c: &Connection) -> (i64, i64) {
     let staged = n(
         c,
-        "SELECT (SELECT COALESCE(SUM(octet_length(json)),0) FROM stage)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM source_stage)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM activity_stage)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM check_context WHERE staged=1)",
+        "SELECT (SELECT COALESCE(SUM(octet_length(json)),0) FROM main.stage)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM main.source_stage)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM main.activity_stage)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM main.check_context WHERE staged=1)",
     );
     let old = n(
         c,
@@ -19,17 +19,20 @@ fn reference_bytes(c: &Connection) -> (i64, i64) {
             + old
             + n(
                 c,
-                "SELECT (SELECT COALESCE(SUM(octet_length(json)),0) FROM content)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM check_context WHERE staged=0)",
+                "SELECT (SELECT COALESCE(SUM(octet_length(json)),0) FROM main.content)+(SELECT COALESCE(SUM(octet_length(json)),0) FROM main.check_context WHERE staged=0)",
             ),
         staged + old,
     )
 }
-fn reference_lru(c: &Connection, limit: usize, cutoff: Option<u64>) -> Vec<Victim> {
-    c.prepare("SELECT * FROM (SELECT accessed,0 AS kind,key AS a,'' AS b,'' AS c,octet_length(json) AS bytes FROM content UNION ALL SELECT COALESCE(s.accessed,0),1,c.pr_id,c.commit_sha,c.id,octet_length(c.json) FROM check_context c LEFT JOIN check_state s USING(pr_id,commit_sha) WHERE c.staged=0) WHERE (?1 IS NULL OR accessed<?1) ORDER BY accessed,kind,a,b,c LIMIT ?2").unwrap().query_map(params![cutoff.map(|t|t as i64),limit as i64],victim).unwrap().collect::<rusqlite::Result<_>>().unwrap()
+pub(crate) fn reference_lru(c: &Connection, limit: usize, cutoff: Option<u64>) -> Vec<Victim> {
+    c.prepare("SELECT * FROM (SELECT accessed,0 AS kind,key AS a,'' AS b,'' AS c,octet_length(json) AS bytes FROM main.content UNION ALL SELECT COALESCE(s.accessed,0),1,c.pr_id,c.commit_sha,c.id,octet_length(c.json) FROM main.check_context c LEFT JOIN main.check_state s USING(pr_id,commit_sha) WHERE c.staged=0) WHERE (?1 IS NULL OR accessed<?1) ORDER BY accessed,kind,a,b,c LIMIT ?2").unwrap().query_map(params![cutoff.map(|t|t as i64),limit as i64],victim).unwrap().collect::<rusqlite::Result<_>>().unwrap()
 }
 fn bounded() -> (usize, i32, i32) {
     let ms = metrics();
     assert!(!ms.is_empty());
+    assert!(ms.len() <= 130);
+    assert!(ms.iter().map(|m| m.vm).sum::<i32>() < 50_000);
+    assert!(ms.iter().map(|m| m.rows).sum::<usize>() <= 384);
     for m in &ms {
         assert!(
             m.rows <= WINDOW
@@ -56,7 +59,7 @@ fn bounded() -> (usize, i32, i32) {
 #[test]
 fn compact_large_sets_have_bounded_statements_and_exact_totals_and_lru() {
     let mut work = vec![];
-    for count in [257, 1025] {
+    for count in [1025, 8193] {
         let d = tempfile::tempdir().unwrap();
         let mut s = Store::open(&d.path().join("db")).unwrap();
         let tx = s.conn.transaction().unwrap();
@@ -132,8 +135,9 @@ fn compact_large_sets_have_bounded_statements_and_exact_totals_and_lru() {
         }
         assert!(victims(&s.conn, 0, None).unwrap().is_empty());
     }
-    // More data means more bounded windows, not constant total operation work.
-    assert!(work[1].0 > work[0].0);
+    // A singleton seek is independent of payload/journal cardinality.
+    assert_eq!(work[1].0, 1);
+    assert_eq!(work[0].0, 1);
     assert_eq!((work[1].1, work[1].2), (work[0].1, work[0].2));
 }
 #[test]
@@ -269,6 +273,7 @@ fn publish(s: &mut Store) -> crate::Result<()> {
     )
 }
 fn prefix(c: &Connection, count: i64) {
+    assert_exact(c);
     assert_eq!(
         n(c, "SELECT COUNT(*) FROM content WHERE key LIKE 'v-%'"),
         385 - count
@@ -290,8 +295,8 @@ fn late_batch_fault_preserves_exact_prefix_and_retries_atomically() {
     let revision = s.revision().unwrap();
     s.conn.execute_batch("CREATE TRIGGER fail_late BEFORE DELETE ON content WHEN old.key='v-0250' BEGIN SELECT RAISE(ABORT,'late victim'); END;").unwrap();
     assert!(publish(&mut s).is_err());
-    prefix(&s.conn, 127);
-    assert_eq!(s.revision().unwrap(), revision + 1);
+    prefix(&s.conn, 189);
+    assert_eq!(s.revision().unwrap(), revision + 3);
     assert_eq!(history(&s.conn), original);
     assert_eq!(
         n(
@@ -333,6 +338,7 @@ fn crash_child_entry() {
         conn: Connection::open(path).unwrap(),
         cache_writes: true,
     };
+    crate::shared_storage::register(&s.conn).unwrap();
     publish(&mut s).unwrap();
     panic!("missed barrier");
 }
@@ -386,13 +392,14 @@ fn sigkill_read_and_reclamation_keep_only_committed_prefixes() {
             child.0.kill().unwrap();
             assert_eq!(child.0.wait().unwrap().signal(), Some(libc::SIGKILL));
             let c = Connection::open(&path).unwrap();
+            crate::shared_storage::register(&c).unwrap();
             assert_eq!(
                 c.query_row("PRAGMA quick_check(1)", [], |r| r.get::<_, String>(0))
                     .unwrap(),
                 "ok"
             );
             let committed = phase == "reclaim_after_commit";
-            prefix(&c, if committed { 127 } else { 0 });
+            prefix(&c, if committed { 63 } else { 0 });
             assert_eq!(history(&c), original);
             assert_eq!(
                 n(
@@ -431,6 +438,7 @@ fn autocommit_totals_hold_one_snapshot_across_concurrent_window_changes() {
         .unwrap();
     tx.commit().unwrap();
     let writer = Connection::open(&path).unwrap();
+    crate::shared_storage::register(&writer).unwrap();
     ON_WINDOW.with(|f| *f.borrow_mut()=Some(Box::new(move || {
         writer.execute_batch("BEGIN IMMEDIATE;DELETE FROM content;DELETE FROM stage;INSERT INTO content VALUES('new','雪',1,1);COMMIT;").unwrap();
     })));
@@ -515,4 +523,248 @@ fn invalid_stored_request_stops_admission_without_writes_or_a_leaked_snapshot() 
         "{"
     );
     assert!(s.conn.is_autocommit());
+}
+
+/// The independent full traversal remains test-only; production never repairs
+/// a maintained total by silently replacing it with an unverified partial sum.
+pub(crate) fn assert_exact(c: &Connection) {
+    let mut expected = reference_bytes(c);
+    use rusqlite::OptionalExtension;
+    let request: Option<(String, String)> = c
+        .query_row("SELECT kind,args FROM main.publication", [], |r| {
+            Ok((r.get(0)?, r.get(1)?))
+        })
+        .optional()
+        .unwrap();
+    let input = request
+        .map(|(kind, args)| {
+            use serde_json::value::RawValue;
+            let fields: std::collections::HashMap<String, Box<RawValue>> =
+                serde_json::from_str(&args).unwrap();
+            match kind.as_str() {
+                "checks" | "source_page" => {
+                    let key = if kind == "checks" { "contexts" } else { "prs" };
+                    fields
+                        .get(key)
+                        .map(|v| {
+                            serde_json::from_str::<Vec<Box<RawValue>>>(v.get())
+                                .unwrap()
+                                .iter()
+                                .map(|v| v.get().len() as i64)
+                                .sum()
+                        })
+                        .unwrap_or(0)
+                }
+                "head" | "selected" => fields
+                    .get("pr")
+                    .filter(|v| v.get() != "null")
+                    .map(|v| v.get().len() as i64)
+                    .unwrap_or(0),
+                _ => 0,
+            }
+        })
+        .unwrap_or(0);
+    expected.0 += input;
+    expected.1 += input;
+    let actual = bytes(c).unwrap();
+    assert_eq!((actual.total, actual.protected), expected);
+    assert_eq!(victims(c, 128, None).unwrap(), reference_lru(c, 128, None));
+    let frontiers = n(c, "SELECT COUNT(*) FROM main.shared_check_lru");
+    let snapshots = n(
+        c,
+        "SELECT COUNT(*) FROM (SELECT pr_id,commit_sha FROM main.check_context WHERE staged=0 GROUP BY pr_id,commit_sha)",
+    );
+    assert_eq!(frontiers, snapshots);
+    assert_eq!(
+        n(
+            c,
+            "SELECT COUNT(*) FROM main.shared_check_lru l WHERE contexts!=(SELECT COUNT(*) FROM main.check_context c INDEXED BY check_published_keys WHERE c.pr_id=l.pr_id AND c.commit_sha=l.commit_sha AND c.staged=0)"
+        ),
+        0
+    );
+}
+
+#[test]
+fn maintained_state_tracks_replacements_moves_rollbacks_and_late_counter_failure() {
+    let d = tempfile::tempdir().unwrap();
+    let mut s = Store::open(&d.path().join("db")).unwrap();
+    for sql in [
+        "INSERT INTO content VALUES('empty','',1,0),('a','é',1,0)",
+        "INSERT INTO stage VALUES('s','雪')",
+        "INSERT INTO source_stage VALUES('source','s','é')",
+        "INSERT INTO activity_stage VALUES('a/b',1,'s','é')",
+        "INSERT INTO check_context VALUES('P','sha','z','é',0),('P','sha','a','',0),('P','sha','stage','staged',1)",
+        "INSERT INTO check_state VALUES('P','sha',1,1,NULL,-2)",
+        "UPDATE check_state SET accessed=5",
+        "DELETE FROM check_state",
+        "UPDATE check_context SET id='b' WHERE id='a'",
+        "UPDATE check_context SET pr_id='Q',commit_sha='next' WHERE id='z'",
+        "UPDATE check_context SET staged=0 WHERE staged=1",
+        "UPDATE check_context SET staged=1 WHERE pr_id='Q'",
+        "INSERT OR REPLACE INTO content VALUES('a','雪雪',2,0)",
+        "INSERT OR REPLACE INTO check_context VALUES('P','sha','b','雪',0)",
+        "UPDATE content SET json='' WHERE key='a'",
+        "UPDATE stage SET json='ééé'",
+        "UPDATE source_stage SET json=''",
+        "DELETE FROM activity_stage",
+        "INSERT INTO publication_row(tbl,k,old_json,old_bytes) VALUES('content','a','[]',7),('check_context','b','[0,0,0,0,0]',11)",
+        "UPDATE publication_row SET old_bytes=13 WHERE k='a'",
+        "UPDATE publication_row SET old_json=NULL WHERE k='b'",
+        "DELETE FROM publication_row",
+        "DELETE FROM check_context WHERE staged=0",
+    ] {
+        s.conn.execute_batch(sql).unwrap();
+        assert_exact(&s.conn);
+    }
+    let original = bytes(&s.conn).unwrap();
+    {
+        let tx = s.conn.transaction().unwrap();
+        tx.execute_batch("DELETE FROM stage;DELETE FROM check_context;INSERT INTO content VALUES('rolled-back','é',1,0)").unwrap();
+        assert_exact(&tx);
+        tx.rollback().unwrap();
+    }
+    assert_exact(&s.conn);
+    assert_eq!(bytes(&s.conn).unwrap().total, original.total);
+    s.conn.execute_batch("CREATE TRIGGER fail_counter BEFORE UPDATE ON shared_bytes WHEN NEW.total>OLD.total BEGIN SELECT RAISE(ABORT,'late accounting'); END;").unwrap();
+    assert!(
+        content_budget::publish_inner(
+            &mut s.conn,
+            now(),
+            512,
+            |tx| {
+                tx.execute("INSERT INTO progress VALUES('rolled-back','1')", [])?;
+                tx.execute("INSERT INTO content VALUES('failed','é',1,0)", [])?;
+                Ok(())
+            },
+            || {},
+            |_| true,
+            true
+        )
+        .is_err()
+    );
+    assert_eq!(
+        n(
+            &s.conn,
+            "SELECT COUNT(*) FROM progress WHERE key='rolled-back'"
+        ),
+        0
+    );
+    assert_eq!(
+        n(&s.conn, "SELECT COUNT(*) FROM content WHERE key='failed'"),
+        0
+    );
+    assert_exact(&s.conn);
+    // Restore the dependent frontier too if its later charge update aborts.
+    assert!(
+        s.conn
+            .execute(
+                "INSERT INTO check_context VALUES('failed-frontier','sha','ctx','é',0)",
+                []
+            )
+            .is_err()
+    );
+    assert_eq!(
+        n(
+            &s.conn,
+            "SELECT COUNT(*) FROM shared_check_lru WHERE pr_id='failed-frontier'"
+        ),
+        0
+    );
+    assert_exact(&s.conn);
+    s.conn
+        .execute_batch("DROP TRIGGER fail_counter;INSERT INTO content VALUES('failed','é',1,0)")
+        .unwrap();
+    assert_exact(&s.conn);
+}
+
+#[test]
+fn one_snapshot_timestamp_update_and_successor_seeks_skip_large_staged_prefixes() {
+    let d = tempfile::tempdir().unwrap();
+    let mut s = Store::open(&d.path().join("db")).unwrap();
+    let tx = s.conn.transaction().unwrap();
+    for i in 0..16_385 {
+        tx.execute(
+            "INSERT INTO check_context VALUES('P','sha',?,'x',1)",
+            [format!("a{i:05}")],
+        )
+        .unwrap();
+    }
+    for i in 0..257 {
+        tx.execute(
+            "INSERT INTO check_context VALUES('P','sha',?,'',0)",
+            [format!("z{i:05}")],
+        )
+        .unwrap();
+    }
+    for i in 0..1025 {
+        let key = format!("empty-{i:04}");
+        tx.execute(
+            "INSERT INTO check_state VALUES(?,'sha',1,1,NULL,-10)",
+            [&key],
+        )
+        .unwrap();
+        tx.execute(
+            "INSERT INTO check_context VALUES(?,'sha','staged','x',1)",
+            [&key],
+        )
+        .unwrap();
+    }
+    tx.commit().unwrap();
+    let before = s.conn.total_changes();
+    s.conn
+        .execute("INSERT INTO check_state VALUES('P','sha',1,1,NULL,5)", [])
+        .unwrap();
+    assert_eq!(s.conn.total_changes() - before, 2);
+    let before = s.conn.total_changes();
+    s.conn
+        .execute("UPDATE check_state SET accessed=0 WHERE pr_id='P'", [])
+        .unwrap();
+    assert_eq!(s.conn.total_changes() - before, 2);
+    capture();
+    assert_eq!(
+        victims(&s.conn, 128, None).unwrap(),
+        reference_lru(&s.conn, 128, None)
+    );
+    bounded();
+    // Frontier successor maintenance must use the same published-only index.
+    for id in ["z00000", "z00256"] {
+        let mut q=s.conn.prepare("DELETE FROM check_context WHERE pr_id='P' AND commit_sha='sha' AND staged=0 AND id=?").unwrap();
+        let before = s.conn.total_changes();
+        q.execute([id]).unwrap();
+        assert!(s.conn.total_changes() - before <= 3);
+        assert!(q.get_status(rusqlite::StatementStatus::VmStep) < 1000);
+        assert_eq!(q.get_status(rusqlite::StatementStatus::FullscanStep), 0);
+    }
+    assert_exact(&s.conn);
+}
+
+#[test]
+fn raw_request_substrings_are_charged_once_and_moves_remain_exact() {
+    let d = tempfile::tempdir().unwrap();
+    let s = Store::open(&d.path().join("db")).unwrap();
+    let input = r#"{ "contexts": [ { "text": "é" }, null, {"id":2} ] }"#;
+    s.conn
+        .execute(
+            "INSERT INTO publication(id,kind,args,phase) VALUES(1,'checks',?,'planning')",
+            [input],
+        )
+        .unwrap();
+    let expected = r#"{ "text": "é" }"#.len() + 4 + r#"{"id":2}"#.len();
+    assert_eq!(bytes(&s.conn).unwrap().protected, expected as i64);
+    // Successive admission reads use one maintained-row seek and do not parse
+    // or scan the input array again.
+    capture();
+    for _ in 0..3 {
+        assert_eq!(bytes(&s.conn).unwrap().total, expected as i64);
+    }
+    assert_eq!(metrics().len(), 3);
+    s.conn
+        .execute(
+            "UPDATE publication SET args=json_set(args,'$.contexts[0]',NULL)",
+            [],
+        )
+        .unwrap();
+    assert_eq!(bytes(&s.conn).unwrap().total, 4 + 4 + 8);
+    s.conn.execute("DELETE FROM publication", []).unwrap();
+    assert_eq!(bytes(&s.conn).unwrap().total, 0);
 }

@@ -1,0 +1,24 @@
+/* Shared typography for descriptions, discussion bodies, and Activity previews. */
+.markdown-body{font-size:var(--text-body);line-height:1.8;color:var(--secondary-text);overflow-wrap:anywhere;white-space:normal;min-width:0}
+.markdown-body>:first-child{margin-top:0}.markdown-body>:last-child{margin-bottom:0}
+.markdown-body p,.markdown-body ul,.markdown-body ol,.markdown-body blockquote,.markdown-body pre,.markdown-body details,.markdown-body .markdown-table{margin:0 0 1.2em}
+.markdown-body.markdown-body :is(h1,h2,h3,h4,h5,h6){color:var(--theme-ink);font-weight:600;line-height:1.4;margin:1.6em 0 .65em;letter-spacing:-.025em}
+.markdown-body.markdown-body h1{font-size:1.8em}.markdown-body.markdown-body h2{font-size:1.45em}.markdown-body.markdown-body h3{font-size:1.2em}.markdown-body.markdown-body :is(h4,h5,h6){font-size:1em}
+.markdown-body :is(h1,h2){border-bottom:1px solid var(--line);padding-bottom:.4em}
+.markdown-body a{color:var(--theme-accent);text-decoration:underline;text-underline-offset:3px}.markdown-body a:hover{color:var(--theme-ink)}
+.markdown-body :is(a,button,summary,[tabindex]):focus-visible{outline:2px solid var(--theme-accent);outline-offset:3px}
+.markdown-body :is(ul,ol){padding-left:2em}.markdown-body li{margin:.3em 0}.markdown-body li>p{margin:.6em 0}.markdown-body li :is(ul,ol){margin:.4em 0}
+.markdown-body .contains-task-list{list-style:none;padding-left:1.5em}.markdown-body .task-list-item>input{margin:0 .65em 0 -1.5em;accent-color:var(--theme-accent);width:1em;height:1em;padding:0;vertical-align:middle}
+.markdown-body blockquote{border-left:3px solid var(--accent-line);padding:.15em 1em;color:var(--muted-text)}.markdown-body blockquote>:last-child{margin-bottom:0}
+.markdown-body code{font-family:var(--mono);font-size:.9em;background:var(--hover);border-radius:4px;padding:.15em .4em;color:var(--theme-ink)}
+.markdown-body pre{padding:16px;background:var(--theme-canvas);border:1px solid var(--line);border-radius:var(--radius-panel);overflow:auto;white-space:pre;tab-size:4;line-height:1.65;max-width:100%}
+.markdown-body pre code{background:none;padding:0;border:0;font-size:.92em;white-space:pre;overflow-wrap:normal}
+.markdown-body .markdown-source{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+.markdown-table{overflow:auto;max-width:100%;border:1px solid var(--line);border-radius:var(--radius-control)}
+.markdown-body table{border-collapse:collapse;width:100%;font-size:.95em}.markdown-body :is(th,td){padding:.65em 1em;border:1px solid var(--line);text-align:left}.markdown-body th{color:var(--theme-ink);font-weight:600;background:var(--hover)}.markdown-body tr:nth-child(even){background:var(--quiet)}
+.markdown-body hr{border:0;border-top:1px solid var(--line-strong);margin:1.8em 0}
+.markdown-body.markdown-body details{border:1px solid var(--line);border-radius:var(--radius-control);padding:.75em 1em}.markdown-body summary{cursor:pointer;color:var(--theme-ink);font-weight:500}.markdown-body details[open]>summary{margin-bottom:1em}
+.markdown-body img{display:inline-block;max-width:100%;height:auto;border-radius:var(--radius-control);vertical-align:middle}.markdown-body .markdown-image-note{display:inline-block;font:inherit;font-size:.9em;color:var(--theme-accent);border:1px solid var(--accent-line);border-radius:var(--radius-control);padding:.25em .65em;background:var(--accent-soft);text-align:left}
+.markdown-body .markdown-limit{font-size:var(--text-sm);color:var(--muted-text)}
+.message-body:has(.markdown-body){white-space:normal}.markdown-body .footnotes{font-size:.9em;border-top:1px solid var(--line);margin-top:2em;padding-top:1em}
+.markdown-body :is(th,td)[align=center]{text-align:center}.markdown-body :is(th,td)[align=right]{text-align:right}

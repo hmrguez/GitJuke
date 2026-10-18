@@ -1,0 +1,915 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content inspector-resource:///Main.html
+			3 button Close
+			4 button Dock to left of window
+			5 button Dock to right of window
+			6 button Detach into separate window
+			7 button Start element selection (⇧⌘C)
+			8 button Device Settings
+			9 button Click to show 1 error in the Console
+			10 tab group (selectable)
+				11 tab (selected) Elements
+				12 tab (selectable) Console
+				13 tab (selectable) Sources
+				14 tab (selectable) Network
+				15 tab (selectable) Timelines
+				16 tab (selectable) Storage
+				17 tab (selectable) Graphics
+				18 tab (selectable) Layers
+				19 tab (selectable) Audit
+				20 tab (selectable) Search (⇧⌘F)
+				21 tab (selectable) Settings (⌘,)
+			22 container Elements
+				23 container html
+					24 image
+					25 text html
+					26 pop up button (collapsed) Secondary Actions: Expand
+				27 container body
+					28 image
+					29 text body
+					30 pop up button (collapsed) Secondary Actions: Expand
+				31 container div#root
+					32 image
+					33 text div#root
+					34 pop up button (collapsed) Secondary Actions: Expand
+				35 container div.app-frame.show-detail
+					36 image
+					37 text div.app-frame.show-detail
+					38 pop up button (collapsed) Secondary Actions: Expand
+				39 container main.stacks-workspace
+					40 image
+					41 text main.stacks-workspace
+					42 pop up button (collapsed) Secondary Actions: Expand
+				43 container article.detail
+					44 image
+					45 text article.detail
+					46 pop up button (collapsed) Secondary Actions: Expand
+				47 container section#overview.overview
+					48 image
+					49 text section#overview.overview
+					50 pop up button (collapsed) Secondary Actions: Expand
+				51 image
+					52 image
+					53 image
+				54 text pre.description
+				55 pop up button (collapsed) Secondary Actions: Expand
+				56 button Badges, Help: Choose which badges are shown in the DOM tree
+				57 toggle button Show rulers, Value: off
+				58 toggle button Force print media styles, Value: off
+				59 toggle button Override user preferences, Value: off
+				60 toggle button Show compositing borders, Value: off
+				61 toggle button Enable paint flashing, Value: off
+				62 toggle button Hide the details sidebar (⌥⌘0), Value: on
+				63 outline (selectable)
+					64 row (selectable) Description: <!DOCTYPE html>, Value: <!DOCTYPE html>
+<!DOCTYPE html>
+>
+					65 row (selectable, expanded) Secondary Actions: Collapse, Description: <html lang=​"en" data-text-zoom=​"200" data-mode=​"dark" style=​"--text-scale:​ 2;​ --theme-canvas:​ #171716;​ --theme-surface:​ #111110;​ --theme-accent:​ #d6b98c;​ --theme-ink:​ #eeeeec;​">, Value: <html lang=​"en" data-text-zoom=​"200" data-mode=​"dark" style=​"--text-scale:​ 2;​ --theme-canvas:​ #171716;​ --theme-surf [synthetic body omitted]
+<html lang=​"en" data-text-zoom=​"200" data-mode=​"dark" style=​"--text-scale:​ 2;​ --theme-canvas:​ #171716;​ --theme-surface:​ #111110;​ --theme-accent:​ #d6b98c;​ --theme-ink:​ #eeeeec;​">
+html
+lang
+=
+"
+en
+"
+data-text-zoom
+=
+"
+200
+"
+data-mode
+=
+"
+dark
+"
+style
+=
+"
+--text-scale:​ 2;​ --theme-canvas:​ #171716;​ --theme-surface:​ #111110;​ --theme-accent:​ #d6b98c;​ --theme-ink:​ #eeeeec;
+"
+>
+					66 row (selectable) Description: <head>​…​</head>, Value: <head>​…​</head>
+<head>​…​</head>
+head
+>
+…
+<
+/head
+>
+					67 row (selectable, expanded) Description: <body>, Secondary Actions: Collapse, Value: <body>
+<body>
+body
+>
+					68 row (selectable) Description: <div id=​"root">​Event, Value: <div id=​"root">​Event
+<div id=​"root">
+div
+id
+=
+"
+root
+"
+>
+Event
+					69 row (selectable) Description: <div class=​"app-frame show-detail">​flex, Value: <div class=​"app-frame show-detail">​flex
+<div class=​"app-frame show-detail">
+div
+class
+=
+"
+app-frame show-detail
+"
+>
+flex
+					70 row (selectable) Description: <output class=​"sr-only" aria-live=​"polite">​…​</output>, Value: <output class=​"sr-only" aria-live=​"polite">​…​</output>
+<output class=​"sr-only" aria-live=​"polite">​…​</output>
+output
+class
+=
+"
+sr-only
+"
+aria-live
+=
+"
+polite
+"
+>
+…
+<
+/output
+>
+					71 row (selectable) Description: <aside class=​"sidebar">​…​</aside>​Scrollflex, Value: <aside class=​"sidebar">​…​</aside>​Scrollflex
+<aside class=​"sidebar">​…​</aside>
+aside
+class
+=
+"
+sidebar
+"
+>
+…
+<
+/aside
+>
+Scroll
+flex
+					72 row (selectable) Description: <main class=​"stacks-workspace">​flex, Value: <main class=​"stacks-workspace">​flex
+<main class=​"stacks-workspace">
+main
+class
+=
+"
+stacks-workspace
+"
+>
+flex
+					73 row (selectable) Description: <section class=​"stack-navigator" tabindex=​"-1" aria-label=​"Pull requests">​…​</section>, Value: <section class=​"stack-navigator" tabindex=​"-1" aria-label=​"Pull requests">​…​</section>
+<section class=​"stack-navigator" tabindex=​"-1" aria-label=​"Pull requests">​…​</section>
+section
+class
+=
+"
+stack-navigator
+"
+tabindex
+=
+"
+-1
+"
+aria-label
+=
+"
+Pull requests
+"
+>
+…
+<
+/section
+>
+					74 row (selectable) Description: <article class=​"detail" aria-label=​"Pull request reader">​Scrollflex, Value: <article class=​"detail" aria-label=​"Pull request reader">​Scrollflex
+<article class=​"detail" aria-label=​"Pull request reader">
+article
+class
+=
+"
+detail
+"
+aria-label
+=
+"
+Pull request reader
+"
+>
+Scroll
+flex
+					75 row (selectable) Description: <div class=​"detail-toolbar">​…​</div>​flex, Value: <div class=​"detail-toolbar">​…​</div>​flex
+<div class=​"detail-toolbar">​…​</div>
+div
+class
+=
+"
+detail-toolbar
+"
+>
+…
+<
+/div
+>
+flex
+					76 row (selectable) Description: <header class=​"pr-heading">​…​</header>, Value: <header class=​"pr-heading">​…​</header>
+<header class=​"pr-heading">​…​</header>
+header
+class
+=
+"
+pr-heading
+"
+>
+…
+<
+/header
+>
+					77 row (selectable) Description: <section class=​"stack-section" aria-label=​"Published native stack">​…​</section>​flex, Value: <section class=​"stack-section" aria-label=​"Published native stack">​…​</section>​flex
+<section class=​"stack-section" aria-label=​"Published native stack">​…​</section>
+section
+class
+=
+"
+stack-section
+"
+aria-label
+=
+"
+Published native stack
+"
+>
+…
+<
+/section
+>
+flex
+					78 row (selectable) Description: <div class=​"tabs" role=​"tablist" aria-label=​"Reader">​…​</div>​flex, Value: <div class=​"tabs" role=​"tablist" aria-label=​"Reader">​…​</div>​flex
+<div class=​"tabs" role=​"tablist" aria-label=​"Reader">​…​</div>
+div
+class
+=
+"
+tabs
+"
+role
+=
+"
+tablist
+"
+aria-label
+=
+"
+Reader
+"
+>
+…
+<
+/div
+>
+flex
+					79 row (selectable) Description: <section class=​"overview" id=​"overview" tabindex=​"0" role=​"tabpanel" aria-labelledby=​"overview-tab">, Value: <section class=​"overview" id=​"overview" tabindex=​"0" role=​"tabpanel" aria-labelledby=​"overview-tab">
+<section class=​"overview" id=​"overview" tabindex=​"0" role=​"tabpanel" aria-labelledby=​"overview-tab">
+section
+class
+=
+"
+overview
+"
+id
+=
+"
+overview
+"
+tabindex
+=
+"
+0
+"
+role
+=
+"
+tabpanel
+"
+aria-labelledby
+=
+"
+overview-tab
+"
+>
+					80 row (selected) <pre class=​"description">​<script>untrusted</script>​</pre>​ = $0
+						81 text <pre class=​"description">​<script>untrusted</script>​</pre>​
+						82 text pre
+						83 text class
+						84 text =​
+						85 text "
+						86 text description
+						87 text "
+						88 text >
+						89 text <script>untrusted</script>
+						90 text <
+						91 text /pre
+						92 text >
+						93 text  = 
+						94 text $
+						95 text 0
+					96 row (selectable) Description: <p class=​"reader-note">​Plain-text description · Comments and reviews are in Conversation.​</p>, Value: <p class=​"reader-note">​Plain-text description · Comments and reviews are in Conversation.​</p>
+<p class=​"reader-note">​Plain-text description · Comments and reviews are in Conversation.​</p>
+p
+class
+=
+"
+reader-note
+"
+>
+Plain-text description · Comments and reviews are in Conversation.
+<
+/p
+>
+					97 row (selectable) Description: </section>, Value: </section>
+</section>
+/section
+>
+					98 row (selectable) Description: <footer class=​"detail-footer">​…​</footer>, Value: <footer class=​"detail-footer">​…​</footer>
+<footer class=​"detail-footer">​…​</footer>
+footer
+class
+=
+"
+detail-footer
+"
+>
+…
+<
+/footer
+>
+					99 row (selectable) Description: </article>, Value: </article>
+</article>
+/article
+>
+					100 row (selectable) Description: </main>, Value: </main>
+</main>
+/main
+>
+					101 row (selectable) Description: </div>, Value: </div>
+</div>
+/div
+>
+					102 row (selectable) Description: </div>, Value: </div>
+</div>
+/div
+>
+					103 row (selectable) Description: </body>, Value: </body>
+</body>
+/body
+>
+					104 row (selectable) Description: </html>, Value: </html>
+</html>
+/html
+>
+				105 link ?, Help: https://webkit.org/web-inspector/elements-tab/#dom-tree, Value: webkit.org/web-inspector/elements-tab/#dom-tree
+				106 container Details
+					107 container Details
+						108 tab group (selectable)
+							109 tab (selected) Computed
+							110 tab (selectable) Layout
+							111 tab (selectable) Font
+							112 tab (selectable) Changes
+							113 tab (selectable) Node
+							114 tab (selectable) Layers
+						115 container Computed
+							116 text Box Model
+							117 container
+								118 text position ‒ ‒
+								119 text margin
+								120 text ‒
+								121 text ‒
+								122 container
+									123 text border ‒ ‒ ‒ ‒
+									124 text padding
+									125 text ‒
+									126 text ‒
+									127 text 905 × ~50.69
+									128 text ‒
+									129 text ‒
+									130 text ‒ ‒ ‒ ‒
+								131 text ‒
+								132 text ‒
+								133 text ‒ ‒
+							134 container
+								135 image
+								136 text Properties
+							137 container
+								138 button (collapsed) Secondary Actions: Expand
+								139 text animation-delay: 0s;
+							140 container
+								141 button (collapsed) Secondary Actions: Expand
+								142 text animation-direction: normal;
+							143 container
+								144 button (collapsed) Secondary Actions: Expand
+								145 text animation-duration: 0s;
+							146 container
+								147 button (collapsed) Secondary Actions: Expand
+								148 text animation-fill-mode: none;
+							149 container
+								150 button (collapsed) Secondary Actions: Expand
+								151 text animation-iteration-count: 1;
+							152 container
+								153 button (collapsed) Secondary Actions: Expand
+								154 text animation-name: none;
+							155 container
+								156 button (collapsed) Secondary Actions: Expand
+								157 text animation-play-state: running;
+							158 container
+								159 button (collapsed) Secondary Actions: Expand
+								160 text animation-range-end: normal;
+							161 container
+								162 button (collapsed) Secondary Actions: Expand
+								163 text animation-range-start: normal;
+							164 container
+								165 button (collapsed) Secondary Actions: Expand
+								166 text animation-timeline: auto;
+							167 container
+								168 button (collapsed) Secondary Actions: Expand
+								169 text animation-timing-function: ease;
+							170 container
+								171 button (collapsed) Secondary Actions: Expand
+								172 text box-sizing: border-box;
+							173 container
+								174 button (collapsed) Secondary Actions: Expand
+								175 text color:  color(srgb 0.742667 0.742667 0.735686);
+							176 container
+								177 button (collapsed) Secondary Actions: Expand
+								178 text color-scheme: dark;
+							179 container
+								180 button (collapsed) Secondary Actions: Expand
+								181 text display: block;
+							182 container
+								183 button (collapsed) Secondary Actions: Expand
+								184 text font-family: JetBrains Mono, monospace;
+							185 container
+								186 button (collapsed) Secondary Actions: Expand
+								187 text font-size: 26px;
+							188 container
+								189 button (collapsed) Secondary Actions: Expand
+								190 text font-weight: 400;
+							191 text height: 50.6875px;
+							192 container
+								193 button (collapsed) Secondary Actions: Expand
+								194 text line-height: 50.700001px;
+							195 container
+								196 button (collapsed) Secondary Actions: Expand
+								197 text margin-block-end: 0px;
+							198 container
+								199 button (collapsed) Secondary Actions: Expand
+								200 text margin-block-start: 0px;
+							201 container
+								202 button (collapsed) Secondary Actions: Expand
+								203 text margin-bottom: 0px;
+							204 container
+								205 button (collapsed) Secondary Actions: Expand
+								206 text margin-inline-end: 0px;
+							207 container
+								208 button (collapsed) Secondary Actions: Expand
+								209 text margin-inline-start: 0px;
+							210 container
+								211 button (collapsed) Secondary Actions: Expand
+								212 text margin-left: 0px;
+							213 container
+								214 button (collapsed) Secondary Actions: Expand
+								215 text margin-right: 0px;
+							216 container
+								217 button (collapsed) Secondary Actions: Expand
+								218 text margin-top: 0px;
+							219 container
+								220 button (collapsed) Secondary Actions: Expand
+								221 text max-width: 100%;
+							222 container
+								223 button (collapsed) Secondary Actions: Expand
+								224 text overflow-wrap: anywhere;
+							225 container
+								226 button (collapsed) Secondary Actions: Expand
+								227 text scroll-behavior: auto;
+							228 container
+								229 button (collapsed) Secondary Actions: Expand
+								230 text scrollbar-color:  color(srgb 0.205333 0.205333 0.200784)  rgba(0, 0, 0, 0);
+							231 container
+								232 button (collapsed) Secondary Actions: Expand
+								233 text scrollbar-width: thin;
+							234 container
+								235 button (collapsed) Secondary Actions: Expand
+								236 text text-wrap-mode: wrap;
+							237 container
+								238 button (collapsed) Secondary Actions: Expand
+								239 text transition-behavior: normal;
+							240 container
+								241 button (collapsed) Secondary Actions: Expand
+								242 text transition-delay: 0s;
+							243 container
+								244 button (collapsed) Secondary Actions: Expand
+								245 text transition-duration: 0s;
+							246 container
+								247 button (collapsed) Secondary Actions: Expand
+								248 text transition-property: none;
+							249 container
+								250 button (collapsed) Secondary Actions: Expand
+								251 text transition-timing-function: ease;
+							252 container
+								253 button (collapsed) Secondary Actions: Expand
+								254 text white-space-collapse: preserve;
+							255 text width: 905px;
+							256 container
+								257 container
+									258 text Ungrouped
+									259 pop up button (collapsed) Value: Ungrouped, Secondary Actions: Expand
+									260 image
+								261 text Variables
+							262 container
+								263 text --accent-line:  #d6b98c #111110color-mix(in srgb, #d6b98c 26%, #111110);
+							264 container
+								265 text --accent-medium:  #d6b98c #111110color-mix(in srgb, #d6b98c 14%, #111110);
+							266 container
+								267 text --accent-soft:  #d6b98c #111110color-mix(in srgb, #d6b98c 8%, #111110);
+							268 container
+								269 text --border:  #eeeeec #111110color-mix(in srgb, #eeeeec 9%, #111110);
+							270 container
+								271 text --danger:  #e19c95;
+							272 container
+								273 text --hover:  #eeeeec #111110color-mix(in srgb, #eeeeec 7%, #111110);
+							274 container
+								275 text --ink:  #eeeeec;
+							276 container
+								277 text --line:  #eeeeec #111110color-mix(in srgb, #eeeeec 9%, #111110);
+							278 container
+								279 text --line-strong:  #eeeeec #111110color-mix(in srgb, #eeeeec 16%, #111110);
+							280 text --mono: "JetBrains Mono",monospace;
+							281 container
+								282 text --muted:  #eeeeec #111110color-mix(in srgb, #eeeeec 55%, #111110);
+							283 container
+								284 text --muted-text:  #eeeeec #111110color-mix(in srgb, #eeeeec 55%, #111110);
+							285 container
+								286 text --quiet:  #eeeeec #111110color-mix(in srgb, #eeeeec 4%, #111110);
+							287 text --radius-control: 7px;
+							288 text --radius-dialog: 14px;
+							289 text --radius-panel: 8px;
+							290 text --radius-shell: 12px;
+							291 container
+								292 text --secondary-text:  #eeeeec #111110color-mix(in srgb, #eeeeec 78%, #111110);
+							293 text --space-1: 4px;
+							294 text --space-2: 8px;
+							295 text --space-3: 12px;
+							296 text --space-4: 16px;
+							297 text --space-6: 24px;
+							298 text --space-8: 32px;
+							299 container
+								300 text --success:  #90bc9b;
+							301 text --text-base: 1rem;
+							302 text --text-body: 1.08333333rem;
+							303 text --text-scale: 2;
+							304 text --text-sm: .91666667rem;
+							305 text --text-xs: .83333333rem;
+							306 container
+								307 text --theme-accent:  #d6b98c;
+							308 container
+								309 text --theme-canvas:  #171716;
+							310 container
+								311 text --theme-ink:  #eeeeec;
+							312 container
+								313 text --theme-surface:  #111110;
+							314 container
+								315 text --warning:  #d6b98c;
+							316 search text field (settable) Filter
+								317 text Filter
+					318 container Styles
+						319 container Styles
+							320 container
+								321 image
+								322 text Style Attribute {
+							323 text }
+							324 container
+								325 link index-CdZz9oVv.css:1:15766, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:15766
+									326 text index-CdZz9oVv.css:1:15766
+								327 image
+								328 text .description  {
+							329 container
+								330 text white-space
+								331 text : 
+								332 text pre-wrap
+								333 text ;
+							334 container
+								335 text overflow-wrap
+								336 text : 
+								337 text anywhere
+								338 text ;
+							339 container
+								340 text font-family
+								341 text : 
+								342 text inherit
+								343 text ;
+							344 container
+								345 text font-size
+								346 text : 
+								347 image
+								348 text var(--text-body)
+								349 text ;
+							350 container
+								351 text line-height
+								352 text : 
+								353 text 1.95
+								354 text ;
+							355 container
+								356 text margin
+								357 text : 
+								358 text 0
+								359 text ;
+							360 container
+								361 text max-width
+								362 text : 
+								363 text 100%
+								364 text ;
+							365 container
+								366 text color
+								367 text : 
+								368 image
+								369 text var(--secondary-text)
+								370 text ;
+							371 text }
+							372 container
+								373 link index-CdZz9oVv.css:1:9276, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:9276
+									374 text index-CdZz9oVv.css:1:9276
+								375 image
+								376 text code, pre  {
+							377 container
+								378 text font-family
+								379 text : 
+								380 text var(--mono)
+								381 text ;
+							382 text }
+							383 container
+								384 text @media  (prefers-reduced-motion:reduce)
+							385 container
+								386 link index-CdZz9oVv.css:1:22124, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:22124
+									387 text index-CdZz9oVv.css:1:22124
+								388 image
+								389 text *  {
+							390 container
+								391 text animation
+								392 text : 
+								393 text none!important
+								394 text ;
+							395 container
+								396 text transition
+								397 text : 
+								398 text none!important
+								399 text ;
+							400 container
+								401 text scroll-behavior
+								402 text : 
+								403 text auto!important
+								404 text ;
+							405 text }
+							406 container
+								407 link index-CdZz9oVv.css:1:9353, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:9353
+									408 text index-CdZz9oVv.css:1:9353
+								409 image
+									410 image
+									411 image
+								412 text *  {
+							413 container
+								414 text scrollbar-width
+								415 text : 
+								416 text thin
+								417 text ;
+							418 container
+								419 text scrollbar-color
+								420 text : 
+								421 image
+								422 text var(--line-strong) 
+								423 text transparent
+								424 text ;
+							425 text }
+							426 container
+								427 link index-CdZz9oVv.css:1:8326, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:8326
+									428 text index-CdZz9oVv.css:1:8326
+								429 image
+								430 text *  {
+							431 container
+								432 text box-sizing
+								433 text : 
+								434 text border-box
+								435 text ;
+							436 text }
+							437 container
+								438 text User Agent Style Sheet
+								439 image
+								440 image
+								441 text pre, xmp, plaintext, listing {
+							442 text display: block;
+							443 text font-family: monospace;
+							444 text white-space-collapse: preserve;
+							445 text text-wrap-mode: nowrap;
+							446 text margin-block-start: 1em;
+							447 text margin-inline-start: 0px;
+							448 text }
+							449 heading Pseudo-Element ::selection, Value: 2
+								450 text Pseudo-Element ::selection
+							451 container
+								452 link index-CdZz9oVv.css:1:9309, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:9309
+									453 text index-CdZz9oVv.css:1:9309
+								454 image
+								455 text ::selection  {
+							456 container
+								457 text background
+								458 text : 
+								459 image
+								460 text var(--accent-medium)
+								461 text ;
+							462 text }
+							463 heading Inherited From article.detail, Value: 2
+								464 text Inherited From 
+								465 link article.detail
+									466 text article.detail
+							467 container
+								468 link index-CdZz9oVv.css:1:23632, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:23632
+									469 text index-CdZz9oVv.css:1:23632
+								470 image
+								471 text .sidebar, .detail, .stack-navigator, .dialog  {
+							472 container
+								473 text overflow-wrap
+								474 text : 
+								475 text anywhere
+								476 text ;
+							477 text }
+							478 heading Inherited From html, Value: 2
+								479 text Inherited From 
+								480 link html
+									481 text html
+							482 container
+								483 image
+								484 text Style Attribute {
+							485 container
+								486 text --text-scale
+								487 text : 
+								488 text 2
+								489 text ;
+							490 container
+								491 text --theme-surface
+								492 text : 
+								493 text #111110
+								494 text ;
+							495 container
+								496 text --theme-ink
+								497 text : 
+								498 text #eeeeec
+								499 text ;
+							500 button Show 2 unused CSS variables, Help: Option-click to show unused CSS variables from all rules
+							501 text }
+							502 container
+								503 link index-CdZz9oVv.css:1:24024, Help: tauri://localhost/assets/index-CdZz9oVv.css:1:24024
+									504 text index-CdZz9oVv.css:1:24024
+								505 image
+								506 text :root  {
+							507 container
+								508 text --theme-surface
+								509 text : 
+								510 text #111110
+								511 text ;
+							512 container
+								513 text --theme-ink
+								514 text : 
+								515 text #eeeeec
+								516 text ;
+							517 container
+								518 text --line-strong
+								519 text : 
+								520 text color-mix(in srgb,
+								521 text var(--theme-ink) 16%,
+								522 text var(--theme-surface))
+								523 text ;
+							524 container
+								525 text --secondary-text
+								526 text : 
+								527 text color-mix(in srgb,
+								528 text var(--theme-ink) 78%,
+								529 text var(--theme-surface))
+								530 text ;
+							531 container
+								532 text --text-body
+								533 text : 
+								534 text 1.08333333rem
+								535 text ;
+							536 container
+								537 text --mono
+								538 text : 
+								539 text "JetBrains Mono",monospace
+								540 text ;
+							541 container
+								542 text font-family
+								543 text : 
+								544 text var(--mono)
+								545 text ;
+							546 container
+								547 text font-size
+								548 text : 
+								549 text calc(12px * var(--text-scale,1))
+								550 text ;
+							551 container
+								552 text font-weight
+								553 text : 
+								554 text 400
+								555 text ;
+							556 container
+								557 text color-scheme
+								558 text : 
+								559 text dark
+								560 text ;
+							561 container
+								562 text color
+								563 text : 
+								564 text var(--theme-ink)
+								565 text ;
+							566 button Show 28 unused CSS variables, Help: Option-click to show unused CSS variables from all rules
+							567 text }
+							568 container
+								569 text User Agent Style Sheet
+								570 image
+								571 image
+								572 text html {
+							573 text color: canvastext;
+							574 text }
+							575 container
+								576 checkbox :active, Value: 0
+								577 text :active
+							578 container
+								579 checkbox :focus, Value: 0
+								580 text :focus
+							581 container
+								582 checkbox :focus-visible, Value: 0
+								583 text :focus-visible
+							584 container
+								585 checkbox :focus-within, Value: 0
+								586 text :focus-within
+							587 container
+								588 checkbox :hover, Value: 0
+								589 text :hover
+							590 container
+								591 checkbox :target, Value: 0
+								592 text :target
+							593 container
+								594 checkbox :visited, Value: 0
+								595 text :visited
+							596 image Add new rule
+							597 search text field (settable) Filter
+								598 text Filter
+							599 button Classes, Help: Toggle Classes
+							600 button Pseudo, Help: Toggle Pseudo Classes
+			601 text entry area (settable) Console prompt, Value: [text entry area: Console prompt]
+			602 container
+	603 scroll area
+		604 HTML content Description: GitJuke, URL: tauri://localhost
+			605 container Text size 200%
+				606 text Text size 200%
+			607 container
+				608 text gitjuke.
+				609 container Primary
+					610 text Workspace
+					611 button My PRs
+					612 button Review requests
+					613 button Activity
+				614 button Preferences
+				615 text RE reader GitHub.com
+				616 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			617 container Pull request reader
+				618 button Back
+				619 text a/b / #1
+				620 button Open in GitHub
+				621 container
+					622 text Open
+					623 heading Change 1, Value: 1
+						624 text Change 1
+					625 text reader · main ← aaaaaaaaaa
+				626 container Published native stack
+					627 text No published stack
+				628 tab group (selectable) Reader
+					629 tab (selected) Overview
+					630 tab (selectable) Changes
+					631 tab (selectable) Conversation
+					632 tab (selectable) Checks
+				633 container Overview
+					634 text <script>untrusted</script>
+					635 text Plain-text description · Comments and reviews are in Conversation.
+				636 text Cached 18/10/2026, 13:20:41 · revision 35
+	637 close button
+	638 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	639 minimize button
+	640 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+641 menu bar
+	642 GitJuke Accessibility
+
+The focused UI element is 80 row (selected) <pre class=​"description">​<script>untrusted</script>​</pre>​ = $0

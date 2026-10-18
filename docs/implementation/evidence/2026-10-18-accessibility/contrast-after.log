@@ -1,0 +1,9 @@
+bun test v1.4.2 (744846f84)
+
+scripts/reader-contrast.test.mjs:
+(pass) metadata remains at least 4.5:1 across approved reader surfaces in both palettes [1.20ms]
+(pass) old/new line guides retain 4.5:1 on normal, added and deleted diff backgrounds [0.27ms]
+
+ 2 pass
+ 0 fail
+Ran 2 tests across 1 file. [12.00ms]

@@ -1,0 +1,3 @@
+Metadata generator initially counted the Markdown separator as a scenario.
+Observed failure: AssertionError: 30
+Corrected parser excludes the header and separator; no acceptance status or product assertion was changed.

@@ -1,0 +1,6 @@
+    Blocking waiting for file lock on build directory
+    Checking gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Checking tauri v2.12.4
+    Checking tauri-plugin-single-instance v2.5.4
+    Checking gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5m 10s

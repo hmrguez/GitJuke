@@ -1,0 +1,40 @@
+{
+  "normal": {
+    "path": "/Applications/GitJuke.app",
+    "sha256": "b08967c22de7435014a05071e13d90986b4041a5cfc3361361298f3792701104",
+    "info": {
+      "CFBundleDevelopmentRegion": "English",
+      "CFBundleDisplayName": "GitJuke",
+      "CFBundleExecutable": "gitjuke",
+      "CFBundleIdentifier": "dev.hmrguez.gitjuke",
+      "CFBundleInfoDictionaryVersion": "6.0",
+      "CFBundleName": "GitJuke",
+      "CFBundlePackageType": "APPL",
+      "CFBundleShortVersionString": "0.1.0",
+      "CFBundleVersion": "0.1.0",
+      "CSResourcesFileMapped": true,
+      "LSMinimumSystemVersion": "15.0",
+      "LSRequiresCarbon": true,
+      "NSHighResolutionCapable": true
+    }
+  },
+  "daily": {
+    "path": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Daily Qualification.app",
+    "sha256": "8d855a40f8e36f15073f536fdca82b9316f9cb0036ac7d47d0f178f0cec85cde",
+    "info": {
+      "CFBundleDevelopmentRegion": "English",
+      "CFBundleDisplayName": "GitJuke Daily Qualification",
+      "CFBundleExecutable": "gitjuke",
+      "CFBundleIdentifier": "dev.hmrguez.gitjuke.dailyqualification",
+      "CFBundleInfoDictionaryVersion": "6.0",
+      "CFBundleName": "GitJuke Daily Qualification",
+      "CFBundlePackageType": "APPL",
+      "CFBundleShortVersionString": "0.1.0",
+      "CFBundleVersion": "0.1.0",
+      "CSResourcesFileMapped": true,
+      "LSMinimumSystemVersion": "15.0",
+      "LSRequiresCarbon": true,
+      "NSHighResolutionCapable": true
+    }
+  }
+}

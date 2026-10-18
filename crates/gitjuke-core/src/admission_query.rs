@@ -1,6 +1,4 @@
-//! Admission reads bounded identity/length windows in one caller-owned snapshot.
-//! Total traversal time still grows with cardinality; no persisted accounting can
-//! become stale after a failed transaction or a restart.
+//! Maintained shared byte totals and indexed snapshot-frontier LRU selection.
 use crate::Result;
 use rusqlite::{Connection, params};
 use std::collections::BinaryHeap;
@@ -13,8 +11,8 @@ pub(crate) struct Bytes {
     pub protected: i64,
 }
 
-// Rowid is only an ephemeral traversal position, never durable identity. The
-// first seek includes MIN so even an explicitly inserted minimum rowid counts.
+// A singleton read observes the same transaction as candidate writes. Reporting
+// owns a read snapshot when there is no caller transaction.
 pub(crate) fn bytes(c: &Connection) -> Result<Bytes> {
     if c.is_autocommit() {
         let tx = c.unchecked_transaction()?;
@@ -26,52 +24,16 @@ pub(crate) fn bytes(c: &Connection) -> Result<Bytes> {
     }
 }
 fn bytes_in(c: &Connection) -> Result<Bytes> {
-    let mut out = Bytes::default();
-    for table in [
-        "content",
-        "stage",
-        "source_stage",
-        "check_context",
-        "activity_stage",
-        "publication_row",
-    ] {
-        let (length, protected) = match table {
-            "content" => ("octet_length(json)", "0"),
-            "check_context" => ("octet_length(json)", "staged=1"),
-            "publication_row" => (
-                "CASE WHEN (tbl='content' AND old_json IS NOT NULL) OR (tbl='check_context' AND json_extract(old_json,'$[4]')=0) THEN old_bytes ELSE 0 END",
-                "1",
-            ),
-            _ => ("octet_length(json)", "1"),
-        };
-        let mut after = None;
-        loop {
-            let mut q = c.prepare(&format!("SELECT rowid,{length},{protected} FROM main.{table} WHERE rowid{}? ORDER BY rowid LIMIT {WINDOW}", if after.is_some() { ">" } else { ">=" }))?;
-            let mut count = 0;
-            {
-                let mut rows = q.query([after.unwrap_or(i64::MIN)])?;
-                while let Some(r) = rows.next()? {
-                    after = Some(r.get::<_, i64>(0)?);
-                    let n: i64 = r.get(1)?;
-                    out.total += n;
-                    if r.get::<_, bool>(2)? {
-                        out.protected += n;
-                    }
-                    count += 1;
-                }
-            }
-            observe(&q, count);
-            #[cfg(test)]
-            point();
-            if count < WINDOW {
-                break;
-            }
-        }
+    let mut q = c.prepare("SELECT total,protected,invalid FROM main.shared_bytes WHERE id=1")?;
+    let (total, protected, invalid): (i64, i64, i64) =
+        q.query_row([], |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?)))?;
+    observe(&q, 1);
+    #[cfg(test)]
+    point();
+    if invalid != 0 {
+        return Err(crate::Error::StorageUnavailable("Invalid stored publication input; original database preserved. Repair storage before monitoring resumes.".into()));
     }
-    let inputs = crate::publication::input_bytes(c)?;
-    out.total += inputs;
-    out.protected += inputs;
-    Ok(out)
+    Ok(Bytes { total, protected })
 }
 
 // Access time, payload class, then native keys match the settled shared order.
@@ -111,43 +73,35 @@ pub(crate) fn victims(
     for v in content {
         retain(&mut best, v, allowance);
     }
-    // Check timestamps belong to their snapshot, not the contexts. Walk the
-    // published-key index before joining exact state keys. Empty/staged snapshots
-    // cannot create an unbounded rejected prefix inside one SQL statement.
-    let mut after: Option<(String, String, String)> = None;
-    loop {
-        let seek = if after.is_some() {
-            "AND (pr_id,commit_sha,id)>(?1,?2,?3)"
-        } else {
-            "AND ?1 IS NULL AND ?2 IS NULL AND ?3 IS NULL"
-        };
-        let mut q = c.prepare(&format!("WITH w AS MATERIALIZED(SELECT pr_id,commit_sha,id,octet_length(json) AS bytes FROM main.check_context INDEXED BY check_published_keys WHERE staged=0 {seek} ORDER BY pr_id,commit_sha,id LIMIT {WINDOW}) SELECT COALESCE(s.accessed,0),1,w.pr_id,w.commit_sha,w.id,w.bytes FROM w LEFT JOIN main.check_state s ON s.pr_id=w.pr_id AND s.commit_sha=w.commit_sha"))?;
-        let window = q
-            .query_map(
-                params![
-                    after.as_ref().map(|k| &k.0),
-                    after.as_ref().map(|k| &k.1),
-                    after.as_ref().map(|k| &k.2)
-                ],
-                victim,
-            )?
-            .collect::<rusqlite::Result<Vec<_>>>()?;
-        observe(&q, window.len());
-        let count = window.len();
-        // The materialized CTE's output order is unspecified. Advance using the
-        // maximum native key, never the last row SQLite happens to return.
-        for v in window {
-            let key = (v.2.clone(), v.3.clone(), v.4.clone());
-            if after.as_ref().is_none_or(|last| &key > last) {
-                after = Some(key);
-            }
-            if cutoff.is_none_or(|t| v.0 < t as i64) {
-                retain(&mut best, v, allowance);
-            }
-        }
-        if count < WINDOW {
+    // A frontier exists only for snapshots with published contexts. Seek at
+    // most allowance snapshots, then advance only streams contributing victims.
+    // No empty-state/staged prefix or all-context traversal is needed.
+    let check_filter = if cutoff.is_some() {
+        "WHERE l.accessed<?1"
+    } else {
+        "WHERE ?1 IS NULL"
+    };
+    let mut q = c.prepare(&format!("SELECT l.accessed,1,l.pr_id,l.commit_sha,l.first_id,octet_length(c.json) FROM main.shared_check_lru l INDEXED BY shared_check_order CROSS JOIN main.check_context c ON c.pr_id=l.pr_id AND c.commit_sha=l.commit_sha AND c.id=l.first_id AND c.staged=0 {check_filter} ORDER BY l.accessed,l.pr_id,l.commit_sha LIMIT ?2"))?;
+    let seeds = q
+        .query_map(params![cutoff.map(|t| t as i64), allowance as i64], victim)?
+        .collect::<rusqlite::Result<Vec<_>>>()?;
+    observe(&q, seeds.len());
+    let mut streams: BinaryHeap<std::cmp::Reverse<Victim>> =
+        seeds.into_iter().map(std::cmp::Reverse).collect();
+    for _ in 0..allowance {
+        let Some(std::cmp::Reverse(v)) = streams.pop() else {
             break;
+        };
+        let mut q = c.prepare("SELECT ?4,1,pr_id,commit_sha,id,octet_length(json) FROM main.check_context INDEXED BY check_published_keys WHERE pr_id=?1 AND commit_sha=?2 AND staged=0 AND id>?3 ORDER BY id LIMIT 1")?;
+        use rusqlite::OptionalExtension;
+        let next = q
+            .query_row(params![v.2, v.3, v.4, v.0], victim)
+            .optional()?;
+        observe(&q, usize::from(next.is_some()));
+        if let Some(next) = next {
+            streams.push(std::cmp::Reverse(next));
         }
+        retain(&mut best, v, allowance);
     }
     Ok(best.into_sorted_vec())
 }
@@ -284,4 +238,4 @@ fn capture() {
 
 #[cfg(test)]
 #[path = "admission_query_tests.rs"]
-mod tests;
+pub(crate) mod tests;

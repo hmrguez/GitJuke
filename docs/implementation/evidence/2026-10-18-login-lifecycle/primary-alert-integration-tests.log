@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized] target(s) in 0.07s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-lifecycle-target/debug/deps/gitjuke_core-e8c686999d5acf2e)
+
+running 2 tests
+test runtime_alerts::guard_tests::authoritative_source_guard_never_guesses_missing_attempt_or_superseded_head ... ok
+test runtime_alerts::tests::worker_revalidates_identity_and_commits_attempt_before_platform_dispatch ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 249 filtered out; finished in 4.96s
+

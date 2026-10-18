@@ -1,0 +1,17 @@
+{
+  "productName": "GitJuke Lifecycle",
+  "identifier": "dev.hmrguez.gitjuke.lifecycle-qualification",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "GitJuke Lifecycle",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 960,
+        "minHeight": 640,
+        "visible": false
+      }
+    ]
+  }
+}

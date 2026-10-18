@@ -1,0 +1,24 @@
+{
+  "total_helper_reads": 130,
+  "explicit_log_endpoint_reads": 7,
+  "endpoint_counts": {
+    "--version": 2,
+    "auth status": 2,
+    "user": 46,
+    "query Authored": 2,
+    "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T11%3A20%3A36Z&per_page=100&page=1": 1,
+    "api --hostname": 4,
+    "query WatchHeads": 2,
+    "repos/a/b/pulls/1": 16,
+    "repos/a/b/stacks?pull_request=1&per_page=100": 1,
+    "repos/a/b/actions/runs/2": 14,
+    "repos/a/b/actions/jobs/100": 14,
+    "repos/a/b/check-runs/100": 14,
+    "repos/a/b/actions/jobs/100/logs": 7,
+    "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T11%3A23%3A06Z&per_page=100&page=1": 1,
+    "repos/a/b/issues/1/comments?per_page=50&page=1": 1,
+    "repos/a/b/pulls/1/reviews?per_page=50&page=1": 1,
+    "repos/a/b/pulls/1/comments?per_page=50&page=1": 1,
+    "repos/a/b/issues/1/timeline?per_page=50&page=1": 1
+  }
+}

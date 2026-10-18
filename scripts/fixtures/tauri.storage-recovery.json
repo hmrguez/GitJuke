@@ -1,0 +1,5 @@
+{
+  "productName": "GitJuke Storage Recovery",
+  "identifier": "dev.hmrguez.gitjuke.storage-recovery",
+  "app": {"windows": [{"label": "main", "title": "GitJuke Storage Recovery — DISPOSABLE DATABASE", "width": 1120, "height": 760, "minWidth": 960, "minHeight": 640}]}
+}

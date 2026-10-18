@@ -1,0 +1,150 @@
+{
+  "schema": 16,
+  "rows": [
+    {
+      "scenario": "Approved reader and appearance",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Lists and saved queries",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "PR overview/conversation/reviews",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Published native stacks",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "File listing and supplied patch completeness",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Local patch boundaries",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Rendering and patch-source retention",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Thread coordinates and large discussions",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Checks and log reading",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Watch membership and lifetime",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Discovery/scheduler/quota",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Process, queue and IPC bounds",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Activity discovery and eligibility",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Alert grouping, retries and foreground",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Privacy, permission and onboarding",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Local seen state",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Pause/resume and recovery boundaries",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Account and gh launch context",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Cache races and UI revisions",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Retention and clear downloaded content",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Durable growth and disk protection",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Crash/delivery semantics",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Migration and schema recovery",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Window, input and accessible reading",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Reader responsiveness and frame time",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Reader memory and repeatability",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Signed artifact and supported matrix",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Login/single-instance/menu-bar lifecycle",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    },
+    {
+      "scenario": "Manual replacement and rollback",
+      "groupedStatus": "Pending",
+      "currentApplicability": "See 2026-10-18-daily-qualification.md; retain historical source/schema/fixture limits"
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling version_check v0.9.5
+   Compiling generic-array v0.14.7
+   Compiling errno v0.3.14
+   Compiling typenum v1.20.1
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling serde_core v1.0.229
+   Compiling vcpkg v0.2.15
+   Compiling pkg-config v0.3.34
+   Compiling libsqlite3-sys v0.36.0
+   Compiling foldhash v0.2.0
+   Compiling getrandom v0.4.3
+   Compiling rustix v1.1.5
+   Compiling pin-project-lite v0.2.17
+   Compiling hashbrown v0.16.1
+   Compiling tokio-macros v2.7.2
+   Compiling futures-macro v0.3.34
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling signal-hook-registry v1.4.8
+   Compiling mio v1.2.4
+   Compiling futures-task v0.3.34
+   Compiling serde v1.0.229
+   Compiling slab v0.4.12
+   Compiling serde_json v1.0.154
+   Compiling futures-core v0.3.34
+   Compiling futures-util v0.3.34
+   Compiling tokio v1.53.3
+   Compiling digest v0.10.7
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling hashlink v0.11.1
+   Compiling cpufeatures v0.2.17
+   Compiling fastrand v2.5.0
+   Compiling smallvec v1.16.3
+   Compiling memchr v2.8.3
+   Compiling fallible-iterator v0.3.0
+   Compiling futures-sink v0.3.34
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling once_cell v1.21.4
+   Compiling rusqlite v0.38.0
+   Compiling tempfile v3.27.0
+   Compiling tokio-util v0.7.20
+   Compiling sha2 v0.10.9
+   Compiling thiserror v2.0.21
+   Compiling httpdate v1.0.3
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-login-lifecycle/crates/gitjuke-core)
+error[E0599]: no variant named `ActionCheck` found for enum `ReadOp`
+   --> crates/gitjuke-core/src/logs.rs:308:29
+    |
+308 |                     ReadOp::ActionCheck {
+    |                             ^^^^^^^^^^^ variant not found in `ReadOp`
+    |
+   ::: crates/gitjuke-core/src/transport.rs:45:1
+    |
+ 45 | pub enum ReadOp {
+    | --------------- variant `ActionCheck` not found here
+
+error[E0599]: no variant named `ActionCheck` found for enum `ReadOp`
+   --> crates/gitjuke-core/src/logs.rs:365:25
+    |
+365 |                 ReadOp::ActionCheck {
+    |                         ^^^^^^^^^^^ variant not found in `ReadOp`
+    |
+   ::: crates/gitjuke-core/src/transport.rs:45:1
+    |
+ 45 | pub enum ReadOp {
+    | --------------- variant `ActionCheck` not found here
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:453:35
+    |
+453 |         let r = github::Response::parse_log(output(200, &vec![0; LOG_BYTES], true)).unwrap();
+    |                                   ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+453 -         let r = github::Response::parse_log(output(200, &vec![0; LOG_BYTES], true)).unwrap();
+453 +         let r = github::Response::parse(output(200, &vec![0; LOG_BYTES], true)).unwrap();
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:459:41
+    |
+459 |             classify(&github::Response::parse_log(output(200, raw.as_bytes(), true)).unwrap())
+    |                                         ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+459 -             classify(&github::Response::parse_log(output(200, raw.as_bytes(), true)).unwrap())
+459 +             classify(&github::Response::parse(output(200, raw.as_bytes(), true)).unwrap())
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:467:36
+    |
+467 |                 &github::Response::parse_log(output(200, &vec![b'x'; LOG_BYTES + 1], true))
+    |                                    ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+467 -                 &github::Response::parse_log(output(200, &vec![b'x'; LOG_BYTES + 1], true))
+467 +                 &github::Response::parse(output(200, &vec![b'x'; LOG_BYTES + 1], true))
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:473:35
+    |
+473 |         assert!(github::Response::parse_log(output(200, &[255], true)).is_err());
+    |                                   ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+473 -         assert!(github::Response::parse_log(output(200, &[255], true)).is_err());
+473 +         assert!(github::Response::parse(output(200, &[255], true)).is_err());
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:474:35
+    |
+474 |         assert!(github::Response::parse_log(output(200, b"incomplete", false)).is_err());
+    |                                   ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+474 -         assert!(github::Response::parse_log(output(200, b"incomplete", false)).is_err());
+474 +         assert!(github::Response::parse(output(200, b"incomplete", false)).is_err());
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:475:35
+    |
+475 |         assert!(github::Response::parse_log(output(302, b"signed private URL", true)).is_err());
+    |                                   ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+475 -         assert!(github::Response::parse_log(output(302, b"signed private URL", true)).is_err());
+475 +         assert!(github::Response::parse(output(302, b"signed private URL", true)).is_err());
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:486:35
+    |
+486 |                 github::Response::parse_log(output(status, b"PRIVATE DIAGNOSTIC", false)).unwrap();
+    |                                   ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+486 -                 github::Response::parse_log(output(status, b"PRIVATE DIAGNOSTIC", false)).unwrap();
+486 +                 github::Response::parse(output(status, b"PRIVATE DIAGNOSTIC", false)).unwrap();
+    |
+
+error[E0599]: no function or associated item named `parse_log` found for struct `github::Response` in the current scope
+   --> crates/gitjuke-core/src/logs.rs:490:35
+    |
+490 |         let r = github::Response::parse_log(output(403, b"secondary rate limit", false)).unwrap();
+    |                                   ^^^^^^^^^ function or associated item not found in `github::Response`
+    |
+   ::: crates/gitjuke-core/src/github.rs:5:1
+    |
+  5 | pub struct Response {
+    | ------------------- function or associated item `parse_log` not found for this struct
+    |
+note: if you're trying to build a new `github::Response`, consider using `github::Response::parse` which returns `std::result::Result<github::Response, Error>`
+   --> crates/gitjuke-core/src/github.rs:11:5
+    |
+ 11 |     pub fn parse(output: Output) -> Result<Self> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: there is an associated function `parse` with a similar name
+    |
+490 -         let r = github::Response::parse_log(output(403, b"secondary rate limit", false)).unwrap();
+490 +         let r = github::Response::parse(output(403, b"secondary rate limit", false)).unwrap();
+    |
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `gitjuke-core` (lib test) due to 10 previous errors

@@ -1,0 +1,10 @@
+{
+  "identifier": "dev.hmrguez.gitjuke.queryqualification",
+  "version": "0.1.0",
+  "executable_sha256": "e7e8d7b0291832b8fb6ce82148f2c10f688b33ed0587eb39d3d10884aff509c8",
+  "helper_sha256": "468fb0b1c0af16f3e8fbb55317819f21e095956f420d2985a11bfbaaf5fa57b8",
+  "OS": "macOS 27.0 / 26A428",
+  "architecture": "arm64",
+  "source": "local synthetic Python gh helper",
+  "live_github": false
+}

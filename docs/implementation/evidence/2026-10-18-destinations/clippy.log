@@ -1,0 +1,98 @@
+    Checking gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Checking gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+error[E0599]: no method named `require_ok` found for struct `gitjuke_core::transport::Output` in the current scope
+   --> crates/gitjuke-core/tests/conversation.rs:506:14
+    |
+506 |     overview.require_ok().unwrap();
+    |              ^^^^^^^^^^ method not found in `gitjuke_core::transport::Output`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:507:23
+    |
+507 |     j.head = overview.body["head"]["sha"].as_str().unwrap().into();
+    |                       ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+error[E0599]: no method named `require_ok` found for struct `gitjuke_core::transport::Output` in the current scope
+   --> crates/gitjuke-core/tests/conversation.rs:513:15
+    |
+513 |         first.require_ok().unwrap();
+    |               ^^^^^^^^^^ method not found in `gitjuke_core::transport::Output`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:514:33
+    |
+514 |         let page = parse(&first.body, &j, 1).unwrap();
+    |                                 ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+error[E0599]: no method named `require_ok` found for struct `gitjuke_core::transport::Output` in the current scope
+   --> crates/gitjuke-core/tests/conversation.rs:523:16
+    |
+523 |         second.require_ok().unwrap();
+    |                ^^^^^^^^^^ method not found in `gitjuke_core::transport::Output`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:524:34
+    |
+524 |         let page = parse(&second.body, &j, 1).unwrap();
+    |                                  ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+error[E0599]: no method named `require_ok` found for struct `gitjuke_core::transport::Output` in the current scope
+   --> crates/gitjuke-core/tests/conversation.rs:542:22
+    |
+542 |             response.require_ok().unwrap();
+    |                      ^^^^^^^^^^ method not found in `gitjuke_core::transport::Output`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:544:34
+    |
+544 |                 !parse(&response.body, &reply, 50)
+    |                                  ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+error[E0599]: no method named `require_ok` found for struct `gitjuke_core::transport::Output` in the current scope
+   --> crates/gitjuke-core/tests/conversation.rs:564:18
+    |
+564 |         response.require_ok().unwrap();
+    |                  ^^^^^^^^^^ method not found in `gitjuke_core::transport::Output`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:565:36
+    |
+565 |         let page = parse(&response.body, &j, 1).unwrap();
+    |                                    ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:568:31
+    |
+568 |             let id = response.body["data"]["node"]["fullDatabaseId"]
+    |                               ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+error[E0599]: no method named `require_ok` found for struct `gitjuke_core::transport::Output` in the current scope
+   --> crates/gitjuke-core/tests/conversation.rs:582:25
+    |
+582 |             coordinates.require_ok().unwrap();
+    |                         ^^^^^^^^^^ method not found in `gitjuke_core::transport::Output`
+
+error[E0609]: no field `body` on type `gitjuke_core::transport::Output`
+   --> crates/gitjuke-core/tests/conversation.rs:583:58
+    |
+583 |             let anchor = destination_anchor(&coordinates.body, &j, &page.messages[0]).unwrap();
+    |                                                          ^^^^ unknown field
+    |
+    = note: available fields are: `stdout`, `stderr`, `success`
+
+Some errors have detailed explanations: E0599, E0609.
+For more information about an error, try `rustc --explain E0599`.
+error: could not compile `gitjuke-core` (test "conversation") due to 13 previous errors
+warning: build failed, waiting for other jobs to finish...

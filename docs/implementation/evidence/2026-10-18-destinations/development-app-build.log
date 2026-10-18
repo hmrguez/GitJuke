@@ -1,0 +1,31 @@
+$ tauri build --debug --bundles app --target "aarch64-apple-darwin" --no-sign
+        Warn --no-sign flag detected: Signing will be skipped.
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `bun run build`
+$ tsc --noEmit && vite build
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 1592 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                               0.35 kB │ gzip:  0.26 kB
+dist/assets/diff-worker-BPqJHpWc.js                           1.04 kB
+dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2   21.17 kB
+dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2   21.83 kB
+dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2   21.86 kB
+dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff    27.50 kB
+dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff    28.18 kB
+dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff    28.21 kB
+dist/assets/index-BCHwzFi0.css                               29.31 kB │ gzip:  5.98 kB
+dist/assets/index-CzvaFCfS.js                               240.18 kB │ gzip: 76.48 kB
+✓ built in 765ms
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.31s
+       Built application at: /Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/gitjuke
+    Bundling GitJuke.app (/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app)
+        Warn Skipping signing due to --no-sign flag.
+    Finished 1 bundle at:
+        /Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app (33.90 MiB)
+

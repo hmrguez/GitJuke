@@ -1,0 +1,7 @@
+{
+  "files": 43,
+  "apply_check": true,
+  "exact_round_trip": true,
+  "sha256": "a6f6d2dc58d4e7131588358db3a5bad515ab067d67dcf3387b4982a121b9e107",
+  "baseline": "copied uncommitted working implementation, not committed HEAD"
+}

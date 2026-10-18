@@ -1,0 +1,303 @@
+Window: "GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES", App: GitJuke Accessibility.
+0 standard window GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+				12 button Preferences
+				13 text RE reader GitHub.com
+				14 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			15 container Pull request reader
+				16 button Back
+				17 text a/b / #1
+				18 button Open in GitHub
+				19 container
+					20 text Open
+					21 heading Change 1, Value: 1
+						22 text Change 1
+					23 text reader · main ← aaaaaaaaaa
+				24 container Published native stack
+					25 text No published stack
+				26 tab group (selectable) Reader
+					27 tab (selectable) Overview
+					28 tab (selected) Changes
+					29 tab (selectable) Conversation
+					30 tab (selectable) Checks
+				31 container Changes
+					32 text CHANGES
+					33 container
+						34 text Head aaaaaaaaaa · base bbbbbbbbbb
+					35 button Update Changes
+					36 container Changed files
+						37 text Files 1–20 / 22 known · this page only · cached 13:27:42
+						38 button file-0.txt modified · +201 −201
+						39 button file-1.txt modified · +201 −201
+						40 button file-2.txt modified · +201 −201
+						41 button file-3.txt modified · +201 −201
+						42 button file-4.txt modified · +201 −201
+						43 button file-5.txt modified · +201 −201
+						44 button file-6.txt modified · +201 −201
+						45 button file-7.txt modified · +201 −201
+						46 button file-8.txt modified · +201 −201
+						47 button file-9.txt modified · +201 −201
+						48 button file-10.txt modified · +201 −201
+						49 button file-11.txt modified · +201 −201
+						50 button file-12.txt modified · +201 −201
+						51 button file-13.txt modified · +201 −201
+						52 button file-14.txt modified · +201 −201
+						53 button file-15.txt modified · +201 −201
+						54 button file-16.txt modified · +201 −201
+						55 button file-17.txt modified · +201 −201
+						56 button file-18.txt modified · +201 −201
+						57 button file-19.txt modified · +201 −201
+						58 button (disabled) Previous files
+						59 text Page 1
+						60 button Next files
+					61 heading file-0.txt, Value: 2
+						62 text file-0.txt
+					63 button Open revision file in GitHub
+					64 text Reading mode
+					65 container Reading mode
+						66 toggle button Continuous, Value: on
+						67 toggle button Paged, Value: off
+					68 button Reload file
+					69 text Complete supplied change hunks for this file and revision. · 7,843 UTF-8 bytes · 403 rows
+					70 container
+						71 text Hunk (1– 1 )
+						72 number field (settable) Jump to hunk number, Value: 1
+							73 stepper 0
+								74 unknown
+								75 unknown
+						76 button Go to hunk
+					77 text Rows 366–403 / 403
+					78 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.
+						79 table file-0.txt · supplied unified change hunks
+							80 text file-0.txt · supplied unified change hunks
+							81 row (selectable) Old line
+New line
+Change and code
+							82 row (selectable)
+								83 cell (selectable) 183
+								84 cell (selectable)
+								85 cell (selectable) deleted:
+-OLD LOCAL LINE 183
+							86 row (selectable)
+								87 cell (selectable)
+								88 cell (selectable) 183
+								89 cell (selectable) added:
++NEW LOCAL LINE 183
+							90 row (selectable)
+								91 cell (selectable) 184
+								92 cell (selectable)
+								93 cell (selectable) deleted:
+-OLD LOCAL LINE 184
+							94 row (selectable)
+								95 cell (selectable)
+								96 cell (selectable) 184
+								97 cell (selectable) added:
++NEW LOCAL LINE 184
+							98 row (selectable)
+								99 cell (selectable) 185
+								100 cell (selectable)
+								101 cell (selectable) deleted:
+-OLD LOCAL LINE 185
+							102 row (selectable)
+								103 cell (selectable)
+								104 cell (selectable) 185
+								105 cell (selectable) added:
++NEW LOCAL LINE 185
+							106 row (selectable)
+								107 cell (selectable) 186
+								108 cell (selectable)
+								109 cell (selectable) deleted:
+-OLD LOCAL LINE 186
+							110 row (selectable)
+								111 cell (selectable)
+								112 cell (selectable) 186
+								113 cell (selectable) added:
++NEW LOCAL LINE 186
+							114 row (selectable)
+								115 cell (selectable) 187
+								116 cell (selectable)
+								117 cell (selectable) deleted:
+-OLD LOCAL LINE 187
+							118 row (selectable)
+								119 cell (selectable)
+								120 cell (selectable) 187
+								121 cell (selectable) added:
++NEW LOCAL LINE 187
+							122 row (selectable)
+								123 cell (selectable) 188
+								124 cell (selectable)
+								125 cell (selectable) deleted:
+-OLD LOCAL LINE 188
+							126 row (selectable)
+								127 cell (selectable)
+								128 cell (selectable) 188
+								129 cell (selectable) added:
++NEW LOCAL LINE 188
+							130 row (selectable)
+								131 cell (selectable) 189
+								132 cell (selectable)
+								133 cell (selectable) deleted:
+-OLD LOCAL LINE 189
+							134 row (selectable)
+								135 cell (selectable)
+								136 cell (selectable) 189
+								137 cell (selectable) added:
++NEW LOCAL LINE 189
+							138 row (selectable)
+								139 cell (selectable) 190
+								140 cell (selectable)
+								141 cell (selectable) deleted:
+-OLD LOCAL LINE 190
+							142 row (selectable)
+								143 cell (selectable)
+								144 cell (selectable) 190
+								145 cell (selectable) added:
++NEW LOCAL LINE 190
+							146 row (selectable)
+								147 cell (selectable) 191
+								148 cell (selectable)
+								149 cell (selectable) deleted:
+-OLD LOCAL LINE 191
+							150 row (selectable)
+								151 cell (selectable)
+								152 cell (selectable) 191
+								153 cell (selectable) added:
++NEW LOCAL LINE 191
+							154 row (selectable)
+								155 cell (selectable) 192
+								156 cell (selectable)
+								157 cell (selectable) deleted:
+-OLD LOCAL LINE 192
+							158 row (selectable)
+								159 cell (selectable)
+								160 cell (selectable) 192
+								161 cell (selectable) added:
++NEW LOCAL LINE 192
+							162 row (selectable)
+								163 cell (selectable) 193
+								164 cell (selectable)
+								165 cell (selectable) deleted:
+-OLD LOCAL LINE 193
+							166 row (selectable)
+								167 cell (selectable)
+								168 cell (selectable) 193
+								169 cell (selectable) added:
++NEW LOCAL LINE 193
+							170 row (selectable)
+								171 cell (selectable) 194
+								172 cell (selectable)
+								173 cell (selectable) deleted:
+-OLD LOCAL LINE 194
+							174 row (selectable)
+								175 cell (selectable)
+								176 cell (selectable) 194
+								177 cell (selectable) added:
++NEW LOCAL LINE 194
+							178 row (selectable)
+								179 cell (selectable) 195
+								180 cell (selectable)
+								181 cell (selectable) deleted:
+-OLD LOCAL LINE 195
+							182 row (selectable)
+								183 cell (selectable)
+								184 cell (selectable) 195
+								185 cell (selectable) added:
++NEW LOCAL LINE 195
+							186 row (selectable)
+								187 cell (selectable) 196
+								188 cell (selectable)
+								189 cell (selectable) deleted:
+-OLD LOCAL LINE 196
+							190 row (selectable)
+								191 cell (selectable)
+								192 cell (selectable) 196
+								193 cell (selectable) added:
++NEW LOCAL LINE 196
+							194 row (selectable)
+								195 cell (selectable) 197
+								196 cell (selectable)
+								197 cell (selectable) deleted:
+-OLD LOCAL LINE 197
+							198 row (selectable)
+								199 cell (selectable)
+								200 cell (selectable) 197
+								201 cell (selectable) added:
++NEW LOCAL LINE 197
+							202 row (selectable)
+								203 cell (selectable) 198
+								204 cell (selectable)
+								205 cell (selectable) deleted:
+-OLD LOCAL LINE 198
+							206 row (selectable)
+								207 cell (selectable)
+								208 cell (selectable) 198
+								209 cell (selectable) added:
++NEW LOCAL LINE 198
+							210 row (selectable)
+								211 cell (selectable) 199
+								212 cell (selectable)
+								213 cell (selectable) deleted:
+-OLD LOCAL LINE 199
+							214 row (selectable)
+								215 cell (selectable)
+								216 cell (selectable) 199
+								217 cell (selectable) added:
++NEW LOCAL LINE 199
+							218 row (selectable)
+								219 cell (selectable) 200
+								220 cell (selectable)
+								221 cell (selectable) deleted:
+-OLD LOCAL LINE 200
+							222 row (selectable)
+								223 cell (selectable)
+								224 cell (selectable) 200
+								225 cell (selectable) added:
++NEW LOCAL LINE 200
+							226 row (selectable)
+								227 cell (selectable) 201
+								228 cell (selectable)
+								229 cell (selectable) deleted:
+-OLD LOCAL LINE 201
+							230 row (selectable)
+								231 cell (selectable)
+								232 cell (selectable) 201
+								233 cell (selectable) added:
++NEW LOCAL LINE 201
+					234 text Supplied change hunks only. Discussion coverage is paginated independently below. Reading files does not mark Activity seen.
+					235 container Inline discussions
+						236 button Back to Activity
+						237 button Browse Conversation sources
+						238 text Exact Activity destination · parent source and thread coverage are not inferred. Attached · left line 201
+						239 button Return to diff · line 201
+						240 text DISCUSSIONS
+						241 container
+							242 text Head aaaaaaaaaa · safe plain text
+						243 button Refresh conversation
+						244 text 1 loaded / 1 known · exact record only
+						245 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+						246 container Review comment by unavailable author
+							247 container
+								248 text Unavailable author Review comment 2026-10-18T00:00:00Z
+							249 text Plain text · 16 UTF-8 bytes
+							250 container Message body
+								251 text LOCAL LEFT RANGE
+							252 button Open source in GitHub
+				253 text Cached 18/10/2026, 13:27:39 · revision 89
+	254 close button
+	255 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	256 minimize button
+	257 text GitJuke Accessibility — LOCAL SYNTHETIC FIXTURES
+258 menu bar
+	259 GitJuke Accessibility
+
+The focused UI element is 78 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.

@@ -1,0 +1,2563 @@
+--- a/.scratch/gitjuke/acceptance.md
++++ b/.scratch/gitjuke/acceptance.md
+@@ -275,3 +275,12 @@
+ The final scoped runs pass **87 distinct deterministic tests**, including two new mounted interaction tests and one new per-node worker fixture test; formatting, Clippy, IPC, both isolated and normal arm64 app builds pass. No production reader policy, schema **14**, approved appearance or shared bound changes. The normal app was not relaunched/live-tested in this slice. No remote content, credential/scope changes, fixture fallback, signing or distribution was introduced.
+ 
+ This is **synthetic local source evidence in a real native app**, not live GitHub compatibility. Live unseen/segmented/oversized/current anchors remain unavailable; native inclusive/non-ASCII body boundaries, LEFT/negative/race anchor variants, discussion/reply pagination, VoiceOver, actual 200% text zoom, measured minimum content sizing, system reduced motion, native maxima and physical-target performance remain open. Earlier native-fixture gaps retain their historical live-fixture scope. All **29 grouped release scenarios remain Pending**; no whole scenario is promoted.
++
++
++## Local saved-query implementation — 2026-10-18
++
++The [saved-query checkpoint](../../docs/implementation/2026-10-18-saved-queries.md) adds schema-15 durable local configuration and bounded demand-paged Search, navigation and CRUD. Updates/deletion compare versions; identity/generation/run checks reject obsolete results. Cached counts, provider totals, errors and completeness remain distinct; Search's 1,000-result ceiling is explicit. Queries never synchronize GitHub saved views or enroll unselected results as watches. Configuration/settings/history survive cache clear and restart.
++
++Feature-level automated, synthetic-native and live evidence are distinguished in that checkpoint and evidence directory. No whole grouped release scenario is promoted; all **29 remain Pending**. Existing live-provider, private/team/large-set, broader fault, accessibility and physical-target performance gates retain their scope. No credentials, remote fixtures, login registration, publication or distribution were enabled.
++
++Final feature evidence records **73 scoped passing tests**, strict all-target workspace Clippy, formatting/build and real native creation/navigation/pagination/PR reading plus query/Pause/config restart persistence and naming. Native sources are explicitly isolated synthetic gh, not live GitHub. Native inspection also corrected initial Name focus and fetch-error/storage-health visibility; the production storage threshold is unchanged. The final checkpoint enumerates untested native negative/max-byte/accessibility/provider/full-fault subcases. No grouped scenario is promoted.
+--- a/README.md
++++ b/README.md
+@@ -2,7 +2,7 @@
+ 
+ A read-only macOS GitHub PR reader and personal activity monitor built with Tauri, React, Rust, SQLite and the installed `gh` CLI.
+ 
+-Production implementation started on 2026-10-17 under the settled specification. The runtime reads the existing stored gh identity, reconciles open authored/direct/team/selected watches, schedules batched head/check snapshots, reads PR overviews/published native stacks and selected Changes patches, discovers notification threads and hydrates individual personal Activity with durable baseline/recovery and seen/dedup state. The production app has no fixture fallback. This is an incomplete development build, not a release-ready monitor: native alerts/permission/category controls, external suite retry classification, saved queries, logs and login remain to be implemented; full recovery/release qualification is pending.
++Production implementation started on 2026-10-17 under the settled specification. The runtime reads the existing stored gh identity, reconciles open authored/direct/team/selected watches, schedules batched head/check snapshots, reads PR overviews/published native stacks and selected Changes patches, discovers notification threads and hydrates individual personal Activity with durable baseline/recovery and seen/dedup state. The production app has no fixture fallback. This is an incomplete development build, not a release-ready monitor: native alerts/permission/category controls, external suite retry classification, logs and login remain to be implemented; full recovery/release qualification is pending.
+ 
+ Changes now has a paginated file navigator and one revision-bound unified patch at a time, with automatic/explicit-large limits, verified chunked IPC, continuous virtualization and remembered semantic paged reading. Missing/incomplete/binary/limited/denied content stays labeled; source links fall back honestly to PR Changes. Reading mode persists; file/scroll positions are remembered within the current frontend session. Native automatic-tier reading was exercised on a public PR. Conversation now adds independent comment/review/thread pages and bounded selected replies, shared safe plain-text/segment rendering, conservative revision-correct inline anchors and explicit seen receipts. Positive owned-repository live/native thread evidence is now available; full native accessibility/performance qualification remains open. See the [Changes implementation and evidence](docs/implementation/2026-10-18-changes.md); no grouped release scenario is promoted.
+ 
+@@ -12,6 +12,9 @@
+ Keyboard reading now gives scrollable message bodies their own focus target, restores originating thread/Activity focus, and keeps focus stable across source, segment, file and semantic-row page replacement. Native default/compact observations include keyboard message scrolling, source/thread return and a second live file page; live unseen/segmented fixtures, VoiceOver, actual 200% text zoom and reduced-motion qualification remain open. See the [reader navigation checkpoint](docs/implementation/2026-10-18-reader-navigation.md).
+ 
+ A separate **GitJuke Qualification** app now exercises controlled synthetic sources through the actual native WebKit/IPC/Rust/SQLite flow: unseen short/segmented/textless-review transitions, an oversized body remaining unseen, exact current RIGHT range attachment/return-to-diff and restart persistence. Its database and local helper are isolated from the normal account; no remote content was created. [Local native qualification](docs/implementation/2026-10-18-local-reader.md) records 87 passing scoped tests and the native evidence. Live provider, broader accessibility/performance and all 29 grouped release gates remain open.
++
++
++Persistent local saved queries now support create/name/edit/delete, primary navigation and demand-paged PR results with reported totals, distinct cached counts and explicit incomplete/error/Search-limit states. Configuration survives restart and Clear downloaded content; edits/deletion reject obsolete fetches. Queries share the existing identity, queue, quota, revision and cache contracts and never synchronize GitHub saved views or enroll unopened results as watches. See the [saved-query checkpoint and evidence](docs/implementation/2026-10-18-saved-queries.md). Schema **15** adds only durable query configuration; the full release matrix remains pending.
+ 
+ ## Develop
+ 
+@@ -36,7 +39,7 @@
+ 
+ `bun test` runs the JavaScript suite; `bun run test:rust` runs Cargo. `bun run test:all` runs both. The existing `test` script remains a Rust-only alias for compatibility. Node/npm are only needed to reproduce the legacy JavaScript benchmark. Dependencies are pinned in `bun.lock`; Bun also runs the JavaScript build tools. See the [Bun migration benchmark](docs/implementation/2026-10-18-bun.md) for timings and reproduction.
+ 
+-The last command produces a **local development app**, not the signed/notarized/stapled release DMG. No signing credentials, membership, publication or distribution have been provisioned. Development version 0.1.0 now reads schema 14 and transactionally upgrades schema 1/2/3/4/5/6/7/8/9/10/11/12/13, with full SQLite synchronization before migration writes and free-space checks before every upgrade step and commit; unknown future or corrupt schemas stop with original files preserved. There is no updater or automatic destructive reset.
++The last command produces a **local development app**, not the signed/notarized/stapled release DMG. No signing credentials, membership, publication or distribution have been provisioned. Development version 0.1.0 now reads schema 15 and transactionally upgrades schema 1/2/3/4/5/6/7/8/9/10/11/12/13/14, with full SQLite synchronization before migration writes and free-space checks before every upgrade step and commit; unknown future or corrupt schemas stop with original files preserved. There is no updater or automatic destructive reset.
+ 
+ Publication preparation now commits at most twelve native candidates with a durable cursor/fence before filtering and indexed point joins. Recovery readiness uses 128-row windows in one snapshot; published check completion reads an exact maintained count. Added cursor and trigger bookkeeping remains inside the 128-mutation cap. Atomic visibility and durable history remain protected. Cumulative traversal time, variable-byte/temp bounds and native performance remain unqualified.
+ 
+--- /dev/null
++++ b/crates/gitjuke-core/examples/query_qualification.rs
+@@ -0,0 +1,42 @@
++//! Creates a fresh isolated native query qualification environment, never production data.
++use gitjuke_core::store::Store;
++use std::{os::unix::fs::PermissionsExt, path::PathBuf};
++fn main() -> Result<(), Box<dyn std::error::Error>> {
++    let args: Vec<_> = std::env::args_os().skip(1).collect();
++    if args.len() != 2 {
++        return Err(
++            "usage: query_qualification NEW_FIXTURE_ROOT QUERY_QUALIFICATION_APP_DATA".into(),
++        );
++    }
++    let root = PathBuf::from(&args[0]);
++    let data = PathBuf::from(&args[1]);
++    if !root.is_absolute()
++        || !data.is_absolute()
++        || root.exists()
++        || data.exists()
++        || data.file_name().and_then(|s| s.to_str())
++            != Some("dev.hmrguez.gitjuke.queryqualification")
++    {
++        return Err("Refusing existing data or non-qualification namespace".into());
++    }
++    std::fs::create_dir_all(&root)?;
++    std::fs::create_dir_all(&data)?;
++    std::fs::create_dir(root.join("config"))?;
++    let gh = root.join("gh");
++    std::fs::write(&gh, include_str!("../tests/support/gh.py"))?;
++    std::fs::set_permissions(&gh, std::fs::Permissions::from_mode(0o700))?;
++    std::fs::write(
++        root.join("scenario.json"),
++        serde_json::to_vec(
++            &serde_json::json!({"authored":0,"no_teams":true,"direct_ids":[],"query_ids":(1..=150).collect::<Vec<_>>(),"head":"a".repeat(40)}),
++        )?,
++    )?;
++    let mut store = Store::open(&data.join("gitjuke.sqlite3"))?;
++    let mut s = store.settings()?;
++    s.paused = true;
++    s.gh_path = Some(gh.display().to_string());
++    s.config_dir = Some(root.join("config").display().to_string());
++    store.save_settings(&s)?;
++    println!("Prepared isolated synthetic source; no query is pre-created.");
++    Ok(())
++}
+--- a/crates/gitjuke-core/src/activity_bounded.rs
++++ b/crates/gitjuke-core/src/activity_bounded.rs
+@@ -743,7 +743,9 @@
+             .unwrap();
+     }
+     s.conn
+-        .execute_batch("DROP TABLE shared_bytes; DROP TABLE shared_check_lru")
++        .execute_batch(
++            "DROP TABLE saved_query; DROP TABLE shared_bytes; DROP TABLE shared_check_lru",
++        )
+         .unwrap();
+     s.conn.execute_batch("ALTER TABLE publication DROP COLUMN scan_after; ALTER TABLE publication DROP COLUMN scan_ceiling").unwrap();
+     s.conn.pragma_update(None, "user_version", 9).unwrap();
+--- a/crates/gitjuke-core/src/lib.rs
++++ b/crates/gitjuke-core/src/lib.rs
+@@ -85,4 +85,4 @@
+ mod conversation_store;
+ mod runtime_conversation;
+ 
+-pub mod logs;
++pub mod saved_queries;
+--- a/crates/gitjuke-core/src/migrations.rs
++++ b/crates/gitjuke-core/src/migrations.rs
+@@ -45,7 +45,7 @@
+     Ok(())
+ }
+ 
+-const STEPS: [(i64, &str); 14] = [
++const STEPS: [(i64, &str); 15] = [
+     (1, "CREATE TABLE meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+                 INSERT INTO meta VALUES('revision','0'),('generation','0');
+                 CREATE TABLE settings(id INTEGER PRIMARY KEY CHECK(id=1),json TEXT NOT NULL);
+@@ -102,6 +102,7 @@
+           PRAGMA user_version=12;"),
+     (13, include_str!("shared_storage.sql")),
+     (14, include_str!("publication_windows.sql")),
++    (15, "CREATE TABLE saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); PRAGMA user_version=15;"),
+ ];
+ 
+ #[cfg(test)]
+@@ -746,4 +747,38 @@
+         let mut s = Store::open(&path).unwrap();
+         preserved(&mut s, 3, 18);
+     }
++    #[test]
++    fn saved_query_schema_15_late_space_failure_preserves_14_and_retries() {
++        for journal in ["DELETE", "WAL"] {
++            let d = tempfile::tempdir().unwrap();
++            let path = d.path().join("db");
++            let mut c = seed(&path, 14, journal);
++            let before = snapshot(&c);
++            let mut checks = 0;
++            let result = upgrade_checked(&mut c, 14, d.path(), |_| {
++                checks += 1;
++                if checks == 2 {
++                    Err(crate::Error::StorageUnavailable(
++                        "injected late space failure".into(),
++                    ))
++                } else {
++                    Ok(())
++                }
++            });
++            assert!(result.is_err());
++            assert_snapshot(&snapshot(&c), &before, journal);
++            assert_eq!(integer(&c, "PRAGMA user_version"), 14);
++            upgrade_checked(&mut c, 14, d.path(), |_| Ok(())).unwrap();
++            assert_eq!(integer(&c, "PRAGMA user_version"), 15);
++            c.execute(
++                "INSERT INTO saved_query(name,search,version) VALUES('Local','repo:a/b',1)",
++                [],
++            )
++            .unwrap();
++            drop(c);
++            let mut s = Store::open(&path).unwrap();
++            assert_eq!(s.saved_queries(0).unwrap().items[0].name, "Local");
++            preserved(&mut s, 14, 17);
++        }
++    }
+ }
+--- a/crates/gitjuke-core/src/runtime.rs
++++ b/crates/gitjuke-core/src/runtime.rs
+@@ -19,7 +19,7 @@
+ 
+ #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+ pub enum Job {
+-    Logs(crate::logs::LogJob),
++    Query(crate::saved_queries::QueryJob),
+     Conversation(crate::conversation::ConversationJob),
+     Changes(crate::changes::ChangesJob),
+     Activity(crate::activity::ActivityJob),
+@@ -35,7 +35,7 @@
+ impl Job {
+     pub(crate) fn key(&self) -> String {
+         match self {
+-            Self::Logs(p) => format!("log:{}", p.seq),
++            Self::Query(j) => j.key(),
+             Self::Conversation(p) => p.key(),
+             Self::Changes(p) => p.key(),
+             Self::Activity(p) => p.key(),
+@@ -65,17 +65,20 @@
+ }
+ #[derive(Default)]
+ pub struct Queue {
+-    pub(crate) jobs: VecDeque<Work>,
++    jobs: VecDeque<Work>,
+     foreground_run: usize,
+ }
+ impl Queue {
++    pub(crate) fn discard_queries(&mut self) {
++        self.jobs.retain(|w| !matches!(w.job, Job::Query(_)));
++    }
+     pub(crate) fn discard_conversation(&mut self) {
+         self.jobs.retain(|w| !matches!(w.job, Job::Conversation(_)));
+     }
+     pub(crate) fn discard_changes(&mut self) {
+         self.jobs.retain(|w| !matches!(w.job, Job::Changes(_)));
+     }
+-    pub(crate) fn push(&mut self, w: Work) -> bool {
++    fn push(&mut self, w: Work) -> bool {
+         if self
+             .jobs
+             .iter()
+@@ -123,11 +126,9 @@
+     pub(crate) path: PathBuf,
+     pub(crate) conversation_seq: u64,
+     pub(crate) conversation_running: bool,
+-    pub(crate) log_slot: Option<crate::logs::LogSlot>,
+-    pub(crate) log_seq: u64,
+-    pub(crate) log_running: bool,
+     pub(crate) changes_seq: u64,
+     pub(crate) changes_running: bool,
++    pub(crate) active_query: Option<(i64, u64)>,
+     last_tick: u64,
+     storage_stopped: bool,
+     storage_check_at: u64,
+@@ -201,11 +202,9 @@
+                 path,
+                 conversation_seq: 0,
+                 conversation_running: false,
+-                log_slot: None,
+-                log_seq: 0,
+-                log_running: false,
+                 changes_seq: 0,
+                 changes_running: false,
++                active_query: None,
+                 last_tick: now(),
+                 storage_stopped: startup_deferred,
+                 startup_deferred,
+@@ -329,7 +328,6 @@
+         if i.locked {
+             return Err(Error::Safe(i.health.clone()));
+         }
+-        Self::cancel_logs_locked(&mut i);
+         Self::cancel_changes_locked(&mut i);
+         Self::cancel_conversation_locked(&mut i);
+         i.selected = Some((repo.clone(), number));
+@@ -362,7 +360,6 @@
+     }
+     pub fn reader_closed(&self) -> Result<()> {
+         let mut i = self.lock()?;
+-        Self::cancel_logs_locked(&mut i);
+         Self::cancel_changes_locked(&mut i);
+         Self::cancel_conversation_locked(&mut i);
+         i.reader_open = false;
+@@ -387,7 +384,6 @@
+         settings.paused = paused;
+         Self::store_operation(&mut i, |s| s.save_settings(&settings))?;
+         if paused {
+-            Self::cancel_logs_locked(&mut i);
+             i.current.cancel();
+             i.queue.jobs.retain(|w| w.manual);
+             i.health = "Paused — cached reading and explicit refresh remain available.".into();
+@@ -403,7 +399,10 @@
+                     foreground: false,
+                 });
+             } else {
+-                Self::store_operation(&mut i, |s| s.set_due("discovery", 0))?;
++                Self::store_operation(&mut i, |s| {
++                    s.set_due("saved-query", 0)?;
++                    s.set_due("discovery", 0)
++                })?;
+             }
+         }
+         let revision = i.store.revision()?;
+@@ -429,7 +428,6 @@
+     }
+     pub fn clear(&self) -> Result<()> {
+         let mut i = self.lock()?;
+-        Self::cancel_logs_locked(&mut i);
+         i.current.cancel();
+         i.queue.jobs.clear();
+         let result = Self::store_operation(&mut i, |s| s.clear());
+@@ -445,7 +443,6 @@
+     pub fn configure(&self, path: String, config: String) -> Result<()> {
+         let transport = Transport::discover(Some(&path), Some(&config))?;
+         let mut i = self.lock()?;
+-        Self::cancel_logs_locked(&mut i);
+         i.current.cancel();
+         Self::store_operation(&mut i, |s| s.invalidate())?;
+         i.queue.jobs.clear();
+@@ -468,8 +465,7 @@
+     }
+     pub async fn shutdown(&self) {
+         self.stop.cancel();
+-        if let Ok(mut i) = self.lock() {
+-            Self::cancel_logs_locked(&mut i);
++        if let Ok(i) = self.lock() {
+             i.current.cancel();
+         }
+         self.notify.notify_one();
+@@ -486,7 +482,6 @@
+                     let mut result = self.execute(&work, &transport, &token, generation).await;
+                     if let Ok(mut i) = self.lock() {
+                         i.busy = false;
+-                        i.log_running = false;
+                         i.changes_running = false;
+                         i.conversation_running = false;
+                         if result.is_ok() {
+@@ -607,6 +602,10 @@
+                                             retry,
+                                             true,
+                                         )?;
++                                    } else if let Job::Query(_) = &work.job {
++                                        if let Some(seq) = work.ticket {
++                                            i.store.ack(seq)?;
++                                        }
+                                     } else if matches!(
+                                         &work.job,
+                                         Job::Changes(_) | Job::Conversation(_)
+@@ -788,7 +787,6 @@
+         i.storage_stopped = true;
+         i.store.cache_writes = false;
+         i.storage_check_at = now() + 60;
+-        Self::cancel_logs_locked(i);
+         i.current.cancel();
+         i.health = format!(
+             "{err} Remote reads are stopped; cached reading remains available; local changes require a successful write. Storage will be checked again in one minute."
+@@ -877,6 +875,14 @@
+                 foreground: false,
+             });
+         }
++        if !paused
++            && !i.locked
++            && i.reader_open
++            && let Some((id, version)) = i.active_query
++            && i.store.due("saved-query")? <= now()
++        {
++            Self::queue_query(&mut i, id, version, 1, false)?;
++        }
+         if !paused && !i.locked {
+             let offline: bool = i.store.conn.query_row(
+                 "SELECT EXISTS(SELECT 1 FROM activity_cycle WHERE mode IN ('offline','recovery_offline'))",
+@@ -927,29 +933,14 @@
+                 ticket: Some(seq),
+             });
+         }
+-        Self::maintain_logs(&mut i)?;
+-        // A memory-only log request waits through core quota/backoff while other resources run.
+-        let deferred_log = if !i.store.budget_eligible("core", now())? {
+-            i.queue
+-                .jobs
+-                .iter()
+-                .position(|w| matches!(w.job, Job::Logs(_)))
+-                .and_then(|n| i.queue.jobs.remove(n))
+-        } else {
+-            None
+-        };
+-        let work = i.queue.pop();
+-        if let Some(log) = deferred_log {
+-            i.queue.push(log);
+-        }
+-        let Some(work) = work else {
++        // Bootstrap/explicit detail jobs also use the persisted queue.
++        let Some(work) = i.queue.pop() else {
+             return Ok(None);
+         };
+         if paused && !work.manual {
+             return Ok(None);
+         }
+         (i.storage_check)(i.path.parent().unwrap())?;
+-        i.log_running = matches!(work.job, Job::Logs(_));
+         i.changes_running = matches!(work.job, Job::Changes(_));
+         i.conversation_running = matches!(work.job, Job::Conversation(_));
+         i.busy = true;
+@@ -967,7 +958,6 @@
+         op: ReadOp,
+         c: &CancellationToken,
+     ) -> Result<Response> {
+-        let log_read = matches!(&op, ReadOp::ActionsLog { .. });
+         let notification_url = match &op {
+             ReadOp::Activity(read) if read.url.starts_with("notifications?") => {
+                 Some(read.url.clone())
+@@ -994,7 +984,6 @@
+         let output = t.read(op, c).await?;
+         if transport::indicates_auth_loss(&output) {
+             let mut i = self.lock()?;
+-            Self::cancel_logs_locked(&mut i);
+             i.locked = true;
+             i.store.invalidate()?;
+             i.queue.jobs.clear();
+@@ -1004,11 +993,7 @@
+             ));
+         }
+         let payload = output.stdout.len();
+-        let r = if log_read {
+-            Response::parse_log(output)?
+-        } else {
+-            Response::parse(output)?
+-        };
++        let r = Response::parse(output)?;
+         let mut i = self.lock()?;
+         i.store.record_response(resource, &r, payload, now())?;
+         if let Some(url) = notification_url {
+@@ -1024,7 +1009,6 @@
+             i.store.conn.execute("INSERT INTO api_validator(url,next_at) VALUES(?,?) ON CONFLICT(url) DO UPDATE SET next_at=excluded.next_at",rusqlite::params![url,deadline as i64])?;
+         }
+         if r.status == 401 {
+-            Self::cancel_logs_locked(&mut i);
+             i.locked = true;
+             i.store.invalidate()?;
+             i.queue.jobs.clear();
+@@ -1047,7 +1031,6 @@
+             return Err(Error::Safe("Obsolete identity result discarded.".into()));
+         }
+         if let Err(err) = i.store.bind(&id) {
+-            Self::cancel_logs_locked(&mut i);
+             i.locked = true;
+             i.store.invalidate()?;
+             i.queue.jobs.clear();
+@@ -1063,8 +1046,8 @@
+         c: &CancellationToken,
+         generation: u64,
+     ) -> Result<()> {
+-        if let Job::Logs(job) = &w.job {
+-            return self.execute_logs(t, c, generation, job).await;
++        if let Job::Query(job) = &w.job {
++            return self.execute_query(t, c, generation, job, w.manual).await;
+         }
+         if let Job::Conversation(job) = &w.job {
+             return self.execute_conversation(t, c, generation, job).await;
+@@ -1138,7 +1121,7 @@
+                 repo: repo.clone(),
+                 number: *number,
+             },
+-            Job::Logs(_)
++            Job::Query(_)
+             | Job::Conversation(_)
+             | Job::Changes(_)
+             | Job::Activity(_)
+@@ -1256,7 +1239,7 @@
+                     i.store.put(&key, &pr, generation)?;
+                 }
+             }
+-            Job::Logs(_)
++            Job::Query(_)
+             | Job::Conversation(_)
+             | Job::Changes(_)
+             | Job::Activity(_)
+--- a/crates/gitjuke-core/src/runtime_sync.rs
++++ b/crates/gitjuke-core/src/runtime_sync.rs
+@@ -15,7 +15,7 @@
+             Job::Heads(_) | Job::Contexts(_) | Job::Conversation(_) => "graphql",
+             Job::Discover(p) if p.source == "authored" => "graphql",
+             Job::Discover(p) if p.source != "teams" => "search",
+-            Job::Authored(_) => "search",
++            Job::Authored(_) | Job::Query(_) => "search",
+             _ => "core",
+         }
+     }
+@@ -73,6 +73,12 @@
+             i.store.set_due("manual-boundary", now())?;
+             crate::control_sweep::run(&mut i.store.conn, "manual", serde_json::json!({}))?;
+             self.schedule_heads_locked(&mut i, true)?;
++        }
++        if manual
++            && i.reader_open
++            && let Some((id, version)) = i.active_query
++        {
++            Self::queue_query(&mut i, id, version, 1, true)?;
+         }
+         let selected = i.selected.clone();
+         let open = i.reader_open;
+--- /dev/null
++++ b/crates/gitjuke-core/src/saved_queries.rs
+@@ -0,0 +1,521 @@
++//! Local configuration and version-bound, disposable Search pages. No watch enrollment.
++use crate::{
++    Error, Result, github,
++    model::*,
++    now,
++    runtime::{Inner, Job, Runtime},
++    store::{Store, bump},
++    transport::{ReadOp, Transport},
++};
++use rusqlite::{OptionalExtension, params};
++use serde::{Deserialize, Serialize};
++use tokio_util::sync::CancellationToken;
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(rename_all = "camelCase")]
++pub struct SavedQuery {
++    pub id: i64,
++    pub name: String,
++    pub search: String,
++    pub version: u64,
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(rename_all = "camelCase")]
++pub struct QueryList {
++    pub items: Vec<SavedQuery>,
++    pub next_offset: Option<usize>,
++    pub revision: u64,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct QueryJob {
++    pub id: i64,
++    pub version: u64,
++    pub run: u64,
++    pub page: u32,
++}
++impl QueryJob {
++    pub fn key(&self) -> String {
++        format!("query:{}:{}:{}", self.id, self.version, self.page)
++    }
++}
++#[derive(Clone, Debug, Serialize, Deserialize)]
++#[serde(rename_all = "camelCase")]
++pub struct QueryResults {
++    pub items: Vec<PullRequest>,
++    pub total: u64,
++    pub next_page: Option<u32>,
++    pub source_complete: bool,
++    pub run: u64,
++    pub generation: u64,
++}
++#[derive(Clone, Debug, Serialize)]
++#[serde(rename_all = "camelCase")]
++pub struct QueryPage {
++    pub query: SavedQuery,
++    pub items: Vec<PullRequest>,
++    pub total: Option<u64>,
++    pub cached_count: usize,
++    pub next_page: Option<u32>,
++    pub fetched_at: Option<u64>,
++    pub complete: bool,
++    pub error: Option<String>,
++    pub revision: u64,
++}
++fn invalid() -> Error {
++    Error::Safe("Query no longer exists or was edited. Reopen its current version.".into())
++}
++impl Store {
++    pub fn saved_query(&self, id: i64) -> Result<SavedQuery> {
++        self.conn
++            .query_row(
++                "SELECT id,name,search,version FROM saved_query WHERE id=?",
++                [id],
++                |r| {
++                    Ok(SavedQuery {
++                        id: r.get(0)?,
++                        name: r.get(1)?,
++                        search: r.get(2)?,
++                        version: r.get::<_, i64>(3)? as u64,
++                    })
++                },
++            )
++            .optional()?
++            .ok_or_else(invalid)
++    }
++    pub fn saved_queries(&self, offset: usize) -> Result<QueryList> {
++        let tx = self.conn.unchecked_transaction()?;
++        let mut q = self.conn.prepare(
++            "SELECT id,name,search,version FROM saved_query ORDER BY id LIMIT 101 OFFSET ?",
++        )?;
++        let mut items = q
++            .query_map([i64::try_from(offset).unwrap_or(i64::MAX)], |r| {
++                Ok(SavedQuery {
++                    id: r.get(0)?,
++                    name: r.get(1)?,
++                    search: r.get(2)?,
++                    version: r.get::<_, i64>(3)? as u64,
++                })
++            })?
++            .collect::<rusqlite::Result<Vec<_>>>()?;
++        let more = items.len() > 100;
++        items.truncate(100);
++        let revision = self.revision()?;
++        drop(q);
++        tx.commit()?;
++        Ok(QueryList {
++            items,
++            next_offset: more.then_some(offset.saturating_add(100)),
++            revision,
++        })
++    }
++    pub fn save_query(
++        &mut self,
++        id: Option<i64>,
++        version: Option<u64>,
++        name: &str,
++        search: &str,
++    ) -> Result<SavedQuery> {
++        let name = name.trim();
++        let search = search.trim();
++        if name.is_empty()
++            || name.len() > 160
++            || search.is_empty()
++            || search.len() > 2048
++            || name.chars().any(char::is_control)
++            || search.chars().any(char::is_control)
++        {
++            return Err(Error::Safe("Use a name up to 160 UTF-8 bytes and a search up to 2048 bytes, without control characters.".into()));
++        }
++        let tx = self.conn.transaction()?;
++        let id = if let Some(id) = id {
++            if tx.execute(
++                "UPDATE saved_query SET name=?,search=?,version=version+1,limited=0 WHERE id=? AND version=?",
++                params![name, search, id, version.and_then(|v| i64::try_from(v).ok())],
++            )? != 1
++            {
++                return Err(invalid());
++            }
++            id
++        } else {
++            tx.execute(
++                "INSERT INTO saved_query(name,search,version) VALUES(?,?,1)",
++                params![name, search],
++            )?;
++            tx.last_insert_rowid()
++        };
++        bump(&tx)?;
++        tx.commit()?;
++        self.saved_query(id)
++    }
++    pub fn delete_query(&mut self, id: i64, version: u64) -> Result<()> {
++        let tx = self.conn.transaction()?;
++        if tx.execute(
++            "DELETE FROM saved_query WHERE id=? AND version=?",
++            params![id, i64::try_from(version).map_err(|_| invalid())?],
++        )? != 1
++        {
++            return Err(invalid());
++        }
++        tx.execute(
++            "DELETE FROM due WHERE key=?",
++            [format!("query-denied:{id}")],
++        )?;
++        bump(&tx)?;
++        tx.commit()?;
++        Ok(())
++    }
++    fn query_current(&self, j: &QueryJob) -> Result<bool> {
++        match self.saved_query(j.id) {
++            Ok(q) => Ok(
++                q.version == j.version && j.run > self.due(&format!("query-denied:{}", j.id))?
++            ),
++            Err(Error::Safe(_)) => Ok(false),
++            Err(e) => Err(e),
++        }
++    }
++    pub fn query_page(&mut self, id: i64, version: u64, page: u32) -> Result<QueryPage> {
++        self.conn.execute_batch("SAVEPOINT saved_query_read")?;
++        let result = self.query_page_in(id, version, page);
++        match result {
++            Ok(page) => {
++                if let Err(err) = self.conn.execute_batch("RELEASE saved_query_read") {
++                    let _ = self
++                        .conn
++                        .execute_batch("ROLLBACK TO saved_query_read; RELEASE saved_query_read");
++                    return Err(err.into());
++                }
++                Ok(page)
++            }
++            Err(err) => {
++                let _ = self
++                    .conn
++                    .execute_batch("ROLLBACK TO saved_query_read; RELEASE saved_query_read");
++                Err(err)
++            }
++        }
++    }
++    fn query_page_in(&mut self, id: i64, version: u64, page: u32) -> Result<QueryPage> {
++        if !(1..=10).contains(&page) {
++            return Err(Error::Safe(
++                "Search exposes at most ten 100-result pages.".into(),
++            ));
++        }
++        let query = self.saved_query(id)?;
++        if query.version != version {
++            return Err(invalid());
++        }
++        let generation = self.generation()?;
++        let key = |p| {
++            QueryJob {
++                id,
++                version,
++                page: p,
++                run: 0,
++            }
++            .key()
++        };
++        // At most ten bounded cached pages. Never combine different Search traversals.
++        let denied_run = self.due(&format!("query-denied:{id}"))?;
++        let first = self.get::<QueryResults>(&key(1))?;
++        let run = first
++            .data
++            .as_ref()
++            .filter(|p| p.generation == generation && p.run > denied_run)
++            .map(|p| p.run);
++        let mut ids = std::collections::HashSet::new();
++        let mut cached_count = 0;
++        let mut all_complete = true;
++        let mut selected = None;
++        for n in 1..=10 {
++            let s = if n == 1 {
++                first.clone()
++            } else {
++                self.get::<QueryResults>(&key(n))?
++            };
++            if n == page {
++                selected = Some(s.clone());
++            }
++            if let Some(p) = &s.data
++                && Some(p.run) == run
++                && p.generation == generation
++            {
++                for item in &p.items {
++                    if !ids.insert(item.id.clone()) {
++                        all_complete = false;
++                    }
++                }
++                cached_count = ids.len();
++                all_complete &= first
++                    .data
++                    .as_ref()
++                    .is_some_and(|first| first.total == p.total)
++                    && p.source_complete;
++            }
++        }
++        let s = selected.unwrap();
++        let data = s
++            .data
++            .filter(|p| Some(p.run) == run && p.generation == generation);
++        let total = first
++            .data
++            .as_ref()
++            .filter(|p| p.generation == generation && p.run > denied_run)
++            .map(|p| p.total);
++        let complete = total.is_some_and(|t| t <= 1000 && cached_count as u64 == t)
++            && all_complete
++            && first.complete;
++        let error=s.error.or(first.error).or_else(||(denied_run>0&&run.is_none()).then(||"Query access unavailable. Refresh after restoring access.".into())).or_else(||data.as_ref().filter(|p|!p.source_complete).map(|_|"GitHub returned a partial or Search-limited set. Counts are not a complete membership claim.".into()));
++        Ok(QueryPage {
++            query,
++            items: data.as_ref().map(|p| p.items.clone()).unwrap_or_default(),
++            total,
++            cached_count,
++            next_page: data.as_ref().and_then(|p| p.next_page),
++            fetched_at: if data.is_some() { s.fetched_at } else { None },
++            complete,
++            error,
++            revision: self.revision()?,
++        })
++    }
++}
++impl Runtime {
++    pub fn saved_queries(&self, offset: usize) -> Result<QueryList> {
++        self.lock()?.store.saved_queries(offset)
++    }
++    pub fn save_query(
++        &self,
++        id: Option<i64>,
++        version: Option<u64>,
++        name: String,
++        search: String,
++    ) -> Result<SavedQuery> {
++        let mut i = self.lock()?;
++        let q = Self::store_operation(&mut i, |s| s.save_query(id, version, &name, &search))?;
++        if i.active_query.is_some_and(|a| Some(a.0) == id) {
++            i.active_query = None;
++        }
++        let revision = i.store.revision()?;
++        drop(i);
++        (self.on_revision)(revision);
++        Ok(q)
++    }
++    pub fn delete_query(&self, id: i64, version: u64) -> Result<()> {
++        let mut i = self.lock()?;
++        Self::store_operation(&mut i, |s| s.delete_query(id, version))?;
++        if i.active_query.is_some_and(|a| a.0 == id) {
++            i.active_query = None;
++        }
++        let revision = i.store.revision()?;
++        drop(i);
++        (self.on_revision)(revision);
++        Ok(())
++    }
++    pub fn query_page(&self, id: i64, version: u64, page: u32) -> Result<QueryPage> {
++        let mut i = self.lock()?;
++        if i.locked {
++            return Err(Error::Safe(i.health.clone()));
++        }
++        Self::cached_operation(&mut i, |s| s.query_page(id, version, page))
++    }
++    pub fn activate_query(&self, id: Option<i64>, version: Option<u64>) -> Result<()> {
++        let mut i = self.lock()?;
++        i.active_query = None;
++        if let Some(id) = id {
++            let q = i.store.saved_query(id)?;
++            if Some(q.version) != version {
++                return Err(invalid());
++            }
++            i.active_query = Some((id, q.version));
++        }
++        drop(i);
++        self.notify_sync();
++        Ok(())
++    }
++    pub fn request_query(&self, id: i64, version: u64, page: u32) -> Result<()> {
++        let mut i = self.lock()?;
++        Self::queue_query(&mut i, id, version, page, true)?;
++        drop(i);
++        self.notify_sync();
++        Ok(())
++    }
++    pub(crate) fn queue_query(
++        i: &mut Inner,
++        id: i64,
++        version: u64,
++        page: u32,
++        manual: bool,
++    ) -> Result<()> {
++        if i.locked {
++            return Err(Error::Safe(i.health.clone()));
++        }
++        Self::require_remote_storage(i)?;
++        let q = i.store.saved_query(id)?;
++        if q.version != version || !(1..=10).contains(&page) {
++            return Err(invalid());
++        }
++        let limited: bool =
++            i.store
++                .conn
++                .query_row("SELECT limited FROM saved_query WHERE id=?", [id], |r| {
++                    r.get(0)
++                })?;
++        if !manual && limited {
++            i.store.set_due("saved-query", now() + 60)?;
++            return Ok(());
++        }
++        if manual && limited {
++            i.store
++                .conn
++                .execute("UPDATE saved_query SET limited=0 WHERE id=?", [id])?;
++        }
++        let first = i.store.get::<QueryResults>(
++            &QueryJob {
++                id,
++                version,
++                page: 1,
++                run: 0,
++            }
++            .key(),
++        )?;
++        let run = if page == 1 {
++            i.store.revision()?.saturating_add(1)
++        } else {
++            let generation = i.store.generation()?;
++            let denied_run = i.store.due(&format!("query-denied:{id}"))?;
++            let p = first
++                .data
++                .filter(|p| p.generation == generation && p.run > denied_run)
++                .ok_or_else(|| Error::Safe("Refresh the first query page before paging.".into()))?;
++            p.run
++        };
++        let j = QueryJob {
++            id,
++            version,
++            run,
++            page,
++        };
++        i.queue.discard_queries();
++        Self::store_operation(i, |s| {
++            s.enqueue(
++                "saved-query:active",
++                &Job::Query(j.clone()),
++                manual,
++                manual,
++                0,
++                true,
++            )?;
++            s.error(
++                &j.key(),
++                "Queued — waiting for the serialized reader and GitHub deadlines.",
++            )?;
++            s.set_due("saved-query", now() + 60)
++        })?;
++        Ok(())
++    }
++    pub(crate) async fn execute_query(
++        &self,
++        t: &Transport,
++        c: &CancellationToken,
++        generation: u64,
++        j: &QueryJob,
++        manual: bool,
++    ) -> Result<()> {
++        {
++            let i = self.lock()?;
++            if (!manual && (!i.reader_open || i.active_query != Some((j.id, j.version))))
++                || !i.store.query_current(j)?
++            {
++                return Ok(());
++            }
++        }
++        let before = self.identity(t, c, generation).await?;
++        let q = self.lock()?.store.saved_query(j.id)?;
++        let outcome = async {
++            let r = self
++                .response(
++                    t,
++                    ReadOp::Search {
++                        query: format!("{} is:pr", q.search),
++                        page: j.page,
++                        size: 100,
++                    },
++                    c,
++                )
++                .await?;
++            let after = self.identity(t, c, generation).await?;
++            if before.id != after.id {
++                return Err(Error::Safe("Identity changed during query read.".into()));
++            }
++            let p = github::parse_search(&r)?;
++            if p.prs.len() > 100 {
++                return Err(Error::Safe("Invalid Search page.".into()));
++            }
++            let reached = u64::from(j.page - 1) * 100 + p.prs.len() as u64;
++            let source_complete =
++                !p.incomplete && p.total <= 1000 && (reached >= p.total || p.prs.len() == 100);
++            Ok(QueryResults {
++                items: p.prs,
++                total: p.total,
++                next_page: (u64::from(j.page) * 100 < p.total && j.page < 10).then_some(j.page + 1),
++                source_complete,
++                run: j.run,
++                generation,
++            })
++        }
++        .await;
++        let mut i = self.lock()?;
++        if c.is_cancelled()
++            || i.locked
++            || i.store.generation()? != generation
++            || !i.store.query_current(j)?
++        {
++            return Ok(());
++        }
++        // Only one process runs; a continuation must still belong to the visible first page.
++        if j.page > 1 {
++            let first = i.store.get::<QueryResults>(
++                &QueryJob {
++                    page: 1,
++                    ..j.clone()
++                }
++                .key(),
++            )?;
++            if !first
++                .data
++                .is_some_and(|p| p.run == j.run && p.generation == generation)
++            {
++                return Ok(());
++            }
++        }
++        match outcome {
++            Ok(p) => {
++                if serde_json::to_vec(&p)?.len() > 900 * 1024 {
++                    i.store
++                        .conn
++                        .execute("UPDATE saved_query SET limited=1 WHERE id=?", [j.id])?;
++                    i.store.error(
++                        &j.key(),
++                        "Search page exceeds the local IPC budget; narrow the query.",
++                    )?;
++                    return Ok(());
++                }
++                i.store.put(&j.key(), &p, generation)?;
++            }
++            Err(e) => {
++                if matches!(e, Error::Storage(_) | Error::StorageUnavailable(_)) {
++                    return Err(e);
++                }
++                if e.to_string().contains("output limit") {
++                    i.store
++                        .conn
++                        .execute("UPDATE saved_query SET limited=1 WHERE id=?", [j.id])?;
++                }
++                if matches!(e, Error::Denied) {
++                    let cutoff = i.store.revision()?.max(j.run);
++                    i.store.set_due(&format!("query-denied:{}", j.id), cutoff)?;
++                }
++                i.store.error(&j.key(), &e.to_string())?;
++            }
++        }
++        Ok(())
++    }
++}
+--- a/crates/gitjuke-core/src/store.rs
++++ b/crates/gitjuke-core/src/store.rs
+@@ -2,7 +2,7 @@
+ use crate::{Error, Result, model::*, now};
+ use rusqlite::{Connection, OptionalExtension, params};
+ use std::path::Path;
+-pub const SCHEMA_VERSION: i64 = 14;
++pub const SCHEMA_VERSION: i64 = 15;
+ pub const CONTENT_LIMIT: i64 = 500 * 1024 * 1024;
+ pub const MIN_FREE_BYTES: u64 = 1024 * 1024 * 1024;
+ pub struct Store {
+--- a/crates/gitjuke-core/src/watch_store.rs
++++ b/crates/gitjuke-core/src/watch_store.rs
+@@ -32,7 +32,8 @@
+             || value["Discover"]["source"] == "authored"
+         {
+             "graphql"
+-        } else if value.get("Authored").is_some()
++        } else if value.get("Query").is_some()
++            || value.get("Authored").is_some()
+             || value.get("Discover").is_some() && value["Discover"]["source"] != "teams"
+         {
+             "search"
+--- /dev/null
++++ b/crates/gitjuke-core/tests/saved_queries.rs
+@@ -0,0 +1,380 @@
++use gitjuke_core::{runtime::Runtime, store::Store};
++use serde_json::{Value, json};
++use std::{os::unix::fs::PermissionsExt, time::Duration};
++use tempfile::TempDir;
++fn scenario(d: &TempDir, v: Value) {
++    let p = d.path().join("scenario.tmp");
++    std::fs::write(&p, serde_json::to_vec(&v).unwrap()).unwrap();
++    std::fs::rename(p, d.path().join("scenario.json")).unwrap();
++}
++fn config() -> Value {
++    json!({"authored":0,"no_teams":true,"direct_ids":[],"query_ids":(1..=150).collect::<Vec<_>>()})
++}
++async fn until(mut f: impl FnMut() -> bool) {
++    tokio::time::timeout(Duration::from_secs(40), async {
++        while !f() {
++            tokio::time::sleep(Duration::from_millis(25)).await;
++        }
++    })
++    .await
++    .expect("query fixture state");
++}
++async fn start() -> (TempDir, Runtime) {
++    let d = tempfile::tempdir().unwrap();
++    let gh = d.path().join("gh");
++    std::fs::write(&gh, include_str!("support/gh.py")).unwrap();
++    std::fs::set_permissions(&gh, std::fs::Permissions::from_mode(0o700)).unwrap();
++    scenario(&d, config());
++    let mut s = Store::open(&d.path().join("db")).unwrap();
++    let mut settings = s.settings().unwrap();
++    settings.paused = true;
++    settings.gh_path = Some(gh.display().to_string());
++    settings.config_dir = Some(d.path().join("config").display().to_string());
++    s.save_settings(&settings).unwrap();
++    drop(s);
++    let r = Runtime::start(d.path().join("db"), |_| {}).unwrap();
++    r.refresh().unwrap();
++    until(|| {
++        r.status()
++            .is_ok_and(|s| !s.locked && !s.busy && s.queued == 0)
++    })
++    .await;
++    (d, r)
++}
++async fn read(r: &Runtime, q: &gitjuke_core::saved_queries::SavedQuery, page: u32) {
++    r.request_query(q.id, q.version, page).unwrap();
++    until(|| {
++        r.query_page(q.id, q.version, page).is_ok_and(|p| {
++            p.fetched_at.is_some() && p.error.as_ref().is_none_or(|e| !e.starts_with("Queued"))
++        })
++    })
++    .await;
++}
++#[test]
++fn crud_restart_compare_and_swap_and_clear_preserve_configuration() {
++    let d = tempfile::tempdir().unwrap();
++    let p = d.path().join("db");
++    let mut s = Store::open(&p).unwrap();
++    assert!(s.save_query(None, None, " ", "repo:a/b").is_err());
++    let q = s.save_query(None, None, " Review ", " repo:a/b ").unwrap();
++    assert_eq!(q.name, "Review");
++    let q2 = s
++        .save_query(Some(q.id), Some(q.version), "Renamed", "is:closed")
++        .unwrap();
++    assert!(
++        s.save_query(Some(q.id), Some(q.version), "Stale", "is:open")
++            .is_err()
++    );
++    assert!(s.delete_query(q.id, q.version).is_err());
++    let mut settings = s.settings().unwrap();
++    settings.paused = true;
++    settings.gh_path = Some("/explicit/gh".into());
++    s.save_settings(&settings).unwrap();
++    s.clear().unwrap();
++    drop(s);
++    let mut s = Store::open(&p).unwrap();
++    assert_eq!(s.saved_query(q.id).unwrap(), q2);
++    assert!(s.settings().unwrap().paused);
++    assert_eq!(
++        s.settings().unwrap().gh_path.as_deref(),
++        Some("/explicit/gh")
++    );
++    s.delete_query(q2.id, q2.version).unwrap();
++    let q3 = s.save_query(None, None, "Next", "is:open").unwrap();
++    assert_ne!(q3.id, q.id);
++    drop(s);
++    assert_eq!(
++        Store::open(&p)
++            .unwrap()
++            .saved_queries(0)
++            .unwrap()
++            .items
++            .len(),
++        1
++    );
++}
++#[test]
++fn navigation_pages_and_upgrade_from_14() {
++    let d = tempfile::tempdir().unwrap();
++    let p = d.path().join("db");
++    drop(Store::open(&p).unwrap());
++    let c = rusqlite::Connection::open(&p).unwrap();
++    c.execute_batch("DROP TABLE saved_query; PRAGMA user_version=14;")
++        .unwrap();
++    drop(c);
++    let mut s = Store::open(&p).unwrap();
++    for n in 0..101 {
++        s.save_query(None, None, &format!("Query {n}"), "is:open")
++            .unwrap();
++    }
++    assert_eq!(s.saved_queries(0).unwrap().items.len(), 100);
++    assert_eq!(s.saved_queries(0).unwrap().next_offset, Some(100));
++    assert_eq!(s.saved_queries(100).unwrap().items.len(), 1);
++}
++#[tokio::test]
++async fn pagination_counts_restart_empty_and_no_watch_enrollment() {
++    let (d, r) = start().await;
++    let q = r
++        .save_query(None, None, "Local".into(), "repo:a/b".into())
++        .unwrap();
++    r.activate_query(Some(q.id), Some(q.version)).unwrap();
++    read(&r, &q, 1).await;
++    let p = r.query_page(q.id, q.version, 1).unwrap();
++    assert_eq!(p.items.len(), 100);
++    assert_eq!(p.cached_count, 100);
++    assert_eq!(p.total, Some(150));
++    assert!(!p.complete);
++    assert_eq!(p.next_page, Some(2));
++    read(&r, &q, 2).await;
++    let p = r.query_page(q.id, q.version, 2).unwrap();
++    assert_eq!(p.items.len(), 50);
++    assert_eq!(p.cached_count, 150);
++    assert!(p.complete);
++    assert_eq!(r.status().unwrap().watch_count, 0);
++    r.shutdown().await;
++    let r = Runtime::start(d.path().join("db"), |_| {}).unwrap();
++    assert!(r.query_page(q.id, q.version, 1).is_err());
++    r.refresh().unwrap();
++    until(|| r.status().is_ok_and(|s| !s.locked)).await;
++    assert_eq!(r.query_page(q.id, q.version, 2).unwrap().items.len(), 50);
++    let mut v = config();
++    v["query_ids"] = json!([]);
++    scenario(&d, v);
++    read(&r, &q, 1).await;
++    until(|| r.query_page(q.id, q.version, 1).unwrap().total == Some(0)).await;
++    let p = r.query_page(q.id, q.version, 1).unwrap();
++    assert!(p.complete);
++    assert_eq!(p.cached_count, 0);
++    assert!(r.query_page(q.id, q.version, 2).unwrap().items.is_empty());
++    r.shutdown().await;
++}
++#[tokio::test]
++async fn partial_denied_and_search_ceiling_are_honest() {
++    let (d, r) = start().await;
++    let q = r
++        .save_query(None, None, "Local".into(), "repo:a/b".into())
++        .unwrap();
++    let mut v = config();
++    v["query_partial"] = json!(true);
++    v["query_total"] = json!(1001);
++    scenario(&d, v);
++    read(&r, &q, 1).await;
++    let p = r.query_page(q.id, q.version, 1).unwrap();
++    assert!(!p.complete);
++    assert_eq!(p.items.len(), 100);
++    assert!(p.error.unwrap().contains("partial"));
++    let neighbor = r
++        .save_query(None, None, "Neighbor".into(), "repo:a/b".into())
++        .unwrap();
++    read(&r, &neighbor, 1).await;
++    let sql = rusqlite::Connection::open(d.path().join("db")).unwrap();
++    let before: i64 = sql
++        .query_row(
++            "SELECT CAST(value AS INTEGER) FROM meta WHERE key='generation'",
++            [],
++            |r| r.get(0),
++        )
++        .unwrap();
++    let mut v = config();
++    v["query_denied"] = json!(true);
++    scenario(&d, v);
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| {
++        r.query_page(q.id, q.version, 1)
++            .is_ok_and(|p| p.error.is_some_and(|e| e.contains("unavailable")))
++    })
++    .await;
++    let p = r.query_page(q.id, q.version, 1).unwrap();
++    assert!(p.items.is_empty());
++    assert!(!p.complete);
++    assert_eq!(p.total, None);
++    assert_eq!(
++        r.query_page(neighbor.id, neighbor.version, 1)
++            .unwrap()
++            .items
++            .len(),
++        100,
++        "query denial must preserve unrelated query cache"
++    );
++    assert_eq!(
++        sql.query_row(
++            "SELECT CAST(value AS INTEGER) FROM meta WHERE key='generation'",
++            [],
++            |r| r.get::<_, i64>(0)
++        )
++        .unwrap(),
++        before,
++        "query denial is scoped"
++    );
++    r.shutdown().await;
++}
++#[tokio::test]
++async fn edits_and_deletion_during_fetch_reject_late_results() {
++    let (d, r) = start().await;
++    let q = r
++        .save_query(None, None, "Before".into(), "repo:a/b".into())
++        .unwrap();
++    let mut v = config();
++    v["slow_query"] = json!(0.8);
++    scenario(&d, v);
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| d.path().join("query-started").exists()).await;
++    let edited = r
++        .save_query(
++            Some(q.id),
++            Some(q.version),
++            "After".into(),
++            "is:closed".into(),
++        )
++        .unwrap();
++    until(|| r.status().is_ok_and(|s| !s.busy && s.queued == 0)).await;
++    assert!(r.query_page(q.id, q.version, 1).is_err());
++    let sql = rusqlite::Connection::open(d.path().join("db")).unwrap();
++    assert_eq!(
++        sql.query_row(
++            "SELECT COUNT(*) FROM content WHERE key LIKE 'query:%'",
++            [],
++            |r| r.get::<_, i64>(0)
++        )
++        .unwrap(),
++        0,
++        "obsolete results must never commit, even invisibly"
++    );
++    assert!(
++        r.query_page(edited.id, edited.version, 1)
++            .unwrap()
++            .items
++            .is_empty()
++    );
++    std::fs::remove_file(d.path().join("query-started")).unwrap();
++    r.request_query(edited.id, edited.version, 1).unwrap();
++    until(|| d.path().join("query-started").exists()).await;
++    r.delete_query(edited.id, edited.version).unwrap();
++    until(|| r.status().is_ok_and(|s| !s.busy && s.queued == 0)).await;
++    assert!(r.query_page(edited.id, edited.version, 1).is_err());
++    assert!(r.saved_queries(0).unwrap().items.is_empty());
++    r.shutdown().await;
++}
++#[tokio::test]
++async fn clear_and_identity_change_reject_inflight_query() {
++    let (d, r) = start().await;
++    let q = r
++        .save_query(None, None, "Local".into(), "repo:a/b".into())
++        .unwrap();
++    let mut v = config();
++    v["slow_query"] = json!(0.8);
++    scenario(&d, v);
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| d.path().join("query-started").exists()).await;
++    r.clear().unwrap();
++    until(|| r.status().is_ok_and(|s| !s.busy)).await;
++    assert!(r.query_page(q.id, q.version, 1).unwrap().items.is_empty());
++    let mut v = config();
++    v["query_mismatch"] = json!(true);
++    scenario(&d, v);
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| r.status().is_ok_and(|s| s.locked)).await;
++    assert!(r.query_page(q.id, q.version, 1).is_err());
++    r.shutdown().await;
++}
++
++#[tokio::test]
++async fn transient_failure_retains_cache_quota_blocks_search_and_inactive_queries_do_not_run() {
++    let (d, r) = start().await;
++    let q = r
++        .save_query(None, None, "Local".into(), "repo:a/b".into())
++        .unwrap();
++    read(&r, &q, 1).await;
++    let mut v = config();
++    v["query_failure"] = json!(true);
++    scenario(&d, v);
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| {
++        r.query_page(q.id, q.version, 1)
++            .is_ok_and(|p| p.error.is_some_and(|e| e.contains("HTTP 500")))
++    })
++    .await;
++    assert_eq!(r.query_page(q.id, q.version, 1).unwrap().items.len(), 100);
++    let mut v = config();
++    v["query_rate"] = json!(true);
++    scenario(&d, v);
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| {
++        r.status().is_ok_and(|s| {
++            s.budgets
++                .iter()
++                .any(|b| b.resource == "search" && b.blocked_until > gitjuke_core::now())
++        })
++    })
++    .await;
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| r.status().is_ok_and(|s| !s.busy)).await;
++    let before = std::fs::read_to_string(d.path().join("reads"))
++        .unwrap()
++        .lines()
++        .filter(|l| l.contains("search/issues") && !l.contains("user-review-requested"))
++        .count();
++    tokio::time::sleep(Duration::from_millis(1200)).await;
++    let after = std::fs::read_to_string(d.path().join("reads"))
++        .unwrap()
++        .lines()
++        .filter(|l| l.contains("search/issues") && !l.contains("user-review-requested"))
++        .count();
++    assert_eq!(before, after);
++    assert_eq!(r.query_page(q.id, q.version, 1).unwrap().items.len(), 100);
++    r.shutdown().await;
++    // A new, inactive runtime does not start an automatic Search for local definitions.
++    let (d, r) = start().await;
++    r.save_query(None, None, "Inactive".into(), "repo:a/b".into())
++        .unwrap();
++    r.set_pause(false).unwrap();
++    until(|| r.status().is_ok_and(|s| !s.busy && s.queued == 0)).await;
++    let reads = std::fs::read_to_string(d.path().join("reads")).unwrap();
++    assert!(
++        !reads
++            .lines()
++            .any(|l| l.contains("search/issues") && !l.contains("user-review-requested"))
++    );
++    r.shutdown().await;
++}
++
++#[tokio::test]
++async fn oversized_page_is_limited_without_clipping_or_automatic_retry() {
++    let (d, r) = start().await;
++    let q = r
++        .save_query(None, None, "Local".into(), "repo:a/b".into())
++        .unwrap();
++    let mut v = config();
++    v["query_ids"] = json!([1]);
++    v["query_title_bytes"] = json!(900 * 1024);
++    scenario(&d, v);
++    r.activate_query(Some(q.id), Some(q.version)).unwrap();
++    r.request_query(q.id, q.version, 1).unwrap();
++    until(|| {
++        r.query_page(q.id, q.version, 1)
++            .is_ok_and(|p| p.error.is_some_and(|e| e.contains("IPC budget")))
++    })
++    .await;
++    assert!(r.query_page(q.id, q.version, 1).unwrap().items.is_empty());
++    let c = rusqlite::Connection::open(d.path().join("db")).unwrap();
++    assert_eq!(
++        c.query_row("SELECT limited FROM saved_query WHERE id=?", [q.id], |r| {
++            r.get::<_, i64>(0)
++        })
++        .unwrap(),
++        1
++    );
++    c.execute("UPDATE due SET at=0 WHERE key='saved-query'", [])
++        .unwrap();
++    r.set_pause(false).unwrap();
++    until(|| r.status().is_ok_and(|s| !s.busy && s.queued == 0)).await;
++    let reads = std::fs::read_to_string(d.path().join("reads")).unwrap();
++    assert_eq!(
++        reads
++            .lines()
++            .filter(|l| l.contains("search/issues") && !l.contains("user-review-requested"))
++            .count(),
++        1
++    );
++    r.shutdown().await;
++}
+--- a/crates/gitjuke-core/tests/store.rs
++++ b/crates/gitjuke-core/tests/store.rs
+@@ -290,6 +290,6 @@
+     for name in names {
+         c.execute_batch(&format!("DROP TRIGGER {name}")).unwrap();
+     }
+-    c.execute_batch("DROP TABLE shared_bytes;DROP TABLE shared_check_lru")
+-        .unwrap();
+-}
++    c.execute_batch("DROP TABLE saved_query;DROP TABLE shared_bytes;DROP TABLE shared_check_lru")
++        .unwrap();
++}
+--- a/crates/gitjuke-core/tests/support/gh.py
++++ b/crates/gitjuke-core/tests/support/gh.py
+@@ -17,7 +17,7 @@
+  count=config.get('contexts',2);size=int(query.get('variables',{}).get('first',25));nodes=[]
+  for i in range(offset,min(count,offset+size)):
+   if i%2:nodes.append({'__typename':'StatusContext','id':'SC_'+str(i),'context':'External '+str(i),'state':'SUCCESS','createdAt':config.get('check_time','2026-10-17T00:00:00Z'),'targetUrl':'https://ci.example/check'})
+-  else:nodes.append({'__typename':'CheckRun','id':'CR_'+str(i),'name':'Actions '+str(i),'status':'COMPLETED','conclusion':'SUCCESS','detailsUrl':('https://github.com/a/b/actions/runs/'+str(2+i)+'/job/'+str(100+i)) if config.get('actions_logs') else 'https://github.com/a/b/actions/runs/2','checkSuite':{'id':'CS_'+str(i),'status':'COMPLETED','conclusion':'SUCCESS','updatedAt':config.get('check_time','2026-10-17T00:00:00Z'),'commit':{'oid':sha},'workflowRun':{'databaseId':2+i,'runAttempt':config.get('attempt',1)}}})
++  else:nodes.append({'__typename':'CheckRun','id':'CR_'+str(i),'name':'Actions '+str(i),'status':'COMPLETED','conclusion':'SUCCESS','detailsUrl':'https://github.com/a/b/actions/runs/2','checkSuite':{'id':'CS_'+str(i),'status':'COMPLETED','conclusion':'SUCCESS','updatedAt':config.get('check_time','2026-10-17T00:00:00Z'),'commit':{'oid':sha},'workflowRun':{'databaseId':2+i,'runAttempt':config.get('attempt',1)}}})
+  return {'oid':sha,'statusCheckRollup':{'contexts':{'totalCount':count,'pageInfo':{'hasNextPage':offset+size<count,'endCursor':str(offset+size) if offset+size<count else None},'nodes':nodes}}}
+ status=200;remaining=4900;bucket='core'
+ if query and config.get('overflow_batches') and query['query'].startswith('query WatchHeads') and len(query.get('variables',{}).get('ids',[]))>2:
+@@ -72,11 +72,24 @@
+   body=[] if config.get('no_teams') else [{'node_id':'T_1','slug':'reviewers','organization':{'login':'o'}}]
+  elif endpoint.startswith('search/issues'):
+   bucket='search';url=urllib.parse.urlparse(endpoint);params=urllib.parse.parse_qs(url.query);q=params['q'][0];page=int(params.get('page',['1'])[0]);size=int(params.get('per_page',['100'])[0]);ids=config.get('team_ids',[1,3]) if 'team-review-requested:' in q else config.get('direct_ids',list(range(1,config['direct_count']+1)) if 'direct_count' in config else [1,2]);
++  if 'user-review-requested:' not in q and 'team-review-requested:' not in q:
++   ids=config.get('query_ids',[1,2])
++   if config.get('slow_query'):
++    (root/'query-started').write_text(q);time.sleep(config['slow_query'])
++   if config.get('query_mismatch'):(root/'mode').write_text('mismatch')
+   if 'created:' in q:
+    interval=q.split('created:')[1].split()[0];lo,hi=interval.split('..');lo=calendar.timegm(time.strptime(lo,'%Y-%m-%dT%H:%M:%SZ'));hi=calendar.timegm(time.strptime(hi,'%Y-%m-%dT%H:%M:%SZ'));ids=[n for n in ids if lo<=1700000000+n<=hi]
+   if config.get('deny_team') and 'team-review-requested:' in q:status=403;body={'message':'Forbidden'}
+   else:
+    body={'total_count':len(ids),'incomplete_results':bool(config.get('incomplete')),'items':[issue(n) for n in ids[(page-1)*size:page*size]]}
++  if 'user-review-requested:' not in q and 'team-review-requested:' not in q:
++   if config.get('query_failure'):status=500;body={'message':'failure'}
++   elif config.get('query_denied'):status=404;body={'message':'Not Found'}
++   elif config.get('query_rate'):status=429;remaining=0;body={'message':'rate limit'}
++   else:
++    body['incomplete_results']=bool(config.get('query_partial'));body['total_count']=config.get('query_total',len(ids))
++    if config.get('query_title_bytes'):
++     for item in body['items']:item['title']='x'*config['query_title_bytes']
+  elif '/stacks?' in endpoint:body=[]
+  elif endpoint.startswith('notifications?'):
+   entries=config.get('notifications',[]);params=urllib.parse.parse_qs(urllib.parse.urlparse(endpoint).query);page=int(params.get('page',['1'])[0]);size=int(params.get('per_page',['50'])[0]);body=entries[(page-1)*size:page*size]
+@@ -99,21 +112,6 @@
+   else:
+    body=[{'filename':'file-'+str(i)+'.txt','status':'added','additions':config.get('patch_additions',1),'deletions':0,'blob_url':'https://github.com/a/b/blob/'+config.get('head','abc')+'/file-'+str(i)+'.txt','patch':config.get('patch','@@ -0,0 +1 @@\n+hello \tworld')} for i in range((page-1)*size,min(count,page*size))]
+    if config.get('overflow_files') and size>1:body[0]['patch']='x'*(17*1024*1024)
+- elif config.get('actions_logs') and '/actions/runs/' in endpoint:
+-  run=int(endpoint.split('/')[-1]);body={'id':run,'run_attempt':config.get('remote_attempt',config.get('attempt',1)),'head_sha':config.get('head','abc')}
+- elif config.get('actions_logs') and '/check-runs/' in endpoint:
+-  job=int(endpoint.split('/')[-1]);body={'node_id':config.get('log_check_node','CR_'+str(job-100)),'app':{'slug':config.get('log_provider','github-actions')},'head_sha':config.get('head','abc')}
+- elif config.get('actions_logs') and '/actions/jobs/' in endpoint:
+-  if endpoint.endswith('/logs'):
+-   (root/'log-started').write_text('started')
+-   time.sleep(config.get('slow_log',0))
+-   status=config.get('log_status',200)
+-   text=config.get('log_text','private-log-canary <script>stay text</script>')
+-   if 'log_bytes' in config:text='x'*config['log_bytes']
+-   if config.get('change_during_log'):
+-    config.update(config['change_during_log']);(root/'scenario.json').write_text(json.dumps(config))
+-   sys.stdout.write('HTTP/2.0 '+str(status)+' Status\r\nX-RateLimit-Remaining: 4900\r\n\r\n'+text);sys.exit(0 if status<400 else 1)
+-  job=int(endpoint.split('/')[-1]);body={'id':job,'run_id':job-98,'run_attempt':config.get('remote_attempt',config.get('attempt',1)),'head_sha':config.get('head','abc'),'html_url':'https://github.com/a/b/actions/runs/'+str(job-98)+'/job/'+str(job),'check_run_url':'https://api.github.com/repos/a/b/check-runs/'+str(job)}
+  elif endpoint.startswith('repos/a/b/pulls/'):
+   n=int(endpoint.split('/')[-1]);p=pr(n);body={'node_id':p['id'],'number':n,'title':p['title'],'html_url':p['url'],'body':'<script>untrusted</script>','body_html':'&lt;script&gt;untrusted&lt;/script&gt;','created_at':'2026-10-17T00:00:00Z','changed_files':config.get('files_count',45),'base':{'sha':config.get('base_sha','b'*40),'ref':'main','repo':{'full_name':'a/b','id':1}},'head':{'sha':config.get('head','abc')},'state':p['state'].lower(),'draft':False,'user':{'login':'reader','id':42}}
+  else:status=404;body={'message':'Not Found'}
+--- a/crates/gitjuke-core/tests/watch_store.rs
++++ b/crates/gitjuke-core/tests/watch_store.rs
+@@ -42,7 +42,7 @@
+     for name in names {
+         c.execute_batch(&format!("DROP TRIGGER {name}")).unwrap();
+     }
+-    c.execute_batch("DROP TABLE shared_bytes;DROP TABLE shared_check_lru")
++    c.execute_batch("DROP TABLE saved_query;DROP TABLE shared_bytes;DROP TABLE shared_check_lru")
+         .unwrap();
+     for t in [
+         "watch_locator",
+--- /dev/null
++++ b/docs/implementation/2026-10-18-saved-queries.md
+@@ -0,0 +1,43 @@
++# Persistent local saved queries — 2026-10-18
++
++Development implementation; schema **15**. This checkout starts from the current uncommitted reader/watch/storage implementation, including the approved Stacks UI. No specification or production limit changed. No grouped release scenario is promoted.
++
++## Behavior and interfaces
++
++Local queries have a stable, non-reused SQLite ID, UTF-8 bounded name/search and optimistic version. Primary navigation pages configurations at 100 entries; users can create, name, edit and delete them through a native modal and select a query to read its PR results. SQL and gh arguments never interpolate user text into commands. The only remote operation is the existing read-only `Search` through configured gh; `is:pr` is appended. No GitHub saved-view synchronization exists.
++
++`SavedQuery {id,name,search,version}` is durable configuration in `saved_query`. Schema 14→15 adds that table only, through the existing atomic, space-admitted migration runner. Settings/configuration paths, identity, Pause, watch membership, seen/deduplication and history remain owned by their existing stores. Configurations survive restart, shared LRU eviction and Clear downloaded content. Editing a name also increments the version and starts a fresh result cache. Deleting a query removes its durable definition; obsolete disposable page payloads are inaccessible through IPC and remain subject to ordinary shared LRU/30-day retention or explicit Clear.
++
++Typed commands: `saved_queries(offset)`, `save_query(id?,version?,name,search)`, `delete_query(id,version)`, `activate_query(id?,version?)`, `request_query(id,version,page)` and `query_page(id,version,page)`. Updates/deletion require the current version; IDs are not reused. Names/searches accept up to 160/2048 UTF-8 bytes without control characters; these are explicit validation errors, never clipping. Query navigation stays paginated rather than imposing a query-count cap.
++
++Query results use disposable `content` through existing transactional shared admission. Each page has at most 100 results and a conservative 900-KiB stored JSON ceiling, below the 1-MiB IPC ceiling; oversized pages report a narrowing requirement instead of truncating, and a persistent limited flag stops unchanged automatic retries until a manual retry or edit. GitHub's first ten pages/1,000-result limit remains explicit. Every IPC page includes configuration/version, store revision, per-page fetched time, error, provider-reported total, distinct cached count, next page and cached-set completeness. A partial/short/provider-limited response remains visibly incomplete; successful empty results differ from errors and uncached pages. Cached pages from different first-page refresh runs, query versions or global generations cannot be combined. Counts deduplicate stable PR IDs and mismatched per-page totals cannot establish completeness. Search remains mutable between requests; no snapshot-isolation claim is made about the provider.
++
++Only the opened query is automatically eligible, at the existing 60-second discovery target, while its reader is open and monitoring is resumed. Pagination fetches one requested page at a time. Inactive configurations never trigger background Search. Query jobs share the durable serialized/fair queue, existing core/Search budgets, persisted server/backoff deadlines, transport byte/time/cancellation limits, and pre/post stable-ID validation. Explicit reads work while paused without resuming monitoring. Existing global manual refresh includes the active query; the query toolbar can refresh it directly. Automatic first-page refresh replaces the visible run only after success; failures keep valid cached content labeled. Quota denial cannot be bypassed by refresh.
++
++Every commit rechecks query existence/version, cancellation, original identity/session generation and current first-page run for continuations. A queued obsolete version is acknowledged without a read; a result arriving after edit/deletion is never published, even to an invisible old-version cache. Global lock/clear/denial generation barriers reject late results. Query-specific denied responses commit a durable per-query run barrier and hide only that query’s results; configuration and unrelated cached resources survive. Full-PR denial’s existing global generation barrier conservatively hides earlier query pages so denied PR metadata cannot remain exposed in an old search page. Query list items never enroll watches; only opening a PR follows the existing selected-PR reader/watch contract.
++
++## Evidence
++
++Automated and native evidence are recorded separately in the accompanying evidence directory. Final command results and native observations are appended after verification. Historical reader/storage evidence keeps its original scope; the full shared-capacity/crash/performance matrix is not implied by a feature test.
++
++## Integration
++
++The feature was developed in an isolated checkout copied from the current working implementation. Do not cherry-pick a broad diff from the old committed HEAD: it includes other chats' pre-existing uncommitted work. Use the supplied feature-only patch against that working baseline, or merge only the saved-query additions.
++
++Shared seams: add `Job::Query`, its Search-budget classification, active-query state and scheduler dispatch; add the schema-15 step; export `saved_queries`; register the six typed Tauri commands; add API types and the `SavedQueries` React module; mount its primary navigation, editor and reader in `main.tsx`; use the small sidebar overflow rule in `app.css`. Existing reader, Conversation, Changes and Preferences behavior is preserved. Other chats editing `main.tsx`, dialog focus/names, text sizing or sidebar CSS should merge these mount points carefully and rerun native minimum-size/text-zoom/keyboard/VoiceOver qualification on the combined result. The synthetic helper's `query_*` options affect only its explicit local test path.
++
++No credentials/scopes/configuration of the normal account were changed. No remote fixtures, login registration, native alerts, signed distribution or publication are introduced. Native/live provider, accessibility and physical-target performance gates remain separate. All **29 grouped release scenarios remain Pending**.
++
++## Final verification
++
++**73 distinct scoped tests pass**, with repeats counted once: 27 frontend, eight saved-query worker/store integrations, 16 runtime integrations, eight store, seven watch-store, five transport and two migration/publication unit tests. The frontend includes four new mounted tests for CRUD arguments, selection/pagination, obsolete-response/identity-lock rejection, and failed-fetch/storage-health preservation. Six query integration tests exercise real local subprocesses; two cover configuration/store migration directly. None supplies production fixture fallback. See [automated totals](evidence/2026-10-18-saved-queries/automated.json), [query tests](evidence/2026-10-18-saved-queries/feature-tests.log), [frontend](evidence/2026-10-18-saved-queries/frontend.log), [runtime](evidence/2026-10-18-saved-queries/runtime-regressions.log), [storage/queue/transport](evidence/2026-10-18-saved-queries/storage-regressions.log), [schema-15 rollback](evidence/2026-10-18-saved-queries/migration.log) and [schema-9 pending-publication upgrade](evidence/2026-10-18-saved-queries/schema-nine.log).
++
++TypeScript/Vite, formatting, workspace all-target Clippy with warnings denied, and the final unsigned arm64 native app build pass. [Build](evidence/2026-10-18-saved-queries/ui-build.log), [Clippy](evidence/2026-10-18-saved-queries/workspace-clippy.log), [native build](evidence/2026-10-18-saved-queries/native-build.log). Initial reconstructed-old-schema tests retained the new table and failed; the fixtures now explicitly remove schema-15 additions when reconstructing older versions. The new additive migration correctly preserves revision 17 rather than inventing a store revision change. Initial failure logs are retained separately; final affected tests pass. Production migration remains strict rather than hiding incompatible tables with `IF NOT EXISTS`.
++
++The [native observations](evidence/2026-10-18-saved-queries/native.md) qualify creation → primary navigation → second page → standard PR reader, then persisted configuration/Pause/identity gating, name editing and another restart with final-build reading. Actual cached counts advance 100/150→150/150, and SQLite confirms only the opened PR enrolls. [Metadata before restart](evidence/2026-10-18-saved-queries/native-before-restart.json), [after restart](evidence/2026-10-18-saved-queries/native-after-restart.json), [13 captured-observation checks](evidence/2026-10-18-saved-queries/observation-verification.json), [artifact](evidence/2026-10-18-saved-queries/artifact.json). This is **synthetic native evidence**, separate from automated simulated-IPC tests and **not live GitHub compatibility**. No live Search or signed normal-identifier artifact qualification was performed in this slice.
++
++Native verification found and corrected Name initial focus, and a fetch-error display defect exposed during real low-space protection. Query views now preserve fetch errors across successful cached rereads and show storage health. Only this task's disposable build cache was reclaimed; no threshold was relaxed. The approved project components/tokens were reused; the 21st metadata search did not require importing catalog code. Its CLI review command was unavailable, so no automated 21st review is claimed.
++
++Remaining: live configured-account Search/schema/permission evidence; native CRUD deletion and negative/partial/quota/race/max-byte/>100-query cases; combined compact/200%/VoiceOver/reduced-motion and text-editing/menu shortcuts; full storage/crash/500-MiB/migration matrix and physical M1/macOS-15 performance. Search still has its explicit 1,000-result provider ceiling and mutable-page caveat. No requirement is waived and all **29 grouped release scenarios remain Pending**.
++
++A fresh local reproduction uses the explicit `query_qualification` example and `scripts/fixtures/tauri.query-qualification.json`, with a new absolute fixture root and the separate `dev.hmrguez.gitjuke.queryqualification` app-data namespace. Preparation refuses existing data and other namespaces. `scripts/query-qualification-snapshot.py` opens only that namespace, read-only, and records metadata. Existing qualification data is preserved; there is no automatic destructive reset.
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/artifact.json
+@@ -0,0 +1,10 @@
++{
++  "identifier": "dev.hmrguez.gitjuke.queryqualification",
++  "version": "0.1.0",
++  "executable_sha256": "e7e8d7b0291832b8fb6ce82148f2c10f688b33ed0587eb39d3d10884aff509c8",
++  "helper_sha256": "468fb0b1c0af16f3e8fbb55317819f21e095956f420d2985a11bfbaaf5fa57b8",
++  "OS": "macOS 27.0 / 26A428",
++  "architecture": "arm64",
++  "source": "local synthetic Python gh helper",
++  "live_github": false
++}
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/automated.json
+@@ -0,0 +1,13 @@
++{
++  "scoped_distinct_tests": 73,
++  "frontend": 27,
++  "query_integration": 8,
++  "runtime_integration": 16,
++  "store_integration": 8,
++  "watch_store_integration": 7,
++  "transport_integration": 5,
++  "migration_units": 2,
++  "live_github_tests": 0,
++  "grouped_release_scenarios_promoted": 0,
++  "schema": 15
++}
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/feature-tests.log
+@@ -0,0 +1,16 @@
++   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.11s
++     Running tests/saved_queries.rs (/private/tmp/gitjuke-query-core-target/debug/deps/saved_queries-182620c2e75c7ca2)
++
++running 8 tests
++test clear_and_identity_change_reject_inflight_query ... ok
++test crud_restart_compare_and_swap_and_clear_preserve_configuration ... ok
++test edits_and_deletion_during_fetch_reject_late_results ... ok
++test navigation_pages_and_upgrade_from_14 ... ok
++test oversized_page_is_limited_without_clipping_or_automatic_retry ... ok
++test pagination_counts_restart_empty_and_no_watch_enrollment ... ok
++test partial_denied_and_search_ceiling_are_honest ... ok
++test transient_failure_retains_cache_quota_blocks_search_and_inactive_queries_do_not_run ... ok
++
++test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.17s
++
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/formatting.log
+@@ -0,0 +1,3 @@
++Command: cargo fmt --all --check
++Exit code: 0
++Stdout/stderr: empty.
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/frontend.log
+@@ -0,0 +1,43 @@
++bun test v1.4.2 (744846f84)
++
++scripts/conversation-render.test.tsx:
++(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [20.37ms]
++(pass) ordinary messages have no seen control and destination placeholders stay labeled [0.14ms]
++
++scripts/saved-queries.test.tsx:
++(pass) native-style query form submits create, versioned edit and delete IPC [65.38ms]
++(pass) navigation selects persisted query and result opens standard PR reader; paging requests one page [48.02ms]
++(pass) obsolete async result cannot replace a newly edited query or locked content [30.80ms]
++(pass) successful cached reads never erase a failed fetch or storage-protection message [18.71ms]
++
++scripts/conversation.test.mjs:
++(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [5.16ms]
++(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.22ms]
++(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.06ms]
++(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.14ms]
++(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [1.10ms]
++(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [0.21ms]
++(pass) exact opened destination traversal counts distinct committed segments only [0.10ms]
++
++scripts/reader-interaction.test.tsx:
++(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [10.55ms]
++(pass) exact destination counts committed distinct segments without stealing focus on polling [18.52ms]
++(pass) oversized destination remains unseen; complete empty review submits its exact receipt [5.12ms]
++(pass) return from replies restores the originating thread after asynchronous replacement [15.87ms]
++(pass) reply return does not steal focus if the user moves while the thread list loads [15.19ms]
++(pass) next and first source-page replacement keep stable reader focus and release old bodies [11.28ms]
++(pass) superseded source requests and unmounted readers cannot restore focus or commit old content [9.40ms]
++(pass) changed destination generation restarts segment coverage; stale head never submits seen [17.26ms]
++(pass) terminal patch pages focus the stable diff region; file pages focus the navigator [102.33ms]
++(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [12.72ms]
++(pass) segmented exact destinations retain traversal across current-anchor patch loading and jump to semantic page two [79.75ms]
++(pass) leaving a partial exact destination releases authorization and remounts fresh segment coverage [20.52ms]
++
++scripts/diff.test.mjs:
++(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.51ms]
++(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [11.08ms]
++
++ 27 pass
++ 0 fail
++ 108 expect() calls
++Ran 27 tests across 5 files. [694.00ms]
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/initial-migration.log
+@@ -0,0 +1,25 @@
++    Blocking waiting for file lock on artifact directory
++   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 46s
++     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
++
++running 1 test
++test migrations::tests::saved_query_schema_15_late_space_failure_preserves_14_and_retries ... FAILED
++
++failures:
++
++---- migrations::tests::saved_query_schema_15_late_space_failure_preserves_14_and_retries stdout ----
++
++thread 'migrations::tests::saved_query_schema_15_late_space_failure_preserves_14_and_retries' (13729944) panicked at crates/gitjuke-core/src/migrations.rs:320:9:
++assertion `left == right` failed
++  left: 17
++ right: 18
++note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
++
++
++failures:
++    migrations::tests::saved_query_schema_15_late_space_failure_preserves_14_and_retries
++
++test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 230 filtered out; finished in 0.27s
++
++error: test failed, to rerun pass `-p gitjuke-core --lib`
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/initial-regressions.log
+@@ -0,0 +1,71 @@
++    Blocking waiting for file lock on artifact directory
++   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.97s
++     Running tests/runtime.rs (/private/tmp/gitjuke-query-core-target/debug/deps/runtime-a0b23bad9cacec17)
++
++running 16 tests
++test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
++test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
++test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
++test check_traversal_denials_purge_checks_without_losing_membership_or_activity has been running for over 60 seconds
++test closing_reader_keeps_authored_and_requested_snapshot_work has been running for over 60 seconds
++test conditional_hydration_reuses_exact_url_payload_without_replaying_activity has been running for over 60 seconds
++test fifty_and_more_watches_rotate_without_a_membership_cap has been running for over 60 seconds
++test independent_reasons_selected_lifetime_and_request_removal has been running for over 60 seconds
++test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache has been running for over 60 seconds
++test independent_reasons_selected_lifetime_and_request_removal ... ok
++test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery has been running for over 60 seconds
++test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
++test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch has been running for over 60 seconds
++test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
++test partial_activity_denial_keeps_progress_and_purges_payloads has been running for over 60 seconds
++test persistent_pause_prevents_automatic_reads_but_allows_manual_sync has been running for over 60 seconds
++test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
++test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
++test search_partitions_more_than_a_thousand_requests_without_dropping_watches has been running for over 60 seconds
++test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
++test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
++test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
++test worker_to_sqlite_to_reader_and_identity_lock has been running for over 60 seconds
++test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
++test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped has been running for over 60 seconds
++test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
++test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
++test worker_to_sqlite_to_reader_and_identity_lock ... ok
++test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
++
++test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 280.69s
++
++     Running tests/store.rs (/private/tmp/gitjuke-query-core-target/debug/deps/store-f885d1b815b48502)
++
++running 8 tests
++test future_and_corrupt_databases_are_preserved ... ok
++test stable_identity_survives_restart_and_refuses_different_user ... ok
++test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
++test clear_and_denial_cannot_resurrect_pending_content ... ok
++test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
++test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... FAILED
++test multi_version_migration_failure_rolls_back_to_original_committed_schema ... FAILED
++test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
++
++failures:
++
++---- schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure stdout ----
++
++thread 'schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure' (13740496) panicked at crates/gitjuke-core/tests/store.rs:271:32:
++called `Result::unwrap()` on an `Err` value: Storage(SqlInputError { error: Error { code: Unknown, extended_code: 1 }, msg: "table saved_query already exists", sql: "CREATE TABLE saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); PRAGMA user_version=15;", offset: 13 })
++
++---- multi_version_migration_failure_rolls_back_to_original_committed_schema stdout ----
++
++thread 'multi_version_migration_failure_rolls_back_to_original_committed_schema' (13740494) panicked at crates/gitjuke-core/tests/store.rs:231:39:
++called `Result::unwrap()` on an `Err` value: Storage(SqlInputError { error: Error { code: Unknown, extended_code: 1 }, msg: "table saved_query already exists", sql: "CREATE TABLE saved_query(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,search TEXT NOT NULL,version INTEGER NOT NULL,limited INTEGER NOT NULL DEFAULT 0); PRAGMA user_version=15;", offset: 13 })
++note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
++
++
++failures:
++    multi_version_migration_failure_rolls_back_to_original_committed_schema
++    schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure
++
++test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
++
++error: test failed, to rerun pass `-p gitjuke-core --test store`
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/migration.log
+@@ -0,0 +1,9 @@
++   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.54s
++     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
++
++running 1 test
++test migrations::tests::saved_query_schema_15_late_space_failure_preserves_14_and_retries ... ok
++
++test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 230 filtered out; finished in 1.52s
++
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/native-after-restart.json
+@@ -0,0 +1,93 @@
++{
++  "schema": 15,
++  "queries": [
++    {
++      "id": 1,
++      "name": "Local review desk renamed",
++      "search": "repo:a/b is:open",
++      "version": 3,
++      "limited": 0
++    }
++  ],
++  "settings": {
++    "pagedChanges": false,
++    "paused": true,
++    "theme": {
++      "mode": "dark",
++      "canvas": "#121512",
++      "surface": "#1c211b",
++      "accent": "#b8d68a",
++      "ink": "#e7ecdf"
++    },
++    "ghPath": "/private/tmp/gitjuke-query-native-source/gh",
++    "configDir": "/private/tmp/gitjuke-query-native-source/config"
++  },
++  "identity": [
++    [
++      "github.com",
++      42,
++      "reader"
++    ]
++  ],
++  "query_pages": [
++    {
++      "key": "query:1:1:1",
++      "items": 100,
++      "first": 1,
++      "last": 100,
++      "total": 150,
++      "run": 31,
++      "generation": 0,
++      "source_complete": true
++    },
++    {
++      "key": "query:1:1:2",
++      "items": 50,
++      "first": 101,
++      "last": 150,
++      "total": 150,
++      "run": 18,
++      "generation": 0,
++      "source_complete": true
++    },
++    {
++      "key": "query:1:3:1",
++      "items": 100,
++      "first": 1,
++      "last": 100,
++      "total": 150,
++      "run": 53,
++      "generation": 0,
++      "source_complete": true
++    },
++    {
++      "key": "query:1:3:2",
++      "items": 50,
++      "first": 101,
++      "last": 150,
++      "total": 150,
++      "run": 53,
++      "generation": 0,
++      "source_complete": true
++    }
++  ],
++  "selection": [
++    [
++      "selection",
++      "[\"a/b\",101]"
++    ]
++  ],
++  "selected_pr_cached": [
++    [
++      "pr:a/b:101",
++      "Change 101"
++    ]
++  ],
++  "watch_reasons": [
++    [
++      "PR_101",
++      "selected"
++    ]
++  ],
++  "pending_publication": 0
++}
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/native-before-restart.json
+@@ -0,0 +1,72 @@
++{
++  "schema": 15,
++  "queries": [
++    {
++      "id": 1,
++      "name": "Local review desk",
++      "search": "repo:a/b is:open",
++      "version": 1,
++      "limited": 0
++    }
++  ],
++  "settings": {
++    "pagedChanges": false,
++    "paused": true,
++    "theme": {
++      "mode": "dark",
++      "canvas": "#121512",
++      "surface": "#1c211b",
++      "accent": "#b8d68a",
++      "ink": "#e7ecdf"
++    },
++    "ghPath": "/private/tmp/gitjuke-query-native-source/gh",
++    "configDir": "/private/tmp/gitjuke-query-native-source/config"
++  },
++  "identity": [
++    [
++      "github.com",
++      42,
++      "reader"
++    ]
++  ],
++  "query_pages": [
++    {
++      "key": "query:1:1:1",
++      "items": 100,
++      "first": 1,
++      "last": 100,
++      "total": 150,
++      "run": 18,
++      "generation": 0,
++      "source_complete": true
++    },
++    {
++      "key": "query:1:1:2",
++      "items": 50,
++      "first": 101,
++      "last": 150,
++      "total": 150,
++      "run": 18,
++      "generation": 0,
++      "source_complete": true
++    }
++  ],
++  "selection": [
++    [
++      "selection",
++      "[\"a/b\",101]"
++    ]
++  ],
++  "selected_pr_cached": [
++    [
++      "pr:a/b:101",
++      "Change 101"
++    ]
++  ],
++  "watch_reasons": [
++    [
++      "PR_101",
++      "selected"
++    ]
++  ]
++}
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/native-build.log
+@@ -0,0 +1,29 @@
++$ tauri build --debug --bundles app --target "aarch64-apple-darwin" --no-sign --config scripts/fixtures/tauri.query-qualification.json
++        Warn --no-sign flag detected: Signing will be skipped.
++        Info Looking up installed tauri packages to check mismatched versions...
++     Running beforeBuildCommand `bun run build`
++$ tsc --noEmit && vite build
++vite v7.3.7 building client environment for production...
++transforming...
++✓ 1593 modules transformed.
++rendering chunks...
++computing gzip size...
++dist/index.html                                               0.35 kB │ gzip:  0.26 kB
++dist/assets/diff-worker-BPqJHpWc.js                           1.04 kB
++dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2   21.17 kB
++dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2   21.83 kB
++dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2   21.86 kB
++dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff    27.50 kB
++dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff    28.18 kB
++dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff    28.21 kB
++dist/assets/index-DYe5aa9X.css                               24.39 kB │ gzip:  5.19 kB
++dist/assets/index-Dc-SjC5x.js                               252.84 kB │ gzip: 79.93 kB
++✓ built in 923ms
++   Compiling gitjuke v0.1.0 (/private/tmp/gitjuke-saved-queries/src-tauri)
++    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.82s
++       Built application at: /private/tmp/gitjuke-saved-queries/target/aarch64-apple-darwin/debug/gitjuke
++    Bundling GitJuke Query Qualification.app (/private/tmp/gitjuke-saved-queries/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Query Qualification.app)
++        Warn Skipping signing due to --no-sign flag.
++    Finished 1 bundle at:
++        /private/tmp/gitjuke-saved-queries/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke Query Qualification.app (34.15 MiB)
++
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/native-gh-reads.jsonl
+@@ -0,0 +1,82 @@
++{"args": ["--version"], "query": "", "variables": {}}
++{"args": ["auth", "status", "--active", "--hostname", "github.com", "--json", "hosts"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query Authored", "variables": {"after": null, "first": 100}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T11%3A20%3A40Z&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user/teams?per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "notifications?all=true&participating=false&per_page=50&page=1&before=2026-10-18T11:20:40Z", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=2"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/101"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=101&per_page=100"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["--version"], "query": "", "variables": {}}
++{"args": ["auth", "status", "--active", "--hostname", "github.com", "--json", "hosts"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query Authored", "variables": {"after": null, "first": 100}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query WatchHeads", "variables": {"first": 25, "ids": ["PR_101"]}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T11%3A24%3A13Z&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user/teams?per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "notifications?all=true&participating=false&per_page=50&page=1&before=2026-10-18T11:24:13Z&since=2026-10-18T11:20:39Z", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["--version"], "query": "", "variables": {}}
++{"args": ["auth", "status", "--active", "--hostname", "github.com", "--json", "hosts"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query Authored", "variables": {"after": null, "first": 100}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "graphql", "--hostname", "github.com", "--method", "POST", "--include", "--input", "-"], "query": "query WatchHeads", "variables": {"first": 25, "ids": ["PR_101"]}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=is%3Apr%20is%3Aopen%20user-review-requested%3Areader%20created%3A1970-01-01T00%3A00%3A00Z%2E%2E2026-10-18T11%3A26%3A51Z&per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user/teams?per_page=100&page=1"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "notifications?all=true&participating=false&per_page=50&page=1&before=2026-10-18T11:26:51Z&since=2026-10-18T11:24:12Z", "-H", "Accept: application/vnd.github.full+json"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "search/issues?q=repo%3Aa%2Fb%20is%3Aopen%20is%3Apr&per_page=100&page=2"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/pulls/101"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "repos/a/b/stacks?pull_request=101&per_page=100"], "query": "", "variables": {}}
++{"args": ["api", "--hostname", "github.com", "--method", "GET", "--include", "-H", "X-GitHub-Api-Version: 2026-03-10", "user"], "query": "", "variables": {}}
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/native.md
+@@ -0,0 +1,18 @@
++# Native query observations — local synthetic source only
++
++Observed on macOS 27.0 / 26A428, arm64, development 0.1.0, schema 15. App identifier `dev.hmrguez.gitjuke.queryqualification`, window **GitJuke Queries — LOCAL SYNTHETIC SOURCE**. Configured window 1280×800; no minimum-content-size, text-zoom or performance measurement is claimed. The app uses real WebKit/Tauri/IPC/Rust/SQLite and an explicitly configured local Python gh helper. No GitHub connection, credential access/change or remote fixture creation occurred.
++
++1. Fresh app showed **New query**, no saved entries, **Paused**, and identity-gated cached content. The preparer created no query definition. Native **Refresh pull requests** validated local identity `github.com / reader / 42` and showed the complete empty authored set.
++2. **New query** → name **Local review desk**, search **repo:a/b is:open** → **Save query**. Native results showed **100 cached · 150 reported by GitHub · Incomplete cached set**, with page-one PR rows.
++3. Clicked **My PRs**, then the persisted **Local review desk** primary-navigation entry. The query and its results reopened.
++4. Scrolled the query navigator and activated **Next results**. The UI showed **150 cached · 150 reported by GitHub · Complete cached set**, **Page 2**, rows **#101–#150**, enabled Previous and disabled Next.
++5. Opened **a/b · #101 Change 101**. The normal Overview reader displayed **Change 101**, `reader · main ← aaaaaaaaaa` and the literal plain-text body `<script>untrusted</script>`. The reader subsequently reported no published stack. No GitHub-source action was activated. A screenshot was inspected in the native-tool conversation; no screenshot file is claimed in this evidence directory.
++6. Cmd-Q/relaunch retained query ID 1, its search, local helper/configuration paths and Pause. The new session gated fetched content until local identity validation. The prior PR selection reopened through the normal reader.
++7. Native **Edit query** restored both fields. After the initial-focus correction, the accessibility tree explicitly reported focus on **Name**, value **Local review desk**. A select-all/type attempt appended text; that intermediate save produced version 2. The native AX setter corrected the name to **Local review desk renamed**, and Return submitted version 3. Only Name focus and Return submission are qualified; native select-all/menu shortcut behavior remains unqualified.
++8. After another full restart into the final artifact, primary navigation retained **Local review desk renamed** before identity validation. Explicit Refresh/reselection fetched version-three page one with **100 cached / 150 reported / incomplete**. Next results fetched its second page and restored **150 cached / 150 reported / complete**. Selecting #101 again rendered **Change 101** and the literal body through the standard reader. Final source artifact/hash is recorded in `artifact.json`.
++
++Read-only SQLite captures: `native-before-restart.json` and `native-after-restart.json`. They preserve query ID 1 and search, version 1→3, Pause and helper/config paths, stable fixture identity 42, exact 100/50 cached pages per run, and the selected PR cache. Only `PR_101 / selected` is a watch reason; the other 149 query results never enrolled. Older version-one pages remain disposable cache payloads but cannot be read through the current version-three query IPC. Thirteen assertions over these captured metadata stages pass in `observation-verification.json`; that is an evidence check, not an unattended fresh UI test.
++
++During concurrent local qualification, low free space stopped further native query reads under the existing guard. This task reclaimed its own disposable build clone and left the production threshold unchanged. A discovered frontend error-clearing bug was corrected: cached rereads no longer erase failed fetch messages, and the query view now surfaces runtime storage health. The new mounted test qualifies that error display. No controlled native disk-boundary fault matrix or complete protective-state screenshot is claimed. Fresh native version-three reads succeeded after space/repair recovered.
++
++Native deletion, negative/partial/quota/race permutations, long/max-byte names and results, >100 query navigation, compact/200%/VoiceOver/reduced motion and physical-target performance were not exercised here. They retain deterministic coverage where recorded or remain Pending. The normal app/account was not configured or launched by this qualification. No notifications, login registration, signing, publication or distribution was enabled. All 29 grouped release scenarios remain Pending.
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/observation-verification.json
+@@ -0,0 +1,5 @@
++{
++  "passed": 13,
++  "scope": "metadata assertions over captured native stages; not an unattended fresh UI test",
++  "live_github": false
++}
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/runtime-regressions.log
+@@ -0,0 +1,38 @@
++    Blocking waiting for file lock on artifact directory
++   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.97s
++     Running tests/runtime.rs (/private/tmp/gitjuke-query-core-target/debug/deps/runtime-a0b23bad9cacec17)
++
++running 16 tests
++test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
++test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
++test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
++test check_traversal_denials_purge_checks_without_losing_membership_or_activity has been running for over 60 seconds
++test closing_reader_keeps_authored_and_requested_snapshot_work has been running for over 60 seconds
++test conditional_hydration_reuses_exact_url_payload_without_replaying_activity has been running for over 60 seconds
++test fifty_and_more_watches_rotate_without_a_membership_cap has been running for over 60 seconds
++test independent_reasons_selected_lifetime_and_request_removal has been running for over 60 seconds
++test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache has been running for over 60 seconds
++test independent_reasons_selected_lifetime_and_request_removal ... ok
++test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery has been running for over 60 seconds
++test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
++test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch has been running for over 60 seconds
++test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
++test partial_activity_denial_keeps_progress_and_purges_payloads has been running for over 60 seconds
++test persistent_pause_prevents_automatic_reads_but_allows_manual_sync has been running for over 60 seconds
++test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
++test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
++test search_partitions_more_than_a_thousand_requests_without_dropping_watches has been running for over 60 seconds
++test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
++test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
++test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
++test worker_to_sqlite_to_reader_and_identity_lock has been running for over 60 seconds
++test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
++test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped has been running for over 60 seconds
++test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
++test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
++test worker_to_sqlite_to_reader_and_identity_lock ... ok
++test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
++
++test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 280.69s
++
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/schema-nine.log
+@@ -0,0 +1,8 @@
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.56s
++     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
++
++running 1 test
++test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... ok
++
++test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 230 filtered out; finished in 0.58s
++
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/storage-regressions.log
+@@ -0,0 +1,40 @@
++   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.75s
++     Running tests/store.rs (/private/tmp/gitjuke-query-core-target/debug/deps/store-f885d1b815b48502)
++
++running 8 tests
++test future_and_corrupt_databases_are_preserved ... ok
++test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
++test stable_identity_survives_restart_and_refuses_different_user ... ok
++test clear_and_denial_cannot_resurrect_pending_content ... ok
++test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
++test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
++test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... ok
++test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
++
++test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.27s
++
++     Running tests/transport.rs (/private/tmp/gitjuke-query-core-target/debug/deps/transport-4a1f23f4c201912c)
++
++running 5 tests
++test deliberate_environment_no_tokens_or_injection ... ok
++test inclusive_bounds_and_stdin_closed ... ok
++test cancellation_reaps_before_serialized_successor ... ok
++test stdout_and_stderr_overflow_rejected ... ok
++test timeout_kills_helpers_and_next_child_can_start ... ok
++
++test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.19s
++
++     Running tests/watch_store.rs (/private/tmp/gitjuke-query-core-target/debug/deps/watch_store-93f0dca65ab8ba9b)
++
++running 7 tests
++test complete_team_membership_removal_keeps_other_membership_reasons ... ok
++test restarting_paused_does_not_replay_prior_session_manual_jobs ... ok
++test budget_deadlines_and_exponential_backoff_survive_restart_and_do_not_cross_primary_buckets ... ok
++test head_reservations_exclude_exact_ids_without_null_or_unrelated_job_poisoning ... ok
++test head_generation_blocks_old_pages_and_clear_does_not_remove_watch_reasons ... ok
++test durable_due_work_is_bounded_in_memory_fair_and_does_not_lose_the_129th ... ok
++test schema_one_upgrade_preserves_identity_pause_and_watch_reasons ... ok
++
++test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
++
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/ui-build.log
+@@ -0,0 +1,17 @@
++$ tsc --noEmit && vite build
++vite v7.3.7 building client environment for production...
++transforming...
++✓ 1593 modules transformed.
++rendering chunks...
++computing gzip size...
++dist/index.html                                               0.35 kB │ gzip:  0.26 kB
++dist/assets/diff-worker-BPqJHpWc.js                           1.04 kB
++dist/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2   21.17 kB
++dist/assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2   21.83 kB
++dist/assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2   21.86 kB
++dist/assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff    27.50 kB
++dist/assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff    28.18 kB
++dist/assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff    28.21 kB
++dist/assets/index-DYe5aa9X.css                               24.39 kB │ gzip:  5.19 kB
++dist/assets/index-Dc-SjC5x.js                               252.84 kB │ gzip: 79.93 kB
++✓ built in 766ms
+--- /dev/null
++++ b/docs/implementation/evidence/2026-10-18-saved-queries/workspace-clippy.log
+@@ -0,0 +1,60 @@
++    Checking gitjuke-core v0.1.0 (/private/tmp/gitjuke-saved-queries/crates/gitjuke-core)
++   Compiling tauri-build v2.7.3
++    Checking regex v1.13.1
++    Checking dirs-sys v0.5.0
++   Compiling png v0.17.16
++    Checking walkdir v2.5.0
++    Checking foreign-types v0.5.0
++    Checking plist v1.10.1
++    Checking json-patch v4.2.0
++   Compiling digest v0.10.7
++    Checking flate2 v1.1.10
++    Checking cookie v0.18.2
++    Checking urlpattern v0.6.0
++   Compiling wry v0.57.0
++    Checking core-graphics-types v0.2.0
++    Checking serde-untagged v0.1.9
++    Checking phf v0.13.1
++    Checking infer v0.22.0
++    Checking miniz_oxide v0.8.9
++    Checking fdeflate v0.3.7
++    Checking objc2-web-kit v0.3.2
++    Checking anyhow v1.0.104
++    Checking serde_with v3.24.0
++   Compiling cpufeatures v0.2.17
++   Compiling tauri-runtime v2.12.2
++   Compiling byteorder v1.5.0
++    Checking ctor v1.0.13
++   Compiling muda v0.20.0
++    Checking glob v0.3.4
++    Checking semver v1.0.28
++    Checking dunce v1.0.5
++   Compiling ico v0.5.0
++   Compiling tauri v2.12.4
++    Checking png v0.18.1
++   Compiling sha2 v0.10.9
++    Checking core-graphics v0.25.0
++    Checking dirs v7.0.0
++    Checking dispatch2 v0.3.1
++    Checking keyboard-types v0.8.3
++   Compiling tray-icon v0.25.1
++   Compiling getrandom v0.3.4
++   Compiling tauri-runtime-wry v2.12.2
++    Checking objc2-core-graphics v0.3.2
++   Compiling serialize-to-javascript-impl v0.1.2
++    Checking tao v0.37.1
++    Checking window-vibrancy v0.8.1
++    Checking serialize-to-javascript v0.1.2
++    Checking tracing-core v0.1.36
++   Compiling tracing-attributes v0.1.31
++   Compiling serde_repr v0.1.21
++    Checking heck v0.5.0
++    Checking mime v0.3.17
++    Checking embed_plist v1.2.2
++   Compiling gitjuke v0.1.0 (/private/tmp/gitjuke-saved-queries/src-tauri)
++   Compiling tauri-codegen v2.7.3
++    Checking tracing v0.1.44
++    Checking tauri-utils v2.10.2
++   Compiling tauri-macros v2.7.3
++    Checking tauri-plugin-single-instance v2.5.4
++    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 09s
+--- /dev/null
++++ b/scripts/fixtures/tauri.query-qualification.json
+@@ -0,0 +1 @@
++{"productName":"GitJuke Query Qualification","identifier":"dev.hmrguez.gitjuke.queryqualification","app":{"windows":[{"label":"main","title":"GitJuke Queries — LOCAL SYNTHETIC SOURCE","width":1280,"height":800,"minWidth":960,"minHeight":640}]}}
+--- /dev/null
++++ b/scripts/query-qualification-snapshot.py
+@@ -0,0 +1,35 @@
++#!/usr/bin/env python3
++"""Read-only metadata evidence from the isolated query qualification namespace."""
++import json
++import pathlib
++import sqlite3
++import sys
++
++path = pathlib.Path(sys.argv[1]).resolve()
++if path.name != 'gitjuke.sqlite3' or path.parent.name != 'dev.hmrguez.gitjuke.queryqualification':
++    raise SystemExit('Refusing non-qualification database')
++conn = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True)
++conn.execute('PRAGMA query_only=ON')
++conn.execute('BEGIN')
++result = {
++    'schema': conn.execute('PRAGMA user_version').fetchone()[0],
++    'queries': [dict(zip(['id', 'name', 'search', 'version', 'limited'], row)) for row in conn.execute('SELECT id,name,search,version,limited FROM saved_query ORDER BY id')],
++    'settings': json.loads(conn.execute('SELECT json FROM settings').fetchone()[0]),
++    'identity': conn.execute('SELECT host,user_id,login FROM identity').fetchall(),
++    'query_pages': [],
++    'selection': conn.execute("SELECT key,value FROM progress WHERE key='selection'").fetchall(),
++    'selected_pr_cached': conn.execute("SELECT key,json_extract(json,'$.title') FROM content WHERE key='pr:a/b:101'").fetchall(),
++    'watch_reasons': conn.execute('SELECT id,source FROM watch_source ORDER BY id,source').fetchall(),
++    'pending_publication': conn.execute('SELECT COUNT(*) FROM publication').fetchone()[0],
++}
++for key, value in conn.execute("SELECT key,json FROM content WHERE key LIKE 'query:%' ORDER BY key"):
++    page = json.loads(value)
++    result['query_pages'].append({
++        'key': key, 'items': len(page['items']),
++        'first': page['items'][0]['number'] if page['items'] else None,
++        'last': page['items'][-1]['number'] if page['items'] else None,
++        'total': page['total'], 'run': page['run'],
++        'generation': page['generation'], 'source_complete': page['sourceComplete'],
++    })
++conn.rollback()
++print(json.dumps(result, indent=2))
+--- /dev/null
++++ b/scripts/saved-queries.test.tsx
+@@ -0,0 +1,41 @@
++import React,{act} from 'react';
++import {createRoot,type Root} from 'react-dom/client';
++import {Window} from 'happy-dom';
++import {test,expect,beforeEach,afterEach} from 'bun:test';
++import {QueryEditor,QueryReader,QueryNavigation} from '../src/SavedQueries';
++import type {QueryPage,SavedQuery} from '../src/api';
++const dom=new Window({url:'http://localhost'});
++Object.assign(globalThis,{window:dom,document:dom.document,HTMLElement:dom.HTMLElement,FormData:dom.FormData,IS_REACT_ACT_ENVIRONMENT:true,isTauri:true});
++(dom.HTMLDialogElement.prototype as any).showModal=function(){this.open=true;};
++const q:SavedQuery={id:1,version:1,name:'Review desk',search:'repo:a/b'};
++const result:QueryPage={query:q,items:[{id:'PR1',repo:'a/b',repoId:null,number:1,title:'Saved result',url:'https://github.com/a/b/pull/1',state:'open',draft:false,author:'reader',updatedAt:'now'}],total:150,cachedCount:100,nextPage:2,fetchedAt:1,complete:false,error:null,revision:1};
++let host:HTMLElement,root:Root,calls:{name:string;args:any}[],invoke:(name:string,args:any)=>Promise<any>;
++async function settle(){await act(async()=>{await new Promise(r=>setTimeout(r,5));});}
++async function render(node:React.ReactNode){await act(async()=>root.render(node));await settle();}
++async function click(text:string){await act(async()=>Array.from(host.querySelectorAll('button')).find(b=>b.textContent===text)!.click());await settle();}
++beforeEach(()=>{host=document.createElement('div');document.body.append(host);root=createRoot(host);calls=[];invoke=async(name)=>name==='query_page'?result:name==='saved_queries'?{items:[q],nextOffset:null,revision:1}:q;(dom as any).__TAURI_INTERNALS__={invoke:async(name:string,args:any)=>{calls.push({name,args});return invoke(name,args);}};});
++afterEach(async()=>{await act(async()=>root.unmount());host.remove();});
++test('native-style query form submits create, versioned edit and delete IPC',async()=>{
++ let saved:SavedQuery|null=null,deleted=false;
++ await render(<QueryEditor query={null} onSaved={v=>{saved=v;}} onDeleted={()=>{deleted=true;}} close={()=>{}}/>);
++ const name=host.querySelector<HTMLInputElement>('[name=name]')!,search=host.querySelector<HTMLInputElement>('[name=search]')!;name.value='Review desk';search.value='repo:a/b';expect(document.activeElement===name).toBe(true);
++ await act(async()=>host.querySelector('form')!.dispatchEvent(new dom.Event('submit',{bubbles:true,cancelable:true}) as any));await settle();expect(calls.find(c=>c.name==='save_query')?.args).toEqual({id:null,version:null,name:'Review desk',search:'repo:a/b'});expect(saved).toEqual(q);
++ await render(<QueryEditor key="edit" query={q} onSaved={()=>{}} onDeleted={()=>{deleted=true;}} close={()=>{}}/>);await click('Save query');expect(calls.filter(c=>c.name==='save_query').at(-1)?.args.version).toBe(1);await click('Delete query');expect(deleted).toBe(true);expect(calls.find(c=>c.name==='delete_query')?.args).toEqual({id:1,version:1});
++});
++test('navigation selects persisted query and result opens standard PR reader; paging requests one page',async()=>{
++ let selected:SavedQuery|null=null,pr='';await render(<QueryNavigation revision={1} current={null} onSelect={v=>{selected=v;}} onEdit={()=>{}} onCreate={()=>{}}/>);await click('Review desk');expect(selected).toEqual(q);
++ await render(<QueryReader query={q} revision={1} locked={false} select={(repo,n)=>{pr=`${repo}#${n}`;}} edit={()=>{}}/>);expect(host.textContent).toContain('100 cached · 150 reported by GitHub · Incomplete');await act(async()=>host.querySelector<HTMLButtonElement>('.stack-node')!.click());expect(pr).toBe('a/b#1');await click('Next results');expect(calls.filter(c=>c.name==='request_query').map(c=>c.args.page)).toEqual([1,2]);
++});
++test('obsolete async result cannot replace a newly edited query or locked content',async()=>{
++ let resolve!:(v:QueryPage)=>void;invoke=async name=>name==='query_page'?new Promise<QueryPage>(r=>{resolve=r;}):null;
++ await render(<QueryReader key="old" query={q} revision={1} locked={false} select={()=>{}} edit={()=>{}}/>);const old=resolve;
++ invoke=async name=>name==='query_page'?{...result,query:{...q,version:2},items:[],total:0,cachedCount:0,complete:true,revision:2}:null;
++ await render(<QueryReader key="new" query={{...q,version:2}} revision={2} locked={false} select={()=>{}} edit={()=>{}}/>);await act(async()=>old(result));await settle();expect(host.textContent).toContain('No matching pull requests');expect(host.textContent).not.toContain('Saved result');
++ await render(<QueryReader key="new" query={{...q,version:2}} revision={3} locked select={()=>{}} edit={()=>{}}/>);expect(host.textContent).toContain('Validate the original');expect(host.querySelectorAll('.stack-node')).toHaveLength(0);
++});
++
++test('successful cached reads never erase a failed fetch or storage-protection message',async()=>{
++ let revision=1;invoke=async(name)=>{if(name==='request_query')throw new Error('Storage protection prevents remote reads');return name==='query_page'?{...result,revision,items:[],fetchedAt:null,total:null,cachedCount:0,complete:false}:null;};
++ await render(<QueryReader query={q} revision={1} locked={false} health="Storage repair pending" select={()=>{}} edit={()=>{}}/>);expect(host.textContent).toContain('Storage protection prevents remote reads');expect(host.textContent).toContain('Storage repair pending');
++ revision=2;await render(<QueryReader query={q} revision={2} locked={false} health="Storage repair pending" select={()=>{}} edit={()=>{}}/>);expect(host.textContent).toContain('Storage protection prevents remote reads');expect(host.querySelectorAll('.stack-node')).toHaveLength(0);
++});
+--- a/src-tauri/src/lib.rs
++++ b/src-tauri/src/lib.rs
+@@ -15,31 +15,51 @@
+     Ok(value)
+ }
+ #[tauri::command]
+-fn request_logs(
+-    runtime: State<'_, Runtime>,
+-    job: gitjuke_core::logs::LogJob,
+-) -> Result<u64, String> {
+-    safe(runtime.request_logs(job))
+-}
+-#[tauri::command]
+-fn read_logs(runtime: State<'_, Runtime>, seq: u64) -> Result<gitjuke_core::logs::LogRead, String> {
+-    safe(runtime.read_logs(seq))
+-}
+-#[tauri::command]
+-fn cancel_logs(runtime: State<'_, Runtime>, seq: u64) -> Result<(), String> {
+-    safe(runtime.cancel_logs(seq))
+-}
+-#[tauri::command]
+-fn open_check_details(
+-    runtime: State<'_, Runtime>,
+-    job: gitjuke_core::logs::LogJob,
+-) -> Result<(), String> {
+-    let url = safe(runtime.check_details(&job))?;
+-    std::process::Command::new("/usr/bin/open")
+-        .arg(url)
+-        .spawn()
+-        .map_err(|_| "Could not open check details.".to_owned())?;
+-    Ok(())
++fn saved_queries(
++    runtime: State<'_, Runtime>,
++    offset: usize,
++) -> Result<gitjuke_core::saved_queries::QueryList, String> {
++    safe(runtime.saved_queries(offset))
++}
++#[tauri::command]
++fn save_query(
++    runtime: State<'_, Runtime>,
++    id: Option<i64>,
++    version: Option<u64>,
++    name: String,
++    search: String,
++) -> Result<gitjuke_core::saved_queries::SavedQuery, String> {
++    safe(runtime.save_query(id, version, name, search))
++}
++#[tauri::command]
++fn delete_query(runtime: State<'_, Runtime>, id: i64, version: u64) -> Result<(), String> {
++    safe(runtime.delete_query(id, version))
++}
++#[tauri::command]
++fn activate_query(
++    runtime: State<'_, Runtime>,
++    id: Option<i64>,
++    version: Option<u64>,
++) -> Result<(), String> {
++    safe(runtime.activate_query(id, version))
++}
++#[tauri::command]
++fn request_query(
++    runtime: State<'_, Runtime>,
++    id: i64,
++    version: u64,
++    page: u32,
++) -> Result<(), String> {
++    safe(runtime.request_query(id, version, page))
++}
++#[tauri::command]
++fn query_page(
++    runtime: State<'_, Runtime>,
++    id: i64,
++    version: u64,
++    page: u32,
++) -> Result<gitjuke_core::saved_queries::QueryPage, String> {
++    safe(runtime.query_page(id, version, page))
+ }
+ #[tauri::command]
+ fn activity_rendered(runtime: State<'_, Runtime>, id: String, text: String) -> Result<(), String> {
+@@ -330,20 +350,21 @@
+                 api.prevent_close();
+                 let _ = window.hide();
+                 let _ = window.state::<Runtime>().reader_closed();
+-                let _ = window.emit("gitjuke-reader-closed", ());
+             }
+         })
+         .invoke_handler(tauri::generate_handler![
++            saved_queries,
++            save_query,
++            delete_query,
++            activate_query,
++            request_query,
++            query_page,
+             activity_rendered,
+             conversation_seen,
+             request_conversation,
+             cancel_conversation,
+             read_conversation,
+             open_conversation,
+-            request_logs,
+-            read_logs,
+-            cancel_logs,
+-            open_check_details,
+             request_changes,
+             set_changes_mode,
+             cancel_changes,
+--- /dev/null
++++ b/src/SavedQueries.tsx
+@@ -0,0 +1,24 @@
++import React,{useEffect,useRef,useState} from 'react';
++import {Search,Plus,X,RefreshCw} from 'lucide-react';
++import {command,type SavedQuery,type QueryList,type QueryPage} from './api';
++export function QueryNavigation({revision,current,onSelect,onEdit,onCreate}:{revision:number;current:SavedQuery|null;onSelect:(q:SavedQuery)=>void;onEdit:()=>void;onCreate:()=>void}){
++ const [offset,setOffset]=useState(0),[list,setList]=useState<QueryList|null>(null),[error,setError]=useState('');
++ useEffect(()=>{let live=true;void command<QueryList>('saved_queries',{offset}).then(p=>{if(live&&p.revision>=revision){setList(p);setError('');}}).catch(e=>{if(live)setError(String(e));});return()=>{live=false;};},[offset,revision]);
++ return <div className="query-navigation"><p className="section-label">Saved queries</p><button className="nav-item" title="New saved query" onClick={onCreate}><Plus size={16}/><span>New query</span></button>{list?.items.map(q=><button className={`nav-item ${current?.id===q.id?'active':''}`} aria-current={current?.id===q.id?'page':undefined} key={q.id} title={q.name} onClick={()=>onSelect(q)}><Search size={16}/><span>{q.name}</span></button>)}{current&&<button className="nav-item" onClick={onEdit} title="Edit selected query"><span>Edit query…</span></button>}{error&&<p role="alert">{error}</p>}{(offset>0||list?.nextOffset!=null)&&<div className="pagination"><button disabled={!offset} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous queries</button><button disabled={list?.nextOffset==null} onClick={()=>setOffset(list?.nextOffset??0)}>Next queries</button></div>}</div>;
++}
++export function QueryEditor({query,onSaved,onDeleted,close}:{query:SavedQuery|null;onSaved:(q:SavedQuery)=>void;onDeleted:()=>void;close:()=>void}){
++ const ref=useRef<HTMLDialogElement>(null);const [error,setError]=useState(''),[busy,setBusy]=useState(false);
++ useEffect(()=>{const previous=document.activeElement as HTMLElement|null;const dialog=ref.current;dialog?.showModal();dialog?.querySelector<HTMLInputElement>('[name="name"]')?.focus();return()=>{dialog?.close();if(previous?.isConnected)previous.focus();};},[]);
++ async function save(e:React.FormEvent<HTMLFormElement>){e.preventDefault();const f=new FormData(e.currentTarget);setBusy(true);try{const q=await command<SavedQuery>('save_query',{id:query?.id??null,version:query?.version??null,name:String(f.get('name')),search:String(f.get('search'))});onSaved(q);}catch(e){setError(String(e));}finally{setBusy(false);}}
++ async function remove(){if(!query)return;setBusy(true);try{await command('delete_query',{id:query.id,version:query.version});onDeleted();}catch(e){setError(String(e));}finally{setBusy(false);}}
++ return <dialog ref={ref} className="dialog" aria-labelledby="query-editor-title" aria-describedby="query-editor-note" onClose={close}><div className="dialog-header"><h2 id="query-editor-title">{query?'Edit query':'New saved query'}</h2><button aria-label="Close query editor" onClick={()=>ref.current?.close()}><X size={17}/></button></div><form onSubmit={e=>void save(e)}><label>Name<input name="name" defaultValue={query?.name??''} maxLength={160} required autoFocus/></label><label>GitHub PR search<input name="search" defaultValue={query?.search??''} maxLength={2048} placeholder="repo:owner/repository is:open" required/></label><p id="query-editor-note" className="dialog-note">Searches pull requests only. Saved on this Mac; no GitHub saved-view synchronization.</p>{error&&<p role="alert" className="state-banner">{error}</p>}<button disabled={busy} type="submit">Save query</button>{query&&<button type="button" disabled={busy} onClick={()=>void remove()}>Delete query</button>}</form></dialog>;
++}
++export function QueryReader({query,revision,locked,select,edit,health}:{query:SavedQuery;revision:number;locked:boolean;health?:string;select:(repo:string,number:number)=>void;edit:()=>void}){
++ const [page,setPage]=useState(1),[data,setData]=useState<QueryPage|null>(null),[error,setError]=useState(''),[readError,setReadError]=useState('');
++ useEffect(()=>{void command('activate_query',{id:query.id,version:query.version}).catch(e=>setError(String(e)));return()=>{void command('activate_query',{id:null,version:null}).catch(()=>{});};},[query.id,query.version]);
++ useEffect(()=>{if(locked)return;let live=true;setError('');void command('request_query',{id:query.id,version:query.version,page}).catch(e=>{if(live)setError(String(e));});return()=>{live=false;};},[query.id,query.version,page,locked]);
++ useEffect(()=>{let live=true;if(locked){setData(null);return;}
++ void command<QueryPage>('query_page',{id:query.id,version:query.version,page}).then(p=>{if(live&&p.revision>=revision){setData(p);setReadError('');}}).catch(e=>{if(live)setReadError(String(e));});return()=>{live=false;};},[query.id,query.version,page,revision,locked]);
++ function move(n:number){setData(null);setReadError('');setPage(n);}
++ return <section className="stack-navigator" tabIndex={-1} aria-label="Saved query results"><div className="list-heading"><div><span className="eyebrow">SAVED QUERY</span><h1>{query.name}</h1></div><button className="icon-button" aria-label="Refresh query" disabled={locked} onClick={()=>{setError('');move(1);void command('request_query',{id:query.id,version:query.version,page:1}).catch(e=>setError(String(e)));}}><RefreshCw size={16}/></button></div><p className="list-subhead">{query.search}</p><button onClick={edit}>Edit query</button>{page>1&&!data?.fetchedAt&&<button disabled={locked} onClick={()=>{setError('');void command('request_query',{id:query.id,version:query.version,page}).catch(e=>setError(String(e)));}}>Load this page</button>}<p className="list-subhead" role="status">{data?.cachedCount??0} cached · {data?.total==null?'GitHub count unknown':`${data.total} reported by GitHub`} · {data?.complete?'Complete cached set':'Incomplete cached set'}</p><p className="list-subhead">{data?.fetchedAt?`Page cached ${new Date(data.fetchedAt*1000).toLocaleString()}`:'Page not cached'} · Page {page}</p>{locked&&<p className="state-banner">Validate the original GitHub identity to read results.</p>}{health&&<p className="state-banner" role="status">{health}</p>}{(error||readError||data?.error)&&<p className="state-banner" role="alert">{error||readError||data?.error}</p>}<div className="pr-list">{data?.items.map(p=><button className="stack-node" id={`pr-${p.id}`} key={p.id} onClick={()=>select(p.repo,p.number)}><span className="node-meta">{p.repo} · #{p.number}</span><strong className="node-title">{p.title}</strong><span className="node-meta">{p.draft?'Draft':p.state} · {p.author??'Unavailable author'}</span></button>)}</div>{data&&!data.items.length&&<p className="empty">{data.complete&&data.total===0?'No matching pull requests.':'No cached results on this page; a successful read is pending.'}</p>}<div className="pagination"><button disabled={page===1} onClick={()=>move(page-1)}>Previous results</button><span>Page {page}</span><button disabled={data?.nextPage==null} onClick={()=>move(data?.nextPage??page)}>Next results</button></div><p className="reader-note">GitHub Search exposes at most 1,000 results. Each page is fetched on demand; results can move while paging. Query results join active watches only when opened.</p></section>;
++}
+--- a/src/api.ts
++++ b/src/api.ts
+@@ -34,3 +34,7 @@
+ export type ConversationMessage={id:string;kind:string;author:string|null;time:string;url:string|null;body:string|null;state:'complete'|'oversized'|'unavailable';bytes:number|null;digest:string|null};
+ export type ReviewThread={id:string;path:string;side:string;line:number|null;startLine:number|null;startSide:string|null;originalLine:number|null;originalStartLine:number|null;commit:string|null;originalCommit:string|null;outdated:boolean;resolved:boolean;url:string|null;time:string};
+ export type ConversationPage={destinationAnchor?:ReviewThread|null;head:string;generation:number;source:string;messages:ConversationMessage[];threads:ReviewThread[];next:string|null;total:number;complete:boolean};
++
++export type SavedQuery={id:number;name:string;search:string;version:number};
++export type QueryList={items:SavedQuery[];nextOffset:number|null;revision:number};
++export type QueryPage={query:SavedQuery;items:PullRequest[];total:number|null;cachedCount:number;nextPage:number|null;fetchedAt:number|null;complete:boolean;error:string|null;revision:number};
+--- a/src/app.css
++++ b/src/app.css
+@@ -12,3 +12,5 @@
+ .search-field{flex-direction:row}.search-field input{width:100%}.feed-scope{font-size:var(--text-xs);color:var(--muted-text);line-height:1.8;margin:-8px 6px 0}.nav-item.active{background:color-mix(in srgb,var(--theme-ink) 8%,var(--theme-canvas))}.stack-node.active{box-shadow:inset 2px 0 var(--theme-accent)}
+ html,body,#root{height:100%;overflow:hidden}.stacks-workspace,.detail,.stack-navigator{min-height:0}
+ input[type=number]{appearance:textfield}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
++
++.sidebar nav{min-height:0;overflow-y:auto}.query-navigation .nav-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.query-navigation .pagination{flex-wrap:wrap}
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -5,9 +5,10 @@
+ import '@fontsource/jetbrains-mono/latin-400.css';
+ import '@fontsource/jetbrains-mono/latin-500.css';
+ import '@fontsource/jetbrains-mono/latin-600.css';
++import {QueryNavigation,QueryEditor,QueryReader} from './SavedQueries';
++import type {SavedQuery} from './api';
+ import {Changes} from './Changes';
+ import {Conversation} from './Conversation';
+-import {CheckLog} from './CheckLog';
+ import './app.css';
+ import './theme.css';
+ 
+@@ -15,10 +16,11 @@
+   const [status,setStatus]=useState<Status|null>(null),[page,setPage]=useState<Page|null>(null);
+   const [selected,setSelected]=useState<{repo:string;number:number}|null>(null);
+   const [detail,setDetail]=useState<Snapshot<Overview|null>|null>(null),[error,setError]=useState('');
+-  const [view,setView]=useState<'mine'|'review'|'activity'>('mine'),[tab,setTab]=useState<'overview'|'changes'|'conversation'|'checks'>('overview');
++  const [view,setView]=useState<'mine'|'review'|'activity'|'query'>('mine'),[tab,setTab]=useState<'overview'|'changes'|'conversation'|'checks'>('overview');
+   const [checks,setChecks]=useState<CheckPage|null>(null),[checkOffset,setCheckOffset]=useState(0);
+   const [destination,setDestination]=useState<ActivityRecord|null>(null);
+   const restored=useRef(false),selectionOrigin=useRef<string|null>(null);
++  const [query,setQuery]=useState<SavedQuery|null>(null),[queryEditor,setQueryEditor]=useState(false),[editingQuery,setEditingQuery]=useState<SavedQuery|null>(null);
+   const [search,setSearch]=useState('');
+   const [offset,setOffset]=useState(0),[preferences,setPreferences]=useState(false);
+   const readSerial=useRef(0),detailSerial=useRef(0),storeRevision=useRef(0);
+@@ -31,6 +33,7 @@
+       storeRevision.current=s.revision;setStatus(s);
+       if(s.locked){setPage(null);setDetail(null);setChecks(null);setError('');return;}
+       if(!restored.current&&s.selected){restored.current=true;const selection={repo:s.selected[0],number:s.selected[1]};selectedRef.current=selection;setSelected(selection);}
++      if(view==='query'||view==='activity')return;
+       const p=await command<Page>(view==='mine'?'authored_page':'requested_page',{offset});
+       if(request!==readSerial.current||p.revision<storeRevision.current)return;
+       storeRevision.current=p.revision;setPage(p);setError('');
+@@ -68,11 +71,13 @@
+   }
+   function backToList(){const id=destination?.id;setDestination(null);setSelected(null);selectedRef.current=null;++detailSerial.current;setDetail(null);requestAnimationFrame(()=>{const origin=document.getElementById(id?`activity-${id}`:selectionOrigin.current??'');if(origin?.isConnected)origin.focus();else document.querySelector<HTMLElement>('.stack-navigator')?.focus();});}
+   function browseConversation(){setDestination(null);setTab('conversation');requestAnimationFrame(()=>document.getElementById('conversation')?.focus());}
++  function chooseQuery(q:SavedQuery){if(window.matchMedia('(max-width: 960px)').matches)backToList();setDestination(null);setQuery(q);setView('query');}
++  function editQuery(){setEditingQuery(query);setQueryEditor(true);}
+   const pr=detail?.data;
+   return <div className={`app-frame ${selected?'show-detail':''}`}>
+     <aside className="sidebar">
+       <div className="brand"><span className="brand-icon"><Layers3 size={19}/></span><span>gitjuke<span className="brand-dot">.</span></span></div>
+-      <nav aria-label="Primary"><p className="section-label">Workspace</p>{(['mine','review','activity'] as const).map(item=><button key={item} title={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} className={`nav-item ${view===item?'active':''}`} aria-current={view===item?'page':undefined} onClick={()=>{if(window.matchMedia('(max-width: 960px)').matches)backToList();setDestination(null);setView(item);setOffset(0);setSearch('');setPage(null);}}>{item==='mine'?<GitPullRequest size={16}/>:item==='review'?<Inbox size={16}/>:<Activity size={16}/>}<span>{item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'}</span></button>)}</nav>
++      <nav aria-label="Primary"><p className="section-label">Workspace</p>{(['mine','review','activity'] as const).map(item=><button key={item} title={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} className={`nav-item ${view===item?'active':''}`} aria-current={view===item?'page':undefined} onClick={()=>{if(window.matchMedia('(max-width: 960px)').matches)backToList();setDestination(null);setView(item);setOffset(0);setSearch('');setPage(null);}}>{item==='mine'?<GitPullRequest size={16}/>:item==='review'?<Inbox size={16}/>:<Activity size={16}/>}<span>{item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'}</span></button>)}<QueryNavigation revision={status?.revision??0} current={view==='query'?query:null} onSelect={chooseQuery} onCreate={()=>{setEditingQuery(null);setQueryEditor(true);}} onEdit={editQuery}/></nav>
+ 
+       <div className="sidebar-bottom">{status?.storage.warning&&<p role="status" className="state-banner">Local storage ≥1 GiB. Review Preferences.</p>}<button className="nav-item" title="Preferences" onClick={()=>setPreferences(true)}><Settings2 size={16}/><span>Preferences</span></button>
+         <div className="account"><span className="avatar">{status?.identity?.login.slice(0,2).toUpperCase()??'?'}</span><div>{status?.identity?.login??'Stored gh login'}<small>GitHub.com</small></div></div>
+@@ -82,7 +87,7 @@
+       </div>
+     </aside>
+     <main className="stacks-workspace">
+-      {view==='activity'?<ActivityReader health={status?.storageStopped?status.health:undefined} locked={status?.locked??true} revision={status?.revision??0} report={setError} open={a=>{void select(a.repo,a.number);setDestination(a);setTab('conversation');}}/>:<section className="stack-navigator" tabIndex={-1} aria-label="Pull requests">
++      {view==='query'&&query?<QueryReader key={`${query.id}:${query.version}`} query={query} revision={status?.revision??0} locked={status?.locked??true} health={status?.storageStopped?status.health:undefined} select={(repo,number)=>void select(repo,number)} edit={editQuery}/>:view==='activity'?<ActivityReader health={status?.storageStopped?status.health:undefined} locked={status?.locked??true} revision={status?.revision??0} report={setError} open={a=>{void select(a.repo,a.number);setDestination(a);setTab('conversation');}}/>:<section className="stack-navigator" tabIndex={-1} aria-label="Pull requests">
+         <div className="list-heading"><div><span className="eyebrow">{view==='mine'?'AUTHORED BY YOU':'AWAITING YOUR REVIEW'}</span><h1>{view==='mine'?'Pull requests':'Review requests'}</h1></div><button className="icon-button" aria-label="Refresh pull requests" onClick={()=>void action('refresh')}><RefreshCw size={16}/></button></div>
+         <p className="list-subhead">{page?.fetchedAt?`Cached ${new Date(page.fetchedAt*1000).toLocaleTimeString()}`:'No successful sync yet'}{page&&!page.complete?' · incomplete':''}</p>
+         {error&&<p role="alert" className="state-banner">{error}</p>}
+@@ -105,12 +110,13 @@
+             <section className="stack-section" aria-label="Published native stack"><GitBranch size={16}/>{pr.stack.state==='published'?<div><span>Stack #{pr.stack.number} · trunk {pr.stack.trunk}</span><ol>{pr.stack.members.map(member=><li key={member.number}><button aria-current={member.number===pr.number?'page':undefined} onClick={()=>void select(pr.repo,member.number)}>#{member.number} {member.title}</button></li>)}</ol></div>:<p>{pr.stack.state==='none'?'No published stack':`Native stack unknown: ${pr.stack.reason}`}</p>}</section>
+             {checks?.head&&checks.head!==pr.head&&<p className="state-banner">Overview is from old head {pr.head.slice(0,10)}. Current head: {checks.head.slice(0,10)}. <button onClick={()=>void select(pr.repo,pr.number)}>Update overview</button></p>}
+             <div className="tabs" role="tablist" aria-label="Reader">{(['overview','changes','conversation','checks'] as const).map(item=><button key={item} role="tab" aria-selected={tab===item} id={`${item}-tab`} aria-controls={item} onClick={()=>{if(item!=='changes'&&item!=='conversation')setDestination(null);setTab(item);}} onKeyDown={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const tabs=['overview','changes','conversation','checks'] as const;const next=e.key==='Home'?tabs[0]:e.key==='End'?tabs[3]:tabs[(tabs.indexOf(tab)+(e.key==='ArrowRight'?1:3))%4];if(next!=='changes'&&next!=='conversation')setDestination(null);setTab(next);document.getElementById(`${next}-tab`)?.focus();}}} tabIndex={tab===item?0:-1}>{item==='overview'?<FileText size={14}/>:item==='changes'?<FileDiff size={14}/>:item==='conversation'?<MessageSquare size={14}/>:<CircleCheck size={14}/>} {item==='overview'?'Overview':item==='changes'?'Changes':item==='conversation'?'Conversation':'Checks'}</button>)}</div>
+-            {tab==='overview'?<section className="overview" id="overview" role="tabpanel" aria-labelledby="overview-tab">{pr.bodyLimited?<p>Description exceeds the 128 KiB local body limit. Open the PR in GitHub.</p>:<pre className="description">{pr.body??'No description.'}</pre>}<p className="reader-note">Plain-text description · Comments and reviews are in Conversation.</p></section>:tab==='changes'?<Changes key={`${pr.repo}:${pr.number}`} pr={pr} currentHead={checks?.head??pr.head} destination={destination?.id.slice(`github.com:${pr.repo}:${pr.number}:`.length)} onBack={backToList} onBrowse={browseConversation} paged={status?.settings.pagedChanges??false} revision={status?.revision??0} onMode={paged=>void action('set_changes_mode',{paged})}/>:tab==='conversation'?<Conversation key={`${pr.repo}:${pr.number}:${pr.head}:${destination?.id??'ordinary'}`} destination={destination?.id.startsWith(`github.com:${pr.repo}:${pr.number}:`)?destination.id.slice(`github.com:${pr.repo}:${pr.number}:`.length):undefined} onBack={backToList} onBrowse={browseConversation} pr={pr} currentHead={checks?.head??pr.head} revision={status?.revision??0}/>:<CheckReader repo={pr.repo} number={pr.number} checks={checks} offset={checkOffset} setOffset={setCheckOffset}/>}
++            {tab==='overview'?<section className="overview" id="overview" role="tabpanel" aria-labelledby="overview-tab">{pr.bodyLimited?<p>Description exceeds the 128 KiB local body limit. Open the PR in GitHub.</p>:<pre className="description">{pr.body??'No description.'}</pre>}<p className="reader-note">Plain-text description · Comments and reviews are in Conversation.</p></section>:tab==='changes'?<Changes key={`${pr.repo}:${pr.number}`} pr={pr} currentHead={checks?.head??pr.head} destination={destination?.id.slice(`github.com:${pr.repo}:${pr.number}:`.length)} onBack={backToList} onBrowse={browseConversation} paged={status?.settings.pagedChanges??false} revision={status?.revision??0} onMode={paged=>void action('set_changes_mode',{paged})}/>:tab==='conversation'?<Conversation key={`${pr.repo}:${pr.number}:${pr.head}:${destination?.id??'ordinary'}`} destination={destination?.id.startsWith(`github.com:${pr.repo}:${pr.number}:`)?destination.id.slice(`github.com:${pr.repo}:${pr.number}:`.length):undefined} onBack={backToList} onBrowse={browseConversation} pr={pr} currentHead={checks?.head??pr.head} revision={status?.revision??0}/>:<CheckReader checks={checks} offset={checkOffset} setOffset={setCheckOffset}/>}
+             <footer className="detail-footer">{detail.fetchedAt?`Cached ${new Date(detail.fetchedAt*1000).toLocaleString()}`:'Not fetched'} · revision {detail.revision}</footer>
+           </>:<div className="empty">{detail?.error?'This PR is unavailable.':'Reading the authorized PR snapshot…'}</div>}
+         </>:<div className="empty reader-empty"><GitPullRequest size={36}/><h1>A little clarity for your queue.</h1><p>Select a pull request to explore the changes,<br/>follow the conversation, and check its progress.</p><span className="empty-kicker">GITJUKE / YOUR REVIEW DESK</span></div>}
+       </article>
+     </main>
++    {queryEditor&&<QueryEditor query={editingQuery} close={()=>setQueryEditor(false)} onSaved={q=>{setQueryEditor(false);chooseQuery(q);requestAnimationFrame(()=>document.querySelector<HTMLElement>('[aria-label="Saved query results"]')?.focus());void load();}} onDeleted={()=>{setQueryEditor(false);setQuery(null);setView('mine');void load();}}/>}
+     {preferences&&<Preferences status={status} close={()=>setPreferences(false)} action={action}/>}
+   </div>;
+ }
+@@ -146,11 +152,11 @@
+   const tone=result==='success'?'success':['failure','timed_out','action_required','error'].includes(result)?'failure':['skipped','neutral','cancelled'].includes(result)?'neutral':'pending';
+   return <span className={`check-result ${tone}`}>{tone==='success'?<Check size={14}/>:tone==='failure'?<CircleX size={14}/>:<CircleDot size={14}/>} {result.replaceAll('_',' ')}</span>;
+ }
+-function CheckReader({repo,number,checks,offset,setOffset}:{repo:string;number:number;checks:CheckPage|null;offset:number;setOffset:(n:number)=>void}){
++function CheckReader({checks,offset,setOffset}:{checks:CheckPage|null;offset:number;setOffset:(n:number)=>void}){
+   return <section id="checks" className="overview" role="tabpanel" aria-labelledby="checks-tab"><h2>Head checks</h2>{checks?.error&&<p className="state-banner">{checks.error} · cached results remain labeled by revision.</p>}<p className="dialog-note">{checks?.head??'Head snapshot pending'} · review {checks?.review??'unknown'}</p>
+     {checks?.commits.map(c=><p className="dialog-note" key={c.resource}>{c.resource.slice(0,10)} · {c.complete?'Complete cached contexts':'Incomplete contexts'} · {c.fetchedAt?new Date(c.fetchedAt*1000).toLocaleTimeString():'Not synced'} {c.error??''}</p>)}
+     {!checks?.items.length&&<p className="dialog-note">{checks?.commits.length&&checks.commits.every(c=>c.complete)?'No supplied check contexts. This does not infer a workflow completion.':'Check reconciliation pending.'}</p>}
+-    {checks?.items.map(c=><div className="check-row" key={`${c.commit}:${c.id}`}><strong>{c.name}</strong><CheckResult check={c}/><small>{c.kind==='CheckRun'?'Check run':'Legacy status'} · {c.commit.slice(0,10)}{c.runId?` · run ${c.runId} · attempt ${c.attempt??'unknown'}`:''}</small><CheckLog key={JSON.stringify([repo,number,checks.head,c,checks.error,checks.commits.map(s=>[s.resource,s.complete,s.error])])} job={{repo,number,head:checks.head??'',check:c.id,offset}} check={c} revision={checks.revision}/></div>)}
++    {checks?.items.map(c=><div className="check-row" key={`${c.commit}:${c.id}`}><strong>{c.name}</strong><CheckResult check={c}/><small>{c.kind==='CheckRun'?'Check run':'Legacy status'} · {c.commit.slice(0,10)}{c.runId?` · run ${c.runId} · attempt ${c.attempt??'unknown'}`:''}</small></div>)}
+     <div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous checks</button><span>{checks?.items.length?offset+1:0}–{offset+(checks?.items.length??0)} loaded</span><button disabled={checks?.nextOffset==null} onClick={()=>setOffset(checks?.nextOffset??0)}>Next checks</button></div>
+   </section>;
+ }

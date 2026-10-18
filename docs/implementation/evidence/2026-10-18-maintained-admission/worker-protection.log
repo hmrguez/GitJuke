@@ -1,0 +1,15 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.15s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-8558dfba880fe2d0)
+
+running 7 tests
+test runtime::tests::startup_cleanup_failure_opens_protected_cache_until_cleanup_and_probe_succeed ... ok
+test runtime::tests::partial_publication_startup_stays_locked_paused_and_repairs_before_reads ... ok
+test runtime::tests::interrupted_activity_and_summary_repair_before_remote_eligibility ... ok
+test runtime::tests::query_cursor_checkpoint_fault_protects_cached_session_and_repairs_paused ... ok
+test runtime::tests::control_sweeps_protect_startup_and_resume_before_remote_eligibility ... ok
+test runtime::tests::check_purge_worker_denial_protects_and_repairs_paused_without_neighbor_loss ... ok
+test runtime::tests::source_initialization_failure_protects_membership_and_retries_fresh_after_repair ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 158 filtered out; finished in 38.79s
+

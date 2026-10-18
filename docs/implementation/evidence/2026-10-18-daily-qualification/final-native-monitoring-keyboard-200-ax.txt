@@ -1,0 +1,71 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Preferences
+				4 heading Preferences, Value: 2
+					5 text Preferences
+				6 button Close preferences
+				7 container Preferences sections
+					8 toggle button Appearance, Value: off
+					9 toggle button Monitoring, Value: on
+					10 toggle button GitHub, Value: off
+					11 toggle button Storage, Value: off
+				12 container Monitoring
+					13 container Launch at login
+						14 heading Launch at login, Value: 3
+							15 text Launch at login
+						16 text Start the menu-bar monitor when you sign in. The reader stays closed, Pause is preserved, and notification permission is a separate choice.
+						17 container
+							18 checkbox (disabled) Launch GitJuke at login, Value: 0
+							19 text Launch GitJuke at login
+						20 text Install GitJuke in /Applications/GitJuke.app and quit other copies. This copy cannot monitor or register at login.
+						21 text Preference: off · Registration: missing · macOS: no launchd disable override
+					22 heading Monitoring, Value: 3
+						23 text Monitoring
+					24 text 1 active watches · 1 delayed. Discovery targets 60 seconds; head/check eligibility targets 10 seconds. Activity hydrates individual comments, reviews, requests and mentions; native alert permission and categories are configured below.
+					25 text Authored: Complete cached set · 14:54:36
+					26 text Direct requests: Complete cached set · 14:54:36
+					27 text Team membership: Complete cached set · 14:54:36
+					28 text core: 262 requests · 431189 bytes · 0 points · 4900 remaining
+					29 text search: 9 requests · 66193 bytes · 0 points · 4900 remaining
+					30 text graphql: 21 requests · 256925 bytes · 21 points · 4900 remaining
+					31 summary Active watch reasons and freshness, Value: off
+						32 text Active watch reasons and freshness
+					33 container Notifications
+						34 heading Notifications, Value: 3
+							35 text Notifications
+						36 text Comments and reviews on your PRs, review requests, mentions and terminal workflow attempts. Monitoring continues in the menu bar when the reader closes. Quit stops monitoring.
+						37 text Previews show only a generic category and count by default. Enabling starts future alerts; existing unseen Activity stays intact. Pause monitoring also pauses alerts. Focused reading does not mute alerts.
+						38 text macOS permission: Not requested. Alerts disabled; Activity continues.
+						39 button Enable notifications
+						40 container Alert categories
+							41 text Alert categories
+							42 container
+								43 checkbox Comments, Value: 1
+								44 text Comments
+							45 container
+								46 checkbox Reviews, Value: 1
+								47 text Reviews
+							48 container
+								49 checkbox Review requests, Value: 1
+								50 text Review requests
+							51 container
+								52 checkbox Mentions, Value: 1
+								53 text Mentions
+							54 container
+								55 checkbox Terminal checks, Value: 1
+								56 text Terminal checks
+						57 container
+							58 checkbox Include repository, PR title and actor in previews, Value: 0
+							59 text Include repository, PR title and actor in previews
+						60 text Explicit metadata opt-in applies to private and unknown-visibility PRs too. Bodies and logs are always omitted. Some external checks cannot identify retries; those alerts stay off. Launch at login is configured separately.
+				61 text GitJuke 0.1.0 · Your personal review desk.
+	62 close button
+	63 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	64 minimize button
+	65 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+66 menu bar
+	67 GitJuke Daily Qualification
+
+The focused UI element is 39 button Enable notifications

@@ -1,0 +1,1156 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Text size 100%
+				4 text Text size 100%
+			5 container
+				6 text gitjuke.
+				7 container Primary
+					8 text Workspace
+					9 button My PRs
+					10 button Review requests
+					11 button Activity
+					12 text Saved queries
+					13 button New query, Help: New saved query
+					14 button Daily qualification
+				15 button Preferences
+				16 text RE reader GitHub.com
+				17 button Paused 1 watches · 1 delayed, Help: Toggle monitoring
+			18 container Pull request reader
+				19 button Back
+				20 text a/b / #1
+				21 button Open in GitHub
+				22 container
+					23 text Open
+					24 heading Change 1, Value: 1
+						25 text Change 1
+					26 text reader · main ← cccccccccc
+				27 container Published native stack
+					28 text No published stack
+				29 tab group (selectable) Reader
+					30 tab (selectable) Overview
+					31 tab (selected) Changes
+					32 tab (selectable) Conversation
+					33 tab (selectable) Checks
+				34 container Changes
+					35 text CHANGES
+					36 container
+						37 text Head cccccccccc · base bbbbbbbbbb
+					38 button Update Changes
+					39 container Changed files
+						40 text Files 1–20 / 22 known · this page only · cached 14:54:40
+						41 button file-0.txt modified · +201 −201
+						42 button file-1.txt modified · +201 −201
+						43 button file-2.txt modified · +201 −201
+						44 button file-3.txt modified · +201 −201
+						45 button file-4.txt modified · +201 −201
+						46 button file-5.txt modified · +201 −201
+						47 button file-6.txt modified · +201 −201
+						48 button file-7.txt modified · +201 −201
+						49 button file-8.txt modified · +201 −201
+						50 button file-9.txt modified · +201 −201
+						51 button file-10.txt modified · +201 −201
+						52 button file-11.txt modified · +201 −201
+						53 button file-12.txt modified · +201 −201
+						54 button file-13.txt modified · +201 −201
+						55 button file-14.txt modified · +201 −201
+						56 button file-15.txt modified · +201 −201
+						57 button file-16.txt modified · +201 −201
+						58 button file-17.txt modified · +201 −201
+						59 button file-18.txt modified · +201 −201
+						60 button file-19.txt modified · +201 −201
+						61 button (disabled) Previous files
+						62 text Page 1
+						63 button Next files
+					64 heading file-0.txt, Value: 2
+						65 text file-0.txt
+					66 button Open revision file in GitHub
+					67 text Reading mode
+					68 container Reading mode
+						69 toggle button Continuous, Value: off
+						70 toggle button Paged, Value: on
+					71 button Reload file
+					72 text Complete supplied change hunks for this file and revision. · 7,843 UTF-8 bytes · 403 rows
+					73 container
+						74 text Hunk (1– 1 )
+						75 number field (settable) Jump to hunk number, Value: 1
+							76 stepper 0
+								77 unknown
+								78 unknown
+						79 button Go to hunk
+					80 text Rows 1–200 / 403
+					81 container file-0.txt unified diff. Use arrow keys or Page Down to read; code scrolls horizontally.
+						82 table file-0.txt · supplied unified change hunks (showing 1-206 of 206 items)
+							83 row (selectable) Old line
+New line
+Change and code
+							84 row (selectable)
+								85 cell (selectable)
+								86 cell (selectable)
+								87 cell (selectable) hunk:
+@@ -1,201 +1,201 @@
+							88 row (selectable)
+								89 cell (selectable) 1
+								90 cell (selectable)
+								91 cell (selectable) deleted:
+-OLD LOCAL LINE 1
+							92 row (selectable)
+								93 cell (selectable)
+								94 cell (selectable) 1
+								95 cell (selectable) added:
++NEW LOCAL LINE 1
+							96 row (selectable)
+								97 cell (selectable) 2
+								98 cell (selectable)
+								99 cell (selectable) deleted:
+-OLD LOCAL LINE 2
+							100 row (selectable)
+								101 cell (selectable)
+								102 cell (selectable) 2
+								103 cell (selectable) added:
++NEW LOCAL LINE 2
+							104 row (selectable)
+								105 cell (selectable) 3
+								106 cell (selectable)
+								107 cell (selectable) deleted:
+-OLD LOCAL LINE 3
+							108 row (selectable)
+								109 cell (selectable)
+								110 cell (selectable) 3
+								111 cell (selectable) added:
++NEW LOCAL LINE 3
+							112 row (selectable)
+								113 cell (selectable) 4
+								114 cell (selectable)
+								115 cell (selectable) deleted:
+-OLD LOCAL LINE 4
+							116 row (selectable)
+								117 cell (selectable)
+								118 cell (selectable) 4
+								119 cell (selectable) added:
++NEW LOCAL LINE 4
+							120 row (selectable)
+								121 cell (selectable) 5
+								122 cell (selectable)
+								123 cell (selectable) deleted:
+-OLD LOCAL LINE 5
+							124 row (selectable)
+								125 cell (selectable)
+								126 cell (selectable) 5
+								127 cell (selectable) added:
++NEW LOCAL LINE 5
+							128 row (selectable)
+								129 cell (selectable) 6
+								130 cell (selectable)
+								131 cell (selectable) deleted:
+-OLD LOCAL LINE 6
+							132 row (selectable)
+								133 cell (selectable)
+								134 cell (selectable) 6
+								135 cell (selectable) added:
++NEW LOCAL LINE 6
+							136 row (selectable)
+								137 cell (selectable) 7
+								138 cell (selectable)
+								139 cell (selectable) deleted:
+-OLD LOCAL LINE 7
+							140 row (selectable)
+								141 cell (selectable)
+								142 cell (selectable) 7
+								143 cell (selectable) added:
++NEW LOCAL LINE 7
+							144 row (selectable)
+								145 cell (selectable) 8
+								146 cell (selectable)
+								147 cell (selectable) deleted:
+-OLD LOCAL LINE 8
+							148 row (selectable)
+								149 cell (selectable)
+								150 cell (selectable) 8
+								151 cell (selectable) added:
++NEW LOCAL LINE 8
+							152 row (selectable)
+								153 cell (selectable) 9
+								154 cell (selectable)
+								155 cell (selectable) deleted:
+-OLD LOCAL LINE 9
+							156 row (selectable)
+								157 cell (selectable)
+								158 cell (selectable) 9
+								159 cell (selectable) added:
++NEW LOCAL LINE 9
+							160 row (selectable)
+								161 cell (selectable) 10
+								162 cell (selectable)
+								163 cell (selectable) deleted:
+-OLD LOCAL LINE 10
+							164 row (selectable)
+								165 cell (selectable)
+								166 cell (selectable) 10
+								167 cell (selectable) added:
++NEW LOCAL LINE 10
+							168 row (selectable)
+								169 cell (selectable) 11
+								170 cell (selectable)
+								171 cell (selectable) deleted:
+-OLD LOCAL LINE 11
+							172 row (selectable)
+								173 cell (selectable)
+								174 cell (selectable) 11
+								175 cell (selectable) added:
++NEW LOCAL LINE 11
+							176 row (selectable)
+								177 cell (selectable) 12
+								178 cell (selectable)
+								179 cell (selectable) deleted:
+-OLD LOCAL LINE 12
+							180 row (selectable)
+								181 cell (selectable)
+								182 cell (selectable) 12
+								183 cell (selectable) added:
++NEW LOCAL LINE 12
+							184 row (selectable)
+								185 cell (selectable) 13
+								186 cell (selectable)
+								187 cell (selectable) deleted:
+-OLD LOCAL LINE 13
+							188 row (selectable)
+								189 cell (selectable)
+								190 cell (selectable) 13
+								191 cell (selectable) added:
++NEW LOCAL LINE 13
+							192 row (selectable)
+								193 cell (selectable) 14
+								194 cell (selectable)
+								195 cell (selectable) deleted:
+-OLD LOCAL LINE 14
+							196 row (selectable)
+								197 cell (selectable)
+								198 cell (selectable) 14
+								199 cell (selectable) added:
++NEW LOCAL LINE 14
+							200 row (selectable)
+								201 cell (selectable) 15
+								202 cell (selectable)
+								203 cell (selectable) deleted:
+-OLD LOCAL LINE 15
+							204 row (selectable)
+								205 cell (selectable)
+								206 cell (selectable) 15
+								207 cell (selectable) added:
++NEW LOCAL LINE 15
+							208 row (selectable)
+								209 cell (selectable) 16
+								210 cell (selectable)
+								211 cell (selectable) deleted:
+-OLD LOCAL LINE 16
+							212 row (selectable)
+								213 cell (selectable)
+								214 cell (selectable) 16
+								215 cell (selectable) added:
++NEW LOCAL LINE 16
+							216 row (selectable)
+								217 cell (selectable) 17
+								218 cell (selectable)
+								219 cell (selectable) deleted:
+-OLD LOCAL LINE 17
+							220 row (selectable)
+								221 cell (selectable)
+								222 cell (selectable) 17
+								223 cell (selectable) added:
++NEW LOCAL LINE 17
+							224 row (selectable)
+								225 cell (selectable) 18
+								226 cell (selectable)
+								227 cell (selectable) deleted:
+-OLD LOCAL LINE 18
+							228 row (selectable)
+								229 cell (selectable)
+								230 cell (selectable) 18
+								231 cell (selectable) added:
++NEW LOCAL LINE 18
+							232 row (selectable)
+								233 cell (selectable) 19
+								234 cell (selectable)
+								235 cell (selectable) deleted:
+-OLD LOCAL LINE 19
+							236 row (selectable)
+								237 cell (selectable)
+								238 cell (selectable) 19
+								239 cell (selectable) added:
++NEW LOCAL LINE 19
+							240 row (selectable)
+								241 cell (selectable) 20
+								242 cell (selectable)
+								243 cell (selectable) deleted:
+-OLD LOCAL LINE 20
+							244 row (selectable)
+								245 cell (selectable)
+								246 cell (selectable) 20
+								247 cell (selectable) added:
++NEW LOCAL LINE 20
+							248 row (selectable)
+								249 cell (selectable) 21
+								250 cell (selectable)
+								251 cell (selectable) deleted:
+-OLD LOCAL LINE 21
+							252 row (selectable)
+								253 cell (selectable)
+								254 cell (selectable) 21
+								255 cell (selectable) added:
++NEW LOCAL LINE 21
+							256 row (selectable)
+								257 cell (selectable) 22
+								258 cell (selectable)
+								259 cell (selectable) deleted:
+-OLD LOCAL LINE 22
+							260 row (selectable)
+								261 cell (selectable)
+								262 cell (selectable) 22
+								263 cell (selectable) added:
++NEW LOCAL LINE 22
+							264 row (selectable)
+								265 cell (selectable) 23
+								266 cell (selectable)
+								267 cell (selectable) deleted:
+-OLD LOCAL LINE 23
+							268 row (selectable)
+								269 cell (selectable)
+								270 cell (selectable) 23
+								271 cell (selectable) added:
++NEW LOCAL LINE 23
+							272 row (selectable)
+								273 cell (selectable) 24
+								274 cell (selectable)
+								275 cell (selectable) deleted:
+-OLD LOCAL LINE 24
+							276 row (selectable)
+								277 cell (selectable)
+								278 cell (selectable) 24
+								279 cell (selectable) added:
++NEW LOCAL LINE 24
+							280 row (selectable)
+								281 cell (selectable) 25
+								282 cell (selectable)
+								283 cell (selectable) deleted:
+-OLD LOCAL LINE 25
+							284 row (selectable)
+								285 cell (selectable)
+								286 cell (selectable) 25
+								287 cell (selectable) added:
++NEW LOCAL LINE 25
+							288 row (selectable)
+								289 cell (selectable) 26
+								290 cell (selectable)
+								291 cell (selectable) deleted:
+-OLD LOCAL LINE 26
+							292 row (selectable)
+								293 cell (selectable)
+								294 cell (selectable) 26
+								295 cell (selectable) added:
++NEW LOCAL LINE 26
+							296 row (selectable)
+								297 cell (selectable) 27
+								298 cell (selectable)
+								299 cell (selectable) deleted:
+-OLD LOCAL LINE 27
+							300 row (selectable)
+								301 cell (selectable)
+								302 cell (selectable) 27
+								303 cell (selectable) added:
++NEW LOCAL LINE 27
+							304 row (selectable)
+								305 cell (selectable) 28
+								306 cell (selectable)
+								307 cell (selectable) deleted:
+-OLD LOCAL LINE 28
+							308 row (selectable)
+								309 cell (selectable)
+								310 cell (selectable) 28
+								311 cell (selectable) added:
++NEW LOCAL LINE 28
+							312 row (selectable)
+								313 cell (selectable) 29
+								314 cell (selectable)
+								315 cell (selectable) deleted:
+-OLD LOCAL LINE 29
+							316 row (selectable)
+								317 cell (selectable)
+								318 cell (selectable) 29
+								319 cell (selectable) added:
++NEW LOCAL LINE 29
+							320 row (selectable)
+								321 cell (selectable) 30
+								322 cell (selectable)
+								323 cell (selectable) deleted:
+-OLD LOCAL LINE 30
+							324 row (selectable)
+								325 cell (selectable)
+								326 cell (selectable) 30
+								327 cell (selectable) added:
++NEW LOCAL LINE 30
+							328 row (selectable)
+								329 cell (selectable) 31
+								330 cell (selectable)
+								331 cell (selectable) deleted:
+-OLD LOCAL LINE 31
+							332 row (selectable)
+								333 cell (selectable)
+								334 cell (selectable) 31
+								335 cell (selectable) added:
++NEW LOCAL LINE 31
+							336 row (selectable)
+								337 cell (selectable) 32
+								338 cell (selectable)
+								339 cell (selectable) deleted:
+-OLD LOCAL LINE 32
+							340 row (selectable)
+								341 cell (selectable)
+								342 cell (selectable) 32
+								343 cell (selectable) added:
++NEW LOCAL LINE 32
+							344 row (selectable)
+								345 cell (selectable) 33
+								346 cell (selectable)
+								347 cell (selectable) deleted:
+-OLD LOCAL LINE 33
+							348 row (selectable)
+								349 cell (selectable)
+								350 cell (selectable) 33
+								351 cell (selectable) added:
++NEW LOCAL LINE 33
+							352 row (selectable)
+								353 cell (selectable) 34
+								354 cell (selectable)
+								355 cell (selectable) deleted:
+-OLD LOCAL LINE 34
+							356 row (selectable)
+								357 cell (selectable)
+								358 cell (selectable) 34
+								359 cell (selectable) added:
++NEW LOCAL LINE 34
+							360 row (selectable)
+								361 cell (selectable) 35
+								362 cell (selectable)
+								363 cell (selectable) deleted:
+-OLD LOCAL LINE 35
+							364 row (selectable)
+								365 cell (selectable)
+								366 cell (selectable) 35
+								367 cell (selectable) added:
++NEW LOCAL LINE 35
+							368 row (selectable)
+								369 cell (selectable) 36
+								370 cell (selectable)
+								371 cell (selectable) deleted:
+-OLD LOCAL LINE 36
+							372 row (selectable)
+								373 cell (selectable)
+								374 cell (selectable) 36
+								375 cell (selectable) added:
++NEW LOCAL LINE 36
+							376 row (selectable)
+								377 cell (selectable) 37
+								378 cell (selectable)
+								379 cell (selectable) deleted:
+-OLD LOCAL LINE 37
+							380 row (selectable)
+								381 cell (selectable)
+								382 cell (selectable) 37
+								383 cell (selectable) added:
++NEW LOCAL LINE 37
+							384 row (selectable)
+								385 cell (selectable) 38
+								386 cell (selectable)
+								387 cell (selectable) deleted:
+-OLD LOCAL LINE 38
+							388 row (selectable)
+								389 cell (selectable)
+								390 cell (selectable) 38
+								391 cell (selectable) added:
++NEW LOCAL LINE 38
+							392 row (selectable)
+								393 cell (selectable) 39
+								394 cell (selectable)
+								395 cell (selectable) deleted:
+-OLD LOCAL LINE 39
+							396 row (selectable)
+								397 cell (selectable)
+								398 cell (selectable) 39
+								399 cell (selectable) added:
++NEW LOCAL LINE 39
+							400 row (selectable)
+								401 cell (selectable) 40
+								402 cell (selectable)
+								403 cell (selectable) deleted:
+-OLD LOCAL LINE 40
+							404 row (selectable)
+								405 cell (selectable)
+								406 cell (selectable) 40
+								407 cell (selectable) added:
++NEW LOCAL LINE 40
+							408 row (selectable)
+								409 cell (selectable) 41
+								410 cell (selectable)
+								411 cell (selectable) deleted:
+-OLD LOCAL LINE 41
+							412 row (selectable)
+								413 cell (selectable)
+								414 cell (selectable) 41
+								415 cell (selectable) added:
++NEW LOCAL LINE 41
+							416 row (selectable)
+								417 cell (selectable) 42
+								418 cell (selectable)
+								419 cell (selectable) deleted:
+-OLD LOCAL LINE 42
+							420 row (selectable)
+								421 cell (selectable)
+								422 cell (selectable) 42
+								423 cell (selectable) added:
++NEW LOCAL LINE 42
+							424 row (selectable)
+								425 cell (selectable) 43
+								426 cell (selectable)
+								427 cell (selectable) deleted:
+-OLD LOCAL LINE 43
+							428 row (selectable)
+								429 cell (selectable)
+								430 cell (selectable) 43
+								431 cell (selectable) added:
++NEW LOCAL LINE 43
+							432 row (selectable)
+								433 cell (selectable) 44
+								434 cell (selectable)
+								435 cell (selectable) deleted:
+-OLD LOCAL LINE 44
+							436 row (selectable)
+								437 cell (selectable)
+								438 cell (selectable) 44
+								439 cell (selectable) added:
++NEW LOCAL LINE 44
+							440 row (selectable)
+								441 cell (selectable) 45
+								442 cell (selectable)
+								443 cell (selectable) deleted:
+-OLD LOCAL LINE 45
+							444 row (selectable)
+								445 cell (selectable)
+								446 cell (selectable) 45
+								447 cell (selectable) added:
++NEW LOCAL LINE 45
+							448 row (selectable)
+								449 cell (selectable) 46
+								450 cell (selectable)
+								451 cell (selectable) deleted:
+-OLD LOCAL LINE 46
+							452 row (selectable)
+								453 cell (selectable)
+								454 cell (selectable) 46
+								455 cell (selectable) added:
++NEW LOCAL LINE 46
+							456 row (selectable)
+								457 cell (selectable) 47
+								458 cell (selectable)
+								459 cell (selectable) deleted:
+-OLD LOCAL LINE 47
+							460 row (selectable)
+								461 cell (selectable)
+								462 cell (selectable) 47
+								463 cell (selectable) added:
++NEW LOCAL LINE 47
+							464 row (selectable)
+								465 cell (selectable) 48
+								466 cell (selectable)
+								467 cell (selectable) deleted:
+-OLD LOCAL LINE 48
+							468 row (selectable)
+								469 cell (selectable)
+								470 cell (selectable) 48
+								471 cell (selectable) added:
++NEW LOCAL LINE 48
+							472 row (selectable)
+								473 cell (selectable) 49
+								474 cell (selectable)
+								475 cell (selectable) deleted:
+-OLD LOCAL LINE 49
+							476 row (selectable)
+								477 cell (selectable)
+								478 cell (selectable) 49
+								479 cell (selectable) added:
++NEW LOCAL LINE 49
+							480 row (selectable)
+								481 cell (selectable) 50
+								482 cell (selectable)
+								483 cell (selectable) deleted:
+-OLD LOCAL LINE 50
+							484 row (selectable)
+								485 cell (selectable)
+								486 cell (selectable) 50
+								487 cell (selectable) added:
++NEW LOCAL LINE 50
+							488 row (selectable)
+								489 cell (selectable) 51
+								490 cell (selectable)
+								491 cell (selectable) deleted:
+-OLD LOCAL LINE 51
+							492 row (selectable)
+								493 cell (selectable)
+								494 cell (selectable) 51
+								495 cell (selectable) added:
++NEW LOCAL LINE 51
+							496 row (selectable)
+								497 cell (selectable) 52
+								498 cell (selectable)
+								499 cell (selectable) deleted:
+-OLD LOCAL LINE 52
+							500 row (selectable)
+								501 cell (selectable)
+								502 cell (selectable) 52
+								503 cell (selectable) added:
++NEW LOCAL LINE 52
+							504 row (selectable)
+								505 cell (selectable) 53
+								506 cell (selectable)
+								507 cell (selectable) deleted:
+-OLD LOCAL LINE 53
+							508 row (selectable)
+								509 cell (selectable)
+								510 cell (selectable) 53
+								511 cell (selectable) added:
++NEW LOCAL LINE 53
+							512 row (selectable)
+								513 cell (selectable) 54
+								514 cell (selectable)
+								515 cell (selectable) deleted:
+-OLD LOCAL LINE 54
+							516 row (selectable)
+								517 cell (selectable)
+								518 cell (selectable) 54
+								519 cell (selectable) added:
++NEW LOCAL LINE 54
+							520 row (selectable)
+								521 cell (selectable) 55
+								522 cell (selectable)
+								523 cell (selectable) deleted:
+-OLD LOCAL LINE 55
+							524 row (selectable)
+								525 cell (selectable)
+								526 cell (selectable) 55
+								527 cell (selectable) added:
++NEW LOCAL LINE 55
+							528 row (selectable)
+								529 cell (selectable) 56
+								530 cell (selectable)
+								531 cell (selectable) deleted:
+-OLD LOCAL LINE 56
+							532 row (selectable)
+								533 cell (selectable)
+								534 cell (selectable) 56
+								535 cell (selectable) added:
++NEW LOCAL LINE 56
+							536 row (selectable)
+								537 cell (selectable) 57
+								538 cell (selectable)
+								539 cell (selectable) deleted:
+-OLD LOCAL LINE 57
+							540 row (selectable)
+								541 cell (selectable)
+								542 cell (selectable) 57
+								543 cell (selectable) added:
++NEW LOCAL LINE 57
+							544 row (selectable)
+								545 cell (selectable) 58
+								546 cell (selectable)
+								547 cell (selectable) deleted:
+-OLD LOCAL LINE 58
+							548 row (selectable)
+								549 cell (selectable)
+								550 cell (selectable) 58
+								551 cell (selectable) added:
++NEW LOCAL LINE 58
+							552 row (selectable)
+								553 cell (selectable) 59
+								554 cell (selectable)
+								555 cell (selectable) deleted:
+-OLD LOCAL LINE 59
+							556 row (selectable)
+								557 cell (selectable)
+								558 cell (selectable) 59
+								559 cell (selectable) added:
++NEW LOCAL LINE 59
+							560 row (selectable)
+								561 cell (selectable) 60
+								562 cell (selectable)
+								563 cell (selectable) deleted:
+-OLD LOCAL LINE 60
+							564 row (selectable)
+								565 cell (selectable)
+								566 cell (selectable) 60
+								567 cell (selectable) added:
++NEW LOCAL LINE 60
+							568 row (selectable)
+								569 cell (selectable) 61
+								570 cell (selectable)
+								571 cell (selectable) deleted:
+-OLD LOCAL LINE 61
+							572 row (selectable)
+								573 cell (selectable)
+								574 cell (selectable) 61
+								575 cell (selectable) added:
++NEW LOCAL LINE 61
+							576 row (selectable)
+								577 cell (selectable) 62
+								578 cell (selectable)
+								579 cell (selectable) deleted:
+-OLD LOCAL LINE 62
+							580 row (selectable)
+								581 cell (selectable)
+								582 cell (selectable) 62
+								583 cell (selectable) added:
++NEW LOCAL LINE 62
+							584 row (selectable)
+								585 cell (selectable) 63
+								586 cell (selectable)
+								587 cell (selectable) deleted:
+-OLD LOCAL LINE 63
+							588 row (selectable)
+								589 cell (selectable)
+								590 cell (selectable) 63
+								591 cell (selectable) added:
++NEW LOCAL LINE 63
+							592 row (selectable)
+								593 cell (selectable) 64
+								594 cell (selectable)
+								595 cell (selectable) deleted:
+-OLD LOCAL LINE 64
+							596 row (selectable)
+								597 cell (selectable)
+								598 cell (selectable) 64
+								599 cell (selectable) added:
++NEW LOCAL LINE 64
+							600 row (selectable)
+								601 cell (selectable) 65
+								602 cell (selectable)
+								603 cell (selectable) deleted:
+-OLD LOCAL LINE 65
+							604 row (selectable)
+								605 cell (selectable)
+								606 cell (selectable) 65
+								607 cell (selectable) added:
++NEW LOCAL LINE 65
+							608 row (selectable)
+								609 cell (selectable) 66
+								610 cell (selectable)
+								611 cell (selectable) deleted:
+-OLD LOCAL LINE 66
+							612 row (selectable)
+								613 cell (selectable)
+								614 cell (selectable) 66
+								615 cell (selectable) added:
++NEW LOCAL LINE 66
+							616 row (selectable)
+								617 cell (selectable) 67
+								618 cell (selectable)
+								619 cell (selectable) deleted:
+-OLD LOCAL LINE 67
+							620 row (selectable)
+								621 cell (selectable)
+								622 cell (selectable) 67
+								623 cell (selectable) added:
++NEW LOCAL LINE 67
+							624 row (selectable)
+								625 cell (selectable) 68
+								626 cell (selectable)
+								627 cell (selectable) deleted:
+-OLD LOCAL LINE 68
+							628 row (selectable)
+								629 cell (selectable)
+								630 cell (selectable) 68
+								631 cell (selectable) added:
++NEW LOCAL LINE 68
+							632 row (selectable)
+								633 cell (selectable) 69
+								634 cell (selectable)
+								635 cell (selectable) deleted:
+-OLD LOCAL LINE 69
+							636 row (selectable)
+								637 cell (selectable)
+								638 cell (selectable) 69
+								639 cell (selectable) added:
++NEW LOCAL LINE 69
+							640 row (selectable)
+								641 cell (selectable) 70
+								642 cell (selectable)
+								643 cell (selectable) deleted:
+-OLD LOCAL LINE 70
+							644 row (selectable)
+								645 cell (selectable)
+								646 cell (selectable) 70
+								647 cell (selectable) added:
++NEW LOCAL LINE 70
+							648 row (selectable)
+								649 cell (selectable) 71
+								650 cell (selectable)
+								651 cell (selectable) deleted:
+-OLD LOCAL LINE 71
+							652 row (selectable)
+								653 cell (selectable)
+								654 cell (selectable) 71
+								655 cell (selectable) added:
++NEW LOCAL LINE 71
+							656 row (selectable)
+								657 cell (selectable) 72
+								658 cell (selectable)
+								659 cell (selectable) deleted:
+-OLD LOCAL LINE 72
+							660 row (selectable)
+								661 cell (selectable)
+								662 cell (selectable) 72
+								663 cell (selectable) added:
++NEW LOCAL LINE 72
+							664 row (selectable)
+								665 cell (selectable) 73
+								666 cell (selectable)
+								667 cell (selectable) deleted:
+-OLD LOCAL LINE 73
+							668 row (selectable)
+								669 cell (selectable)
+								670 cell (selectable) 73
+								671 cell (selectable) added:
++NEW LOCAL LINE 73
+							672 row (selectable)
+								673 cell (selectable) 74
+								674 cell (selectable)
+								675 cell (selectable) deleted:
+-OLD LOCAL LINE 74
+							676 row (selectable)
+								677 cell (selectable)
+								678 cell (selectable) 74
+								679 cell (selectable) added:
++NEW LOCAL LINE 74
+							680 row (selectable)
+								681 cell (selectable) 75
+								682 cell (selectable)
+								683 cell (selectable) deleted:
+-OLD LOCAL LINE 75
+							684 row (selectable)
+								685 cell (selectable)
+								686 cell (selectable) 75
+								687 cell (selectable) added:
++NEW LOCAL LINE 75
+							688 row (selectable)
+								689 cell (selectable) 76
+								690 cell (selectable)
+								691 cell (selectable) deleted:
+-OLD LOCAL LINE 76
+							692 row (selectable)
+								693 cell (selectable)
+								694 cell (selectable) 76
+								695 cell (selectable) added:
++NEW LOCAL LINE 76
+							696 row (selectable)
+								697 cell (selectable) 77
+								698 cell (selectable)
+								699 cell (selectable) deleted:
+-OLD LOCAL LINE 77
+							700 row (selectable)
+								701 cell (selectable)
+								702 cell (selectable) 77
+								703 cell (selectable) added:
++NEW LOCAL LINE 77
+							704 row (selectable)
+								705 cell (selectable) 78
+								706 cell (selectable)
+								707 cell (selectable) deleted:
+-OLD LOCAL LINE 78
+							708 row (selectable)
+								709 cell (selectable)
+								710 cell (selectable) 78
+								711 cell (selectable) added:
++NEW LOCAL LINE 78
+							712 row (selectable)
+								713 cell (selectable) 79
+								714 cell (selectable)
+								715 cell (selectable) deleted:
+-OLD LOCAL LINE 79
+							716 row (selectable)
+								717 cell (selectable)
+								718 cell (selectable) 79
+								719 cell (selectable) added:
++NEW LOCAL LINE 79
+							720 row (selectable)
+								721 cell (selectable) 80
+								722 cell (selectable)
+								723 cell (selectable) deleted:
+-OLD LOCAL LINE 80
+							724 row (selectable)
+								725 cell (selectable)
+								726 cell (selectable) 80
+								727 cell (selectable) added:
++NEW LOCAL LINE 80
+							728 row (selectable)
+								729 cell (selectable) 81
+								730 cell (selectable)
+								731 cell (selectable) deleted:
+-OLD LOCAL LINE 81
+							732 row (selectable)
+								733 cell (selectable)
+								734 cell (selectable) 81
+								735 cell (selectable) added:
++NEW LOCAL LINE 81
+							736 row (selectable)
+								737 cell (selectable) 82
+								738 cell (selectable)
+								739 cell (selectable) deleted:
+-OLD LOCAL LINE 82
+							740 row (selectable)
+								741 cell (selectable)
+								742 cell (selectable) 82
+								743 cell (selectable) added:
++NEW LOCAL LINE 82
+							744 row (selectable)
+								745 cell (selectable) 83
+								746 cell (selectable)
+								747 cell (selectable) deleted:
+-OLD LOCAL LINE 83
+							748 row (selectable)
+								749 cell (selectable)
+								750 cell (selectable) 83
+								751 cell (selectable) added:
++NEW LOCAL LINE 83
+							752 row (selectable)
+								753 cell (selectable) 84
+								754 cell (selectable)
+								755 cell (selectable) deleted:
+-OLD LOCAL LINE 84
+							756 row (selectable)
+								757 cell (selectable)
+								758 cell (selectable) 84
+								759 cell (selectable) added:
++NEW LOCAL LINE 84
+							760 row (selectable)
+								761 cell (selectable) 85
+								762 cell (selectable)
+								763 cell (selectable) deleted:
+-OLD LOCAL LINE 85
+							764 row (selectable)
+								765 cell (selectable)
+								766 cell (selectable) 85
+								767 cell (selectable) added:
++NEW LOCAL LINE 85
+							768 row (selectable)
+								769 cell (selectable) 86
+								770 cell (selectable)
+								771 cell (selectable) deleted:
+-OLD LOCAL LINE 86
+							772 row (selectable)
+								773 cell (selectable)
+								774 cell (selectable) 86
+								775 cell (selectable) added:
++NEW LOCAL LINE 86
+							776 row (selectable)
+								777 cell (selectable) 87
+								778 cell (selectable)
+								779 cell (selectable) deleted:
+-OLD LOCAL LINE 87
+							780 row (selectable)
+								781 cell (selectable)
+								782 cell (selectable) 87
+								783 cell (selectable) added:
++NEW LOCAL LINE 87
+							784 row (selectable)
+								785 cell (selectable) 88
+								786 cell (selectable)
+								787 cell (selectable) deleted:
+-OLD LOCAL LINE 88
+							788 row (selectable)
+								789 cell (selectable)
+								790 cell (selectable) 88
+								791 cell (selectable) added:
++NEW LOCAL LINE 88
+							792 row (selectable)
+								793 cell (selectable) 89
+								794 cell (selectable)
+								795 cell (selectable) deleted:
+-OLD LOCAL LINE 89
+							796 row (selectable)
+								797 cell (selectable)
+								798 cell (selectable) 89
+								799 cell (selectable) added:
++NEW LOCAL LINE 89
+							800 row (selectable)
+								801 cell (selectable) 90
+								802 cell (selectable)
+								803 cell (selectable) deleted:
+-OLD LOCAL LINE 90
+							804 row (selectable)
+								805 cell (selectable)
+								806 cell (selectable) 90
+								807 cell (selectable) added:
++NEW LOCAL LINE 90
+							808 row (selectable)
+								809 cell (selectable) 91
+								810 cell (selectable)
+								811 cell (selectable) deleted:
+-OLD LOCAL LINE 91
+							812 row (selectable)
+								813 cell (selectable)
+								814 cell (selectable) 91
+								815 cell (selectable) added:
++NEW LOCAL LINE 91
+							816 row (selectable)
+								817 cell (selectable) 92
+								818 cell (selectable)
+								819 cell (selectable) deleted:
+-OLD LOCAL LINE 92
+							820 row (selectable)
+								821 cell (selectable)
+								822 cell (selectable) 92
+								823 cell (selectable) added:
++NEW LOCAL LINE 92
+							824 row (selectable)
+								825 cell (selectable) 93
+								826 cell (selectable)
+								827 cell (selectable) deleted:
+-OLD LOCAL LINE 93
+							828 row (selectable)
+								829 cell (selectable)
+								830 cell (selectable) 93
+								831 cell (selectable) added:
++NEW LOCAL LINE 93
+							832 row (selectable)
+								833 cell (selectable) 94
+								834 cell (selectable)
+								835 cell (selectable) deleted:
+-OLD LOCAL LINE 94
+							836 row (selectable)
+								837 cell (selectable)
+								838 cell (selectable) 94
+								839 cell (selectable) added:
++NEW LOCAL LINE 94
+							840 row (selectable)
+								841 cell (selectable) 95
+								842 cell (selectable)
+								843 cell (selectable) deleted:
+-OLD LOCAL LINE 95
+							844 row (selectable)
+								845 cell (selectable)
+								846 cell (selectable) 95
+								847 cell (selectable) added:
++NEW LOCAL LINE 95
+							848 row (selectable)
+								849 cell (selectable) 96
+								850 cell (selectable)
+								851 cell (selectable) deleted:
+-OLD LOCAL LINE 96
+							852 row (selectable)
+								853 cell (selectable)
+								854 cell (selectable) 96
+								855 cell (selectable) added:
++NEW LOCAL LINE 96
+							856 row (selectable)
+								857 cell (selectable) 97
+								858 cell (selectable)
+								859 cell (selectable) deleted:
+-OLD LOCAL LINE 97
+							860 row (selectable)
+								861 cell (selectable)
+								862 cell (selectable) 97
+								863 cell (selectable) added:
++NEW LOCAL LINE 97
+							864 row (selectable)
+								865 cell (selectable) 98
+								866 cell (selectable)
+								867 cell (selectable) deleted:
+-OLD LOCAL LINE 98
+							868 row (selectable)
+								869 cell (selectable)
+								870 cell (selectable) 98
+								871 cell (selectable) added:
++NEW LOCAL LINE 98
+							872 row (selectable)
+								873 cell (selectable) 99
+								874 cell (selectable)
+								875 cell (selectable) deleted:
+-OLD LOCAL LINE 99
+							876 row (selectable)
+								877 cell (selectable)
+								878 cell (selectable) 99
+								879 cell (selectable) added:
++NEW LOCAL LINE 99
+							880 row (selectable)
+								881 cell (selectable) 100
+								882 cell (selectable)
+								883 cell (selectable) deleted:
+-OLD LOCAL LINE 100
+					884 container Patch pages
+						885 button (disabled) Previous rows
+						886 text Page 1 of 3
+						887 button Next rows
+					888 text Supplied change hunks only. Discussion coverage is paginated independently below. Reading files does not mark Activity seen.
+					889 container Inline discussions
+						890 text DISCUSSIONS
+						891 container
+							892 text Head cccccccccc · safe plain text
+						893 button Refresh conversation
+						894 container Conversation sources
+							895 toggle button Comments, Value: off
+							896 toggle button Reviews, Value: off
+							897 toggle button Review threads, Value: on
+						898 text 20 loaded / 55 known · this page only; other pages may exist
+						899 text In GitHub order · Up to 50 per page · Browsing leaves Activity unseen.
+						900 button file-0.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						901 button GitHub source
+						902 button file-1.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						903 button GitHub source
+						904 button file-2.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						905 button GitHub source
+						906 button file-3.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						907 button GitHub source
+						908 button file-4.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						909 button GitHub source
+						910 button file-5.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						911 button GitHub source
+						912 button file-6.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						913 button GitHub source
+						914 button file-7.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						915 button GitHub source
+						916 button file-8.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						917 button GitHub source
+						918 button file-9.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						919 button GitHub source
+						920 button file-10.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						921 button GitHub source
+						922 button file-11.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						923 button GitHub source
+						924 button file-12.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						925 button GitHub source
+						926 button file-13.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						927 button GitHub source
+						928 button file-14.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						929 button GitHub source
+						930 button file-15.txt Unresolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						931 button GitHub source
+						932 button file-16.txt Resolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						933 button GitHub source
+						934 button file-17.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						935 button GitHub source
+						936 button file-18.txt Resolved · Outdated · original bbbbbbbbbb:1 2026-10-18T00:00:00Z
+						937 button GitHub source
+						938 button file-19.txt Unresolved · Different file · anchor unavailable in this patch 2026-10-18T00:00:00Z
+						939 button GitHub source
+						940 button (disabled) Previous page
+						941 text First page
+						942 button (disabled) First page
+						943 button Next page
+				944 text Cached 18/10/2026, 14:42:42 · revision 221
+	945 close button
+	946 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	947 minimize button
+	948 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+949 menu bar
+	950 GitJuke Daily Qualification
+
+The focused UI element is 39 container Changed files

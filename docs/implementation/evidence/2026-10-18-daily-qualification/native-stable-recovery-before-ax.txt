@@ -1,0 +1,23 @@
+Window: "GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES", App: GitJuke Daily Qualification.
+0 standard window GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Local storage needs attention
+				4 heading Local storage needs attention, Value: 1
+					5 text Local storage needs attention
+				6 text GitJuke could not safely open local storage. Monitoring and alerts are stopped. Original database files are preserved; no reset or new historical baseline was performed.
+				7 text The database location cannot be read.
+				8 text Free at least 1 GiB of disk space and check that your macOS account can read and write the application data folder. Older databases require a successful migration; newer databases require a compatible GitJuke version. Corrupt databases need recovery before monitoring can start.
+				9 text Database location
+				10 text /Users/hmrguez/Library/Application Support/dev.hmrguez.gitjuke.dailyqualification/gitjuke.sqlite3
+				11 text Keep the database and its sidecar files together. Retry after repairing storage or restoring a known intact set while GitJuke is quit. Retry preserves stored identity, Pause, deadlines and history. GitJuke will validate the original GitHub identity before showing private content.
+				12 button Retry storage check
+				13 text You can quit GitJuke with ⌘Q. No automatic destructive reset is available.
+	14 close button
+	15 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	16 minimize button
+	17 text GitJuke Daily Qualification — LOCAL SYNTHETIC SOURCES
+18 menu bar
+	19 GitJuke Daily Qualification
+
+The focused UI element is 2 HTML content Description: GitJuke, URL: tauri://localhost

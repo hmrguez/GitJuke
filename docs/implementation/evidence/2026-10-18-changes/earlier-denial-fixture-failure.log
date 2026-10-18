@@ -1,0 +1,26 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.91s
+     Running tests/changes.rs (target/debug/deps/changes-9afeeeedb393d05e)
+
+running 5 tests
+test paginated_navigation_selected_only_patch_and_persisted_mode ... ok
+test metadata_transport_overflow_subdivides_and_large_tier_is_explicit ... ok
+test cancellation_reaps_obsolete_file_and_late_results_cannot_replace_it ... ok
+test moving_head_or_base_and_file_order_never_publish_mixed_revisions ... ok
+test clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results ... FAILED
+
+failures:
+
+---- clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results stdout ----
+
+thread 'clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results' (13193704) panicked at crates/gitjuke-core/tests/changes.rs:227:5:
+assertion failed: r.overview("a/b", 1).unwrap().data.is_some()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    clear_denial_and_identity_loss_hide_changes_and_reject_inflight_results
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.12s
+
+error: test failed, to rerun pass `-p gitjuke-core --test changes`

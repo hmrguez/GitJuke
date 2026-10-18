@@ -18,7 +18,9 @@ pub(crate) fn cleanup(conn: &mut Connection, directory: &Path) -> Result<()> {
 
 fn cleanup_batch(conn: &mut Connection) -> Result<usize> {
     let tx = conn.transaction()?;
+    let batch_before = tx.total_changes();
     let mut changed = 0;
+
     // All tables use ordinary SQLite rowids. Limit the whole transaction, not
     // each statement; unchanged rows never consume the budget or prevent exit.
     for statement in [
@@ -33,13 +35,20 @@ fn cleanup_batch(conn: &mut Connection) -> Result<usize> {
         "UPDATE due SET at=0 WHERE rowid IN (SELECT rowid FROM due WHERE key='discovery' AND at!=0 LIMIT ?)",
         "DELETE FROM activity_stage WHERE rowid IN (SELECT rowid FROM activity_stage LIMIT ?)",
     ] {
-        changed += tx.execute(statement, [(STARTUP_BATCH - changed) as i64])?;
-        if changed == STARTUP_BATCH {
+        let limit = (STARTUP_BATCH - changed) / crate::shared_storage::cost(statement);
+        if limit == 0 {
+            break;
+        }
+        let before = tx.total_changes();
+        let rows = tx.execute(statement, [limit as i64])?;
+        changed += (tx.total_changes() - before) as usize;
+        if rows == limit {
             break;
         }
     }
     #[cfg(test)]
     crash_point("before_commit");
+    crate::shared_storage::bounded(&tx, batch_before)?;
     tx.commit()?;
     #[cfg(test)]
     crash_point("after_commit");
@@ -238,7 +247,9 @@ mod tests {
         }
         s.conn.execute_batch("INSERT INTO source_stage VALUES('authored','left','{}');
             CREATE TRIGGER fail_cleanup BEFORE DELETE ON source_stage BEGIN SELECT RAISE(ABORT,'fixture cleanup fault'); END;").unwrap();
-        assert_eq!(cleanup_batch(&mut s.conn).unwrap(), 128);
+        for _ in 0..2 {
+            assert_eq!(cleanup_batch(&mut s.conn).unwrap(), 128);
+        }
         assert!(cleanup_batch(&mut s.conn).is_err());
         assert_eq!(count(&s.conn, "stage"), 1);
         assert_eq!(count(&s.conn, "source_stage"), 1);
@@ -277,7 +288,7 @@ mod tests {
                 let _ = self.0.wait();
             }
         }
-        for (phase, remaining) in [("before_commit", 257), ("after_commit", 129)] {
+        for (phase, remaining) in [("before_commit", 257), ("after_commit", 193)] {
             let d = tempfile::tempdir().unwrap();
             let path = d.path().join("db");
             let marker = d.path().join("barrier");

@@ -1,0 +1,26 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-login-lifecycle/crates/gitjuke-core)
+error[E0599]: no variant named `ActionCheck` found for enum `ReadOp`
+   --> crates/gitjuke-core/src/logs.rs:308:29
+    |
+308 |                     ReadOp::ActionCheck {
+    |                             ^^^^^^^^^^^ variant not found in `ReadOp`
+    |
+   ::: crates/gitjuke-core/src/transport.rs:45:1
+    |
+ 45 | pub enum ReadOp {
+    | --------------- variant `ActionCheck` not found here
+
+error[E0599]: no variant named `ActionCheck` found for enum `ReadOp`
+   --> crates/gitjuke-core/src/logs.rs:365:25
+    |
+365 |                 ReadOp::ActionCheck {
+    |                         ^^^^^^^^^^^ variant not found in `ReadOp`
+    |
+   ::: crates/gitjuke-core/src/transport.rs:45:1
+    |
+ 45 | pub enum ReadOp {
+    | --------------- variant `ActionCheck` not found here
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `gitjuke-core` (lib test) due to 2 previous errors

@@ -1,0 +1,66 @@
+bun test v1.4.2 (744846f84)
+
+scripts/reader-interaction.test.tsx:
+20 | beforeEach(()=>{host=document.createElement('div');document.body.append(host);root=createRoot(host);calls=[];read=async j=>page(j);(dom as any).__TAURI_INTERNALS__={invoke:async(name:string,args:any)=>{calls.push({name,args});if(name==='read_conversation')return {data:await read(args.job),revision:1,error:null};return null;}};});
+21 | afterEach(async()=>{await act(async()=>root.unmount());host.remove();});
+22 | 
+23 | test('ordinary segment navigation focuses the scrollable new segment and resets its scroll',async()=>{
+24 |  await render(<Message message={message} job={job} generation={1} report={()=>{}}/>);
+25 |  const body=host.querySelector<HTMLElement>('.message-body')!;expect(body.tabIndex).toBe(0);body.scrollTop=300;
+                                                                                         ^
+error: expect(received).toBe(expected)
+
+Expected: 0
+Received: -1
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/reader-interaction.test.tsx:25:85)
+(fail) ordinary segment navigation focuses the scrollable new segment and resets its scroll [11.16ms]
+28 | });
+29 | test('exact destination counts committed distinct segments without stealing focus on polling',async()=>{
+30 |  const node=<Message message={message} job={job} generation={1} explicitlyOpened report={()=>{}}/>;await render(node);
+31 |  expect(document.activeElement===host.querySelector('article')).toBe(true);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
+32 |  await click('Next segment');await click('Previous segment');await click('Next segment');expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
+33 |  await click('Next segment');expect(document.activeElement===host.querySelector('.message-body')).toBe(true);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
+                                                                                                       ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/reader-interaction.test.tsx:33:99)
+(fail) exact destination counts committed distinct segments without stealing focus on polling [13.13ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [3.84ms]
+38 |  await render(<Message key="empty" message={{...message,kind:'APPROVED',body:'',bytes:0}} job={job} generation={2} explicitlyOpened report={()=>{}}/>);
+39 |  expect(calls.filter(c=>c.name==='conversation_seen').map(c=>c.args)).toEqual([{job,id:message.id,digest:message.digest,generation:2}]);
+40 | });
+41 | test('return from replies restores the originating thread after asynchronous replacement',async()=>{
+42 |  await render(<Conversation pr={pr} revision={1} currentHead={pr.head}/>);await click('Review threads');await act(async()=>{host.querySelector<HTMLButtonElement>('.thread-entry button')!.click();});await settle();
+43 |  expect(document.activeElement===host.querySelector('#conversation')).toBe(true);await click('Back to thread list');expect(document.activeElement===host.querySelector('.thread-entry button')).toBe(true);
+                                                                                                                                                                                                     ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/reader-interaction.test.tsx:43:193)
+(fail) return from replies restores the originating thread after asynchronous replacement [12.24ms]
+(pass) reply return does not steal focus if the user moves while the thread list loads [10.80ms]
+47 |  const resolves:((p:ConversationPage)=>void)[]=[];read=j=>j.source==='threads'?new Promise(r=>{resolves.push(r);}):Promise.resolve(page(j));
+48 |  await click('Back to thread list');const refresh=button('Refresh conversation');refresh.focus();await act(async()=>resolves.forEach(resolve=>resolve(page({...job,source:'threads',thread:null}))));await settle();expect(document.activeElement===refresh).toBe(true);
+49 | });
+50 | test('next and first source-page replacement keep stable reader focus and release old bodies',async()=>{
+51 |  await render(<Conversation pr={pr} revision={1} currentHead={pr.head}/>);await click('Next page');expect(document.activeElement===host.querySelector('#conversation')).toBe(true);expect(host.textContent).toContain('second page');expect(host.textContent).not.toContain('first page');
+52 |  await click('First page');expect(document.activeElement===host.querySelector('#conversation')).toBe(true);expect(host.textContent).toContain('first page');expect(host.querySelectorAll('article')).toHaveLength(1);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
+                                                                                                     ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/hmrguez/Programming/Personal/GitJuke/scripts/reader-interaction.test.tsx:52:97)
+(fail) next and first source-page replacement keep stable reader focus and release old bodies [10.03ms]
+
+ 2 pass
+ 4 fail
+ 24 expect() calls
+Ran 6 tests across 1 file. [165.00ms]

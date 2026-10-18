@@ -1,0 +1,31 @@
+   Compiling objc2-exception-helper v0.1.1
+   Compiling objc2 v0.6.5
+   Compiling tauri v2.12.4
+   Compiling tauri-macros v2.7.3
+   Compiling rusqlite v0.38.0
+   Compiling gitjuke v0.1.0 (/private/tmp/gitjuke-accessibility/src-tauri)
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-accessibility/crates/gitjuke-core)
+   Compiling objc2-foundation v0.3.2
+   Compiling wry v0.57.0
+   Compiling objc2-core-foundation v0.3.2
+   Compiling block2 v0.6.2
+   Compiling dispatch2 v0.3.1
+   Compiling objc2-core-graphics v0.3.2
+   Compiling objc2-quartz-core v0.3.2
+   Compiling objc2-app-kit v0.3.2
+   Compiling objc2-web-kit v0.3.2
+   Compiling muda v0.20.0
+   Compiling tao v0.37.1
+   Compiling window-vibrancy v0.8.1
+   Compiling tauri-runtime v2.12.2
+   Compiling tray-icon v0.25.1
+   Compiling tauri-runtime-wry v2.12.2
+   Compiling tauri-plugin-single-instance v2.5.4
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 47.83s
+     Running unittests src/lib.rs (target/aarch64-apple-darwin/debug/deps/gitjuke_desktop-ccdc8b820a8ba121)
+
+running 1 test
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+

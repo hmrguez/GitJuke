@@ -1,0 +1,13 @@
+bun test v1.4.2 (744846f84)
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [131.52ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [53.76ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [140.97ms]
+(pass) a later summary/unavailable route releases a previously opened check destination [1156.53ms]
+(pass) Preferences close restores its opener when native activation did not move focus [77.66ms]
+
+ 5 pass
+ 0 fail
+ 21 expect() calls
+Ran 5 tests across 1 file. [1.64s]

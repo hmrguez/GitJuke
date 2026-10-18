@@ -1,0 +1,1 @@
+/dev/disk11s1 on /private/tmp/gitjuke-storage-fault-volume (hfs, local, nodev, nosuid, read-only, noowners, nobrowse, mounted by hmrguez)

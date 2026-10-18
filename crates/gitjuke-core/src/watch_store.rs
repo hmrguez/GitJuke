@@ -3,7 +3,7 @@ use crate::{Error, Result, model::*, now, store::Store, sync::*};
 use rusqlite::{OptionalExtension, params};
 use serde_json::Value;
 
-type PendingRow = (i64, String, String, bool, bool);
+use crate::pending_selection::PendingRow;
 type CheckLocator = (
     String,
     Option<String>,
@@ -32,7 +32,8 @@ impl Store {
             || value["Discover"]["source"] == "authored"
         {
             "graphql"
-        } else if value.get("Authored").is_some()
+        } else if value.get("Query").is_some()
+            || value.get("Authored").is_some()
             || value.get("Discover").is_some() && value["Discover"]["source"] != "teams"
         {
             "search"
@@ -44,44 +45,7 @@ impl Store {
         Ok(())
     }
     pub fn pending(&self, time: u64) -> Result<Vec<PendingRow>> {
-        if !self.budget_eligible("core", time)? {
-            return Ok(vec![]);
-        }
-        let resources = ["core", "search", "graphql"]
-            .into_iter()
-            .filter(|r| self.budget_eligible(r, time).unwrap_or(false))
-            .map(|r| format!("'{r}'"))
-            .collect::<Vec<_>>()
-            .join(",");
-        let paused = self.settings()?.paused;
-        let filter = format!(
-            "at<={} AND resource IN ({}) {}",
-            time,
-            resources,
-            if paused { "AND manual=1" } else { "" }
-        );
-        let sql = format!(
-            "SELECT seq,key,job,manual,foreground FROM pending WHERE {filter} ORDER BY foreground DESC,seq LIMIT 128"
-        );
-        let mut q = self.conn.prepare(&sql)?;
-        let mut rows = q
-            .query_map([], |r| {
-                Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?))
-            })?
-            .collect::<std::result::Result<Vec<_>, _>>()?;
-        if rows.len() == 128
-            && rows
-                .iter()
-                .all(|row: &(i64, String, String, bool, bool)| row.4)
-        {
-            let bg=self.conn.query_row(&format!("SELECT seq,key,job,manual,foreground FROM pending WHERE {filter} AND foreground=0 ORDER BY seq LIMIT 1"),[],|r|Ok((r.get(0)?,r.get(1)?,r.get(2)?,r.get(3)?,r.get(4)?))).optional()?;
-            if let Some(bg) = bg {
-                rows.pop();
-                rows.push(bg);
-            }
-        }
-        rows.sort_by_key(|r| r.0);
-        Ok(rows)
+        crate::pending_selection::select(self, time)
     }
     pub fn ack(&self, seq: i64) -> Result<()> {
         self.conn
@@ -120,7 +84,6 @@ impl Store {
         crate::publication::discard_stage(
             &mut self.conn,
             "source_stage",
-            "source=json_extract(?1,'$.source') AND id IN(SELECT json_extract(value,'$.id') FROM json_each(?1,'$.prs'))",
             &serde_json::json!({"source":source,"prs":prs}),
         )?;
         self.apply_publication(
@@ -129,11 +92,7 @@ impl Store {
         )
     }
     pub fn stage_count(&self, source: &str) -> Result<u64> {
-        Ok(self.conn.query_row(
-            "SELECT COUNT(*) FROM source_stage WHERE source=?",
-            [source],
-            |r| r.get::<_, i64>(0),
-        )? as u64)
+        crate::publication_completion::source_total(&self.conn, source)
     }
     pub fn publish_source(&mut self, source: &str) -> Result<()> {
         let Some(request) = self.publication_request("source", &source)? else {
@@ -230,31 +189,7 @@ impl Store {
         selected: Option<&(String, u64)>,
         manual: bool,
     ) -> Result<Vec<WatchTarget>> {
-        // Build reserved identities once per query, rather than parsing every
-        // pending head batch again for each watch. Exclude null/malformed IDs.
-        let mut q=self.conn.prepare("SELECT id,repo,number,epoch FROM watch_locator WHERE due<=? AND NOT EXISTS(SELECT 1 FROM pr_purge p WHERE p.repo=watch_locator.repo COLLATE NOCASE AND p.number=watch_locator.number) AND id IN (SELECT id FROM watch_source) AND id NOT IN(SELECT json_extract(j.value,'$.id') FROM pending p,json_each(p.job,'$.Heads') j WHERE json_type(j.value,'$.id')='text') AND (?=0 OR last_success IS NULL OR last_success<?) ORDER BY (repo=? AND number=?) DESC,due,id LIMIT ?")?;
-        let (repo, number) = selected
-            .map(|(r, n)| (r.as_str(), *n as i64))
-            .unwrap_or(("", 0));
-        Ok(q.query_map(
-            params![
-                time as i64,
-                manual,
-                self.due("manual-boundary")? as i64,
-                repo,
-                number,
-                limit as i64
-            ],
-            |r| {
-                Ok(WatchTarget {
-                    id: r.get(0)?,
-                    repo: r.get(1)?,
-                    number: r.get::<_, i64>(2)? as u64,
-                    generation: r.get::<_, i64>(3)? as u64,
-                })
-            },
-        )?
-        .collect::<std::result::Result<Vec<_>, _>>()?)
+        crate::watch_scheduling::select(self, time, limit, selected, manual)
     }
     pub fn accept_head(
         &mut self,
@@ -348,7 +283,18 @@ impl Store {
             return Ok(false);
         }
         if page.next.is_none() {
-            let count:i64=self.conn.query_row("SELECT COUNT(*) FROM (SELECT id FROM check_context WHERE pr_id=?1 AND commit_sha=?2 AND staged=1 AND ?3=0 UNION SELECT json_extract(value,'$.id') FROM json_each(?4))",params![target.watch.id,target.commit,first,serde_json::to_string(&page.contexts)?],|r|r.get(0))?;
+            let ids = page
+                .contexts
+                .iter()
+                .map(|c| c.id.clone())
+                .collect::<Vec<_>>();
+            let count = crate::publication_completion::staged_total(
+                &self.conn,
+                &target.watch.id,
+                &target.commit,
+                first,
+                &ids,
+            )?;
             if count as u64 != page.total {
                 return Err(Error::Safe("Check contexts changed during pagination; previous successful results are retained.".into()));
             }
@@ -356,7 +302,6 @@ impl Store {
         crate::publication::discard_stage(
             &mut self.conn,
             "check_context",
-            "pr_id=json_extract(?1,'$.id') AND commit_sha=json_extract(?1,'$.commit') AND staged=1 AND (json_extract(?1,'$.first') OR id IN(SELECT json_extract(value,'$.id') FROM json_each(?1,'$.contexts')))",
             &serde_json::json!({"id":target.watch.id,"commit":target.commit,"first":first,"contexts":page.contexts}),
         )?;
         self.apply_publication("checks",serde_json::json!({"request":request,"time":now(),"id":target.watch.id,"commit":target.commit,"first":first,"complete":page.next.is_none(),"total":page.total,"contexts":page.contexts}))?;
@@ -380,42 +325,7 @@ impl Store {
         Ok(())
     }
     pub fn watch_page(&self, offset: usize) -> Result<WatchPage> {
-        let mut q=self.conn.prepare("SELECT id,repo,number,head,merge_sha,last_success,due,CASE WHEN EXISTS(SELECT 1 FROM pr_purge p WHERE p.repo=watch_locator.repo COLLATE NOCASE AND p.number=watch_locator.number) THEN 'Resource unavailable' ELSE error END FROM watch_locator WHERE id IN (SELECT id FROM watch_source) ORDER BY id LIMIT 101 OFFSET ?")?;
-        let mut items = q
-            .query_map([offset as i64], |r| {
-                Ok(WatchRow {
-                    id: r.get(0)?,
-                    repo: r.get(1)?,
-                    number: r.get::<_, i64>(2)? as u64,
-                    head: r.get(3)?,
-                    merge: r.get(4)?,
-                    refreshed_at: r.get::<_, Option<i64>>(5)?.map(|n| n as u64),
-                    due_at: r.get::<_, i64>(6)? as u64,
-                    error: r.get(7)?,
-                    reasons: vec![],
-                })
-            })?
-            .collect::<std::result::Result<Vec<_>, _>>()?;
-        let more = items.len() > 100;
-        items.truncate(100);
-        for item in &mut items {
-            let mut q = self
-                .conn
-                .prepare("SELECT source FROM watch_source WHERE id=? ORDER BY source")?;
-            item.reasons = q
-                .query_map([&item.id], |r| r.get(0))?
-                .collect::<std::result::Result<Vec<_>, _>>()?;
-        }
-        if serde_json::to_vec(&items)?.len() > 900 * 1024 {
-            return Err(Error::Safe(
-                "Watch page exceeds the IPC byte budget.".into(),
-            ));
-        }
-        Ok(WatchPage {
-            next_offset: more.then_some(offset + items.len()),
-            items,
-            revision: self.revision()?,
-        })
+        crate::watch_reader::page(self, offset)
     }
     pub fn check_page(&self, repo: &str, number: u64, offset: usize) -> Result<CheckPage> {
         let row: Option<CheckLocator> = self

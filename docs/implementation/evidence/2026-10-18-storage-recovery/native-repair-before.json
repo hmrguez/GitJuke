@@ -1,0 +1,53 @@
+{
+  "identity": [
+    [
+      1,
+      "github.com",
+      42,
+      "reader"
+    ]
+  ],
+  "settings": [
+    [
+      1,
+      "{\"pagedChanges\":false,\"paused\":true,\"theme\":{\"mode\":\"dark\",\"canvas\":\"#121512\",\"surface\":\"#1c211b\",\"accent\":\"#b8d68a\",\"ink\":\"#e7ecdf\"},\"ghPath\":null,\"configDir\":null}"
+    ]
+  ],
+  "seen": [
+    [
+      "A",
+      0
+    ]
+  ],
+  "dedup": [
+    [
+      "A"
+    ]
+  ],
+  "due": [
+    [
+      "activity:notifications",
+      4070908800
+    ]
+  ],
+  "activity_intent": [
+    [
+      1,
+      "pr",
+      "attempted",
+      1
+    ]
+  ],
+  "intent_member": [
+    [
+      1,
+      "A"
+    ]
+  ],
+  "alert_attempt": [
+    [
+      "attempt",
+      1
+    ]
+  ]
+}

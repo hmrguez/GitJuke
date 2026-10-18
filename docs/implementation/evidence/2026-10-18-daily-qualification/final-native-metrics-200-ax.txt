@@ -1,0 +1,146 @@
+Window: "Web Inspector — localhost", App: GitJuke Daily Qualification.
+0 standard window Web Inspector — localhost, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content inspector-resource:///Main.html
+			3 button Dock to left of window
+			4 button Dock to bottom of window
+			5 button Dock to right of window
+			6 button Start element selection (⇧⌘C)
+			7 button Device Settings
+			8 tab group (selectable)
+				9 tab (selectable) Elements
+				10 tab (selected) Console
+				11 tab (selectable) Sources
+				12 tab (selectable) Network
+				13 tab (selectable) Timelines
+				14 tab (selectable) Storage
+				15 tab (selectable) Graphics
+				16 tab (selectable) Layers
+				17 tab (selectable) Audit
+				18 tab (selectable) Search (⇧⌘F)
+				19 tab (selectable) Settings (⌘,)
+			20 container Console
+				21 search text field (settable)  
+				22 button (disabled) Find Previous (⇧⌘G)
+				23 button (disabled) Find Next (⌘G)
+				24 text All
+				25 text Evaluations
+				26 text Errors
+				27 text Warnings
+				28 text Logs
+				29 button Other filter options…
+				30 checkbox (settable, integer) Emulate User Gesture, Help: Run console commands as if inside a user gesture, Value: 0
+				31 button Run Console Snippet…
+				32 button Collect garbage
+				33 button Clear log (⌘K or ⌃L)
+				34 container
+					35 text Console opened at 14:56:59
+					36 image
+					37 text Selected Element
+					38 image
+					39 outline (selectable)
+						40 row (selectable) Description: <div class=​"tabs" role=​"tablist" aria-label=​"Reader">​…​</div>, Value: <div class=​"tabs" role=​"tablist" aria-label=​"Reader">​…​</div>
+<div class=​"tabs" role=​"tablist" aria-label=​"Reader">​…​</div>
+div
+class
+=
+"
+tabs
+"
+role
+=
+"
+tablist
+"
+aria-label
+=
+"
+Reader
+"
+>
+…
+<
+/div
+>
+					41 text  = $1
+					42 image
+					43 text 1+1
+					44 image
+					45 text 2 = $2
+					46 image
+					47 text JSON.stringify({viewport:[innerWidth,innerHeight],root:getComputedStyle(document.documentElement).fontSize,body:getComputedStyle(document.querySelector('.message-body')).fontSize,nav:[document.querySelector('nav').clientWidth,document.querySelector('nav').scrollWidth],inlineMin:document.querySelector('.query-navigation').style.minWidth,reduced:matchMedia('(prefers-reduced-motion:reduce)').matches,transition:getComputedStyle(document.querySelector('.nav-item')).transitionDuration})
+					48 image
+					49 text "{\"viewport\":[960,640],\"root\":\"24px\",\"body\":\"26px\",\"nav\":[259,259],\"inlineMin\":\"\",\"reduced\":true,\"transition\":\"0s\"}" = $3
+			50 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools
+				51 text (settable) JSON.stringify({viewport:[innerWidth,innerHeight],root:getComputedStyle(document.documentElement).fontSize,body:getComputedStyle(document.querySelector('.message-body')).fontSize,nav:[document.querySelector('nav').clientWidth,document.querySelector('nav').scrollWidth],inlineMin:document.querySelector('.query-navigation').style.minWidth,reduced:matchMedia('(prefers-reduced-motion:reduce)').matches,transition:getComputedStyle(document.querySelector('.nav-item')).transitionDuration})
+			52 container
+				53 text JSON.stringify({viewport:[innerWidth,innerHeight],root:getComputedStyle(document.documentElement).fontSize,body:getComputedStyle(document.querySelector('.message-body')).fontSize,nav:[document.querySelector('nav').clientWidth,document.querySelector('nav').scrollWidth],inlineMin:document.querySelector('.query-navigation').style.minWidth,reduced:matchMedia('(prefers-reduced-motion:reduce)').matches,transition:getComputedStyle(document.querySelector('.nav-item')).transitionDuration})
+				54 text anchor
+			55 text anchor
+			56 text at
+			57 text big
+			58 text blink
+			59 text bold
+			60 text charAt
+			61 text charCodeAt
+			62 text codePointAt
+			63 text concat
+			64 text constructor
+			65 text endsWith
+			66 text fixed
+			67 text fontcolor
+			68 text fontsize
+			69 text hasOwnProperty
+			70 text includes
+			71 text indexOf
+			72 text isPrototypeOf
+			73 text isWellFormed
+			74 text italics
+			75 text lastIndexOf
+			76 text length
+			77 text link
+			78 text localeCompare
+			79 text match
+			80 text matchAll
+			81 text normalize
+			82 text padEnd
+			83 text padStart
+			84 text propertyIsEnumerable
+			85 text repeat
+			86 text replace
+			87 text replaceAll
+			88 text search
+			89 text slice
+			90 text small
+			91 text split
+			92 text startsWith
+			93 text strike
+			94 text sub
+			95 text substr
+			96 text substring
+			97 text sup
+			98 text toLocaleLowerCase
+			99 text toLocaleString
+			100 text toLocaleUpperCase
+			101 text toLowerCase
+			102 text toString
+			103 text toUpperCase
+			104 text toWellFormed
+			105 text trim
+			106 text trimEnd
+			107 text trimLeft
+			108 text trimRight
+			109 text trimStart
+			110 text valueOf
+			111 text __defineGetter__
+			112 text __defineSetter__
+			113 text __lookupGetter__
+			114 text __lookupSetter__
+	115 close button
+	116 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	117 minimize button
+	118 text Web Inspector — localhost
+119 menu bar
+	120 GitJuke Daily Qualification
+
+The focused UI element is 50 text entry area (settable) Console prompt, Value: [text entry area: Console prompt], Secondary Actions: Show Writing Tools

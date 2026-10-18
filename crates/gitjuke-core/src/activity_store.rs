@@ -28,11 +28,7 @@ impl Store {
         Ok(())
     }
     pub(crate) fn activity_due(&self, time: u64) -> Result<Vec<(String, u64)>> {
-        let mut q=self.conn.prepare("SELECT repo,number FROM activity_target t WHERE due<=? AND NOT EXISTS(SELECT 1 FROM pending p WHERE p.key='activity:pr:'||t.repo||':'||t.number) AND (done=0 OR EXISTS(SELECT 1 FROM watch_locator l JOIN watch_source s ON s.id=l.id WHERE l.repo=t.repo AND l.number=t.number AND s.source!='selected')) ORDER BY due,repo,number LIMIT 128")?;
-        Ok(q.query_map([time as i64], |r| {
-            Ok((r.get(0)?, r.get::<_, i64>(1)? as u64))
-        })?
-        .collect::<std::result::Result<Vec<_>, _>>()?)
+        crate::activity_due::select(&self.conn, time)
     }
     pub(crate) fn activity_notifications(
         &mut self,
@@ -115,11 +111,10 @@ impl Store {
             crate::publication::discard_stage(
                 &mut self.conn,
                 "activity_stage",
-                "repo=json_extract(?1,'$.repo') AND number=json_extract(?1,'$.number')",
                 &serde_json::json!({"repo":repo,"number":number}),
             )?;
         }
-        for records in records.chunks(100) {
+        for records in records.chunks(64) {
             crate::content_budget::publish_bounded_observed(
                 &mut self.conn,
                 now(),
@@ -180,9 +175,9 @@ impl Store {
             params![repo, number as i64],
             |r| r.get(0),
         )?;
-        if count > 16 {
+        if count > 15 {
             let intent = next_intent(&self.conn)?;
-            return self.apply_publication("activity",serde_json::json!({"request":request,"repo":repo,"number":number,"time":time,"baseline":baseline_at,"historical":!baseline,"mode":mode,"boundary":boundary,"alerts":baseline && !manual && !paused,"intent":intent}));
+            return self.apply_publication("activity",serde_json::json!({"request":request,"repo":repo,"number":number,"time":time,"baseline":baseline_at,"historical":!baseline,"mode":mode,"boundary":boundary,"intentState":crate::alerts::intent_state(&self.conn)?,"alerts":baseline && !manual && !paused,"intent":intent}));
         }
         crate::content_budget::publish_bounded_observed(
             &mut self.conn,
@@ -313,25 +308,21 @@ impl Store {
         {
             return Ok(());
         }
-        // Enrollment spans scheduling passes; unenrolled watches are unfinished work.
-        if crate::activity_enrollment::missing(&self.conn)? {
+        // A complete read snapshot is required; partial windows never certify recovery.
+        if !self.reconstruct_alerts()? {
             return Ok(());
         }
-        let ready:bool=self.conn.query_row("SELECT EXISTS(SELECT 1 FROM activity_cycle WHERE id=1 AND mode='recovery' AND notifications_done=1) AND NOT EXISTS(SELECT 1 FROM source_restart WHERE source IN ('authored','direct','teams') OR (substr(source,1,5)='team:' AND substr(source,6) IN (SELECT id FROM teams))) AND NOT EXISTS(SELECT 1 FROM activity_target WHERE done=0) AND NOT EXISTS(SELECT 1 FROM pending WHERE key LIKE 'discover:%' OR key LIKE 'checks:%') AND NOT EXISTS(SELECT 1 FROM watch_locator l JOIN watch_source s ON s.id=l.id WHERE s.source='authored' AND (l.last_success IS NULL OR l.error IS NOT NULL OR NOT EXISTS(SELECT 1 FROM check_state c WHERE c.pr_id=l.id AND c.commit_sha=l.head AND c.complete=1 AND c.error IS NULL AND c.accessed>=?))) AND (SELECT COUNT(*) FROM resource_state WHERE key IN ('authored','direct','teams') AND complete=1)=3 AND NOT EXISTS(SELECT 1 FROM resource_state WHERE (key IN ('authored','direct','teams') OR key LIKE 'team:%') AND (complete=0 OR error IS NOT NULL))",[now().saturating_sub(crate::retention::CONTENT_AGE) as i64],|r|r.get(0))?;
+        let ready = crate::publication_completion::ready(&self.conn, now())?;
         if !ready {
             return Ok(());
         }
         let time = now();
-        let count: i64 = self.conn.query_row(
-            "SELECT COUNT(*) FROM(SELECT 1 FROM progress WHERE key LIKE 'catchup:%' LIMIT 55)",
-            [],
-            |r| r.get(0),
-        )?;
+        let count = crate::publication_completion::catchup_keys(&self.conn, 55)?.len();
         if count > 54 {
             let intent = next_intent(&self.conn)?;
             return self.apply_publication(
                 "activity_summary",
-                serde_json::json!({"time":time,"intent":intent}),
+                serde_json::json!({"time":time,"intent":intent,"intentState":crate::alerts::intent_state(&self.conn)?}),
             );
         }
         crate::store::storage_healthy(
@@ -341,18 +332,28 @@ impl Store {
         )?;
         let tx = self.conn.transaction()?;
         let before = tx.total_changes();
-        // SQLite streams membership into the single summary. Do not materialize an
-        // unbounded recovery history in Rust just to count or group its members.
-        let has_members: bool = tx.query_row("SELECT EXISTS(SELECT 1 FROM activity a JOIN progress p ON p.key='catchup:'||a.id JOIN seen s ON s.source_id=a.id WHERE s.seen=0 AND a.eligible=1 AND a.occurred>=?)", [time.saturating_sub(ACTIVITY_AGE) as i64], |r| r.get(0))?;
-        if has_members {
+        // The small path holds at most 54 catch-up keys; larger summaries use
+        // the durable candidate-window publication journal.
+        let keys = crate::publication_completion::catchup_keys(&tx, 55)?;
+        if keys.len() > 54 {
+            return Err(crate::Error::StorageUnavailable(
+                "Recovery summary changed during preparation.".into(),
+            ));
+        }
+        let members = crate::publication_completion::summary_members(&tx, &keys, time)?;
+        if !members.is_empty() {
             let intent = new_intent(&tx, "summary")?;
             #[cfg(test)]
             crate::activity_crash::point("summary_after_intent");
-            tx.execute("INSERT INTO intent_member SELECT ?,a.id FROM activity a JOIN progress p ON p.key='catchup:'||a.id JOIN seen s ON s.source_id=a.id WHERE s.seen=0 AND a.eligible=1 AND a.occurred>=?", params![intent, time.saturating_sub(ACTIVITY_AGE) as i64])?;
+            for id in members {
+                tx.execute("INSERT INTO intent_member VALUES(?,?)", params![intent, id])?;
+            }
         }
         #[cfg(test)]
         crate::activity_crash::point("summary_after_membership");
-        tx.execute("DELETE FROM progress WHERE key LIKE 'catchup:%'", [])?;
+        for key in keys {
+            tx.execute("DELETE FROM progress WHERE key=?", [key])?;
+        }
         #[cfg(test)]
         crate::activity_crash::point("summary_after_progress");
         tx.execute(
@@ -379,7 +380,7 @@ impl Store {
         // Apply the content overlay at the exact key in each union branch.
         // Joining the general protected view materializes unrelated payloads.
 
-        let mut q=self.conn.prepare("SELECT a.id,a.repo,a.number,a.kind,a.occurred,a.eligible,a.reason,s.seen,(SELECT c.json FROM (SELECT b.json,b.accessed FROM main.content b WHERE b.key='activity-payload:'||a.id AND (NOT EXISTS(SELECT 1 FROM main.publication WHERE phase!='committed') OR NOT EXISTS(SELECT 1 FROM main.publication_row r WHERE r.tbl='content' AND r.k=json_array(b.key))) UNION ALL SELECT json_extract(r.old_json,'$[1]'),json_extract(r.old_json,'$[3]') FROM main.publication_row r WHERE r.tbl='content' AND r.k=json_array('activity-payload:'||a.id) AND r.old_json IS NOT NULL AND EXISTS(SELECT 1 FROM main.publication WHERE phase!='committed')) c WHERE c.accessed>=? AND NOT EXISTS(SELECT 1 FROM content_clear) AND NOT EXISTS(SELECT 1 FROM pr_purge p WHERE p.repo=a.repo COLLATE NOCASE AND p.number=a.number) AND NOT EXISTS(SELECT 1 FROM check_purge p JOIN watch_locator l ON l.id=p.pr_id WHERE a.kind='check' AND l.repo=a.repo COLLATE NOCASE AND l.number=a.number) LIMIT 1) FROM activity a JOIN seen s ON s.source_id=a.id  WHERE a.occurred>=? ORDER BY a.occurred DESC,a.id DESC LIMIT 101 OFFSET ?")?;
+        let mut q=self.conn.prepare("SELECT a.id,a.repo,a.number,a.kind,a.occurred,a.eligible,a.reason,s.seen,(SELECT c.json FROM (SELECT b.json,b.accessed FROM main.content b WHERE b.key='activity-payload:'||a.id AND (NOT EXISTS(SELECT 1 FROM main.publication WHERE phase!='committed') OR NOT EXISTS(SELECT 1 FROM main.publication_row r WHERE r.tbl='content' AND r.k=json_array(b.key))) UNION ALL SELECT json_extract(r.old_json,'$[1]'),json_extract(r.old_json,'$[3]') FROM main.publication_row r WHERE r.tbl='content' AND r.k=json_array('activity-payload:'||a.id) AND r.old_json IS NOT NULL AND EXISTS(SELECT 1 FROM main.publication WHERE phase!='committed')) c WHERE c.accessed>=? AND NOT EXISTS(SELECT 1 FROM content_clear) AND NOT EXISTS(SELECT 1 FROM resource_state d WHERE d.key='conversation-denied:'||lower(a.repo)||':'||a.number AND a.kind!='check') AND NOT EXISTS(SELECT 1 FROM pr_purge p WHERE p.repo=a.repo COLLATE NOCASE AND p.number=a.number) AND NOT EXISTS(SELECT 1 FROM check_purge p JOIN watch_locator l ON l.id=p.pr_id WHERE a.kind='check' AND l.repo=a.repo COLLATE NOCASE AND l.number=a.number) LIMIT 1) FROM activity a JOIN seen s ON s.source_id=a.id  WHERE a.occurred>=? ORDER BY a.occurred DESC,a.id DESC LIMIT 101 OFFSET ?")?;
         let mut rows = q
             .query_map(
                 params![
@@ -465,10 +466,10 @@ impl Store {
     }
 }
 fn new_intent(tx: &rusqlite::Transaction, kind: &str) -> Result<i64> {
-    // Native delivery is unavailable in this slice. Eligibility is durable; no backlog can replay on future enabling.
+    let state = crate::alerts::intent_state(tx)?;
     tx.execute(
-        "INSERT INTO activity_intent(kind,state,created) VALUES(?,'unavailable',?)",
-        params![kind, now() as i64],
+        "INSERT INTO activity_intent(kind,state,created) VALUES(?,?,?)",
+        params![kind, state, now() as i64],
     )?;
     Ok(tx.last_insert_rowid())
 }
@@ -514,12 +515,18 @@ impl Store {
         let mut records = std::collections::BTreeMap::new();
         for context in contexts {
             let c: crate::sync::CheckContext = serde_json::from_str(&context)?;
-            // Workflow attempts have authoritative run/attempt identities. External suite retry
-            // qualification remains explicitly unavailable; never guess an attempt from a timestamp.
+            // Workflow identities are supplied by GitHub, never synthesized from job
+            // names, times or branch names. External suites expose no retry ordinal.
+            let authoritative = c.run_id.is_some_and(|n| n > 0)
+                && c.attempt.is_some_and(|n| n > 0)
+                && c.suite_id.as_ref().is_some_and(|s| !s.is_empty());
             let (key, occurred, text) = if let (Some(run), Some(attempt), Some(time)) =
                 (c.run_id, c.attempt, c.suite_updated_at.as_deref())
             {
-                if c.suite_status.as_deref() != Some("COMPLETED") || c.suite_conclusion.is_none() {
+                if !authoritative
+                    || c.suite_status.as_deref() != Some("COMPLETED")
+                    || c.suite_conclusion.as_ref().is_none_or(|v| v.is_empty())
+                {
                     continue;
                 }
                 (
@@ -529,6 +536,22 @@ impl Store {
                         "Workflow {run} · attempt {attempt} · {}",
                         c.suite_conclusion.as_deref().unwrap_or_default()
                     ),
+                )
+            } else if c.kind == "CheckRun"
+                && c.run_id.is_none()
+                && c.attempt.is_none()
+                && c.suite_status.as_deref() == Some("COMPLETED")
+                && c.suite_conclusion.is_some()
+            {
+                let (Some(suite), Some(time)) =
+                    (c.suite_id.as_ref(), c.suite_updated_at.as_deref())
+                else {
+                    continue;
+                };
+                (
+                    format!("external-suite:{suite}:{}", c.commit),
+                    crate::activity::timestamp(time)?,
+                    "External check suite terminal; retry identity unavailable".into(),
                 )
             } else if c.kind == "StatusContext"
                 && ["SUCCESS", "FAILURE", "ERROR"].contains(&c.status.as_str())
@@ -554,8 +577,13 @@ impl Store {
                 actor: None,
                 url: format!("https://github.com/{repo}/pull/{number}/checks"),
                 text: Some(text),
-                eligible: true,
-                reason: "eligible".into(),
+                eligible: authoritative,
+                reason: if authoritative {
+                    "eligible"
+                } else {
+                    "Attempt identity unavailable; native alerts suppressed"
+                }
+                .into(),
                 seen: false,
                 head: Some(head.clone()),
             });

@@ -1,0 +1,11 @@
+   Compiling rusqlite v0.38.0
+   Compiling gitjuke-core v0.1.0 (/private/tmp/gitjuke-login-lifecycle/crates/gitjuke-core)
+    Finished `test` profile [unoptimized] target(s) in 10.70s
+     Running unittests src/lib.rs (/private/tmp/gitjuke-lifecycle-target/debug/deps/gitjuke_core-e8c686999d5acf2e)
+
+running 2 tests
+test runtime::lifecycle_tests::background_starts_closed_and_preserves_pause_selection_and_settings ... ok
+test runtime::lifecycle_tests::shutdown_reaps_owned_process_group_and_never_reschedules ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 247 filtered out; finished in 3.39s
+

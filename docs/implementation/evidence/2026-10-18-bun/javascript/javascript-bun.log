@@ -1,0 +1,9 @@
+bun test v1.4.2 (744846f84)
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.84ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [6.95ms]
+
+ 2 pass
+ 0 fail
+Ran 2 tests across 1 file. [16.00ms]

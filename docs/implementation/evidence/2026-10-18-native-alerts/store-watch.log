@@ -1,0 +1,29 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.55s
+     Running tests/store.rs (target/debug/deps/store-8ca756147b6fc590)
+
+running 8 tests
+test future_and_corrupt_databases_are_preserved ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... ok
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+
+     Running tests/watch_store.rs (target/debug/deps/watch_store-3bfc4e2be9775a1f)
+
+running 7 tests
+test head_reservations_exclude_exact_ids_without_null_or_unrelated_job_poisoning ... ok
+test complete_team_membership_removal_keeps_other_membership_reasons ... ok
+test budget_deadlines_and_exponential_backoff_survive_restart_and_do_not_cross_primary_buckets ... ok
+test head_generation_blocks_old_pages_and_clear_does_not_remove_watch_reasons ... ok
+test restarting_paused_does_not_replay_prior_session_manual_jobs ... ok
+test schema_one_upgrade_preserves_identity_pause_and_watch_reasons ... ok
+test durable_due_work_is_bounded_in_memory_fair_and_does_not_lose_the_129th ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
