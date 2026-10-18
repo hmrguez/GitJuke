@@ -1,0 +1,89 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 26s
+     Running tests/activity.rs (target/debug/deps/activity-c3756ff8a74a980e)
+
+running 3 tests
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/github.rs (target/debug/deps/github-9bd2019f5eb70166)
+
+running 6 tests
+test api_error_and_partial_schema_are_not_successful_empty_sets ... ok
+test auth_json_exit_zero_with_error_is_not_authenticated ... ok
+test auth_loss_without_http_headers_is_recognized_without_exposing_diagnostics ... ok
+test read_response_requires_headers_and_never_accepts_cli_failure ... ok
+test server_deadlines_include_numeric_and_http_date_retry_after ... ok
+test stack_unknown_none_and_authoritative_order_are_distinct ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-ec616448041cd874)
+
+running 16 tests
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... FAILED
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... FAILED
+test closing_reader_keeps_authored_and_requested_snapshot_work ... FAILED
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... FAILED
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test partial_activity_denial_keeps_progress_and_purges_payloads ... FAILED
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... FAILED
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+failures:
+
+---- check_traversal_denials_purge_checks_without_losing_membership_or_activity stdout ----
+
+thread 'check_traversal_denials_purge_checks_without_losing_membership_or_activity' (12751688) panicked at crates/gitjuke-core/tests/runtime.rs:39:25:
+runtime reached expected state: deadline has elapsed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity stdout ----
+
+thread 'checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity' (12752650) panicked at crates/gitjuke-core/tests/runtime.rs:39:25:
+runtime reached expected state: deadline has elapsed
+
+---- closing_reader_keeps_authored_and_requested_snapshot_work stdout ----
+
+thread 'closing_reader_keeps_authored_and_requested_snapshot_work' (12756704) panicked at crates/gitjuke-core/tests/runtime.rs:39:25:
+runtime reached expected state: deadline has elapsed
+
+---- conditional_hydration_reuses_exact_url_payload_without_replaying_activity stdout ----
+
+thread 'conditional_hydration_reuses_exact_url_payload_without_replaying_activity' (12758337) panicked at crates/gitjuke-core/tests/runtime.rs:39:25:
+runtime reached expected state: deadline has elapsed
+
+---- partial_activity_denial_keeps_progress_and_purges_payloads stdout ----
+
+thread 'partial_activity_denial_keeps_progress_and_purges_payloads' (12769036) panicked at crates/gitjuke-core/tests/runtime.rs:39:25:
+runtime reached expected state: deadline has elapsed
+
+---- search_partitions_more_than_a_thousand_requests_without_dropping_watches stdout ----
+
+thread 'search_partitions_more_than_a_thousand_requests_without_dropping_watches' (12770064) panicked at crates/gitjuke-core/tests/runtime.rs:39:25:
+runtime reached expected state: deadline has elapsed
+
+
+failures:
+    check_traversal_denials_purge_checks_without_losing_membership_or_activity
+    checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity
+    closing_reader_keeps_authored_and_requested_snapshot_work
+    conditional_hydration_reuses_exact_url_payload_without_replaying_activity
+    partial_activity_denial_keeps_progress_and_purges_payloads
+    search_partitions_more_than_a_thousand_requests_without_dropping_watches
+
+test result: FAILED. 10 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 557.90s
+
+error: test failed, to rerun pass `-p gitjuke-core --test runtime`

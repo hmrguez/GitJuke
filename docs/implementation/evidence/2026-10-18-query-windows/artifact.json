@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Europe/Madrid",
+  "version": "0.1.0",
+  "schema": 12,
+  "development_app_only": true,
+  "launched": false,
+  "bundler_signing_disabled": true,
+  "architecture": "arm64",
+  "host_os": "macOS 27.0 (26A428)",
+  "sha256": "b6d392ce53a327ac236bd32e635786f6727a0984bd5c851a270fef90f354b7ff",
+  "executable_bytes": 33475512,
+  "app_bytes": 33476416,
+  "test_switches_absent": 49,
+  "workspace_tests_passed": 196,
+  "core_tests": 150,
+  "integration_tests": 45,
+  "desktop_ipc_tests": 1,
+  "new_cursor_sigkill_cases": 4,
+  "migration_sigkill_cases": 228,
+  "migration_space_failures": 180,
+  "query_candidate_rows_per_window": 128,
+  "large_protected_prefixes": [
+    1024,
+    32768
+  ],
+  "journal_applied_prefix": 65536,
+  "file_output": "target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64"
+}

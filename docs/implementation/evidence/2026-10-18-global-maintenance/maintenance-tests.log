@@ -1,0 +1,17 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.13s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-0c1e74b29b1b4192)
+
+running 9 tests
+test maintenance_tests::crash_child_entry ... ok
+test maintenance_tests::pending_control_work_cannot_falsely_complete_ready_recovery ... ok
+test maintenance_tests::cached_expired_checks_do_not_gain_completeness_while_cleanup_waits ... ok
+test maintenance_tests::late_retention_fault_rolls_back_only_failing_unit_and_retries_without_seen_changes ... ok
+test maintenance_tests::every_control_transaction_includes_final_marker_and_preserves_unrelated_scope ... ok
+test maintenance_tests::late_sweep_fault_keeps_exact_prefix_scope_and_restart_blocks_recovery ... ok
+test maintenance_tests::mixed_retention_shares_one_allowance_and_preserves_dependent_units_and_history ... ok
+test maintenance_tests::late_metadata_and_check_faults_restore_complete_batch_after_committed_prefix ... ok
+test maintenance_tests::sigkill_maintenance_before_and_after_first_and_late_commits ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.98s
+

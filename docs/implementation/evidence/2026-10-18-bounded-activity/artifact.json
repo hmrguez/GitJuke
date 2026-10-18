@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Europe/Madrid",
+  "version": "0.1.0",
+  "schema": 10,
+  "development_app_only": true,
+  "launched": false,
+  "architecture": "arm64",
+  "host_os": "macOS 27.0 (26A428)",
+  "sha256": "6a959ac3444d9bc75e733b05a72b7af85d531f26d56e7b00fbd108173fb46cd3",
+  "executable_bytes": 33218904,
+  "test_switches_absent": 43,
+  "workspace_tests_passed": 178,
+  "core_tests": 132,
+  "integration_tests": 45,
+  "desktop_ipc_tests": 1,
+  "new_activity_sigkill_cases": 26,
+  "migration_sigkill_cases": 170,
+  "migration_space_failures": 130
+}

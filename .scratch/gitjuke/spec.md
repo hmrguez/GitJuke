@@ -1,0 +1,253 @@
+# GitJuke — specification
+
+Status: settled specification through human review, 2026-10-17. Wayfinder map complete. The user subsequently authorized production implementation on 2026-10-17; the [current implementation checkpoint](../../docs/implementation/2026-10-18-admission-windows.md) records current implementation/evidence. Historical planning review statements below do not revoke that authorization. Confirmed behavior and release gates are unchanged.
+
+This document records the confirmed production contract. The accompanying human-reviewed React prototype uses fixture data only and implements no GitHub transport, Tauri runtime, polling, or native notification delivery. Settled specification status does not mean the release gates have passed; the [confirmed acceptance matrix](acceptance.md) preserves their pending evidence.
+
+## Product
+
+A quiet, fast macOS PR reader that answers: what needs my attention, what changed, and is my work moving? GitHub remains the place for writing reviews, commenting, merging, and managing branches.
+
+## Confirmed constraints
+
+- Tauri desktop shell, React frontend, Rust backend; all GitHub requests invoke the installed `gh` executable. No parallel HTTP token client or hosted backend.
+- One GitHub.com account using the existing gh identity. No automatic account switching, login flow, token export, or scope changes.
+- Read PR lists, changes, conversations, reviews, check results, and published native stacks created with official `gh stack`.
+- Read-only GitHub behavior. Open the exact PR, comment, check, or workflow URL in the browser for actions.
+- Active PR/check refresh target: 10 seconds while awake, online, and within budget. Notifications follow GitHub's returned `X-Poll-Interval`. Neither is an end-to-end delivery guarantee.
+- Local saved queries for version one. No automatic synchronization of GitHub dashboard saved views.
+- Closing the window keeps the menu bar monitor alive. Explicit Quit stops it.
+- Modern, restrained UI with rounded surfaces, useful labels, and no decorative copy.
+- JetBrains Mono throughout the interface, bundled locally. Light and dark theme presets plus four editable theme colors: background, surface, accent, and text. All neutral/interactive tones derive from these four colors; semantic success/warning/failure states remain independently recognizable.
+
+- Stacks is the default layout, preserving the latest reviewed appearance. Reader and Inbox remain prototype alternatives; a production layout switcher is not required in v1.
+- Active watch membership: open authored PRs, open direct/team review requests, and the selected open PR, deduplicated by stable identity. Saved-query results and unselected stack neighbors do not automatically join. Mentioned PRs remain discoverable through notifications; selecting one adds it while the reader is open. Selected-only membership survives minimizing/unfocus and ends when the reader window closes; preserve selection for reopening.
+- Full personal-activity alerts: other people's comments/reviews on authored PRs, direct/team review requests, mentions elsewhere, and terminal checks on authored PRs. Suppress own actions and routine bot comments, with per-category toggles. Suppression does not hide those records from the reader.
+
+- No hard active-PR cap. Fifty simultaneous watches is the initial validation target, not proven capacity. Under budget pressure prioritize the visible selected PR, rotate other watches fairly, and show delayed freshness; retain eligible watches without silent dropping or age eviction.
+- Authored and direct/team-request watches keep the same refresh target with the window closed. OS alert permission denial does not stop monitoring. Explicit Quit stops it.
+- Remove a membership reason after successful reconciliation confirms closure/merge or removal of that review request. Other reasons still apply; retain cached/activity history. Failed or incomplete discovery never proves removal.
+
+- Group newly eligible activity per PR within a completed reconciliation batch, with no additional intentional delay. Keep individual activity records. For checks, emit one terminal outcome per workflow/check-suite attempt rather than per job; independent runs/providers remain separate, but same-batch results for a PR share an alert. Retry attempts may alert again; superseded heads do not. Do not wait for all PR workflows to finish or infer completion from missing checks.
+- First complete sync establishes a baseline without historical OS alerts. Wake/offline/restart recovery with an existing baseline produces one cross-PR summary of missed eligible activity, opening Activity. Show partial recovery honestly and avoid a completed-summary claim until reconciliation succeeds. Activity after the recovery-start boundary resumes normal grouping when discovered. Respect notification discovery intervals throughout.
+- Native alerts default to generic category/count only: no repo/PR identifiers, titles, actors, branches, bodies, or logs. Offer explicit opt-in repo/PR-title/actor previews; omit body/log excerpts from v1 alerts. Apply this to every PR, including unknown visibility.
+
+- Seen is local and per activity record. Explicit opening marks the item seen after its destination renders; selecting a PR, refreshing, OS delivery/dismissal, and reading on GitHub do not. Later arrivals stay unseen. Mark all seen affects only a snapshot of the currently loaded Activity set, with partial scope labeled. Initial historical baseline starts seen. A catch-up summary click opens Activity without clearing it. Never change GitHub read/done state.
+- Offer Enable notifications in onboarding, explaining coverage, generic previews and background monitoring, with a skip option. Ask macOS permission only after explicit enabling. Denial preserves monitoring/Activity; show status and an Open System Settings action without repeated prompts. Enabling/re-enabling delivers future activity without replaying the existing backlog or clearing local unseen records. Launch at login is a separate opt-in, default off. Persist choices locally; diagnose gh/auth/read access without changing credentials, scopes, account, or installing tools automatically.
+- Eligible native alerts include the current/selected PR even while the reader is focused and visible, on any reader tab. Focus and selection never suppress alerts; the agreed own-action/bot/category, grouping, deduplication and privacy policies still apply.
+
+- Pause monitoring stops automatic GitHub discovery/refresh and native alerts. Keep a persistent Paused indicator and cached timestamps. Cached reading and local changes remain available; explicit detail reads/manual refresh may fetch under normal server/quota/backoff rules, without auto-resuming or generating native alerts. Stop scheduling immediately and cancel in-flight work where safe; valid completed results may be cached. Disabling notifications separately mutes alerts while monitoring continues.
+- Pause persists until explicit Resume, including across close, sleep and restart. No timed snooze presets in v1. Resume while offline enables monitoring but waits for connectivity and existing API deadlines/backoff; permission/category settings remain unchanged.
+- Resume uses bounded catch-up with one summary of newly discovered eligible missed activity, then normal post-resume alerts. Preserve baseline, deduplication and unseen state; manually discovered duplicates and already-seen items do not enter the catch-up summary. Disabled/denied alerts still allow Activity recovery.
+
+## Confirmed runtime/cache boundaries
+
+- One Rust-owned application runtime handles gh reads, scheduling, persistence, activity classification, alerts and menu bar; React uses typed commands and cache-revision events with presentation-only local state. Keep monitoring in the same app process when the window closes; no separate daemon.
+- Transactional SQLite in the macOS application-data location, separating disposable fetched content from durable queries/settings/seen/deduplication/sync-recovery state. Cache eviction must not erase those durable records or replay historical alerts. Store no gh tokens. Retention, purge, storage protection and no-extra-encryption/no-export policies are confirmed below.
+- Bind GitHub-derived state to host plus authenticated stable user ID. On detected auth loss/account mismatch stop remote work and alerts, reject stale results and hide prior private content until the original gh identity is restored. Never switch accounts or import a new one automatically. Preserve original local state. Transport must account for external identity-change races; no absolute race-free claim.
+
+## Confirmed discovery, retention and recovery policy
+
+- Discovery: reconcile authored/direct/team-request membership and the opened saved-query view every 60 seconds when safe; inactive saved queries do not run background searches. Startup/resume/recovery trigger due reconciliation. Active snapshots retain the ten-second target; notification discovery keeps its independent server-directed deadline. Manual refresh cannot bypass backoff. Use one serialized, fair queue with priority for selected/user work and aging to prevent background starvation. These are eligibility targets, not indexing/delivery guarantees.
+- Disposable content: 500 MiB shared LRU budget including staged downloads and Activity payloads, maximum 30 days since last successful refresh/access; no persisted check log bodies. Activity retention: 90 days from source occurrence, including unseen records, with an explicit notice. Minimal Activity entries and unseen state survive payload eviction throughout that window; excerpts may be evicted earlier. Expiration is removal, not marking seen. Durable settings/queries, watch identities and compact identity-only seen/deduplication/alert/progress ledgers survive content eviction and Clear downloaded content until deliberate reset. The content budget is not a whole-database size guarantee. No export/backup UI or additional app-level encryption in v1.
+- Stale data: offline/timeouts/rate limits keep cached content readable with per-resource age/completeness/error. Partial failures never become successful empty sets or advance successful progress. On head change, preserve old revisions only with explicit old-revision labels; never present their patches/checks as current. Resource-specific denied/not-found responses hide/purge its cached content and show unavailable with minimal identity/progress, without claiming deletion or inferred watch removal. Global auth loss/mismatch follows the confirmed account lock.
+- Crash recovery: transactional ingestion/progress and durable alert intents; stage incomplete traversals. Mark an alert attempted before OS dispatch and never automatically retry an ambiguous attempted delivery. This favors avoiding duplicate OS alerts at the cost of a potentially missed alert; committed Activity remains available. Recover unattempted intents through the agreed policies and bounded catch-up. Preserve pause. Preserve corrupt/unmigratable databases and stop monitoring for recovery rather than silently resetting history.
+
+## Confirmed runtime readiness contract
+
+The detailed contract and required fault matrix are recorded in the final Answer and accepted review rounds of [Choose the local runtime and cache boundaries](issues/07-runtime-and-cache-contract.md). These are confirmed design bounds, not measured runtime evidence:
+
+- Transport: one gh child at a time, including identity probes; fixed read operations, argument arrays/stdin, explicit host, no shell interpolation or interactive prompts. Retain the resolved executable path for the session. Enforce a 30-second wall deadline, 16 MiB stdout and 64 KiB stderr ceilings while streaming. Cancel the owned process group, allow two seconds for graceful termination, then kill/reap before another child starts. Truncated output is never success. Reduce oversized batches/pages where possible; otherwise show a limited state and GitHub link rather than retrying the unchanged oversized request.
+- Queue/IPC: at most 128 materialized runnable descriptors; coalesce refreshes and preserve outstanding due state, with one pagination page expanded at a time and no missed-tick backlog. Excess work waits without losing watch membership. After at most three foreground jobs, service the oldest eligible background job and rotate watches fairly; all work respects server/quota/backoff deadlines. Explicit requests expose queued/busy state. IPC lists are paged at 100 records and 1 MiB per response; chunk oversized details or show explicit limits. Logs remain bounded in memory and are released on leaving their view, account lock or reader close.
+- Revisions: identity/session and resource generations plus applicable head/query versions guard every commit. Account lock, denied-content purge and Clear downloaded content invalidate pending results. Late reads cannot resurrect purged content or overwrite current-head data. Valid unselected-resource results may cache without changing selection/seen state. Snapshots include time, completeness/error, source revision and monotonic committed store revision. Post-commit events are invalidation hints; React ignores old responses and rereads on reopen/reconnect. Staged traversals cannot publish complete membership/progress before success; mutable-source inconsistencies require reconciliation. Before an alert attempt revalidate identity, pause, permission/category, seen/deduplication and current head; suppression does not mark Activity seen.
+- Storage: retain compact identity-only ledgers indefinitely; compact terminal intent/expired Activity payloads without erasing replay-prevention metadata. Denied-resource purge also removes Activity excerpts. Report managed database/WAL/temp storage separately from cached content; warn at 1 GiB total. Stop remote ingestion/native dispatch below 1 GiB free disk or on storage write/checkpoint failure, preserving cached reading/settings/pause; recover only when healthy. An alert requires a committed attempt marker. Reuse freed pages, checkpoint at safe idle boundaries and reclaim incrementally with bounded work; no unbounded startup VACUUM. Check temporary migration/maintenance space first. Explain growing ledger storage and that clearing downloaded content cannot erase it.
+- Migration/recovery: versioned transactional upgrades run before scheduling/delivery with sufficient space and identity validation. Interrupted/failed upgrades restore the prior committed schema or stop with originals preserved. Unsupported newer schemas stop without modification. Corruption/unmigratable state never silently resets; an explicit destructive recovery reset establishes a new historical baseline without historical alerts. Recovery preserves pause and normal reconciliation/deadline rules.
+
+### Review status — 2026-10-17
+
+[Choose notification defaults and the active watch set](issues/08-notification-defaults.md) is resolved: the watch, alert, privacy, seen, onboarding and Pause/Resume policies above are confirmed. Fifty PRs is the initial validation target, not a hard cap or proven capacity.
+
+[Choose the local runtime and cache boundaries](issues/07-runtime-and-cache-contract.md) is resolved, including all four readiness recommendations and Activity payload allocation. Runtime/cache policy has no open choice in this ticket. The synchronization/backend sections below elaborate the design; module names remain implementation choices. Runtime fault tests, authenticated API checks and native desktop evidence are still required future verification. Production implementation remains on hold until a subsequent user instruction to begin.
+
+[Choose large-diff reading and performance limits](issues/09-large-diff-behavior.md) is resolved, including rendering, accessible reading modes, discussion bounds amended to 50 messages per page, and measurable native performance acceptance. Its design targets are confirmed; no production renderer, accessibility review or performance benchmark is claimed to have passed.
+
+[Choose macOS packaging, signing, and distribution](issues/10-packaging-signing-distribution.md) is resolved, including updates, authentication environment, login/lifecycle and native artifact acceptance. No packaging policy remains open; signing/build/distribution and native/API evidence remain future work.
+
+[Settle specification handoff and release acceptance](issues/11-final-acceptance.md) is resolved through explicit human confirmation of all four recommendations. The [acceptance policy and 29-scenario matrix](acceptance.md) are confirmed, including the precise minimum viewport, required coverage and failure/revision rules. All twelve child tickets are resolved, no in-scope fog remains, the specification is settled and the planning map complete. This is a planning handoff, not release certification or implementation authorization.
+
+## Confirmed platform and distribution scope
+
+Confirmed through [Choose macOS packaging, signing, and distribution](issues/10-packaging-signing-distribution.md): Apple Silicon arm64 only, minimum macOS 15; no Intel/Rosetta support claim. The physical M1/8-GiB reader benchmark uses macOS 15. Before release, freeze the advertised OS matrix and perform native smoke/lifecycle checks on each advertised major; future OS versions are not automatically qualified. Exact tested patch/gh versions remain evidence to record.
+
+Personal direct distribution outside the Mac App Store: a Developer ID signed, notarized and stapled DMG, with the app copied into /Applications. No privileged installer, bundled gh, package-manager installation, public launch or hosted service is implied. Signing/notarization access is a future release prerequisite, not established evidence or authorization to enroll/purchase/sign/publish now. Developer builds do not satisfy the distributable-artifact gate; Gatekeeper bypass is not the installation flow.
+
+Discover installed gh from a saved explicit absolute executable path, then known installation locations including /opt/homebrew/bin/gh and /usr/local/bin/gh, then explicit user file selection. Validate/display executable/version and retain the resolved path for the session. Do not source shell startup files, search project/current-directory executables or install gh automatically. Missing/unusable gh stops remote work and alerts while preserving permitted cached reading; repair requires configured-identity revalidation. Published native stacks are read through gh api, without a local extension dependency; version output alone proves no API/provider compatibility.
+
+App/display name is GitJuke, installed bundle /Applications/GitJuke.app, stable bundle identifier dev.hmrguez.gitjuke. Use monotonic release/build identifiers and preserve intended Developer ID team continuity. Before distribution, record actual signing access/team, trusted release source, checksum and supported/tested matrix. Signing identity changes require explicit requalification of permissions/login/data-location continuity; no release credentials belong in the repo or app data.
+
+### Confirmed manual updates and recovery
+
+No built-in updater, background version checks, automatic download/install, feed or binary rollback in v1. About shows installed version/build. Distribute the signed DMG with release notes, version/OS/gh evidence and checksum through a documented trusted release source; checksums do not replace platform signature verification. Explicitly Quit, replace the installed app, then relaunch. Preserve data, account binding, executable/config paths, ledgers, settings, Pause and login preference. Revalidate executable, identity and schema before monitoring and bounded catch-up.
+
+Each release declares its readable/upgradable schema range. An older binary may run only against an explicitly supported schema; otherwise stop without modifying data and require a compatible/newer corrective release. No automatic downgrade migration/database restore/deletion; prefer a forward correction. Interrupted replacement, low disk or failed validation preserves original data and stops monitoring when no valid app/schema is established. Existing transactional migration and explicit destructive-reset policies stand. Replacing/removing the app does not remove or reset its data.
+
+### Confirmed gh authentication environment
+
+Use stored gh authentication with explicit GH_CONFIG_DIR: default <OS-account-home>/.config/gh, or a saved advanced absolute custom directory. Do not inherit token/host/repo/config overrides or shell/pager/editor/browser injection settings. Supply explicit github.com/repo targeting and a deliberate noninteractive child environment with narrow helper PATH; preserve necessary OS-account/locale/keychain and documented proxy/custom-CA context without leaking values. Do not source dotfiles. Environment-token-only auth is unsupported in v1; explain ignored override names without printing values and guide stored-gh setup externally.
+
+Display executable/config directory and non-secret bound identity in diagnostics. A config change invalidates pending work and must revalidate the same stable configured user; never silently import another account or change scopes/credentials. Parse auth-status JSON fields and verify stable identity through a bounded authenticated read, rather than trusting exit code/username alone. Distinguish CLI/config-context, missing/locked credential, identity, command/schema and resource-access failures. Preserve confirmed account locking/stale-result rules. The exact transport environment allowlist must satisfy this contract during implementation/verification; it does not expose a general shell API.
+
+### Confirmed packaged login and process lifecycle
+
+Use the Tauri LaunchAgent route after explicit login opt-in, default off, registering only the stable installed app path. Login starts the same app in menu-bar mode without opening the reader or requesting permissions. Setup/auth errors are visible in the menu bar with user-invoked guidance. First normal manual launch opens setup/reader; reopen and notification clicks activate the existing instance. Simultaneous manual/login launches must create only one monitor/store writer. A DMG/download/translocated or moved copy gives install/repair guidance rather than registering or creating a second monitor.
+
+Explicit Quit stops scheduling, cancels/reaps owned children and exits, preserving next-login preference. No watchdog, daemon or automatic crash relaunch. Honor OS/user-disabled registration; report failures and actual registration/path state, requiring explicit repair/re-registration if disabled or invalidated. Preserve Pause and existing close/watch, notification-permission, sleep/offline/bounded-recovery behavior. All packaged native behavior remains unverified; confirmation is a specification decision, not implementation evidence.
+
+## Information architecture
+
+Primary navigation: Activity, My PRs, Review requests, then Local queries. Each count represents the current cached matching set; show partial/unavailable status when it is not complete. A query manages name and GitHub search text only. Creation, editing, and removal affect local configuration.
+
+The selected Stacks direction uses navigation, a native-stack navigator with ordered members and other PRs, and the selected PR detail. PRs without a stack must remain reachable. The Reader comparison candidate has three panes: a narrow navigation rail, a scannable PR list, and the selected PR. List rows contain repository/number, title, author or relevant activity, review/check state, and elapsed time. Use a small unread dot only for unseen personal activity. Avoid a wall of badges or marketing copy.
+
+The selected PR contains title, state, author, base/head, and actions for open in GitHub and copying its URL. A compact native-stack strip appears only when a stack exists. Tabs: Overview, Changes, Conversation, Checks. Counts must match fetched completeness; an incomplete page must not present its count as the complete total.
+
+Appearance is available from Preferences. Switching a preset replaces all four palette colors. Custom changes apply immediately to every view, dialog, diff, and menu-bar preview. Show a text/surface contrast reading without blocking customization. The prototype keeps the palette in memory; production persists appearance in local settings. Font files ship with the app, with no remote font requests while reading private PRs.
+
+Alternative prototypes evaluate an inbox-first layout and a stack-first layout with the same fixture data and reader actions. The user accepted Stacks as the default together with the latest appearance direction. Reader and Inbox remain comparison prototypes. Prototype controls are explicitly separated from product UI.
+
+## Reading behavior
+
+### Overview
+
+Render the PR description and current review/check summaries. Sanitize Markdown and links; do not execute embedded HTML or load remote resources that disclose private content. Preserve draft, closed, merged, pending, and unknown states distinctly.
+
+### Changes
+
+Confirmed through [Choose large-diff reading and performance limits](issues/09-large-diff-behavior.md): unified diff only for v1, with a paginated file navigator and one selected file rendered at a time; no whole-PR patch prefetch. Restore file/scroll position within a revision, cancel obsolete selected-only hydration where safe, and prevent late results from changing selection. New heads explicitly label retained old content and offer an update action. Collapse generated files initially only when reliable source metadata identifies them.
+
+Automatically display complete supplied patches up to both 512 KiB UTF-8 and 5,000 patch rows; explicit Load large diff is available up to both 2 MiB and 20,000 rows. A logical line over 16 KiB also requires the local-limit/GitHub fallback. Limits are inclusive and rows include context/headers. No user override above the hard limits. Retain at most 8 MiB/50,000 rows of active/recent frontend patch source, evicting inactive models first. Source-data limits do not guarantee total process memory. All confirmed transport/cache/IPC limits still apply; eligible large patches may require IPC chunks. Preserve whitespace and horizontal code scrolling without default wrapping.
+
+Distinguish not loaded/loading/complete-for-file-and-revision, source incomplete/missing, local display limit, transport failure, binary and access unavailable. Missing patch text alone proves neither binary nor generated status. Show loaded/known totals honestly; upstream file-list limits cannot imply a complete PR. A supplied complete patch is its change hunks, not the entire source file. No clone/checkout/raw-file reconstruction/external-diff tool or expanded-context downloader in v1. Use validated file/revision URLs where available; otherwise explicitly offer the PR Changes page rather than fabricate an exact anchor. No silently clipped prefix is complete content.
+
+Inline discussions need current/original line anchors, commit identity, resolved/outdated state, and complete independent pagination. Attach only when file identity, side/line and recorded revision match known patch coordinates. Ambiguous/outdated/unavailable anchors remain in a labeled discussion list with source links, including when a patch cannot display; never relocate them to current lines or silently discard them. Partial patch visibility does not establish complete discussion coverage or mark activity seen. Prototype shows representative discussions rather than a complete inline-thread implementation.
+
+Confirmed rendering: continuous row virtualization mounts at most 400 patch rows including overscan and 200 metadata rows per file/thread navigator. Parse/index/tokenize away from the UI thread or in cancellable chunks. Plain text with change markers is immediately usable; syntax enhancement is optional/background for the automatic tier only, and large-tier patches remain plain text. Keep expanded discussions in a separate selected-thread panel. Preserve selection, scroll and stable keyboard focus within a revision; never let obsolete parsing replace the selected content.
+
+Offer a visible, remembered choice of continuous or semantic paged reading, with at most 200 patch rows per page, Previous/Next, range and jump-to-hunk/thread controls. Both modes traverse every eligible supplied row. Do not infer screen-reader use to force a mode. Expose path, old/new line numbers and change type without relying on color; announcements do not move focus, and virtual-row eviction cannot lose focus to the document body. Explicit discussion navigation exposes its anchor and return action. Require keyboard-only and VoiceOver review at compact/default widths, 200% text zoom and reduced motion, without clipped essential controls or traps. Navigation alone preserves the confirmed seen-state policy.
+
+### Conversation
+
+Combine description-linked activity, general comments, review submissions, and review threads into a chronological reader, preserving each source's identity and type. An approval without text is still a review. Expand replies and resolved/outdated threads; open the exact source comment in GitHub to reply. Unavailable author/repository fields remain nullable.
+
+Confirmed discussion bounds, shared by inline and Conversation access: expand one selected thread, showing up to **50 messages per page**. Next/Previous replaces the page; no unbounded append. Keep individual locally displayed bodies at most 128 KiB UTF-8 and all retained frontend bodies at most 2 MiB/100 messages, evicting inactive bodies first. Existing 100-record/1-MiB IPC and body-byte limits can require smaller pages/transfers; 50 is a message ceiling, not a byte-budget override. An oversized body shows metadata and an explicit source-link placeholder, never a silently clipped complete body. Merely opening that placeholder leaves its activity unseen; complete metadata-only events such as textless approvals remain valid destinations.
+
+Sanitize Markdown without remote-resource loading or embedded execution. Active message-page content has a 5,000-DOM-node budget; downgrade to escaped plain text, then explicitly ranged text segments with navigation if necessary. Preserve message identity/source link, bounded scroll/wrap containers and the per-body ceiling. These frontend reading limits never truncate backend classification, durable Activity state or successful-traversal rules.
+
+### Checks
+
+Show individual check runs and legacy commit statuses, not only GitHub Actions. Retain pending, running, successful, failed, neutral, skipped, cancelled, and timed-out conclusions. Fetch logs only on explicit request and when permitted. External providers open their details URL; denied, expired, or missing Actions logs are distinct from empty logs.
+
+### Stacks
+
+Read native stack identity, trunk, ordered members, member PR/check/review state, and selected position. Clicking a member selects that PR without checking out anything. No create, sync, restack, branch update, or merge action. No clone or stack extension is required for published native-stack reading.
+
+Native membership is authoritative. Unknown membership differs from confirmed no stack. Version one does not infer stacks from branch names or arbitrary PR-body footers. Legacy third-party extensions need a compatibility fixture before support is promised.
+
+## Synchronization contract
+
+One Rust-owned scheduler feeds the window and menu bar from the same persistent cache. React never directly invokes a shell or GitHub endpoint. A ten-second tick is an eligibility check, not permission to ignore backoff, server guidance, a slow prior request, or exhausted quota.
+
+1. Startup checks gh availability/version, active GitHub.com identity, and necessary read capabilities without printing tokens or private payloads. Missing auth presents actionable gh instructions without changing credentials.
+2. Discovery loads authored, direct/team-requested, and personal-notification sets with explicit pagination. Search is for reconciliation, not an event stream; no ten-second indexing promise.
+3. Refresh compact batched snapshots for the active set every ten seconds when safe. Measure `rateLimit.cost`, remaining/reset and payload size. Load descriptions/diffs/full discussions on selection or when needed to classify changed personal activity.
+4. Poll notifications on a separate deadline respecting `X-Poll-Interval`. Store validators for the exact request URL and parameters. Preserve Last-Modified values verbatim; unchanged authenticated 304s save primary quota but do not exempt secondary limits.
+5. Hydrate changed threads to identify individual comment/review IDs. Sticky notification reasons alone cannot justify an alert saying a new mention or review occurred.
+6. Track checks by head SHA and workflow run/attempt, including merge-ref associations. Do not match solely by branch name. Reconcile new heads before emitting completion alerts.
+7. Serialize subprocess work, prioritize selected detail and current activity, and avoid overlapping cycles. Pagination and detail requests count against the same budgets. Persist watermarks only after successful complete page traversal.
+8. On 403/429, honor Retry-After or reset and exponential backoff. On sleep/offline, preserve cached state and perform bounded catch-up on recovery, not replayed missed ticks.
+
+`gh --jq` shapes local output, not downloaded REST bytes. Prefer small GraphQL selection sets for bounded snapshots; use explicit REST pagination where suitable. Never use `--cache` duration alone as a freshness policy.
+
+## Backend boundary
+
+Proposed Rust modules:
+
+| Boundary | Responsibility |
+| --- | --- |
+| GhTransport | Resolve executable safely, spawn argument arrays, explicit github.com host/repo, stdin GraphQL, timeout/cancellation/output bounds, parse headers/JSON/errors. No arbitrary shell command API. |
+| GitHubReader | Typed PR/query/thread/check/stack reads, pagination and permission classification. Read-only query allowlist; GraphQL POST reads remain allowed. |
+| SyncEngine | Watch set, due jobs, quotas/backoff, change reconciliation and successful watermarks. |
+| Store | SQLite snapshots, identities, validators, source event IDs, local seen state, saved queries and alert settings. Local app data directory, transactional writes, bounded retention. |
+| ActivityClassifier | Personal relevance, stable deduplication, own-action suppression and grouped alert intent. |
+| DesktopLifecycle | Tray, reopen, close-to-menu-bar, explicit quit, notification permission/delivery and deep links. |
+
+Typed Tauri commands expose cached lists/details, local query/settings changes, selected-PR hydration, refresh intent, and validated browser links. Backend events report cache revisions, sync health, and local activity counts. Use Tauri capabilities narrowly; no broad frontend shell access.
+
+Persist source IDs and updated timestamps, not just rendered strings. PR identity is GitHub host + base repo identity + number (plus node ID when available); each detail snapshot includes head SHA/revision, fetchedAt, completeness and error state. Store notification/thread identity separately from individual activity IDs. Notification click payloads contain stable IDs; re-resolve them against permitted cached records rather than opening arbitrary commands.
+
+## Menu bar and notification behavior
+
+Menu bar shows unread personal-activity count, monitoring health, Open GitJuke, Pause/Resume, and Quit. Closing the last window preserves monitoring. Explicit Quit cancels work and closes the process. macOS suspension, sleep, connectivity and permission denial can prevent timely delivery; do not label cached information live.
+
+Clicking a delivered notification reopens the window and selects the related PR/tab/thread/check. If an item is no longer accessible, preserve its safe minimal context with an unavailable state. Native alerts use the confirmed generic-by-default privacy policy above. Local seen state and permission/onboarding follow the confirmed policies above; no foreground suppression applies. Pause/Resume follows the confirmed policy above. Native notifications are not implemented by the browser prototype.
+
+## States and access
+
+- Initial loading has lightweight skeletons; refreshing preserves existing content and selection.
+- Empty filtered sets retain navigation and expose query editing. Empty activity means no matching unseen activity, not successful completeness if the feed failed.
+- Offline/rate-limited/error states show cached content with last successful fetch time and recovery action. Expose PR-state and notification freshness separately in sync details.
+- Keyboard: visible focus, Tab traversal, j/k list movement when not editing, Enter to open selection, / to focus search, Escape to dismiss dialogs. Native modifiers must not override text editing. All icon-only buttons have accessible names; status uses text/icons as well as color.
+- Desktop-first, resizable window with a confirmed minimum reader content viewport of 960×640 logical pixels, excluding native title-bar chrome. At compact width or 200% text zoom, use explicit list/detail/back navigation; essential controls/dialogs/actions stay reachable by keyboard/VoiceOver without clipping or focus traps. Dialogs fit or scroll within the viewport. View-local vertical and code/long-content horizontal scrolling are allowed; overall app navigation must not require horizontal scrolling. Follow system reduced-motion preference.
+
+## Prototype scope and review
+
+Run `npm install` then `npm run prototype`. The default route is `/prototype?variant=stacks`, with `reader` and `inbox` alternatives. A separate bottom review bar changes layout and simulates normal/loading/empty/offline/rate-limited states. All records are fictional; query matching is a limited demo, not a GitHub Search parser. Query edits and read state reset on reload.
+
+Review tasks: select a PR; inspect its changes, conversation and check details; navigate between stack members; open Activity; save/edit/remove a local query; inspect stale/error/empty states; compare layouts. Do not infer that a successful UI demonstration validates remote APIs, native alerts, or process lifecycle.
+
+## Production acceptance gates
+
+- Verify installed gh 304 exit/header behavior, active account permissions, pinned API version and native stack read schema with an authorized fixture.
+- Confirm every read panel handles its own pagination, nullable/deleted fork data, >100-item threads/checks and partial/large diffs without silent truncation.
+- Measure request/point/payload/subprocess budgets for the confirmed fifty-watch validation target alongside ordinary gh use. Validate healthy ten-second eligibility, server-directed notifications, no overlap and quota backoff; fifty remains a validation target, not measured capacity or a watch-membership cap.
+- Reconcile direct/team review requests, approvals without comments, mentions on other PRs, new heads, mixed Actions/external CI, retries and terminal outcomes.
+- Validate event deduplication across restarts, first-sync baseline, wake catch-up, read-elsewhere notifications and deleted/edited comments without inventing new events from sticky reasons.
+- Verify signed Tauri macOS builds keep monitoring after window close, stop on Quit, respect denied native permissions, and open the correct detail on notification click.
+- Keyboard/screen-reader review, 960×640 layout and reduced motion. The user selected Stacks; production accessibility and edge-state verification remain required.
+- Run the confirmed runtime fault matrix: crash boundaries around ingestion/progress/intent/attempt/delivery, incomplete pagination, 129+ pending jobs, hung/oversized children and background fairness; account/head/query races, late completion after denial/clear and missed/reordered UI events; content eviction/Activity expiry, low disk/write/checkpoint failure, and successful/interrupted/failed/newer/corrupt-schema migration. Required outcomes and approved bounds live in the runtime/cache ticket. No orphan child, false successful-empty set, stale resurrection, lost durable state, replayed ambiguous attempt or silent watch removal.
+- Run the confirmed packaging matrix on every advertised macOS major: quarantined downloaded and stapled offline signed launch; architecture/minimum OS; Finder/login external gh/keychain with default/custom config, ignored token overrides, locked/missing credentials and identity mismatch; published-stack/API/CLI compatibility; installed/moved/DMG paths; login default/enable/disable/OS-disable/failure/repair; one instance, reopen/notification routing, close/Quit, preserved Pause/permission behavior and no orphan child; manual upgrade/supported downgrade/rejected newer schema, interrupted replacement/migration and low disk without data reset or replay. Actual signing/team/release-source/checksum/version evidence must be recorded before distribution. Detailed expected outcomes live in the packaging ticket; none is yet validated.
+
+### Confirmed reader performance and accessibility acceptance
+
+Use a physical Apple M1/8-GiB-class Mac on macOS 15, as confirmed by packaging review; record exact hardware/OS patch/release build/window size and measurement method. A changed reference requires explicit reconciliation in final acceptance. After five warm-ups and at least 30 transitions per tier, require 95th-percentile feedback ≤100 ms, usable cached automatic-tier patch ≤500 ms and usable cached explicit-large patch ≤1 second. Timings include cached backend/IPC/parsing/rendering from the action until navigation/scrolling works, without waiting for syntax color. Include normal fifty-watch background activity; report remote gh/network latency separately, retaining immediate loading/queued/error feedback. Require no app-caused main-thread task over 100 ms in these scenarios and 95th-percentile frame duration ≤33 ms during a ten-second largest-patch scroll.
+
+Sum resident memory of Rust and app-owned WebView/helpers relative to a same-build idle-reader baseline: additional peak ≤200 MiB, with process-attribution method recorded. Cycle files/threads 100 times, settle 30 seconds, repeat; the second settled footprint must remain within 20 MiB of the first. This is a reader-regression target, not a total-app or OS allocation guarantee.
+
+Exercise exact/one-over byte, row, logical-line and message limits; UTF-8; many file/thread pages; binary/generated/missing/incomplete content; deep Markdown; 50 ordinary messages and byte-bound subdivision; continuous/paged equivalence, keyboard/VoiceOver/focus and zoom; selection/head/account/purge races during parsing and safe source-link fallback. Counters must establish source/model/row/message/DOM bounds. The detailed accepted matrix is in the large-diff ticket. Missing a target blocks acceptance until fixed or explicitly respecified; no silent relaxation. All native performance/accessibility evidence remains pending, and fixture-browser evidence cannot satisfy it.
+
+## Handoff and release status
+
+No planning decision remains open. The [wayfinder map](map.md) is complete and the [human-reviewed prototype](prototype/README.md) accompanies this settled specification. The [confirmed acceptance policy/matrix](acceptance.md) traces 29 scenarios to expected outcomes, methods, source decisions and current evidence. All in-scope required subcases must pass for a distributable v1 release; correct limited/unavailable states pass their negative cases without substituting for supported normal-flow evidence.
+
+Record future cases as Pending/Pass/Fail/Blocked with applicable build/schema/environment/fixture/procedure/evidence. A missing fixture, permission, reference device or signing access is Blocked; Fail/Blocked required cases prevent release until fixed or an explicit human-reviewed specification revision updates the contract and claims. Re-run affected gates after relevant changes and document applicability before reusing evidence. Once implementation is separately authorized, validate high-risk API/gh/native-stack/auth/process/login feasibility early.
+
+Official gh stack compatibility, authenticated/native behavior, accessibility/performance and signed distribution remain pending future verification gates; fixture browser checks do not establish them. Actual signing access/team, trusted release source, checksum and exact tested versions remain release inputs to record. Production implementation, provisioning, signing and publication are outside this completed planning effort and have not started.
+
+## Evidence
+
+[Preset research](research/pr-presets.md), [polling and activity research](research/personal-activity-polling.md), [reader and stack research](research/reader-and-stacks.md), [macOS distribution research](research/macos-distribution.md). These reports link to primary sources and distinguish documentation facts from unverified runtime/native behavior.
+
+
+## Global retention/metadata maintenance and control-plane sweep checkpoint — 2026-10-18
+
+The [current maintenance checkpoint](../../docs/implementation/2026-10-18-global-maintenance.md) replaces independent retention-class allowances with one maximum of **128 direct mutations per transaction**, including dependent Activity/payload/catch-up deletion, check completeness invalidation, metadata reclamation and revision. Logical expiry remains immediate while physical reclamation waits; expired loaded Activity cannot be marked seen. Head-reservation retry cleanup, abandoned Activity retry staging and manual watch-due reset use durable scoped markers and bounded commits, resumed by startup/repair before remote eligibility and recovery completion. Schema **11** prevents older binaries from ignoring this work. Large-set, later-fault, exact-prefix/retry, process-kill, worker and migration results are individually labeled in the checkpoint. Existing publication/shared-payload atomicity and the inclusive **524,288,000-byte** ceiling remain unchanged; terminal/history/deadline/Pause/identity records survive. Historical checkpoints retain their original applicability and run limitations, including the previous 166-case scoped qualification. Query/cardinality/sort/temp/time, physical faults/power loss, peak migration space, metadata lifetimes/terminal compaction, startup recovery UX and native delivery/performance remain **Pending**; existing live-fixture gaps stay **Blocked** and all **29 grouped release scenarios remain Pending**. No live probe, app launch, credentials, delivery, signing, publication or distribution was enabled.
+
+
+## Indexed retention query windows and journal application checkpoint — 2026-10-18
+
+The [schema-12 query-work checkpoint](../../docs/implementation/2026-10-18-query-windows.md) audits remaining SQLite work and qualifies indexed Activity/content expiry, five fenced 128-candidate retention windows and twelve-row unapplied journal selection. Cursor position and fixed upper fence commit atomically with dependent cleanup inside the existing global 128-direct-mutation allowance; cursor-only progress does not advance presentation revision or certify recovery. Read-time expiration, future deadlines, current/pending/staged checks, stable identity/Pause and durable seen/dedup/baseline/recovery/terminal histories remain protected. Deterministic 1,024/32,768-row protected-prefix counters reject growing scans, sorts and automatic indexes in the covered windows; a 65,536-row applied journal prefix is skipped. Fault/restart, four new actual SIGKILL cases and precise final regression/build/migration results are labeled in the checkpoint. The inclusive 524,288,000-byte shared payload ceiling and existing publication visibility/mutation contracts remain unchanged. Broader admission sums/LRU sorting, planning, reader/queue/enrollment/sweep queries, variable metadata bytes, total temp/cumulative time, physical faults/power loss, peak migration/index-build space, compaction/recovery UX and native delivery/performance remain **Pending**; live-fixture gaps stay **Blocked** and all **29 grouped release scenarios remain Pending**. Historical qualification, including the prior 166-case scoped record, retains its original limitations. No live probe, app launch, signing, credentials, delivery or distribution is enabled.
+
+
+## Shared admission byte-total and LRU query-window checkpoint — 2026-10-18
+
+The [current schema-12 admission checkpoint](../../docs/implementation/2026-10-18-admission-windows.md) replaces full-set SQL byte aggregates and the global joined LRU sort with snapshot-consistent 128-row indexed windows and a heap of at most 128 victim identities. Request payload values are streamed; retained old images remain charged independently of canonical eviction. No new bookkeeping writes, durable cursors or migration are introduced. The inclusive **524,288,000-byte** ceiling, shared 128-direct-mutation allowance, atomic visibility, check completeness and durable history contracts remain unchanged. **Pass, scoped:** compact 257/1,025-identity oracle/counter fixtures, concurrent WAL snapshot consistency, late-batch exact-prefix failure/retry, protected cached reading, retained-image refusal and **six actual SIGKILL cases**, plus the selected regressions/build detailed in the checkpoint. Invalid stored request parsing enters storage protection and rolls back the candidate. Per the user's request, full-ceiling fixtures, the migration/older kill matrices and the full workspace were not rerun; the prior 196-test run and migration results retain their historical scope, and the older 166-case qualification remains scoped/retained rather than monolithic. These bounds apply per SQL statement; byte totals and check selection still require a growing number of windows. Constant-time totals/sublinear check selection, cumulative time, other planning/reader/queue/sweep queries, variable bytes, total temp/physical/peak-migration/compaction/recovery UX and native delivery/performance remain **Pending**. Existing live-fixture gaps stay **Blocked**, all **29 grouped release scenarios remain Pending**, and no settled release assertion or performance limit changes. No app launch, live probe, credentials, native delivery, signing, publication or distribution is enabled.

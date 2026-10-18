@@ -1,0 +1,20 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.62s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-0c1e74b29b1b4192)
+
+running 6 tests
+test query_work_tests::crash_child_entry ... ok
+test query_work_tests::cursors_wrap_and_revisit_newly_expired_rows_behind_the_frontier ... ok
+candidates=1024 pass=0 metrics=[Metrics { rows: 1, vm: 13, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3476, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 12, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5283, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 10, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3608, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 13, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5012, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 15, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 10138, scans: 127, sorts: 0, autoindexes: 0 }]
+candidates=1024 pass=1 metrics=[Metrics { rows: 128, vm: 3482, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5970, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3614, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5018, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 11341, scans: 127, sorts: 0, autoindexes: 0 }]
+candidates=1024 pass=2 metrics=[Metrics { rows: 128, vm: 3482, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5970, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3614, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5018, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 11341, scans: 127, sorts: 0, autoindexes: 0 }]
+test query_work_tests::publication_application_skips_large_applied_prefix_without_sorting ... ok
+test query_work_tests::sigkill_cursor_and_dependent_tail_cleanup_commit_together ... ok
+test query_work_tests::cursor_fault_rolls_back_companion_deletes_and_restart_resumes_exact_tail ... ok
+candidates=32768 pass=0 metrics=[Metrics { rows: 1, vm: 13, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3476, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 12, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5283, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 10, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3608, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 13, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5012, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 1, vm: 15, scans: 0, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 10138, scans: 127, sorts: 0, autoindexes: 0 }]
+candidates=32768 pass=1 metrics=[Metrics { rows: 128, vm: 3482, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5970, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3614, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5018, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 11341, scans: 127, sorts: 0, autoindexes: 0 }]
+candidates=32768 pass=2 metrics=[Metrics { rows: 128, vm: 3482, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5970, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 3614, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 5018, scans: 127, sorts: 0, autoindexes: 0 }, Metrics { rows: 128, vm: 11341, scans: 127, sorts: 0, autoindexes: 0 }]
+test query_work_tests::indexed_windows_bound_scans_and_sorts_across_large_protected_prefixes ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 2.22s
+

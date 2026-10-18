@@ -1,0 +1,19 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.34s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-0c1e74b29b1b4192)
+
+running 11 tests
+test activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads ... ok
+test activity_bounded::actual_sigkill_large_activity_and_summary ... ok
+test activity_bounded::actual_sigkill_staging_reset_requires_fresh_complete_hydration ... ok
+test activity_bounded::child ... ok
+test activity_bounded::journal_classifies_expired_historical_suppressed_and_post_boundary_without_replay ... ok
+test activity_bounded::large_baseline_completion_has_no_summary_and_one_visibility_commit ... ok
+test activity_bounded::large_publication_modes_and_summary_are_bounded_and_idempotent ... ok
+test activity_bounded::late_apply_and_visibility_failure_protect_readers_and_exact_retry ... ok
+test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... ok
+test activity_bounded::source_api_payload_publication_reserves_its_three_mutations_from_admission ... ok
+test activity_bounded::staging_restart_and_notification_progress_share_global_bounds ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 121 filtered out; finished in 40.63s
+

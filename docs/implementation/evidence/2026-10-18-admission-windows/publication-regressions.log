@@ -1,0 +1,15 @@
+$ cargo test -p gitjuke-core --lib --offline publication::tests:: -- --test-threads=1 --skip actual_ceiling --skip sigkill_publications
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-a8b45f569e338a47)
+
+running 7 tests
+test publication::tests::bounded_batches_keep_old_snapshot_until_atomic_visibility_commit ... ok
+test publication::tests::crash_child_entry ... ok
+test publication::tests::empty_replacements_cannot_hide_large_deletions_behind_capped_preflight_counts ... ok
+test publication::tests::exact_retry_finishes_pending_publication_without_publishing_empty_or_advancing_epoch_twice ... ok
+test publication::tests::late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membership_loss ... ok
+test publication::tests::pending_publication_blocks_recovery_even_with_old_complete_health ... ok
+test publication::tests::small_single_transaction_and_journal_paths_publish_identical_snapshots ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 151 filtered out; finished in 9.39s
+

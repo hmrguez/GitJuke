@@ -1,0 +1,15 @@
+{
+  "development_version": "0.1.0",
+  "schema": 12,
+  "binary": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke",
+  "bytes": 33516520,
+  "sha256": "41882414bd603a63538f92bc031b803b3a18d2b764fb6757b757586e5eac9ec4",
+  "format": "/Users/hmrguez/Programming/Personal/GitJuke/target/aarch64-apple-darwin/debug/bundle/macos/GitJuke.app/Contents/MacOS/gitjuke: Mach-O 64-bit executable arm64",
+  "host_macos": "27.0",
+  "host_build": "26A428",
+  "test_switch_names_checked": 51,
+  "test_switch_names_present": [],
+  "signing": "explicitly skipped with --no-sign",
+  "launched": false,
+  "scope": "Development artifact only; no physical-target or release qualification"
+}

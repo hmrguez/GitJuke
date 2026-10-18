@@ -1,0 +1,15 @@
+$ cargo test -p gitjuke-core --lib --offline activity_bounded:: -- --test-threads=1 --skip actual_ceiling --skip actual_sigkill --skip source_api_payload_publication
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-a8b45f569e338a47)
+
+running 7 tests
+test activity_bounded::child ... ok
+test activity_bounded::journal_classifies_expired_historical_suppressed_and_post_boundary_without_replay ... ok
+test activity_bounded::large_baseline_completion_has_no_summary_and_one_visibility_commit ... ok
+test activity_bounded::large_publication_modes_and_summary_are_bounded_and_idempotent ... ok
+test activity_bounded::late_apply_and_visibility_failure_protect_readers_and_exact_retry ... ok
+test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... ok
+test activity_bounded::staging_restart_and_notification_progress_share_global_bounds ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 151 filtered out; finished in 6.46s
+

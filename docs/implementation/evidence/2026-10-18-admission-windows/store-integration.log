@@ -1,0 +1,39 @@
+$ cargo test -p gitjuke-core --offline --test store --test watch_store --test activity -- --test-threads=1
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.56s
+     Running tests/activity.rs (target/debug/deps/activity-210f2b8bc1fb5b08)
+
+running 3 tests
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/store.rs (target/debug/deps/store-7e268d830637c6b9)
+
+running 8 tests
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test future_and_corrupt_databases_are_preserved ... ok
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+
+     Running tests/watch_store.rs (target/debug/deps/watch_store-187f110076ba69fb)
+
+running 7 tests
+test budget_deadlines_and_exponential_backoff_survive_restart_and_do_not_cross_primary_buckets ... ok
+test complete_team_membership_removal_keeps_other_membership_reasons ... ok
+test durable_due_work_is_bounded_in_memory_fair_and_does_not_lose_the_129th ... ok
+test head_generation_blocks_old_pages_and_clear_does_not_remove_watch_reasons ... ok
+test head_reservations_exclude_exact_ids_without_null_or_unrelated_job_poisoning ... ok
+test restarting_paused_does_not_replay_prior_session_manual_jobs ... ok
+test schema_one_upgrade_preserves_identity_pause_and_watch_reasons ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+

@@ -1,0 +1,25 @@
+$ cargo test -p gitjuke-core --lib --offline admission_query::tests:: -- --test-threads=1 --nocapture
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.15s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-a8b45f569e338a47)
+
+running 8 tests
+test admission_query::tests::autocommit_totals_hold_one_snapshot_across_concurrent_window_changes ... ok
+test admission_query::tests::compact_large_sets_have_bounded_statements_and_exact_totals_and_lru ... windows=22, max rows=128, VM=1356, scan=0, SORT=0, AUTOINDEX=0
+windows=6, max rows=128, VM=4438, scan=254, SORT=0, AUTOINDEX=0
+windows=6, max rows=128, VM=4438, scan=254, SORT=0, AUTOINDEX=0
+windows=6, max rows=128, VM=4438, scan=254, SORT=0, AUTOINDEX=0
+windows=70, max rows=128, VM=1356, scan=0, SORT=0, AUTOINDEX=0
+windows=18, max rows=128, VM=4438, scan=254, SORT=0, AUTOINDEX=0
+windows=18, max rows=128, VM=4438, scan=254, SORT=0, AUTOINDEX=0
+windows=18, max rows=128, VM=4438, scan=254, SORT=0, AUTOINDEX=0
+ok
+test admission_query::tests::crash_child_entry ... ok
+test admission_query::tests::invalid_stored_request_stops_admission_without_writes_or_a_leaked_snapshot ... ok
+test admission_query::tests::late_batch_fault_preserves_exact_prefix_and_retries_atomically ... ok
+test admission_query::tests::request_inputs_match_sqlite_utf8_charge_and_rollback ... ok
+test admission_query::tests::retained_images_stay_charged_during_eviction_and_refuse_impossible_admission ... ok
+test admission_query::tests::sigkill_read_and_reclamation_keep_only_committed_prefixes ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 150 filtered out; finished in 0.29s
+

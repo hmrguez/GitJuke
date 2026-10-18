@@ -1,0 +1,247 @@
+   Compiling gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.89s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_desktop-5bd31b5c9d6062f9)
+
+running 1 test
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running unittests src/main.rs (target/debug/deps/gitjuke-1111fd203ecdf932)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-ec95886892cb9afa)
+
+running 132 tests
+test activity_bounded::child ... ok
+test activity_bounded::schema_nine_pending_watch_publication_upgrades_and_finishes_before_cleanup ... ok
+test activity_bounded::source_api_payload_publication_reserves_its_three_mutations_from_admission ... ok
+test activity_bounded::staging_restart_and_notification_progress_share_global_bounds ... ok
+test activity_crash::crash_child_entry ... ok
+test activity_bounded::large_baseline_completion_has_no_summary_and_one_visibility_commit ... ok
+test activity_bounded::journal_classifies_expired_historical_suppressed_and_post_boundary_without_replay ... ok
+test activity_enrollment::tests::bounded_enrollment_deduplicates_and_gates_recovery_until_all_targets_finish ... ok
+test activity_enrollment::tests::crash_child_entry ... ok
+test activity_enrollment::tests::later_enrollment_fault_rolls_back_batch_and_restarts_without_resetting_targets ... ok
+test activity_enrollment::tests::sigkill_before_and_after_later_batch_commit_preserves_restart_progress ... ok
+test activity_store::tests::baseline_suppression_snapshot_seen_clear_and_replay ... ok
+test activity_store::tests::denial_purge_matches_literal_repo_and_pr_boundaries_and_rolls_back ... ok
+test activity_store::tests::normal_outage_captures_boundary_on_recovery_not_on_first_failure ... ok
+test activity_crash::sigkill_summary_commits_membership_progress_and_baseline_together ... ok
+test activity_store::tests::offline_and_restart_preserve_incomplete_boundary_and_terminal_intents ... ok
+test activity_store::tests::publication_rolls_back_all_ledgers_and_progress_on_write_failure ... ok
+test activity_store::tests::retention_filters_payloads_without_writes_and_old_pages_cannot_resurrect_them ... ok
+test activity_store::tests::recovery_boundary_manual_duplicates_seen_exclusion_and_restart ... ok
+test check_purge::tests::check_purge_barrier_late_batch_and_final_marker_faults_resume ... ok
+test check_purge::tests::check_purge_blocks_otherwise_ready_recovery ... ok
+test check_purge::tests::check_purge_global_bound_visibility_and_resource_isolation ... ok
+test check_purge::tests::check_purge_markers_and_unchanged_states_have_bounded_progress ... ok
+test activity_bounded::actual_sigkill_staging_reset_requires_fresh_complete_hydration ... ok
+test check_purge::tests::crash_child_entry ... ok
+test activity_crash::sigkill_publication_preserves_atomic_ledgers_and_reconciles_without_replay ... ok
+test clear_content::tests::clear_barrier_blocks_otherwise_ready_recovery_completion ... ok
+test clear_content::tests::clear_barrier_late_batch_and_final_marker_faults_roll_back_and_resume ... ok
+test clear_content::tests::clear_global_bound_and_logical_barrier_preserve_durable_history ... ok
+test check_purge::tests::check_purge_sigkill_barrier_and_cleanup_commits_preserve_scope_and_history ... ok
+test clear_content::tests::crash_child_entry ... ok
+test content_budget::admission_tests::crash_child_entry ... ok
+test clear_content::tests::clear_unchanged_rows_do_not_consume_the_batch_allowance ... ok
+test content_budget::admission_tests::impossible_staging_does_not_commit_pointless_reclamation_or_candidate_progress ... ok
+test content_budget::admission_tests::later_reclaim_and_publication_faults_preserve_prefix_but_never_candidate_state ... ok
+test clear_content::tests::clear_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test content_budget::admission_tests::mixed_reclamation_has_one_global_budget_including_check_states_and_revision ... ok
+test content_budget::admission_tests::repeated_candidates_do_not_publish_activity_dedup_progress_or_terminal_intents ... ok
+test content_budget::admission_tests::speculative_admission_shares_expiry_pressure_and_check_invalidation_allowance ... ok
+test content_budget::admission_tests::stale_optional_publication_has_no_admission_side_effects ... ok
+test content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart ... ok
+test content_budget::tests::each_staging_class_shares_admission_and_rollback ... ok
+test content_budget::tests::exact_limit_utf8_and_tied_lru_prefix ... ok
+test content_budget::tests::head_eviction_failure_rolls_back_epoch_closure_and_check_invalidation ... ok
+test content_budget::tests::large_victim_prefix_preserves_activity_and_replay_barriers_after_reopen ... ok
+test content_budget::tests::lru_check_delete_failure_rolls_back_snapshot_and_new_publication ... ok
+test content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness ... ok
+test content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it ... ok
+test content_budget::tests::selected_registration_eviction_failure_rolls_back_membership_and_revision ... ok
+test content_budget::tests::shared_lru_reclaims_checks_without_touching_staging_or_watch_history ... ok
+test content_capacity::crash_child_entry ... ok
+test activity_bounded::late_apply_and_visibility_failure_protect_readers_and_exact_retry ... ok
+test activity_bounded::large_publication_modes_and_summary_are_bounded_and_idempotent ... ok
+test activity_store::tests::summary_filters_expired_and_seen_members_without_loading_ids ... ok
+test activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads ... ok
+test invalidation::tests::crash_child_entry ... ok
+test invalidation::tests::invalidation_global_bound_and_logical_read_barrier_preserve_history ... ok
+test invalidation::tests::invalidation_late_fault_is_restartable_and_protected_reads_stay_incomplete ... ok
+test invalidation::tests::invalidation_sigkill_barrier_and_batch_commits_resume_before_startup ... ok
+test migrations::tests::crash_child_entry ... ok
+test migrations::tests::failed_legacy_migration_stops_runtime_then_reopens_paused_after_repair ... ok
+test content_budget::admission_tests::full_ceiling_many_victims_publish_atomically_and_survive_restart ... ok
+test activity_bounded::actual_sigkill_large_activity_and_summary ... ok
+test pr_purge::tests::crash_child_entry ... ok
+test migrations::tests::late_space_admission_rolls_back_every_schema_step_in_both_journals ... ok
+test pr_purge::tests::pr_purge_barrier_later_batch_and_finish_faults_resume ... ok
+test pr_purge::tests::pr_purge_global_bound_immediate_visibility_and_durable_isolation ... ok
+test pr_purge::tests::pr_purge_unknown_pr_overlap_and_recovery_barriers ... ok
+test pr_purge::tests::pr_purge_sigkill_barrier_and_cleanup_preserve_only_committed_batches ... ok
+test migrations::tests::sigkill_migrations_preserve_previous_or_complete_schema_and_all_rows ... ok
+test publication::tests::crash_child_entry ... ok
+test publication::tests::empty_replacements_cannot_hide_large_deletions_behind_capped_preflight_counts ... ok
+test publication::tests::bounded_batches_keep_old_snapshot_until_atomic_visibility_commit ... ok
+test publication::tests::exact_retry_finishes_pending_publication_without_publishing_empty_or_advancing_epoch_twice ... ok
+test publication::tests::pending_publication_blocks_recovery_even_with_old_complete_health ... ok
+test publication::tests::late_apply_and_visibility_faults_remain_old_and_resume_without_epoch_or_membership_loss ... ok
+test publication::tests::small_single_transaction_and_journal_paths_publish_identical_snapshots ... ok
+test recovery_cleanup::tests::crash_child_entry ... ok
+test recovery_cleanup::tests::global_bound_and_idempotence_preserve_durable_history ... ok
+test recovery_cleanup::tests::late_batch_fault_rolls_back_companions_and_restart_preserves_boundary ... ok
+test recovery_cleanup::tests::sigkill_at_boundary_and_batch_commit_restarts_recovery ... ok
+test retention::tests::bounded_batches_preserve_replay_barriers_and_resume_after_reopen ... ok
+test retention::tests::cleanup_fault_rolls_back_payload_membership_and_revision_together ... ok
+test retention::tests::content_expiry_and_orphan_cleanup_have_separate_bounded_budget ... ok
+test retention::tests::disposable_metadata_reclaims_in_batches_across_restart_without_replay ... ok
+test retention::tests::exact_age_boundaries_keep_minimal_activity_and_recent_payloads ... ok
+test retention::tests::metadata_failure_rolls_back_payload_cleanup_deadlines_and_revision ... ok
+test retention::tests::metadata_keeps_deadlines_payload_owners_and_current_or_unfinished_checks ... ok
+test runtime::tests::all_writes_denied_preserves_cached_navigation_and_repair_does_not_replay ... ok
+test runtime::tests::check_purge_partial_startup_stays_locked_and_paused_until_repair ... ok
+test content_budget::admission_tests::sigkill_full_ceiling_reclamation_and_publication_keep_only_committed_state ... ok
+test content_capacity::full_ceiling_late_delete_fault_restores_payloads_completeness_and_revision ... ok
+test publication::tests::sigkill_publications_preserve_old_or_complete_new_snapshots ... ok
+test runtime::tests::check_purge_worker_denial_protects_and_repairs_paused_without_neighbor_loss ... ok
+test content_capacity::full_ceiling_mixed_lru_is_inclusive_disk_backed_and_survives_restart ... ok
+test content_capacity::full_ceiling_non_evictable_staging_refuses_real_activity_ingestion_atomically ... ok
+test runtime::tests::clear_partial_failure_repairs_paused_without_reads_or_old_generation_publication ... ok
+test runtime::tests::enrollment_fault_protects_paused_runtime_and_repair_preserves_history ... ok
+test content_capacity::full_ceiling_sigkill_publication_is_all_or_nothing_after_disk_writes ... ok
+test publication::tests::actual_ceiling_source_and_check_publications_transfer_staging_without_extra_budget ... ok
+test runtime::tests::full_ceiling_bounded_admission_fault_protects_and_repairs_without_partial_registration ... ok
+test runtime::tests::full_ceiling_worker_publication_fault_stops_reads_and_repairs_while_paused ... ok
+test runtime::tests::interrupted_activity_and_summary_repair_before_remote_eligibility ... ok
+test runtime::tests::invalidation_partial_failure_repairs_paused_without_reads_or_old_generation_publication ... ok
+test runtime::tests::low_space_restart_defers_writes_and_preserves_pause_identity_and_deadlines ... ok
+test runtime::tests::metadata_cleanup_fault_repairs_paused_and_rehydrates_unconditionally ... ok
+test runtime::tests::partial_publication_startup_stays_locked_paused_and_repairs_before_reads ... ok
+test runtime::tests::queue_bounds_coalescing_and_fairness ... ok
+test runtime::tests::partial_recovery_initialization_blocks_reads_and_repairs_without_resuming ... ok
+test runtime::tests::partial_startup_cleanup_stays_locked_and_paused_until_repaired ... ok
+test runtime::tests::paused_check_reclamation_failure_rolls_back_and_repairs_without_reads ... ok
+test runtime::tests::pr_purge_discovery_restarts_before_reading_an_obsolete_page ... ok
+test runtime::tests::pr_purge_overview_fault_protects_paused_cache_and_repairs_without_neighbor_loss ... ok
+test source_cleanup::tests::barrier_later_batch_and_final_marker_faults_preserve_committed_prefix ... ok
+test source_cleanup::tests::crash_child_entry ... ok
+test source_cleanup::tests::global_bound_guard_isolation_and_fresh_publication ... ok
+test source_cleanup::tests::restart_guard_blocks_otherwise_ready_recovery ... ok
+test source_cleanup::tests::sigkill_initialization_keeps_guard_until_last_cleanup_commit ... ok
+test startup_cleanup::tests::crash_child_entry ... ok
+test startup_cleanup::tests::failed_batch_rolls_back_companions_and_restart_continues_committed_batches ... ok
+test startup_cleanup::tests::global_mutation_bound_covers_every_startup_class_and_preserves_published_state ... ok
+test startup_cleanup::tests::sigkill_during_and_between_batches_recovers_only_committed_cleanup ... ok
+test storage_usage::tests::counts_only_owned_database_sidecars_and_warns_at_one_gib ... ok
+test store::storage_fault_tests::read_only_list_expiry_is_incomplete_and_preserves_membership ... ok
+test store::storage_fault_tests::sqlite_full_rolls_back_and_read_only_cache_filters_expired_payloads ... ok
+test runtime::tests::pr_purge_partial_startup_is_locked_paused_and_restartable ... ok
+test runtime::tests::publication_failure_protects_old_source_and_repair_exposes_one_complete_result ... ok
+test runtime::tests::retention_runs_while_paused_and_failure_protects_until_repair ... ok
+test runtime::tests::selected_publication_eviction_fault_protects_and_repairs_without_resuming ... ok
+test runtime::tests::source_initialization_failure_protects_membership_and_retries_fresh_after_repair ... ok
+test runtime::tests::startup_cleanup_failure_opens_protected_cache_until_cleanup_and_probe_succeed ... ok
+test runtime::tests::write_fault_stops_children_and_recovery_requires_a_committed_probe ... ok
+
+test result: ok. 132 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 166.74s
+
+     Running tests/activity.rs (target/debug/deps/activity-c3756ff8a74a980e)
+
+running 3 tests
+test missing_individual_schema_and_invalid_times_are_not_success ... ok
+test sticky_reasons_never_invent_events_and_only_rendered_mentions_classify ... ok
+test textless_reviews_own_bot_and_stable_team_requests ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/github.rs (target/debug/deps/github-9bd2019f5eb70166)
+
+running 6 tests
+test auth_loss_without_http_headers_is_recognized_without_exposing_diagnostics ... ok
+test read_response_requires_headers_and_never_accepts_cli_failure ... ok
+test api_error_and_partial_schema_are_not_successful_empty_sets ... ok
+test server_deadlines_include_numeric_and_http_date_retry_after ... ok
+test auth_json_exit_zero_with_error_is_not_authenticated ... ok
+test stack_unknown_none_and_authoritative_order_are_distinct ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-ec616448041cd874)
+
+running 16 tests
+test conditional_hydration_reuses_exact_url_payload_without_replaying_activity ... ok
+test closing_reader_keeps_authored_and_requested_snapshot_work ... ok
+test failed_team_discovery_preserves_prior_membership_without_locking_account ... ok
+test independent_reasons_selected_lifetime_and_request_removal ... ok
+test check_traversal_denials_purge_checks_without_losing_membership_or_activity ... ok
+test checks_paginate_mix_providers_and_preserve_attempt_and_merge_identity ... ok
+test fifty_and_more_watches_rotate_without_a_membership_cap ... ok
+test denied_check_fields_purge_check_content_without_locking_or_false_empty_success ... ok
+test missing_head_purges_full_pr_without_removing_watches_or_neighbor_cache ... ok
+test notification_to_individual_activity_pagination_baseline_seen_pause_and_recovery ... ok
+test overflowing_head_batches_reduce_without_losing_membership_or_repeating_same_batch ... ok
+test partial_activity_denial_keeps_progress_and_purges_payloads ... ok
+test persistent_pause_prevents_automatic_reads_but_allows_manual_sync ... ok
+test search_partitions_more_than_a_thousand_requests_without_dropping_watches ... ok
+test worker_to_sqlite_to_reader_and_identity_lock ... ok
+test workflow_attempts_and_legacy_statuses_remain_individual_and_grouped ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 78.20s
+
+     Running tests/store.rs (target/debug/deps/store-ddd7bdeaa14e4823)
+
+running 8 tests
+test future_and_corrupt_databases_are_preserved ... ok
+test eviction_preserves_durable_ledgers_and_empty_failure_is_not_success ... ok
+test stable_identity_survives_restart_and_refuses_different_user ... ok
+test checkpoint_reports_reader_blocked_wal_then_recovers_without_losing_state ... ok
+test clear_and_denial_cannot_resurrect_pending_content ... ok
+test multi_version_migration_failure_rolls_back_to_original_committed_schema ... ok
+test schema_three_check_access_upgrade_preserves_history_and_rolls_back_failure ... ok
+test only_complete_traversal_replaces_membership_and_100_item_pages ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running tests/transport.rs (target/debug/deps/transport-10241af6c9d5bde3)
+
+running 5 tests
+test deliberate_environment_no_tokens_or_injection ... ok
+test inclusive_bounds_and_stdin_closed ... ok
+test cancellation_reaps_before_serialized_successor ... ok
+test stdout_and_stderr_overflow_rejected ... ok
+test timeout_kills_helpers_and_next_child_can_start ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.15s
+
+     Running tests/watch_store.rs (target/debug/deps/watch_store-51d1e12ba576dbb9)
+
+running 7 tests
+test budget_deadlines_and_exponential_backoff_survive_restart_and_do_not_cross_primary_buckets ... ok
+test restarting_paused_does_not_replay_prior_session_manual_jobs ... ok
+test head_reservations_exclude_exact_ids_without_null_or_unrelated_job_poisoning ... ok
+test complete_team_membership_removal_keeps_other_membership_reasons ... ok
+test head_generation_blocks_old_pages_and_clear_does_not_remove_watch_reasons ... ok
+test schema_one_upgrade_preserves_identity_pause_and_watch_reasons ... ok
+test durable_due_work_is_bounded_in_memory_fair_and_does_not_lose_the_129th ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+   Doc-tests gitjuke_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests gitjuke_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

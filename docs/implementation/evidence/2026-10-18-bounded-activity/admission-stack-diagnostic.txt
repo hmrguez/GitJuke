@@ -1,0 +1,11 @@
+Diagnostic only: sample of the superseded expiry scan; no performance qualification.
+6 Thread_12763360: activity_bounded::actual_ceiling_activity_moves_staging_and_cha
+6 gitjuke_core::activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads::_$u7b$$u7b$closure$u7d$$u7d$::h1bc45a0f7e2d02b0  (in gitjuke_core-0c1e74b29b1b4192) + 24  [0x1022773e4]  activity_bounded.rs:463
+6 gitjuke_core::activity_bounded::actual_ceiling_activity_moves_staging_and_charges_retained_old_payloads::hd6a6cec95c151d5a  (in gitjuke_core-0c1e74b29b1b4192) + 864  [0x102502248]  activity_bounded.rs:474
+6 gitjuke_core::activity_store::_$LT$impl$u20$gitjuke_core..store..Store$GT$::activity_publish::hd55f439e19d9f1fb  (in gitjuke_core-0c1e74b29b1b4192) + 5452  [0x1023599f8]  activity_store.rs:185
+6 gitjuke_core::publication::batch::h189340f901e62126  (in gitjuke_core-0c1e74b29b1b4192) + 3024  [0x102270854]  publication.rs:594
+6 gitjuke_core::content_budget::evict_with_allowance::h3a399eee0902d2a4  (in gitjuke_core-0c1e74b29b1b4192) + 500  [0x1024cb784]  content_budget.rs:194
+6 gitjuke_core::content_budget::prune::h35e4fbcc9b1469d3  (in gitjuke_core-0c1e74b29b1b4192) + 696  [0x1024cc15c]  content_budget.rs:253
+6 sqlite3BtreePayload  (in gitjuke_core-0c1e74b29b1b4192) + 52  [0x1026c7870]
+!         5 pread  (in libsystem_kernel.dylib) + 8  [0x197f86648]
+pread  (in libsystem_kernel.dylib)        5

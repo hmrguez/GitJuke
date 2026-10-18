@@ -1,0 +1,24 @@
+$ cargo test -p gitjuke-core --lib --offline content_budget:: -- --test-threads=1 --skip full_ceiling --skip crash_child_entry
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_core-a8b45f569e338a47)
+
+running 16 tests
+test content_budget::admission_tests::impossible_staging_does_not_commit_pointless_reclamation_or_candidate_progress ... ok
+test content_budget::admission_tests::later_reclaim_and_publication_faults_preserve_prefix_but_never_candidate_state ... ok
+test content_budget::admission_tests::mixed_reclamation_has_one_global_budget_including_check_states_and_revision ... ok
+test content_budget::admission_tests::repeated_candidates_do_not_publish_activity_dedup_progress_or_terminal_intents ... ok
+test content_budget::admission_tests::speculative_admission_shares_expiry_pressure_and_check_invalidation_allowance ... ok
+test content_budget::admission_tests::stale_optional_publication_has_no_admission_side_effects ... ok
+test content_budget::tests::check_expiry_is_batched_atomic_and_continues_after_restart ... ok
+test content_budget::tests::each_staging_class_shares_admission_and_rollback ... ok
+test content_budget::tests::exact_limit_utf8_and_tied_lru_prefix ... ok
+test content_budget::tests::head_eviction_failure_rolls_back_epoch_closure_and_check_invalidation ... ok
+test content_budget::tests::large_victim_prefix_preserves_activity_and_replay_barriers_after_reopen ... ok
+test content_budget::tests::lru_check_delete_failure_rolls_back_snapshot_and_new_publication ... ok
+test content_budget::tests::protected_check_reads_expire_without_reviving_payloads_and_access_preserves_freshness ... ok
+test content_budget::tests::publication_age_cleanup_is_batched_and_maintenance_finishes_it ... ok
+test content_budget::tests::selected_registration_eviction_failure_rolls_back_membership_and_revision ... ok
+test content_budget::tests::shared_lru_reclaims_checks_without_touching_staging_or_watch_history ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 142 filtered out; finished in 0.28s
+
