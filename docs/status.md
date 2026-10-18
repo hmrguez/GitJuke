@@ -1,6 +1,6 @@
 # Project status
 
-GitJuke 0.1.0 is an incomplete development build. The repository is public; a signed installer and release-ready monitoring guarantees are not available yet.
+GitJuke 0.1.0 is an early development release. The repository is public and a Developer ID signed, notarized installer is available from [GitHub Releases](https://github.com/hmrguez/GitJuke/releases/tag/v0.1.0). Monitoring and installed-app behavior still need the qualification described below.
 
 ## Implemented
 
@@ -18,7 +18,9 @@ The [2026-10-18 integrated daily-use assessment](archive/implementation/2026-10-
 
 These are recorded results for the examined build, not a claim that every future commit has passed them. Earlier checkpoints keep their original source, schema, fixture, and platform scope. Controlled synthetic-source tests and native qualification captures are distinct from real GitHub reads.
 
-## Before release
+The [v0.1.0 release pipeline](https://github.com/hmrguez/GitJuke/actions/runs/39171077232) passed. The downloaded DMG's checksum and GitHub artifact attestation were verified, along with the bundled app's Developer ID signature, notarization staple, and Gatekeeper acceptance. This verification did not launch the installed app.
+
+## Remaining qualification
 
 The following remain unqualified or blocked in the integrated assessment:
 
@@ -26,6 +28,5 @@ The following remain unqualified or blocked in the integrated assessment:
 - VoiceOver and broader live GitHub/provider coverage.
 - Performance on the specified physical reference device, including cumulative query work and peak/temporary storage.
 - Signed notification permission, delivery, and click activation; actual login lifecycle.
-- Developer ID signing, notarization, stapling, and distribution packaging. CI and a tagged draft-release pipeline are configured; the first credentialed GitHub run and downloaded-installer smoke test remain outstanding. See [release setup](releasing.md).
 
 All 29 grouped scenarios in the [acceptance matrix](../.scratch/gitjuke/acceptance.md) remain Pending. Consult the dated engineering records for exact test scope and remaining work rather than treating individual passing checks as release certification.
