@@ -40,7 +40,7 @@ It is useful for inspecting the original design, but it is not the production re
 | `cargo test --workspace --offline` | Workspace tests using locally available dependencies |
 | `bun run check` | Frontend build and workspace Clippy with warnings treated as errors |
 
-`bun run test` remains a Rust-only compatibility alias. Dependencies are locked in `bun.lock` and `Cargo.lock`. Node/npm are needed only to reproduce the legacy JavaScript benchmark; see the [Bun migration record](implementation/2026-10-18-bun.md).
+`bun run test` remains a Rust-only compatibility alias. Dependencies are locked in `bun.lock` and `Cargo.lock`. Node/npm are needed only to reproduce the legacy JavaScript benchmark; see the [Bun migration record](archive/implementation/2026-10-18-bun.md).
 
 Opt-in live and filesystem qualification cases have their own setup in the relevant implementation records. Passing simulated tests does not establish native UI or live-provider compatibility.
 

@@ -12,7 +12,7 @@ Unmodified j/k move focus through visible loaded PR/Activity rows; Enter activat
 
 ## Isolated native fixtures
 
-The existing preparer now accepts one additional exact namespace, `dev.hmrguez.gitjuke.qualification.accessibility`; the original namespace and original six-record scenario remain available. Existing directories are refused before writes. The additional [Tauri config](../../scripts/fixtures/tauri.accessibility-qualification.json) starts at **960×640 content pixels**, with a distinct title and app identifier. The original and normal account databases are untouched.
+The existing preparer now accepts one additional exact namespace, `dev.hmrguez.gitjuke.qualification.accessibility`; the original namespace and original six-record scenario remain available. Existing directories are refused before writes. The additional [Tauri config](../../../scripts/fixtures/tauri.accessibility-qualification.json) starts at **960×640 content pixels**, with a distinct title and app identifier. The original and normal account databases are untouched.
 
 The accessibility profile retains the six original exact Activity sources and adds seven sources: an exact **131,072-byte** mixed Unicode body with an emoji crossing a segment boundary, current LEFT range 199–201, wrong commit, mixed sides, negative line, outdated position and different file. It supplies 22 file entries, a complete 403-row deletion/addition patch and 55 comments/reviews/threads/replies, exercising independent 50-message/20-thread pages. The shared test-only gh helper accepts an explicit deletion count, defaulting to the original zero; production has no fixture fallback.
 
@@ -36,7 +36,7 @@ Paper metadata previously had **3.10:1** contrast on the canvas. The [contrast r
 
 ## Native evidence and remaining gates
 
-[Native audit log](evidence/2026-10-18-accessibility/native.md) and [captured-observation verifier](../../scripts/verify-reader-accessibility.py). **63 observation checks pass** against saved native AX, SQLite and screenshot evidence: [result](evidence/2026-10-18-accessibility/observation-verification.json). This validates captured observations; it is not a fresh unattended UI rerun or 63 additional unit tests. Source-fixture contracts pass [14 independent assertions](evidence/2026-10-18-accessibility/fixture-verification.json). Existing-directory and normal-namespace refusal checks pass.
+[Native audit log](evidence/2026-10-18-accessibility/native.md) and [captured-observation verifier](../../../scripts/verify-reader-accessibility.py). **63 observation checks pass** against saved native AX, SQLite and screenshot evidence: [result](evidence/2026-10-18-accessibility/observation-verification.json). This validates captured observations; it is not a fresh unattended UI rerun or 63 additional unit tests. Source-fixture contracts pass [14 independent assertions](evidence/2026-10-18-accessibility/fixture-verification.json). Existing-directory and normal-namespace refusal checks pass.
 
 | Destination / contract | Actual native evidence |
 | --- | --- |

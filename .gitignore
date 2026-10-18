@@ -20,7 +20,7 @@ target/
 
 # Logs (keep checked-in implementation evidence)
 *.log
-!/docs/implementation/evidence/**/*.log
+!/docs/archive/implementation/evidence/**/*.log
 
 # OS and editor files
 .DS_Store

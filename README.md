@@ -4,7 +4,7 @@ Your GitHub pull requests, with room to read.
 
 GitJuke is a macOS app for keeping up with your PRs, review requests, and the conversations around them. Browse changes, follow discussions, and check build results in one place.
 
-![GitJuke showing a public GitHub CLI pull request](docs/screenshots/overview.jpg)
+![GitJuke showing a public GitHub CLI pull request](docs/screenshots/overview.png)
 
 ## A desk for your reviews
 
@@ -17,7 +17,7 @@ GitJuke is read-only on GitHub. It doesn't post comments, submit reviews, or mer
 
 ## A closer look
 
-![GitJuke displaying a real code diff from cli/cli](docs/screenshots/changes.jpg)
+![GitJuke displaying a real code diff from cli/cli](docs/screenshots/changes.png)
 
 Both screenshots show the native app reading public pull requests from [GitHub CLI](https://github.com/cli/cli), with real titles, authors, and code. [Screenshot details](docs/screenshots/README.md).
 

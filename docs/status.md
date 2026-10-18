@@ -10,7 +10,7 @@ Implementation and qualification are separate. In particular, notification and l
 
 ## Current verification
 
-The [2026-10-18 integrated daily-use assessment](implementation/2026-10-18-daily-qualification.md) records:
+The [2026-10-18 integrated daily-use assessment](archive/implementation/2026-10-18-daily-qualification.md) records:
 
 - 58 frontend and 343 Rust test entries passing, plus two opt-in mounted-filesystem cases.
 - Static checks and both development app builds passing.

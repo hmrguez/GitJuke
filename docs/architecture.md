@@ -10,7 +10,7 @@ GitJuke is a read-only GitHub desktop client. A Tauri shell hosts a React fronte
 | `src-tauri/` | Native commands, application lifecycle, login integration, and macOS notifications |
 | `crates/gitjuke-core/` | GitHub transport, runtime scheduling, storage, queries, and recovery |
 | `scripts/` | Frontend tests and isolated qualification helpers |
-| `docs/implementation/` | Dated implementation records and verification artifacts |
+| `docs/archive/implementation/` | Dated implementation records and verification artifacts |
 
 ## GitHub access and monitoring
 
