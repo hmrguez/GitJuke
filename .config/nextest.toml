@@ -1,0 +1,40 @@
+nextest-version = { required = "0.9.148" }
+
+[profile.default]
+# Fast tests have explicit ownership. New core integration/qualification modules
+# stay in the full suite until their cost is measured and they are admitted here.
+default-filter = '''
+    package(gitjuke-model) | package(gitjuke-github) | package(gitjuke) |
+    (package(gitjuke-core) & (
+        binary(store) | binary(watch_store) | binary(saved_queries) |
+        test(/^logs::tests::/) | test(/^store::tests::/) | test(/^changes_store::tests::/)
+    ))
+'''
+test-threads = 4
+retries = 0
+fail-fast = false
+slow-timeout = { period = "30s", terminate-after = 10 }
+
+[profile.qualification]
+# The runner selects the complement with --ignore-default-filter -E 'not default()'.
+# Inheriting the fast filter avoids maintaining two lists that can drift apart.
+
+[profile.full]
+default-filter = 'all()'
+
+[test-groups]
+# These tests previously held CAPACITY or WORKER_FIXTURES in-process locks.
+# Nextest forks each test, so the runner must enforce the shared limit instead.
+disk-and-workers = { max-threads = 1 }
+
+[[profile.default.overrides]]
+filter = '''
+    package(gitjuke-core) & (
+        binary(runtime) | test(/^runtime::tests::/) |
+        test(/^content_capacity::/) | test(full_ceiling) | test(actual_ceiling)
+    )
+'''
+test-group = 'disk-and-workers'
+
+[profile.default.junit]
+path = "junit.xml"

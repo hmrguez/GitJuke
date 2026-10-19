@@ -301,10 +301,6 @@ impl Transport {
         })
     }
     pub async fn read(&self, op: ReadOp, cancel: &CancellationToken) -> Result<Output> {
-        let _guard = tokio::select! { _=cancel.cancelled()=>return Err(Error::Safe("Read cancelled.".into())), g=self.gate.lock()=>g };
-        if cancel.is_cancelled() {
-            return Err(Error::Safe("Read cancelled.".into()));
-        }
         let (args, input) = match op {
             ReadOp::Conversation(body) => (
                 [
@@ -340,6 +336,58 @@ impl Transport {
             ),
             op => (op.args(), None),
         };
+        self.execute(args, input, cancel).await
+    }
+    /// One explicit submission; bodies travel on stdin and writes are never retried.
+    pub async fn post_comment(
+        &self,
+        subject: &str,
+        thread: bool,
+        body: &str,
+        cancel: &CancellationToken,
+    ) -> Result<Output> {
+        let fields = "id url body createdAt author { login }";
+        let query = if thread {
+            format!(
+                "mutation($subject:ID!,$body:String!) {{ addPullRequestReviewThreadReply(input:{{pullRequestReviewThreadId:$subject,body:$body}}) {{ comment {{ {fields} }} }} }}"
+            )
+        } else {
+            format!(
+                "mutation($subject:ID!,$body:String!) {{ addComment(input:{{subjectId:$subject,body:$body}}) {{ commentEdge {{ node {{ {fields} }} }} }} }}"
+            )
+        };
+        let input = serde_json::to_vec(
+            &serde_json::json!({"query":query,"variables":{"subject":subject,"body":body}}),
+        )?;
+        self.execute(
+            [
+                "api",
+                "graphql",
+                "--hostname",
+                "github.com",
+                "--method",
+                "POST",
+                "--include",
+                "--input",
+                "-",
+            ]
+            .map(String::from)
+            .to_vec(),
+            Some(input),
+            cancel,
+        )
+        .await
+    }
+    async fn execute(
+        &self,
+        args: Vec<String>,
+        input: Option<Vec<u8>>,
+        cancel: &CancellationToken,
+    ) -> Result<Output> {
+        let _guard = tokio::select! { _=cancel.cancelled()=>return Err(Error::Safe("Read cancelled.".into())), g=self.gate.lock()=>g };
+        if cancel.is_cancelled() {
+            return Err(Error::Safe("Read cancelled.".into()));
+        }
         let mut command = Command::new(&self.path);
         command
             .args(args)

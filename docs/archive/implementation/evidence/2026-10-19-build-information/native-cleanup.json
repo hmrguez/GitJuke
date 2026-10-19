@@ -1,0 +1,9 @@
+{
+  "bundleIdentifier": "dev.hmrguez.gitjuke.about-qualification",
+  "bundleVersion": "0.1.0",
+  "binarySha256": "86952d56aa557f4b8521e1edb80cf0e8f6129e5934842fdfe13eb2fb96799916",
+  "quitVerifiedByAppInventory": true,
+  "databaseCreated": false,
+  "launchAgentCreated": false,
+  "nativeScope": "recovery build information only, monitoring prohibited by installed-path gate; no opt-ins or normal-account runtime"
+}

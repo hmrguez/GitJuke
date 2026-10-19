@@ -11,9 +11,9 @@ beforeEach(()=>{host=document.createElement('div');document.body.append(host);ro
 afterEach(async()=>{await act(async()=>root.unmount());host.remove();});
 test('failed startup exposes actionable location without mounting private readers; retry only mounts after success',async()=>{
  await act(async()=>root.render(<Startup><p>private reader</p></Startup>));await settle();
- expect(host.textContent).toContain('/disposable/db');expect(host.textContent).toContain('damaged');expect(host.textContent).not.toContain('private reader');expect(calls).toEqual(['startup_status']);
+ expect(host.textContent).toContain('/disposable/db');expect(host.textContent).toContain('damaged');expect(host.textContent).not.toContain('private reader');expect(calls).toEqual(['startup_status','build_info']);
  await act(async()=>host.querySelector('button')!.click());await settle();expect(host.textContent).not.toContain('private reader');
- report.ready=true;await act(async()=>host.querySelector('button')!.click());await settle();expect(host.textContent).toBe('private reader');expect(calls).toEqual(['startup_status','retry_startup','retry_startup']);
+ report.ready=true;await act(async()=>host.querySelector('button')!.click());await settle();expect(host.textContent).toBe('private reader');expect(calls).toEqual(['startup_status','build_info','retry_startup','retry_startup']);
 });
 test('all startup input states have distinct honest guidance',async()=>{
  for(const [databaseState,guidance] of [['missing','Your saved data couldn’t be found'],['legacy','needs an update before GitJuke can open it'],['current','couldn’t be opened. Try again after checking storage'],['newer','Update GitJuke to open data saved by a newer version'],['corrupt','appears damaged'],['unreadable','can’t access the folder']] as const){

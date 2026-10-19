@@ -1,5 +1,6 @@
 import {LoginSettings} from './LoginSettings';
 import {Startup} from './Startup';
+import {BuildInformation} from './BuildInformation';
 import {friendlyError,activityLabel} from './ui-copy';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -10,9 +11,12 @@ import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
 import {NotificationControls} from './NotificationControls';
 import {QueryNavigation,QueryEditor,QueryReader} from './SavedQueries';
-import {Sidebar} from './Sidebar';
+import {Sidebar,useSidebarState} from './Sidebar';
+import {useNativeMenu} from './native-menu';
+import {AddPullRequest} from './AddPullRequest';
+import {useNavigationHistory,type NavigationEntry} from './navigation-history';
 import {Dropdown} from './Dropdown';
-import type {SavedQuery} from './api';
+import type {SavedQuery,QueryList} from './api';
 import {Changes} from './Changes';
 import {Conversation} from './Conversation';
 import {Markdown} from './Markdown';
@@ -24,6 +28,8 @@ import {compactReader,readerListKey,textSizes,useReaderTextSize} from './reader-
 
 export function App(){
   const textSize=useReaderTextSize();
+  const sidebar=useSidebarState();
+  const [preferencesSection,setPreferencesSection]=useState<'Appearance'|'About'>('Appearance');
   useEffect(()=>{window.addEventListener('keydown',readerListKey);return()=>window.removeEventListener('keydown',readerListKey);},[]);
   const [status,setStatus]=useState<Status|null>(null),[page,setPage]=useState<Page|null>(null);
   const [selected,setSelected]=useState<{repo:string;number:number}|null>(null);
@@ -36,6 +42,7 @@ export function App(){
   const restored=useRef(false),selectionOrigin=useRef<string|null>(null),selectionFocus=useRef<Element|null|undefined>(undefined);
   const [query,setQuery]=useState<SavedQuery|null>(null),[queryEditor,setQueryEditor]=useState(false),[editingQuery,setEditingQuery]=useState<SavedQuery|null>(null);
   const [search,setSearch]=useState('');
+  const [addingPullRequest,setAddingPullRequest]=useState(false);
   const [offset,setOffset]=useState(0),[preferences,setPreferences]=useState(false);
   const readSerial=useRef(0),detailSerial=useRef(0),storeRevision=useRef(0);
   const selectedRef=useRef(selected);selectedRef.current=selected;
@@ -46,7 +53,7 @@ export function App(){
       if(request!==readSerial.current||s.revision<storeRevision.current)return;
       storeRevision.current=s.revision;setStatus(s);
       if(s.locked){setPage(null);setDetail(null);setChecks(null);setDestination(null);setNotificationRecord(null);setError('');return;}
-      if(!restored.current&&s.selected){restored.current=true;const selection={repo:s.selected[0],number:s.selected[1]};selectedRef.current=selection;setSelected(selection);}
+      if(!restored.current){restored.current=true;if(s.selected){const selection={repo:s.selected[0],number:s.selected[1]};selectedRef.current=selection;setSelected(selection);}}
       if(view==='query'||view==='activity')return;
       const p=await command<Page>(view==='mine'?'authored_page':'requested_page',{offset});
       if(request!==readSerial.current||p.revision<storeRevision.current)return;
@@ -62,6 +69,47 @@ export function App(){
       if(request===detailSerial.current&&selectedRef.current?.repo===pr.repo&&selectedRef.current?.number===pr.number&&next.revision>=storeRevision.current)setChecks(next);
     }catch(e){if(request===detailSerial.current)setError(String(e));}
   },[checkOffset]);
+  const history=useNavigationHistory({view,query,selected,tab,destination,notificationRecord,notificationUnavailable,search,offset,checkOffset,origin:selectionOrigin.current},!!status,restoreNavigation,resolveNavigation,e=>setError(String(e)));
+  async function resolveNavigation(entry:NavigationEntry){
+    let next=entry;
+    if(entry.view==='query'&&entry.query){
+      let offset=0,found:SavedQuery|undefined;
+      do{
+        const list=await command<QueryList>('saved_queries',{offset});
+        found=list.items.find(q=>q.id===entry.query!.id);
+        if(found||list.nextOffset===null)break;
+        offset=list.nextOffset;
+      }while(true);
+      if(!found)return null;
+      next={...next,query:found};
+    }
+    if(entry.selected){
+      const overview=await command<Snapshot<Overview|null>>('read_overview',entry.selected);
+      if(!overview.data)return null;
+    }
+    return next;
+  }
+  function restoreNavigation(entry:NavigationEntry){
+    ++readSerial.current;++detailSerial.current;
+    setView(entry.view);setQuery(entry.query);setTab(entry.tab);setDestination(entry.destination);
+    setNotificationRecord(entry.notificationRecord);setNotificationUnavailable(entry.notificationUnavailable);
+    setSearch(entry.search);setOffset(entry.offset);setCheckOffset(entry.checkOffset);
+    if(entry.view!==view||entry.offset!==offset)setPage(null);
+    setDetail(null);setChecks(null);setError('');
+    selectedRef.current=entry.selected;setSelected(entry.selected);
+    selectionOrigin.current=entry.origin;selectionFocus.current=entry.selected?document.activeElement:undefined;
+    if(entry.selected){
+      const selection=entry.selected,request=detailSerial.current;
+      void command('select_pr',selection).then(()=>{
+        if(request===detailSerial.current)void loadDetail(entry.checkOffset);
+      }).catch(e=>{if(request===detailSerial.current)setError(String(e));});
+    }
+    if(!entry.selected)requestAnimationFrame(()=>{
+      const origin=entry.origin?document.getElementById(entry.origin):null;
+      const target=origin??document.querySelector<HTMLElement>('.stack-navigator');
+      target?.focus();
+    });
+  }
   useEffect(()=>{
     let disposed=false;let cleanup:(()=>void)|undefined;
     void load();void loadDetail();
@@ -104,6 +152,34 @@ export function App(){
   function chooseQuery(q:SavedQuery){if(compactReader())backToList();setDestination(null);setQuery(q);setView('query');}
   function editQuery(){setEditingQuery(query);setQueryEditor(true);}
   const pr=detail?.data;
+  function navigate(item:'mine'|'review'|'activity'){
+    if(compactReader())backToList();setDestination(null);setView(item);setOffset(0);setSearch('');setPage(null);
+  }
+  function openPreferences(section:'Appearance'|'About'='Appearance'){setPreferencesSection(section);setPreferences(true);}
+  useNativeMenu({selected:!!pr&&!status?.locked,filter:view==='mine'||view==='review',collapsed:sidebar.collapsed,textSize:textSize.size,paused:status?.settings.paused??false,canMonitor:!!status&&!status.locked&&!status.storageStopped},id=>{
+    const sizing=['reader-larger','reader-smaller','reader-actual'].includes(id);
+    if(document.querySelector('dialog[open]')&&!sizing)return;
+    switch(id){
+      case 'reader-about':openPreferences('About');break;
+      case 'reader-preferences':openPreferences();break;
+      case 'reader-add':setAddingPullRequest(true);break;
+      case 'reader-query':setEditingQuery(null);setQueryEditor(true);break;
+      case 'reader-open-pr':if(pr&&selected&&!status?.locked)void action('open_pr',selected);break;
+      case 'reader-filter':
+        if(view!=='mine'&&view!=='review')break;
+        if(compactReader())backToList();
+        requestAnimationFrame(()=>document.querySelector<HTMLInputElement>('.search-field input')?.focus());break;
+      case 'reader-sidebar':sidebar.setCollapsed(value=>!value);break;
+      case 'reader-mine':navigate('mine');break;
+      case 'reader-review':navigate('review');break;
+      case 'reader-activity':navigate('activity');break;
+      case 'reader-refresh':if(status&&!status.locked&&!status.storageStopped)void action('refresh');break;
+      case 'reader-pause':if(status&&!status.locked&&!status.storageStopped)void action('set_pause',{paused:!status.settings.paused});break;
+      case 'reader-larger':textSize.setSize(Math.min(200,textSize.size+25));break;
+      case 'reader-smaller':textSize.setSize(Math.max(100,textSize.size-25));break;
+      case 'reader-actual':textSize.setSize(100);break;
+    }
+  });
   useEffect(()=>{
     const origin=selectionFocus.current;if(origin===undefined||!pr||destination)return;
     selectionFocus.current=undefined;
@@ -111,10 +187,10 @@ export function App(){
   },[pr,destination,tab]);
   return <div className={`app-frame ${selected?'show-detail':''}`}>
     <output className="sr-only" aria-live="polite">Text size {textSize.size}%</output>
-    <Sidebar>
-      <nav id="sidebar-navigation" aria-label="Primary"><p className="section-label">Workspace</p>{(['mine','review','activity'] as const).map(item=><button key={item} aria-label={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} title={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} className={`nav-item ${view===item?'active':''}`} aria-current={view===item?'page':undefined} onClick={()=>{if(compactReader())backToList();setDestination(null);setView(item);setOffset(0);setSearch('');setPage(null);}}>{item==='mine'?<GitPullRequest size={16}/>:item==='review'?<Inbox size={16}/>:<Activity size={16}/>}<span>{item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'}</span></button>)}<QueryNavigation revision={status?.revision??0} current={view==='query'?query:null} onSelect={chooseQuery} onCreate={()=>{setEditingQuery(null);setQueryEditor(true);}} onEdit={editQuery}/></nav>
+    <Sidebar {...sidebar} history={history} onAddPullRequest={()=>setAddingPullRequest(true)}>
+      <nav id="sidebar-navigation" aria-label="Primary"><p className="section-label">Workspace</p>{(['mine','review','activity'] as const).map(item=><button key={item} aria-label={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} title={item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'} className={`nav-item ${view===item?'active':''}`} aria-current={view===item?'page':undefined} onClick={()=>navigate(item)}>{item==='mine'?<GitPullRequest size={16}/>:item==='review'?<Inbox size={16}/>:<Activity size={16}/>}<span>{item==='mine'?'My PRs':item==='review'?'Review requests':'Activity'}</span></button>)}<QueryNavigation revision={status?.revision??0} current={view==='query'?query:null} onSelect={chooseQuery} onCreate={()=>{setEditingQuery(null);setQueryEditor(true);}} onEdit={editQuery}/></nav>
 
-      <div className="sidebar-bottom">{status?.storage.warning&&<p role="status" className="state-banner">Storage is running low. Open Preferences to review it.</p>}<button className="nav-item" title="Preferences" aria-label="Preferences" onClick={()=>setPreferences(true)}><Settings2 size={16}/><span>Preferences</span></button>
+      <div className="sidebar-bottom">{status?.storage.warning&&<p role="status" className="state-banner">Storage is running low. Open Preferences to review it.</p>}<button className="nav-item" title="Preferences" aria-label="Preferences" onClick={()=>openPreferences()}><Settings2 size={16}/><span>Preferences</span></button>
         <div className="account" title={status?.identity?.login??'Not connected'}><span className="avatar">{status?.identity?.login.slice(0,2).toUpperCase()??'?'}</span><div>{status?.identity?.login??'Not connected'}<small>GitHub.com</small></div></div>
         <button className="monitor" data-status={!status?'unknown':status.storageStopped?'failure':status.settings.paused?'pending':'success'} title={status?.settings.paused?'Resume updates':'Pause updates'} aria-label={status?.settings.paused?'Resume updates':'Pause updates'} onClick={()=>void action('set_pause',{paused:!status?.settings.paused})} disabled={!status}>
           {status?.settings.paused?<Play size={13}/>:<Pause size={13}/>}<span>{status?.settings.paused?'Paused':status?.storageStopped?'Updates need attention':'Updates on'}<small>{status?.busy?'Checking for updates…':status?.settings.paused?'Updates paused':status?.storageStopped?'Free up space to resume':'Updates in the background'}</small></span>
@@ -135,7 +211,6 @@ export function App(){
         {search&&page&&page.items.length>0&&!page.items.some(p=>`${p.repo} ${p.number} ${p.title}`.toLowerCase().includes(search.toLowerCase()))&&<p className="empty">No matches on this page.</p>}
         {page?.items.length===0&&<p className="empty">{page.complete?(view==='mine'?'You have no open pull requests.':'No open review requests.'):'Looking for pull requests…'}</p>}
         <div className="pagination"><button disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-100))}>Previous</button><span>{page?.items.length?offset+1:0}–{offset+(page?.items.length??0)}</span><button disabled={page?.nextOffset==null} onClick={()=>setOffset(page?.nextOffset??0)}>Next</button></div>
-        <details className="open-pr"><summary>Open a pull request</summary><form onSubmit={e=>{e.preventDefault();const form=new FormData(e.currentTarget);void select(String(form.get('repo')),Number(form.get('number')));}}><label>Open a known PR<input name="repo" placeholder="owner/repository" required aria-label="Repository owner and name"/></label><input name="number" type="number" min="1" required placeholder="PR number" aria-label="Pull request number"/><button type="submit">Read PR</button></form></details>
       </section>}
       <article className="detail" aria-label="Pull request reader">
         {selected?<>
@@ -154,7 +229,8 @@ export function App(){
     {status&&!status.settings.alerts?.onboarded&&<NotificationOnboarding settings={status.settings.alerts} action={action}/>}
     {notificationRecord&&!status?.locked&&<ActivityDestination key={notificationRecord.id} record={notificationRecord} close={()=>setNotificationRecord(null)} report={setError}/>}
     {queryEditor&&<QueryEditor query={editingQuery} close={()=>setQueryEditor(false)} onSaved={q=>{setQueryEditor(false);chooseQuery(q);requestAnimationFrame(()=>document.querySelector<HTMLElement>('[aria-label="Saved query results"]')?.focus());void load();}} onDeleted={()=>{setQueryEditor(false);setQuery(null);setView('mine');void load();}}/>}
-    {preferences&&<Preferences textSize={textSize} status={status} error={error} close={()=>{setPreferences(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>('button[title="Preferences"]')?.focus());}} action={action}/>}
+    {addingPullRequest&&<AddPullRequest open={async(repo,number)=>{const opened=await select(repo,number);if(opened)setTab('overview');return opened;}} close={()=>{setAddingPullRequest(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>('button[aria-label="Add pull request"]')?.focus());}}/>}
+    {preferences&&<Preferences initialSection={preferencesSection} textSize={textSize} status={status} error={error} close={()=>{setPreferences(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>('button[title="Preferences"]')?.focus());}} action={action}/>}
   </div>;
 }
 function NotificationOnboarding({settings,action}:{settings:import('./api').AlertSettings;action:(name:string,args?:Record<string,unknown>)=>Promise<void>}){
@@ -189,15 +265,16 @@ function ActivityDestination({record,close,report}:{record:ActivityRecord;close:
   },[record.id,record.text,report]);
   return <dialog ref={dialog} onClose={close} aria-labelledby="activity-title" className="dialog"><div className="dialog-header"><h2 id="activity-title">{activityLabel(record.kind)}</h2><button onClick={()=>dialog.current?.close()} aria-label="Close activity"><X size={17}/></button></div><p>{record.repo} · #{record.number} · {record.actor??'Unknown author'}</p>{record.text!==null?<div tabIndex={0} role="region" aria-label="Activity source body"><Markdown baseUrl={`https://github.com/${record.repo}/pull/${record.number}`}>{record.text||'No additional details.'}</Markdown></div>:<p className="state-banner">This update can’t be previewed. Open the pull request on GitHub to see it.</p>}<p className="reader-note">{new Date(record.occurred*1000).toLocaleString()}</p></dialog>;
 }
-function Preferences({status,close,action,textSize,error}:{error?:string;textSize:{size:number;setSize:(size:number)=>void};status:Status|null;close:()=>void;action:(name:string,args?:Record<string,unknown>)=>Promise<void>}){
+function Preferences({status,close,action,textSize,error,initialSection='Appearance'}:{initialSection?:'Appearance'|'About';error?:string;textSize:{size:number;setSize:(size:number)=>void};status:Status|null;close:()=>void;action:(name:string,args?:Record<string,unknown>)=>Promise<void>}){
   const dialog=useRef<HTMLDialogElement>(null);
   useEffect(()=>{dialog.current?.showModal();},[]);
-  const [section,setSection]=useState<'Appearance'|'Updates'|'GitHub'|'Storage'>('Appearance');
+  const [section,setSection]=useState<'Appearance'|'Updates'|'GitHub'|'Storage'|'About'>(initialSection);
   const theme=presets[status?.settings.theme.mode??'dark'];
   return <dialog ref={dialog} onClose={close} aria-labelledby="preferences-title" className="dialog"><div className="dialog-header"><h2 id="preferences-title">Preferences</h2><button onClick={()=>dialog.current?.close()} aria-label="Close preferences"><X size={17}/></button></div>
-    <div className="settings-tabs" role="group" aria-label="Preferences sections">{(['Appearance','Updates','GitHub','Storage'] as const).map(item=><button key={item} aria-pressed={section===item} onClick={()=>setSection(item)}>{item}</button>)}</div>
+    <div className="settings-tabs" role="group" aria-label="Preferences sections">{(['Appearance','Updates','GitHub','Storage','About'] as const).map(item=><button key={item} aria-pressed={section===item} onClick={()=>setSection(item)}>{item}</button>)}</div>
     {error&&<p className="state-banner" role="alert">{friendlyError(error)}</p>}
     <section aria-label={section}>
+    {section==='About'&&<><BuildInformation/><p className="dialog-note">To update, quit GitJuke with ⌘Q, replace the app in Applications, then reopen it. Your account, preferences and read history stay on your Mac.</p></>}
     {section==='Appearance'&&<><div className="theme-presets">{(['dark','light'] as const).map(mode=><button key={mode} aria-pressed={theme.mode===mode} onClick={()=>void action('set_theme',{theme:presets[mode]})}><span className={`theme-preview ${mode}`} aria-hidden="true"/><span className="theme-caption">{mode==='dark'?'Graphite':'Paper'}{theme.mode===mode?' · selected':''}</span></button>)}</div><Dropdown label="Reader text size" value={textSize.size} options={textSizes.map(size=>({value:size,label:`${size}%`}))} onChange={textSize.setSize}/><p className="dialog-note">⌘ + / − changes text size; ⌘ 0 resets it.</p></>}
     {section==='Updates'&&<>
     <LoginSettings/>

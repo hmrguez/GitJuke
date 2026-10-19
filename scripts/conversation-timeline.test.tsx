@@ -119,3 +119,139 @@ test('comments, reviews and inline replies retain rich Markdown in ordinary disc
   expect(body.textContent).not.toContain('Formatting limit reached');
  }
 });
+
+test('threads start expanded and collapse without losing a reply draft',async()=>{
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const discussion=host.querySelector('.timeline-thread')!;
+ const toggle=discussion.querySelector<HTMLButtonElement>('.thread-toggle')!;
+ expect(toggle.getAttribute('aria-expanded')).toBe('true');
+ const input=discussion.querySelector<HTMLTextAreaElement>('.comment-composer textarea')!;
+ await act(async()=>{input.value='Keep this reply';input.dispatchEvent(new dom.Event('input',{bubbles:true}));toggle.click();});
+ expect(toggle.getAttribute('aria-expanded')).toBe('false');
+ expect(discussion.querySelector('[hidden]')).not.toBeNull();
+ await act(async()=>toggle.click());
+ expect(input.value).toBe('Keep this reply');
+ expect(toggle.getAttribute('aria-expanded')).toBe('true');
+});
+
+test('new comments submit once and show the confirmed comment in the timeline',async()=>{
+ let submissions=0,release!:(value:any)=>void;
+ const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
+ (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
+  if(name==='post_conversation'){submissions++;expect(args.thread).toBeNull();expect(args.body).toBe('New discussion');return new Promise(r=>{release=r;});}
+  return invoke(name,args);
+ };
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const form=host.querySelector<HTMLFormElement>('.conversation>.comment-composer')!;
+ const input=form.querySelector<HTMLTextAreaElement>('textarea')!;
+ const submit=form.querySelector<HTMLButtonElement>('[type=submit]')!;
+ expect(submit.disabled).toBe(true);
+ await act(async()=>{const setter=Object.getOwnPropertyDescriptor(dom.HTMLTextAreaElement.prototype,'value')!.set!;setter.call(input,'New discussion');input.dispatchEvent(new dom.Event('input',{bubbles:true}));});
+ await act(async()=>{form.dispatchEvent(new dom.Event('submit',{bubbles:true,cancelable:true}));form.dispatchEvent(new dom.Event('submit',{bubbles:true,cancelable:true}));});
+ expect(submissions).toBe(1);expect(submit.disabled).toBe(true);
+ await act(async()=>release(message('posted-comment','16:00','New discussion')));await settle();
+ expect(host.querySelector('.conversation-timeline')!.textContent).toContain('New discussion');
+ expect(input.value).toBe('');expect(form.textContent).toContain('Comment posted.');
+});
+
+test('failed thread replies retain the draft and target the thread rather than the PR timeline',async()=>{
+ const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
+ let target:unknown;
+ (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
+  if(name==='post_conversation'){target=args.thread;throw new Error('Posting denied');}
+  return invoke(name,args);
+ };
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const form=host.querySelector<HTMLFormElement>('.timeline-thread>.timeline-thread-heading+div>div>.comment-composer')!;
+ const input=form.querySelector<HTMLTextAreaElement>('textarea')!;
+ await act(async()=>{Object.getOwnPropertyDescriptor(dom.HTMLTextAreaElement.prototype,'value')!.set!.call(input,'Reply draft');input.dispatchEvent(new dom.Event('input',{bubbles:true}));});
+ await act(async()=>form.dispatchEvent(new dom.Event('submit',{bubbles:true,cancelable:true})));await settle();
+ expect(target).toBe('thread');expect(input.value).toBe('Reply draft');expect(form.querySelector('[role=alert]')?.textContent).toContain('Posting denied');
+});
+
+test('thread header Reply expands a collapsed discussion and focuses its existing draft',async()=>{
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const discussion=host.querySelector('.timeline-thread')!;
+ const toggle=discussion.querySelector<HTMLButtonElement>('.thread-toggle')!;
+ const input=discussion.querySelector<HTMLTextAreaElement>('.comment-composer textarea')!;
+ await act(async()=>{Object.getOwnPropertyDescriptor(dom.HTMLTextAreaElement.prototype,'value')!.set!.call(input,'Existing draft');input.dispatchEvent(new dom.Event('input',{bubbles:true}));toggle.click();});
+ const reply=discussion.querySelector<HTMLButtonElement>('.timeline-thread-heading .reply-action');
+ expect(reply).not.toBeNull();
+ await act(async()=>reply!.click());
+ expect(toggle.getAttribute('aria-expanded')).toBe('true');
+ expect(document.activeElement).toBe(input);
+ expect(input.value).toBe('Existing draft');
+ expect(discussion.querySelectorAll('.comment-composer')).toHaveLength(1);
+});
+
+test('collapsed top-level comments offer a clearly labeled Quote reply with a focused composer',async()=>{
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const entry=host.querySelector('.conversation-timeline>.timeline-entry')!;
+ const toggle=entry.querySelector<HTMLButtonElement>('.message-toggle')!;
+ await act(async()=>toggle.click());
+ const reply=entry.querySelector<HTMLButtonElement>('.conversation-message header .reply-action');
+ expect(reply).not.toBeNull();
+ await act(async()=>reply!.click());
+ const input=entry.querySelector<HTMLTextAreaElement>('.comment-composer textarea')!;
+ expect(document.activeElement).toBe(input);
+ expect(reply!.textContent).toBe('Quote reply');
+ expect(entry.querySelector('.comment-composer')?.textContent).toContain('Posts a quoted comment to the PR conversation');
+});
+
+test('thread header Reply posts into that thread and displays the confirmed reply there',async()=>{
+ const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
+ let submissions=0;
+ (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
+  if(name==='post_conversation'){
+   submissions++;
+   expect(args.thread).toBe('thread');expect(args.body).toBe('Thanks, fixed in the latest commit.');
+   return {...message('confirmed-reply','16:00',args.body),kind:'reply'};
+  }
+  return invoke(name,args);
+ };
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const discussion=host.querySelector('.timeline-thread')!;
+ await act(async()=>discussion.querySelector<HTMLButtonElement>('.timeline-thread-heading .reply-action')!.click());
+ const input=document.activeElement as HTMLTextAreaElement;
+ const form=input.closest('form')!;
+ await act(async()=>{Object.getOwnPropertyDescriptor(dom.HTMLTextAreaElement.prototype,'value')!.set!.call(input,'Thanks, fixed in the latest commit.');input.dispatchEvent(new dom.Event('input',{bubbles:true}));});
+ await act(async()=>form.dispatchEvent(new dom.Event('submit',{bubbles:true,cancelable:true})));await settle();
+ expect(submissions).toBe(1);expect(input.value).toBe('');
+ expect(discussion.querySelector('.timeline-replies')!.textContent).toContain('Thanks, fixed in the latest commit.');
+ expect(host.querySelectorAll('.conversation-timeline>.timeline-entry')).toHaveLength(4);
+});
+
+test('opening a conversation discovers review threads added after a cached empty thread list',async()=>{
+ const refreshed=new Set<string>();
+ const reviewThread={...thread,id:'PRRT_review',path:'docs/debug-pr.md',resolved:false};
+ const rootComment={...message('PRRC_root','12:12',"I don't like this"),kind:'replies'};
+ const existingReply={...message('PRRC_reply','12:35','qqq'),kind:'replies'};
+ read=async job=>snapshot({...page(job),
+  messages:job.source==='reviews'?[{...message('review-changes','12:12',''),kind:'CHANGES_REQUESTED'}]:job.source==='replies'?[rootComment,existingReply]:[],
+  threads:job.source==='threads'&&refreshed.has('threads')?[reviewThread]:[]});
+ const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
+ (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
+  if(name==='request_conversation')refreshed.add(args.job.source);
+  if(name==='post_conversation'){
+   expect(args.thread).toBe('PRRT_review');expect(args.body).toBe('Addressed your suggestion.');
+   return {...message('PRRC_posted','13:00',args.body),kind:'reply'};
+  }
+  return invoke(name,args);
+ };
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const discussion=host.querySelector('.timeline-thread');
+ expect(discussion).not.toBeNull();
+ expect(discussion!.textContent).toContain("I don't like this");expect(discussion!.textContent).toContain('qqq');
+ const input=discussion!.querySelector<HTMLTextAreaElement>('.comment-composer textarea')!;
+ await act(async()=>{Object.getOwnPropertyDescriptor(dom.HTMLTextAreaElement.prototype,'value')!.set!.call(input,'Addressed your suggestion.');input.dispatchEvent(new dom.Event('input',{bubbles:true}));});
+ await act(async()=>input.closest('form')!.dispatchEvent(new dom.Event('submit',{bubbles:true,cancelable:true})));await settle();
+ expect(discussion!.textContent).toContain('Addressed your suggestion.');
+ expect(host.querySelectorAll('.conversation-timeline>.timeline-entry')).toHaveLength(2);
+});
+
+test('fresh saved conversation pages are reused without unnecessary GitHub requests',async()=>{
+ read=async job=>({...snapshot(page(job)),fetchedAt:Math.floor(Date.now()/1000)});
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ expect(calls.filter(c=>c.name==='request_conversation')).toHaveLength(0);
+ expect(host.textContent).toContain('No discussion yet.');
+});

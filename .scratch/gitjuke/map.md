@@ -10,6 +10,7 @@ An implementation-ready specification and a human-reviewed UI prototype for a mi
 
 ## Notes
 
+- Scope revision — 2026-10-19: the user removed accessibility work and qualification from this map. Accessibility requirements in earlier decisions and checkpoints are historical and no longer gate this effort. See Out of scope and the corresponding specification/acceptance scope revisions.
 - Consult wayfinder, domain-modeling, and frontend-design. Use research for investigations and prototype for the later UI discussion.
 - Local Markdown tracker: child issues live in issues/; open, unassigned, unblocked children form the frontier in numeric order. Resolution records an Answer in the ticket and a linked gist here.
 - User confirmed: one GitHub.com account through existing gh authentication; read-only stack navigation; menu bar monitoring continues with the window closed; specification and UI prototype before implementation.
@@ -38,7 +39,7 @@ An implementation-ready specification and a human-reviewed UI prototype for a mi
 
 - [Choose the local runtime and cache boundaries](issues/07-runtime-and-cache-contract.md): Rust/SQLite ownership, identity isolation, bounded transport/queues, revision guards, retention/storage growth and migration/recovery contracts confirmed; live/native verification remains pending.
 
-- [Choose large-diff reading and performance limits](issues/09-large-diff-behavior.md): bounded unified patches, continuous/paged accessible reading, 50-message discussion pages and native performance acceptance confirmed; measurements remain pending.
+- [Choose large-diff reading and performance limits](issues/09-large-diff-behavior.md): bounded unified patches, continuous/paged reading, 50-message discussion pages and native performance acceptance confirmed; measurements remain pending. Accessibility qualification was removed from scope on 2026-10-19.
 
 - [Establish macOS packaging and gh launch constraints](issues/12-macos-distribution-feasibility.md): primary-source signing/DMG, target, updater, GUI gh environment and autostart constraints recorded; later packaging decisions are confirmed, with packaged validation pending.
 
@@ -52,6 +53,7 @@ None. All child decisions are resolved; no open frontier or in-scope fog remains
 
 ## Out of scope
 
+- Accessibility implementation and qualification, including VoiceOver, keyboard/focus accessibility audits, 200% text enlargement and reduced-motion acceptance. Removed by the user on 2026-10-19; earlier requirements in [Choose large-diff reading and performance limits](issues/09-large-diff-behavior.md) and [Settle specification handoff and release acceptance](issues/11-final-acceptance.md) are superseded for this effort. Existing app behavior and historical evidence are preserved. Ordinary window layout, reading modes and performance remain in scope.
 - Posting comments/reviews, merging, branch updates, rebasing, or stack mutation.
 - Multiple GitHub accounts, Enterprise hosts, and a separate hosted backend for the first release.
 - Production implementation during this planning effort.

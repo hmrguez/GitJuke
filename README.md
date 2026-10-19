@@ -13,7 +13,7 @@ GitJuke is a macOS app for keeping up with your PRs, review requests, and the co
 - **Follow what happens next.** Catch up on personal activity, inspect checks, and open GitHub Actions job logs.
 - **Settle in.** Choose Graphite or Paper, enlarge the text, and navigate with the keyboard.
 
-GitJuke is read-only on GitHub. It doesn't post comments, submit reviews, or merge PRs. It uses your existing GitHub CLI login and keeps its cache and preferences on your Mac. Notifications and launch at login are optional.
+GitJuke can post PR discussion comments and reply to review threads. It doesn't submit reviews or merge PRs. It uses your existing GitHub CLI login and keeps its cache and preferences on your Mac. Notifications and launch at login are optional.
 
 ## A closer look
 

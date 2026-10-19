@@ -133,6 +133,7 @@ impl Runtime {
         if response.status != 304
             && let Err(err) = response.require_ok()
         {
+            let err: Error = err.into();
             if matches!(err, Error::Denied)
                 && let ActivityJob::Hydrate { repo, number, .. } = job
             {

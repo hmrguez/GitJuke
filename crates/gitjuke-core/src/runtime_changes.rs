@@ -194,7 +194,7 @@ impl Runtime {
                 c,
             )
             .await?;
-        if matches!(before.require_ok(), Err(Error::Denied)) {
+        if matches!(before.require_ok(), Err(gitjuke_github::Error::Denied)) {
             self.lock()?.store.activity_purge(&job.repo, job.number)?;
             return Err(Error::Denied);
         }
@@ -223,7 +223,7 @@ impl Runtime {
                 c,
             )
             .await?;
-        if matches!(after.require_ok(), Err(Error::Denied)) {
+        if matches!(after.require_ok(), Err(gitjuke_github::Error::Denied)) {
             self.lock()?.store.activity_purge(&job.repo, job.number)?;
             return Err(Error::Denied);
         }
@@ -241,7 +241,7 @@ impl Runtime {
         if !Self::changes_valid(&i, job, generation, c)? {
             return Ok(());
         }
-        if let Err(Error::Denied) = response.require_ok() {
+        if let Err(gitjuke_github::Error::Denied) = response.require_ok() {
             i.store.deny_changes(&job.repo, job.number)?;
             return Err(Error::Denied);
         }

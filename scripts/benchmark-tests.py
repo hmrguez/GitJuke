@@ -32,15 +32,15 @@ results = {
     'platform': platform.platform(),
     'versions': {tool: subprocess.check_output([tool, '--version'], text=True).strip()
                  for tool in ['bun', 'node', 'npm', 'cargo']},
-    'method': 'Sequential wall time including startup; alternating command order; JS has one warmup per command. Rust uses existing Cargo artifacts, no extra warmup. All commands must pass.',
+    'method': 'Sequential wall time including startup; alternating command order; JS has one warmup per command. Rust runs the fast suite with test-result caching disabled, using existing Cargo artifacts and no extra warmup. All commands must pass.',
     'suites': {},
 }
 for suite, count, commands in [
     ('javascript', args.js_runs, {'npm_node': ['npm', 'run', 'test:diff:node'],
                                 'bun': ['bun', 'test'],
                                 'node': ['node', '--experimental-strip-types', '--test', 'scripts/diff.test.mjs']}),
-    ('rust', args.rust_runs, {'npm': ['npm', 'test'],
-                            'bun': ['bun', 'run', 'test:rust']}),
+    ('rust', args.rust_runs, {'npm': ['npm', 'test', '--', '--no-cache'],
+                            'bun': ['bun', 'run', 'test:rust', '--no-cache']}),
 ]:
     if not count:
         continue

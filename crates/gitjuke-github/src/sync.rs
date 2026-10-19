@@ -100,25 +100,7 @@ pub struct HeadSnapshot {
     pub generation: u64,
     pub fetched_at: u64,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CheckContext {
-    pub id: String,
-    pub kind: String,
-    pub name: String,
-    pub status: String,
-    pub conclusion: Option<String>,
-    pub url: Option<String>,
-    pub suite_id: Option<String>,
-    pub suite_status: Option<String>,
-    pub suite_conclusion: Option<String>,
-    pub suite_updated_at: Option<String>,
-    #[serde(default)]
-    pub source_created_at: Option<String>,
-    pub run_id: Option<u64>,
-    pub attempt: Option<u64>,
-    pub commit: String,
-}
+pub use gitjuke_model::CheckContext;
 #[derive(Clone, Debug)]
 pub struct ContextPage {
     pub contexts: Vec<CheckContext>,

@@ -294,7 +294,7 @@ impl Runtime {
                         .is_some_and(|v| v.contains("rel=\"next\""));
                     if next {
                         if count == 0 {
-                            return Err(schema());
+                            return Err(schema().into());
                         }
                         p.page += 1;
                         false
@@ -305,7 +305,7 @@ impl Runtime {
                             |r| r.get(0),
                         )?;
                         if actual as u64 != p.received {
-                            return Err(schema());
+                            return Err(schema().into());
                         }
                         i.store.publish_teams()?;
                         for (id, slug) in i.store.teams_due()? {
@@ -337,13 +337,13 @@ impl Runtime {
                     i.store.stage_source(&p.source, &prs)?;
                     if let Some(cursor) = next {
                         if Some(&cursor) == p.cursor.as_ref() || prs.is_empty() {
-                            return Err(schema());
+                            return Err(schema().into());
                         }
                         p.cursor = Some(cursor);
                         false
                     } else {
                         if p.received != total || i.store.stage_count(&p.source)? != total {
-                            return Err(schema());
+                            return Err(schema().into());
                         }
                         i.store.publish_source(&p.source)?;
                         true
@@ -385,13 +385,13 @@ impl Runtime {
                         i.store.stage_source(&p.source, &page.prs)?;
                         if (range.page as u64) * u64::from(p.page_size) < page.total {
                             if page.prs.is_empty() {
-                                return Err(schema());
+                                return Err(schema().into());
                             }
                             range.page += 1;
                             false
                         } else {
                             if range.received != page.total {
-                                return Err(schema());
+                                return Err(schema().into());
                             }
                             p.ranges.pop();
                             if p.ranges.is_empty() {
@@ -449,13 +449,13 @@ impl Runtime {
                 let data = r.body.get("data").ok_or_else(schema)?;
                 let nodes = data["nodes"].as_array().ok_or_else(schema)?;
                 if nodes.len() != targets.len() {
-                    return Err(schema());
+                    return Err(schema().into());
                 }
                 let global_error = r.body["errors"]
                     .as_array()
                     .is_some_and(|es| es.iter().any(|e| e["path"][0] != "nodes"));
                 if global_error {
-                    return Err(schema());
+                    return Err(schema().into());
                 }
                 let mut i = self.lock()?;
                 if epoch != i.store.generation()? || c.is_cancelled() || i.locked {

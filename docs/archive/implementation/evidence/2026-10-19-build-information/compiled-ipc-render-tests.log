@@ -1,0 +1,12 @@
+bun test v1.4.2 (744846f84)
+
+scripts/build-information.test.tsx:
+(pass) About renders the binary version, build and format contract without remote or permission commands [12.82ms]
+(pass) source archives show unavailable rather than inventing a source revision [2.93ms]
+(pass) build information failures can be retried independently of startup or monitoring [5.32ms]
+(pass) newer-database recovery exposes the running binary while keeping the reader unmounted [3.82ms]
+
+ 4 pass
+ 0 fail
+ 19 expect() calls
+Ran 4 tests across 1 file. [103.00ms]

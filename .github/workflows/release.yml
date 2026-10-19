@@ -12,11 +12,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      should_release: ${{ steps.version.outputs.should_release }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.2
+      - name: Validate release version and tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: bun scripts/check-release.ts "$RELEASE_TAG"
+      - name: Compare with highest published GitHub release
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate --slurp 'repos/{owner}/{repo}/releases?per_page=100' > "$RUNNER_TEMP/releases.json"
+          bun scripts/release-eligibility.ts "$RUNNER_TEMP/releases.json"
+
   verify:
+    needs: eligibility
+    if: needs.eligibility.outputs.should_release == 'true'
     uses: ./.github/workflows/ci.yml
+    with:
+      force_full: true
 
   release:
-    needs: verify
+    needs: [eligibility, verify]
+    if: needs.eligibility.outputs.should_release == 'true'
     runs-on: macos-15
     timeout-minutes: 60
     environment: release
@@ -72,6 +101,7 @@ jobs:
           rm "$RUNNER_TEMP/gitjuke-certificate.p12"
       - name: Build, sign, notarize, and verify
         env:
+          GITJUKE_BUILD_ID: ci.${{ github.run_number }}.${{ github.run_attempt }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}

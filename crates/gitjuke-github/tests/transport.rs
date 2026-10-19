@@ -1,4 +1,4 @@
-use gitjuke_core::transport::{Limits, ReadOp, Transport};
+use gitjuke_github::transport::{Limits, ReadOp, Transport};
 use std::{os::unix::fs::PermissionsExt, time::Duration};
 use tempfile::{TempDir, tempdir};
 use tokio_util::sync::CancellationToken;

@@ -1,0 +1,31 @@
+{
+  "sourceSha256": {
+    "src/BuildInformation.tsx": "3b11400ae5830e37d387416cfd1ff3a63f5ff34fc4dfac474f15d2884d26b77c",
+    "src/Startup.tsx": "9e2cff228d184ed2a5a384efc8232295b096a0e8eeca4e79b14016c43fedbf50",
+    "src/main.tsx": "b052267f057270f6b5280db1f15a29527b2442f23582ce7fef87fdb78a857dbb",
+    "src/api.ts": "6343554ac51705abc59944298ed22863fdb95098475909c6bde97e9a5ae0a73e",
+    "src/app.css": "bcda2a1bf8ef22f7e46bb75e084e0a58caa3573c903c928927481a385b752670",
+    "src-tauri/src/build_info.rs": "98c440532bdaf9db125c1072a615940187bdee0fc822595a8dee06fbf2dcddc9",
+    "src-tauri/src/lib.rs": "a1665bb8ac5577d15d042386aac49357173882933bae7031851597e95c001e78",
+    "src-tauri/build.rs": "a44821cd8e581826e2274a0b0525d2dbd64ee473c64e398bb4efa9ed38d5f28e",
+    "src-tauri/build_metadata.rs": "f3048e15e374877bf38cc87f0d767851350608ee4092a66f1f0a87ac02759e8d",
+    "src-tauri/Cargo.toml": "bd4592fb36e3632a34a1c97594f0a77d3ffdaf43350dff9dcae2579a523896c8",
+    ".github/workflows/release.yml": "93b70b7e3dba31670a64679fc3ba91c2cafb4b3a2e94dce362eab4194f11403e",
+    "scripts/build-information.test.tsx": "c80878e3e236fa30935c6f45a33696943651ddae01d5caf6ab01464def3db591",
+    "scripts/integrated-routing.test.tsx": "02950b9f93d02a2d2fa3c24d1b66bfbfd00871b7fded547a4b79f296771fef46",
+    "scripts/startup-recovery.test.tsx": "b50e9c34b839a380be1df78f12b17e2e8316dc1f3c6492ea8b6c34ec7a217cdc"
+  },
+  "hardware": "arm64",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0\nBuildVersion:\t\t26A428\n",
+  "rust": "rustc 1.95.0 (59807616e 2026-04-14) (Homebrew)",
+  "bundlerRust": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "bun": "1.4.2",
+  "baseCommit": "e10c4101a5c1258f58a398a2f9a329c602c11d66",
+  "localApp": {
+    "path": "target/aarch64-apple-darwin/release/bundle/macos/GitJuke.app",
+    "binarySha256": "d2d53517be7dae7d864ba5cba74cd362478df0ee708b015bc86a48286ecf4c73",
+    "bundleVersion": "0.1.0",
+    "scope": "local ad-hoc signed build; not launched; no Developer ID or notarization qualification",
+    "buildLog": "desktop-build-final.log"
+  }
+}

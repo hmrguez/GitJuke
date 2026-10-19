@@ -1,0 +1,138 @@
+bun test v1.4.2 (744846f84)
+
+scripts/login-settings.test.tsx:
+(pass) default-off inspection does not register or request notification permission [9.65ms]
+(pass) explicit enable, OS-disabled repair and disable use only login commands [7.97ms]
+(pass) registration failure rereads actual saved preference and exposes explicit repair [4.56ms]
+(pass) moved copy cannot enable or repair but can disable existing registration [3.96ms]
+(pass) a delayed registration inspection cannot overwrite a newer explicit choice [4.69ms]
+
+scripts/conversation-timeline.test.tsx:
+(pass) one chronological timeline automatically includes every comment and review page with inline thread replies [23.57ms]
+(pass) refresh replaces the timeline without retaining old comments or stealing keyboard focus [14.27ms]
+(pass) an authoritative removal clears the entire retained timeline and rejects a delayed page [7.57ms]
+(pass) a failed discussion source does not hide other kinds of review activity [4.30ms]
+(pass) message body cache evicts older bodies at the 100-message boundary while keeping metadata navigable [0.99ms]
+(pass) ordering uses timestamps rather than lexical dates and has deterministic ties [0.91ms]
+(pass) cold timeline loads use one native request at a time and do not cancel sibling readers [5.45ms]
+(pass) body cache respects the UTF-8 byte ceiling even below the message-count ceiling [10.20ms]
+(pass) a changed account generation clears previously indexed discussion instead of mixing accounts [0.51ms]
+(pass) comments, reviews and inline replies retain rich Markdown in ordinary discussions [28.52ms]
+
+scripts/build-desktop.test.ts:
+(pass) personal builds clear notarization credentials and use ad-hoc signing with locked dependencies [730.40ms]
+(pass) official releases reject absent notarization credentials and ad-hoc identities before building [82.69ms]
+(pass) DMG packaging preserves the app for signature, stapling, and Gatekeeper verification [439.48ms]
+(pass) official release verification checks stapling and fails if Gatekeeper rejects the app [199.45ms]
+
+scripts/sidebar.test.tsx:
+(pass) collapse retains navigation and keyboard focus, and persists across remounts [5.21ms]
+(pass) small screens start collapsed and respect an explicitly expanded preference [1.88ms]
+
+scripts/conversation-render.test.tsx:
+(pass) 50 maximum safe plain-text messages stay below content DOM budget without resource or executable elements [319.12ms]
+(pass) ordinary messages have no seen control and destination placeholders stay labeled [0.16ms]
+(pass) review messages keep decisions and content without transfer metadata [0.51ms]
+(pass) timeline messages show long comments in full without part navigation [16.97ms]
+
+scripts/saved-queries.test.tsx:
+(pass) native-style query form submits create, versioned edit and delete IPC [34.05ms]
+(pass) navigation selects persisted query and result opens standard PR reader; paging requests one page [25.52ms]
+(pass) obsolete async result cannot replace a newly edited query or locked content [23.37ms]
+(pass) successful cached reads never erase a failed fetch or storage-protection message [12.15ms]
+
+scripts/all-changes.test.tsx:
+(pass) ChangesQueue holds each native slot until its reader finishes [0.08ms]
+(pass) all-file review walks metadata pages, automatically renders nearby patches and navigates to distant files [22.20ms]
+(pass) clearing progressive results rejects a late metadata batch [7.62ms]
+
+scripts/checks.test.tsx:
+(pass) checks retain review decisions, names, outcomes and useful actions without diagnostics [0.48ms]
+(pass) missing or incomplete checks never imply a passing result [0.08ms]
+(pass) failed refresh preserves results and gives a plain-language stale warning [0.08ms]
+
+scripts/logs.test.tsx:
+(pass) logs require explicit action, render safe bounded line pages and release on close [6.50ms]
+(pass) external providers expose details without Actions affordance or automatic fetch [2.53ms]
+(pass) authoritative invalidation releases rendered text without requesting it again [2.68ms]
+(pass) late IPC responses after navigation cannot restore text and cancel only their own ticket [3.69ms]
+(pass) a read crossing a newer revision cannot restore an obsolete body [3.88ms]
+
+scripts/markdown.test.tsx:
+(pass) GitHub Markdown renders headings, nested lists, tasks, tables, quotes, code, autolinks and footnotes [3.63ms]
+(pass) safe HTML details render while scripts, event handlers, styles and unsafe URLs are removed [1.13ms]
+(pass) resource-heavy formatting falls back to complete source without truncation [132.87ms]
+(pass) links resolve against GitHub and reject local files, executable schemes and credentials [0.09ms]
+(pass) images load lazily without a click, can retry failures and external links invoke the native opener [3.70ms]
+
+scripts/accessibility.test.tsx:
+(pass) native text commands reach actual 200% font scale, clamp, reset and detach [1.74ms]
+(pass) list shortcuts respect editing, modifiers, modal boundaries, hidden lists and exact rows [2.13ms]
+
+scripts/notification-controls.test.tsx:
+(pass) onboarding requests nothing until explicit Enable; Skip persists a disabled choice [1.51ms]
+(pass) denial offers settings without requesting permission again; toggles preserve opt-in [1.58ms]
+(pass) metadata preview requires its own explicit checkbox and bodies stay excluded [0.84ms]
+(pass) permission labels and denied settings action accept the actual camelCase IPC states [0.94ms]
+
+scripts/reader-contrast.test.mjs:
+(pass) metadata remains at least 4.5:1 across approved reader surfaces in both palettes [1.52ms]
+(pass) old/new line guides retain 4.5:1 on normal, added and deleted diff backgrounds [0.35ms]
+
+scripts/integrated-routing.test.tsx:
+(pass) notification comment routes through the integrated exact reader and only its rendered receipt [53.81ms]
+(pass) notification check opens Checks without automatically reading logs or enabling monitoring [47.47ms]
+(pass) summary and unavailable notification routes open Activity without a seen mutation [138.49ms]
+(pass) a later summary/unavailable route releases a previously opened check destination [1156.95ms]
+(pass) Preferences close restores its opener when native activation did not move focus [74.35ms]
+(pass) query editor close restores the invoked New query control after native-style activation [71.61ms]
+(pass) preferences retain useful controls without showing runtime diagnostics [57.66ms]
+
+scripts/reader-shell.test.tsx:
+(pass) Browse releases receipt authority but compact Back restores the exact Activity origin even without mouse focus [70.85ms]
+
+scripts/dropdown.test.tsx:
+`NaN` is an invalid value for the `left` css style property.
+(pass) keyboard exploration commits only on confirmation and Escape preserves parent dialog [5.91ms]
+(pass) pointer selection, typeahead, tab and outside dismissal retain controlled value [4.09ms]
+
+scripts/conversation.test.mjs:
+(pass) inclusive UTF-8 body / page bytes / 50 messages and one-over rejection [3.33ms]
+(pass) explicit segments preserve source, surrogate pairs, identity and safe executable text [0.17ms]
+(pass) seen requires explicit completed rendering, placeholders fail and metadata-only approval succeeds [0.04ms]
+(pass) anchors require exact file, revision, side and known unique supplied coordinates [0.11ms]
+(pass) cursor history is bounded metadata only and pages replace, retaining independent source cursors [0.73ms]
+(pass) shared retained-message ceiling is inclusive at 100 and rejects 101 independently of transfer-page size [0.09ms]
+(pass) exact opened destination traversal counts distinct committed segments only [0.06ms]
+(pass) inclusive Unicode body preserves crossing emoji across all distinct receipt segments [0.28ms]
+(pass) LEFT and RIGHT ranges across semantic page boundaries require every unique coordinate [0.82ms]
+
+scripts/reader-interaction.test.tsx:
+(pass) ordinary segment navigation focuses the scrollable new segment and resets its scroll [8.94ms]
+(pass) exact destination counts committed distinct segments without stealing focus on polling [13.59ms]
+(pass) oversized destination remains unseen; complete empty review submits its exact receipt [3.02ms]
+(pass) changed destination generation restarts segment coverage; stale head never submits seen [26.71ms]
+(pass) changes render every row regardless of saved paged mode; file pages focus the navigator [26.75ms]
+(pass) an exact inline thread jump retains diff focus rather than overriding it with discussion focus [5.43ms]
+(pass) segmented exact destinations retain traversal across current-anchor patch loading and jump to a later line in the continuous diff [26.95ms]
+(pass) leaving a partial exact destination releases authorization and remounts fresh segment coverage [30.82ms]
+
+scripts/build-information.test.tsx:
+(pass) About renders the binary version, build and format contract without remote or permission commands [2.56ms]
+(pass) source archives show unavailable rather than inventing a source revision [2.45ms]
+(pass) build information failures can be retried independently of startup or monitoring [3.45ms]
+(pass) newer-database recovery exposes the running binary while keeping the reader unmounted [2.16ms]
+
+scripts/diff.test.mjs:
+(pass) whitespace and old/new coordinates survive multiple hunks and newline notes [0.12ms]
+(pass) continuous windows and semantic pages independently cover all 20000 rows within DOM bounds [6.89ms]
+
+scripts/startup-recovery.test.tsx:
+(pass) failed startup exposes actionable location without mounting private readers; retry only mounts after success [5.08ms]
+(pass) all startup input states have distinct honest guidance [9.18ms]
+(pass) late startup status cannot replace a successful newer retry [4.03ms]
+
+ 89 pass
+ 0 fail
+ 482 expect() calls
+Ran 89 tests across 21 files. [4.26s]

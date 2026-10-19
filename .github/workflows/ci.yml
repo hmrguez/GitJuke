@@ -5,13 +5,134 @@ on:
   push:
     branches: [master]
   workflow_call:
+    inputs:
+      force_full:
+        description: Run native validation regardless of changed paths (default for reusable/release CI).
+        type: boolean
+        default: true
 
 permissions:
   contents: read
 
+env:
+  # Avoid uploading large, machine-local incremental compilation databases.
+  CARGO_INCREMENTAL: '0'
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  checks:
-    name: macOS checks
+  changes:
+    name: Select validation scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      native_required: ${{ steps.scope.outputs.native_required }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify change selection and required-check gate
+        run: python3 scripts/ci-scope.test.py
+      - name: Detect native and shared changes
+        id: scope
+        env:
+          CI_FORCE_FULL: ${{ inputs.force_full || startsWith(github.ref, 'refs/tags/') }}
+        run: python3 scripts/ci-scope.py detect
+
+  rust-tests:
+    name: Rust ${{ matrix.suite }}
+    needs: changes
+    if: needs.changes.outputs.native_required == 'true'
+    runs-on: macos-15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [fast, qualification]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Restore Rust build and successful task caches
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/debug/deps
+            target/debug/build
+            target/debug/.fingerprint
+            target/test-tools
+            target/gitjuke-test-cache
+          key: rust-tests-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.suite }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}-${{ github.sha }}
+          restore-keys: |
+            rust-tests-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.suite }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}-
+      - name: Install pinned Rust toolchain and locked dependencies
+        run: |
+          rustup show active-toolchain
+          cargo fetch --locked
+          bash scripts/setup-nextest.sh
+      - name: Verify test runner and suite partition
+        if: matrix.suite == 'fast'
+        run: |
+          python3 scripts/test-rust.test.py
+          python3 scripts/test-rust.py --check-partition
+      - name: Run Rust tests
+        env:
+          TEST_SUITE: ${{ matrix.suite }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ "$TEST_SUITE" == qualification ]]; then
+            # Always execute full qualification when native validation is required.
+            python3 scripts/test-rust.py --suite qualification --no-cache
+          else
+            args=(--suite fast)
+            if [[ -n "$BASE_SHA" && ! "$BASE_SHA" =~ ^0+$ ]]; then
+              args+=(--since "$BASE_SHA")
+            fi
+            python3 scripts/test-rust.py "${args[@]}"
+          fi
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rust-${{ matrix.suite }}-reports
+          path: target/test-reports/${{ matrix.suite }}/
+          if-no-files-found: ignore
+
+  frontend:
+    name: Frontend checks
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.4.2
+      - name: Restore frontend dependencies
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.bun/install/cache
+          key: frontend-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('bun.lock') }}
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Check release versions
+        run: bun scripts/check-release.ts
+      - name: Frontend tests
+        run: bun test
+      - name: Frontend checks and build
+        run: bun run build
+
+  desktop:
+    name: Rust lint and desktop build
+    needs: changes
+    if: needs.changes.outputs.native_required == 'true'
     runs-on: macos-15
     timeout-minutes: 40
     steps:
@@ -23,17 +144,43 @@ jobs:
           bun-version: 1.4.2
       - name: Install pinned Rust toolchain
         run: rustup show active-toolchain
+      - name: Restore build dependencies
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.bun/install/cache
+            target/debug/deps
+            target/debug/build
+            target/debug/.fingerprint
+            target/aarch64-apple-darwin/release
+          key: desktop-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'bun.lock', 'rust-toolchain.toml') }}-${{ github.sha }}
+          restore-keys: |
+            desktop-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('Cargo.lock', 'bun.lock', 'rust-toolchain.toml') }}-
       - name: Install locked dependencies
         run: bun install --frozen-lockfile
-      - name: Check release versions
-        run: bun scripts/check-release.ts
-      - name: Frontend tests
-        run: bun test
-      - name: Rust workspace tests
-        run: cargo test --workspace --locked
-      - name: Frontend checks and build
-        run: bun run build
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - name: Build ad-hoc signed app
         run: bun run desktop:build
+
+  # Preserve the required-check name. Native skips pass only when explicitly
+  # selected by successful change detection; missing or failed jobs still fail.
+  checks:
+    name: macOS checks
+    if: always()
+    needs: [changes, frontend, rust-tests, desktop]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require every verification job to pass
+        env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          FRONTEND_RESULT: ${{ needs.frontend.result }}
+          NATIVE_REQUIRED: ${{ needs.changes.outputs.native_required }}
+          RUST_RESULT: ${{ needs.rust-tests.result }}
+          DESKTOP_RESULT: ${{ needs.desktop.result }}
+        run: python3 scripts/ci-scope.py gate

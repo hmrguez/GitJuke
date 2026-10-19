@@ -1,6 +1,6 @@
 # Architecture and data handling
 
-GitJuke is a read-only GitHub desktop client. A Tauri shell hosts a React frontend; a Rust runtime owns GitHub reads, scheduling, and a local SQLite store. There is no hosted backend or separate HTTP token client.
+GitJuke is a GitHub desktop client with explicit PR comment and thread reply submissions. A Tauri shell hosts a React frontend; a Rust runtime owns GitHub reads, comment submissions, scheduling, and a local SQLite store. There is no hosted backend or separate HTTP token client.
 
 ## Code layout
 
@@ -8,9 +8,13 @@ GitJuke is a read-only GitHub desktop client. A Tauri shell hosts a React fronte
 | --- | --- |
 | `src/` | React readers, navigation, preferences, diff rendering, and UI styles |
 | `src-tauri/` | Native commands, application lifecycle, login integration, and macOS notifications |
-| `crates/gitjuke-core/` | GitHub transport, runtime scheduling, storage, queries, and recovery |
+| `crates/gitjuke-model/` | Shared serialized reader, settings, and check types; no process or database dependencies |
+| `crates/gitjuke-github/` | GitHub parsing, read plans, and bounded `gh` subprocess transport; no SQLite or Tauri dependencies |
+| `crates/gitjuke-core/` | Runtime scheduling, storage, queries, and recovery; re-exports shared types and GitHub modules for existing callers |
 | `scripts/` | Frontend tests and isolated qualification helpers |
 | `docs/archive/implementation/` | Dated implementation records and verification artifacts |
+
+Rust dependencies flow from the native shell through core to GitHub and shared models. Core keeps runtime and storage together because their transaction and publication rules currently share private implementation details. Crates define test-task and cache boundaries; splitting these internals merely to create more packages would not remove expensive fixtures.
 
 ## GitHub access and monitoring
 

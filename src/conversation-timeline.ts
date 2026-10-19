@@ -5,6 +5,7 @@ export type TimelineMessage={kind:'message';id:string;time:string;metadata:Omit<
 export type TimelineThread={kind:'thread';id:string;time:string;thread:ReviewThread;job:ConversationJob};
 export type TimelineEntry=TimelineMessage|TimelineThread;
 const jobKey=(job:ConversationJob)=>JSON.stringify([job.source,job.thread,job.after]);
+const CONVERSATION_FRESH_MS=10_000;
 const messageKey=(entry:TimelineMessage)=>`${jobKey(entry.job)}:${entry.id}`;
 export function chronological<T extends {id:string;time:string}>(items:T[]):T[]{
  return [...items].sort((a,b)=>(Date.parse(a.time)||0)-(Date.parse(b.time)||0)||a.id.localeCompare(b.id));
@@ -15,6 +16,7 @@ export function chronological<T extends {id:string;time:string}>(items:T[]):T[]{
 export class ConversationTimeline {
  entries:TimelineEntry[]=[];
  replies=new Map<string,TimelineMessage[]>();
+ collapsed=new Set<string>();
  finished=false;
  error=false;
  disposed=false;
@@ -40,13 +42,16 @@ export class ConversationTimeline {
   if(!eligiblePage(page)||page.head!==job.head||page.source!==job.source)throw new Error('Conversation changed');
   this.generation=page.generation;
  }
- private load(job:ConversationJob):Promise<ConversationPage>{
+ private load(job:ConversationJob,force=false):Promise<ConversationPage>{
   const key=jobKey(job),pending=this.pending.get(key);if(pending)return pending;
   const work=this.tail.catch(()=>{}).then(async()=>{
    if(this.disposed)throw new Error('Closed');
    let value=await command<Snapshot<ConversationPage|null>>('read_conversation',{job});
    if(this.disposed)throw new Error('Closed');
-   if(!value.data||value.error||(this.refresh&&!this.refreshed.has(key))){
+   // Reviews and threads can change without a new commit. Revalidate saved
+   // pages once per reader session instead of treating the head SHA as freshness.
+   const stale=value.fetchedAt===null||Date.now()-value.fetchedAt*1000>=CONVERSATION_FRESH_MS;
+   if(force||!value.data||value.error||((this.refresh||stale)&&!this.refreshed.has(key))){
     await command('request_conversation',{job});this.refreshed.add(key);
     do{
      if(this.disposed)throw new Error('Closed');
@@ -67,11 +72,11 @@ export class ConversationTimeline {
  private messages(page:ConversationPage,job:ConversationJob):TimelineMessage[]{
   return page.messages.map(({body,...metadata})=>({kind:'message',id:metadata.id,time:metadata.time,metadata,job}));
  }
- private async pages(source:ConversationJob['source'],thread:string|null,receive:(page:ConversationPage,job:ConversationJob)=>void){
+ private async pages(source:ConversationJob['source'],thread:string|null,receive:(page:ConversationPage,job:ConversationJob)=>void,force=false){
   let after:string|null=null;const visited=new Set<string>();
   do{
    const job:ConversationJob={...this.identity,source,thread,after,seq:0};
-   const page=await this.load(job);if(this.disposed)return;
+   const page=await this.load(job,force);if(this.disposed)return;
    receive(page,job);this.emit();
    after=page.next;
    if(after){if(visited.has(after))throw new Error('Repeated page');visited.add(after);}
@@ -114,6 +119,24 @@ export class ConversationTimeline {
    this.replies.set(entry.id,chronological([...entries.values()]));
   }).catch(()=>{if(!this.disposed){this.error=true;this.emit();}});
   this.replyLoads.set(entry.id,work);return work;
+ }
+ acceptPosted(message:ConversationMessage,thread:string|null=null){
+  if(this.disposed)return;
+  const job:ConversationJob={...this.identity,source:thread?'replies':'comments',thread,after:null,seq:0};
+  const {body,...metadata}=message,entry:TimelineMessage={kind:'message',id:message.id,time:message.time,metadata,job};
+  const bytes=new TextEncoder().encode(body??'').length;
+  while(this.bodies.size&&(this.bodies.size>=RETAINED_MESSAGES||this.bytes+bytes>RETAINED_BYTES)){
+   const oldest=this.bodies.keys().next().value!;this.bytes-=new TextEncoder().encode(this.bodies.get(oldest)?.body??'').length;this.bodies.delete(oldest);
+  }
+  this.bodies.set(messageKey(entry),message);this.bytes+=new TextEncoder().encode(body??'').length;
+  if(thread)this.replies.set(thread,chronological([...(this.replies.get(thread)??[]),entry]));
+  else this.entries=chronological([...this.entries,entry]);
+  this.emit();
+  void this.pages(thread?'replies':'comments',thread,(page,job)=>{
+   const incoming=this.messages(page,job);
+   if(thread){const entries=new Map((this.replies.get(thread)??[]).map(entry=>[entry.id,entry]));incoming.forEach(entry=>entries.set(entry.id,entry));this.replies.set(thread,chronological([...entries.values()]));}
+   else{const entries=new Map(this.entries.map(entry=>[`${entry.kind}:${entry.id}`,entry]));incoming.forEach(entry=>entries.set(`message:${entry.id}`,entry));this.entries=chronological([...entries.values()]);}
+  },true).catch(()=>this.reportError());
  }
  async validate(){
   if(this.disposed||!this.entries.length)return;

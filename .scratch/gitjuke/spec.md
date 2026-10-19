@@ -1,5 +1,9 @@
 # GitJuke — specification
 
+## Scope revision — 2026-10-19
+
+The user removed accessibility implementation and qualification from the [wayfinder map](map.md). Earlier accessibility requirements in this specification and its source decisions are superseded for this effort: VoiceOver, keyboard/focus accessibility audits, 200% text enlargement and reduced-motion acceptance are no longer required gates. Existing behavior and historical evidence are preserved. Ordinary window layout, continuous/paged reading, content bounds and performance requirements remain in scope. See the corresponding [acceptance scope revision](acceptance.md#scope-revision--2026-10-19).
+
 Status: settled specification through human review, 2026-10-17. Wayfinder map complete. The user subsequently authorized production implementation on 2026-10-17; the [current integrated qualification](../../docs/archive/implementation/2026-10-18-daily-qualification.md) records current implementation/evidence. Historical planning review statements below do not revoke that authorization. Confirmed behavior and release gates are unchanged.
 
 This document records the confirmed production contract. The accompanying human-reviewed React prototype uses fixture data only and implements no GitHub transport, Tauri runtime, polling, or native notification delivery. Settled specification status does not mean the release gates have passed; the [confirmed acceptance matrix](acceptance.md) preserves their pending evidence.

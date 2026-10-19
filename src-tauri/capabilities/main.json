@@ -1,1 +1,1 @@
-{"identifier":"main","description":"Only the GitJuke reader receives cache commands and revision events. No frontend filesystem, HTTP or shell access.","windows":["main"],"permissions":["core:event:allow-listen","core:event:allow-unlisten"]}
+{"identifier":"main","description":"Only the GitJuke reader receives cache commands and revision events. No frontend filesystem, HTTP or shell access.","windows":["main"],"permissions":["core:event:allow-listen","core:event:allow-unlisten","core:window:allow-start-dragging","core:window:allow-internal-toggle-maximize"]}

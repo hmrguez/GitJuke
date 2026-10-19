@@ -1,0 +1,14 @@
+
+running 4 tests
+compiled build info: {"buildId":"local-1792409123","profile":"debug","revision":"e10c4101a5c1258f58a398a2f9a329c602c11d66","schemaVersion":16,"sourceState":"modified","target":"aarch64-apple-darwin","version":"0.1.0"}
+test build_info::tests::build_ids_reject_control_characters_and_oversized_values ... ok
+test build_info::tests::compiled_metadata_is_bounded_serializable_and_uses_the_binary_contract ... ok
+BUILD_INFO_IPC={"buildId":"local-1792409123","profile":"debug","revision":"e10c4101a5c1258f58a398a2f9a329c602c11d66","schemaVersion":16,"sourceState":"modified","target":"aarch64-apple-darwin","version":"0.1.0"}
+test build_info::tests::ipc_returns_build_information_without_a_database_or_authenticated_runtime ... ok
+test build_info::tests::source_archives_report_unavailable_and_git_edits_are_not_clean ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.13s
+
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.43s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_desktop-6260709b1516222d)

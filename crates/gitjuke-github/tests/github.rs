@@ -1,4 +1,4 @@
-use gitjuke_core::{github::*, model::StackState, transport::Output};
+use gitjuke_github::{github::*, model::StackState, transport::Output};
 use serde_json::json;
 use std::collections::BTreeMap;
 fn response(status: u16, body: serde_json::Value) -> Response {
@@ -50,7 +50,10 @@ fn search_preserves_merged_state_for_pull_request_readers() {
     ))
     .unwrap();
     assert_eq!(
-        page.prs.iter().map(|p| p.state.as_str()).collect::<Vec<_>>(),
+        page.prs
+            .iter()
+            .map(|p| p.state.as_str())
+            .collect::<Vec<_>>(),
         vec!["open", "closed", "merged"]
     );
 }
@@ -125,5 +128,5 @@ fn auth_loss_without_http_headers_is_recognized_without_exposing_diagnostics() {
         stderr: b"To get started, please run: gh auth login".to_vec(),
         success: false,
     };
-    assert!(gitjuke_core::transport::indicates_auth_loss(&output));
+    assert!(gitjuke_github::transport::indicates_auth_loss(&output));
 }

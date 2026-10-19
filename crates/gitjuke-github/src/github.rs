@@ -2,6 +2,8 @@ use crate::{Error, Result, model::*, transport::Output};
 use serde_json::Value;
 use std::collections::BTreeMap;
 
+pub const LOG_BYTES: usize = 128 * 1024;
+
 pub struct Response {
     pub status: u16,
     pub headers: BTreeMap<String, String>,
@@ -66,7 +68,7 @@ impl Response {
             .collect();
         let raw = &bytes[end + sep..];
         let body = if status == 200 && output.success {
-            if raw.len() > crate::logs::LOG_BYTES {
+            if raw.len() > LOG_BYTES {
                 serde_json::json!({"limited":true})
             } else {
                 serde_json::json!({"text":std::str::from_utf8(raw).map_err(|_|Error::Safe("Log is not UTF-8.".into()))?})

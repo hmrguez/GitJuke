@@ -1,4 +1,5 @@
-pub mod activity;
+pub use gitjuke_github::{activity, changes, conversation, github, sync, transport};
+pub use gitjuke_model as model;
 #[cfg(test)]
 mod activity_crash;
 mod activity_due;
@@ -6,7 +7,6 @@ mod activity_enrollment;
 mod activity_store;
 mod admission_query;
 pub mod alerts;
-pub mod changes;
 mod changes_store;
 mod check_purge;
 mod clear_content;
@@ -14,10 +14,8 @@ mod content_budget;
 #[cfg(test)]
 mod content_capacity;
 mod control_sweep;
-pub mod github;
 mod invalidation;
 mod migrations;
-pub mod model;
 mod pending_selection;
 mod pr_purge;
 mod publication;
@@ -33,8 +31,6 @@ mod source_cleanup;
 mod startup_cleanup;
 mod storage_usage;
 pub mod store;
-pub mod sync;
-pub mod transport;
 mod watch_reader;
 mod watch_reservations;
 mod watch_scheduling;
@@ -63,6 +59,16 @@ impl From<std::io::Error> for Error {
         Self::Io(value.kind())
     }
 }
+impl From<gitjuke_github::Error> for Error {
+    fn from(value: gitjuke_github::Error) -> Self {
+        match value {
+            gitjuke_github::Error::Denied => Self::Denied,
+            gitjuke_github::Error::Safe(message) => Self::Safe(message),
+            gitjuke_github::Error::Schema(error) => Self::Schema(error),
+            gitjuke_github::Error::Io(kind) => Self::Io(kind),
+        }
+    }
+}
 pub fn now() -> u64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -83,8 +89,8 @@ mod shared_storage;
 
 mod publication_completion;
 
-pub mod conversation;
 mod conversation_store;
+mod runtime_comments;
 mod runtime_conversation;
 
 pub mod logs;

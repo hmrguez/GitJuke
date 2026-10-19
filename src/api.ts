@@ -1,6 +1,7 @@
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 export type Theme = {mode:'dark'|'light';canvas:string;surface:string;accent:string;ink:string};
+export type BuildInfo={version:string;buildId:string;revision:string;sourceState:'clean'|'modified'|'unavailable';target:string;profile:string;schemaVersion:number};
 export type PullRequest = {id:string;repoId:number|null;repo:string;number:number;title:string;url:string;state:string;draft:boolean;author:string|null;updatedAt:string};
 export type Stack = {state:'unknown';reason:string}|{state:'none'}|{state:'published';number:number;trunk:string;members:{number:number;title:string;url:string}[]};
 export type Overview = {id:string;repo:string;number:number;title:string;url:string;body:string|null;bodyLimited:boolean;head:string;base:string;state:string;draft:boolean;author:string|null;stack:Stack};

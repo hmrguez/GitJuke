@@ -17,3 +17,26 @@
 .timeline-replies{display:grid;gap:0}.timeline-replies .conversation-message{border:0;border-radius:0;background:transparent}.timeline-replies>.timeline-entry+.timeline-entry{border-top:1px solid var(--line)}
 .timeline-diff-link{margin:8px 20px;border:0;background:transparent;padding:5px 0;color:var(--muted-text)}
 @media(max-width:640px){.conversation-timeline{padding-left:14px}.conversation-timeline>.timeline-entry:before{left:-19px}.timeline-thread-heading{padding:12px 16px}}
+
+/* Composers follow the reader's quiet surfaces and brass action accents. */
+.comment-composer{display:grid;gap:12px;margin-top:24px;padding:20px;border:1px solid var(--line);border-radius:var(--radius-panel);background:var(--quiet);min-width:0}
+.comment-composer label{font-size:var(--text-base);font-weight:500;color:var(--theme-ink)}
+.comment-composer textarea{box-sizing:border-box;width:100%;min-height:100px;resize:vertical;border:1px solid var(--line-strong);border-radius:var(--radius-control);background:var(--theme-surface);color:var(--theme-ink);font:inherit;font-size:var(--text-base);line-height:1.8;padding:12px}
+.comment-composer textarea::placeholder{color:var(--muted-text)}
+.comment-composer textarea:focus-visible{outline:2px solid var(--theme-accent);outline-offset:3px}
+.comment-composer-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.comment-composer-actions>.reader-meta{margin-right:auto;font-size:var(--text-xs)}
+.comment-composer .comment-submit{display:inline-flex;align-items:center;gap:8px;background:var(--theme-accent);color:var(--theme-canvas);border-color:var(--theme-accent)}
+.comment-composer .state-banner{margin:0}
+.timeline-thread>.timeline-replies{min-width:0}.timeline-thread .comment-composer{margin:0 20px 20px}.timeline-entry>.comment-composer{margin-top:8px}
+.conversation .message-toggle{display:inline-flex;align-items:center;justify-content:center;padding:4px;border:0;background:transparent;color:var(--muted-text);margin-left:-4px}
+.conversation .thread-toggle{display:flex;align-items:center;gap:10px;min-width:0;max-width:100%;text-align:left;background:transparent;border:0;padding:4px 0;color:var(--theme-ink);font:inherit;overflow-wrap:anywhere}
+.thread-toggle strong{min-width:0;overflow-wrap:anywhere}
+.conversation .reading-controls{gap:16px}.conversation .reading-controls button{display:inline-flex;align-items:center;gap:6px}
+.conversation [hidden]{display:none!important}
+@media(max-width:640px){.comment-composer{padding:16px}.timeline-thread .comment-composer{margin:0 16px 16px}.comment-composer-actions>.reader-meta{flex-basis:100%}}
+.thread-toggle>svg,.message-toggle>svg{flex-shrink:0}
+
+.conversation .reply-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;border:1px solid var(--line-strong);background:transparent;color:var(--theme-ink);padding:5px 9px;border-radius:var(--radius-control)}
+.conversation .reply-action:hover{background:var(--hover);border-color:var(--theme-accent)}
+.timeline-thread-heading{align-items:center}.timeline-thread-heading>span{margin-left:auto}

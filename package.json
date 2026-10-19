@@ -1,7 +1,7 @@
 {
   "name": "gitjuke",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "prototype": "vite .scratch/gitjuke/prototype --host 127.0.0.1",
@@ -12,12 +12,18 @@
     "desktop:build": "bash scripts/build-desktop.sh local",
     "desktop:sign": "bash scripts/build-desktop.sh signed",
     "desktop:release": "bash scripts/build-desktop.sh release",
-    "test": "cargo test -p gitjuke-core",
+    "test": "python3 scripts/test-rust.py",
     "test:diff": "bun test",
     "check": "bun run build && cargo clippy --workspace --all-targets -- -D warnings",
-    "test:rust": "cargo test -p gitjuke-core",
-    "test:all": "bun test && bun run test:rust",
-    "test:diff:node": "node --experimental-strip-types --test scripts/diff.test.mjs"
+    "test:rust": "python3 scripts/test-rust.py",
+    "test:all": "bun test && bun run test:full",
+    "test:diff:node": "node --experimental-strip-types --test scripts/diff.test.mjs",
+    "test:setup": "bash scripts/setup-nextest.sh",
+    "test:affected": "python3 scripts/test-rust.py --since HEAD",
+    "test:qualification": "python3 scripts/test-rust.py --suite qualification --no-cache",
+    "test:full": "python3 scripts/test-rust.py --suite full --no-cache",
+    "test:partition": "python3 scripts/test-rust.py --check-partition",
+    "test:runner": "python3 scripts/test-rust.test.py"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "5.3.0",

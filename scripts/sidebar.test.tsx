@@ -2,7 +2,7 @@ import React,{act} from 'react';
 import {createRoot,type Root} from 'react-dom/client';
 import {Window} from 'happy-dom';
 import {beforeEach,afterEach,expect,test} from 'bun:test';
-import {Sidebar} from '../src/Sidebar';
+import {Sidebar,useSidebarState} from '../src/Sidebar';
 
 let dom:Window,host:HTMLElement,root:Root;
 beforeEach(()=>{
@@ -12,7 +12,8 @@ beforeEach(()=>{
 });
 afterEach(async()=>{await act(async()=>root.unmount());host.remove();});
 const key='gitjuke.sidebar-collapsed.v1';
-async function render(){await act(async()=>root.render(<Sidebar><nav id="sidebar-navigation"><button aria-label="My PRs">My PRs</button></nav></Sidebar>));}
+function Shell(){const sidebar=useSidebarState();return <Sidebar {...sidebar}><nav id="sidebar-navigation"><button aria-label="My PRs">My PRs</button></nav></Sidebar>;}
+async function render(){await act(async()=>root.render(<Shell/>));}
 
 test('collapse retains navigation and keyboard focus, and persists across remounts',async()=>{
   await render();

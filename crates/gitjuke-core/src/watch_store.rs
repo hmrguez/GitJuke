@@ -431,14 +431,14 @@ impl Store {
         };
         let rows = body.as_array().ok_or_else(schema)?;
         if rows.len() > 100 {
-            return Err(schema());
+            return Err(schema().into());
         }
         for t in rows {
             crate::github::string(t, "node_id")?;
             let org = crate::github::string(&t["organization"], "login")?;
             let slug = crate::github::string(t, "slug")?;
             if !crate::github::valid_repo(&format!("{org}/{slug}")) {
-                return Err(schema());
+                return Err(schema().into());
             }
         }
         self.apply_publication(
@@ -647,11 +647,11 @@ pub fn parse_timestamp(v: &str) -> Result<u64> {
     let mut t: libc::tm = unsafe { std::mem::zeroed() };
     let end = unsafe { libc::strptime(value.as_ptr(), format.as_ptr(), &mut t) };
     if end.is_null() || unsafe { *end } != 0 {
-        return Err(schema());
+        return Err(schema().into());
     }
     let timestamp = unsafe { libc::timegm(&mut t) };
     if timestamp < 0 {
-        return Err(schema());
+        return Err(schema().into());
     }
     Ok(timestamp as u64)
 }

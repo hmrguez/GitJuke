@@ -8,39 +8,7 @@ use crate::{
 use rusqlite::{OptionalExtension, params};
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Default)]
-#[serde(rename_all = "camelCase")]
-pub enum Permission {
-    #[default]
-    Unknown,
-    NotDetermined,
-    Denied,
-    Granted,
-}
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(default, rename_all = "camelCase")]
-pub struct AlertSettings {
-    pub onboarded: bool,
-    pub enabled: bool,
-    pub previews: bool,
-    pub categories: [bool; 5],
-    pub since: [u64; 5],
-    pub permission: Permission,
-    pub floor: i64,
-}
-impl Default for AlertSettings {
-    fn default() -> Self {
-        Self {
-            onboarded: false,
-            enabled: false,
-            previews: false,
-            categories: [true; 5],
-            since: [0; 5],
-            permission: Permission::Unknown,
-            floor: 0,
-        }
-    }
-}
+pub use gitjuke_model::{AlertSettings, Permission};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AlertChoices {

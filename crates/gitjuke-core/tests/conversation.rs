@@ -729,3 +729,68 @@ async fn local_mixed_identity_fixture_preserves_seen_and_current_range() {
     }));
     r.shutdown().await;
 }
+
+#[tokio::test]
+async fn explicit_comments_and_thread_replies_validate_context_and_never_retry_writes() {
+    let _gate = FIXTURES.lock().await;
+    let (d, r) = start().await;
+    assert!(
+        r.post_conversation(job("comments"), "  ".into(), None)
+            .await
+            .is_err()
+    );
+    assert!(
+        r.post_conversation(job("comments"), "x".repeat(65537), None)
+            .await
+            .is_err()
+    );
+    assert!(
+        r.post_conversation(
+            job("comments"),
+            "hello".into(),
+            Some("unknown-thread".into())
+        )
+        .await
+        .is_err()
+    );
+    let body = "Markdown **comment** with `code`, $HOME and @literal\nSecond line";
+    let comment = r
+        .post_conversation(job("comments"), body.into(), None)
+        .await
+        .unwrap();
+    assert_eq!(comment.body.as_deref(), Some(body));
+    assert_eq!(comment.kind, "comment");
+    let threads = read(&r, &job("threads")).await;
+    let reply = r
+        .post_conversation(
+            job("threads"),
+            "Thread reply".into(),
+            Some(threads.threads[0].id.clone()),
+        )
+        .await
+        .unwrap();
+    assert_eq!(reply.kind, "reply");
+    let mut settings = config();
+    settings["deny_comment"] = json!(true);
+    scenario(&d, settings);
+    assert!(
+        r.post_conversation(job("comments"), "Denied draft".into(), None)
+            .await
+            .is_err()
+    );
+    let reads = std::fs::read_to_string(d.path().join("reads")).unwrap();
+    let writes: Vec<Value> = reads
+        .lines()
+        .map(|line| serde_json::from_str(line).unwrap())
+        .filter(|v: &Value| v["query"] == "mutation")
+        .collect();
+    assert_eq!(
+        writes.len(),
+        3,
+        "each explicit submission is sent exactly once"
+    );
+    assert_eq!(writes[0]["variables"]["subject"], "PR_1");
+    assert_eq!(writes[0]["variables"]["body"], body);
+    assert_eq!(writes[1]["variables"]["subject"], "T_0");
+    r.shutdown().await;
+}

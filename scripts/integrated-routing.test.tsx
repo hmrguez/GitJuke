@@ -16,6 +16,7 @@ async function routed(kind:'comment'|'check'|'summary'|'unavailable'){
  (dom as any).__TAURI_INTERNALS__={invoke:async(name:string,args:any)=>{
   calls.push({name,args});
   if(name==='runtime_status')return status;
+  if(name==='build_info')return {version:'9.8.7',buildId:'ci.345.2',revision:'a'.repeat(40),sourceState:'clean',target:'aarch64-apple-darwin',profile:'release',schemaVersion:16};
   if(name==='take_notification_route'){if(!pending)return null;pending=false;return {record:routeKind==='summary'||routeKind==='unavailable'?null:record,unavailable:routeKind==='unavailable'};}
   if(name==='saved_queries')return {items:[{id:7,name:'Local query',search:'is:open',version:1}],nextOffset:null,revision:1};
   if(name==='authored_page'||name==='requested_page')return {items:[pr],nextOffset:null,complete:true,revision:1};
@@ -104,6 +105,10 @@ test('preferences retain useful controls without showing runtime diagnostics',as
   await click('Storage');expect(r.host.textContent).toContain('Downloaded content: 12.0 MB');
   for(const text of ['SQLite','WAL','sidecar','ledger','replay','identity'])expect(r.host.textContent).not.toContain(text);
   await click('Clear downloaded content');expect(r.calls.some(c=>c.name==='clear_downloads')).toBe(true);
+  await click('About');
+  expect(r.host.textContent).toContain('GitJuke 9.8.7');expect(r.host.textContent).toContain('ci.345.2');
+  expect(r.host.textContent).toContain('quit GitJuke with ⌘Q');
+  expect(r.calls.filter(c=>c.name==='build_info')).toHaveLength(1);
   expect(r.calls.some(c=>['enable_notifications','set_launch_at_login'].includes(c.name))).toBe(false);
  }finally{await r.close();}
 });

@@ -1,6 +1,6 @@
 [package]
 name = "gitjuke"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [lib]
@@ -26,3 +26,4 @@ lifecycle-qualification = []
 
 [dev-dependencies]
 tempfile = "3"
+tauri = { version = "2", features = ["test"] }

@@ -353,7 +353,7 @@ mod guard_tests {
 }
 
 fn alert_head_denied(r: &crate::github::Response) -> bool {
-    matches!(r.require_ok(), Err(Error::Denied))
+    matches!(r.require_ok(), Err(gitjuke_github::Error::Denied))
         || r.body["errors"].as_array().is_some_and(|errors| {
             errors.iter().any(|e| {
                 ["FORBIDDEN", "NOT_FOUND"].contains(&e["type"].as_str().unwrap_or_default())

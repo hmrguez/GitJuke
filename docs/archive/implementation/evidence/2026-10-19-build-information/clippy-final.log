@@ -1,0 +1,5 @@
+   Compiling tauri v2.12.4
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Checking gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+   Compiling tauri-plugin-autostart v2.7.0
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.36s

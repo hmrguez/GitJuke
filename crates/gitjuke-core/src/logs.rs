@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tokio_util::sync::CancellationToken;
 
-pub const LOG_BYTES: usize = 128 * 1024;
+pub use gitjuke_github::github::LOG_BYTES;
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LogJob {
@@ -292,7 +292,7 @@ impl Runtime {
                     c,
                 )
                 .await?;
-            if matches!(pr.require_ok(), Err(Error::Denied)) {
+            if matches!(pr.require_ok(), Err(gitjuke_github::Error::Denied)) {
                 self.lock()?.store.activity_purge(&j.repo, j.number)?;
                 return Ok(LogRead::state("denied"));
             }
@@ -416,7 +416,7 @@ impl Runtime {
                 c,
             )
             .await?;
-        if matches!(pr.require_ok(), Err(Error::Denied)) {
+        if matches!(pr.require_ok(), Err(gitjuke_github::Error::Denied)) {
             self.lock()?.store.activity_purge(&j.repo, j.number)?;
             return Err(bad());
         }

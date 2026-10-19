@@ -1,0 +1,31 @@
+{
+  "before": {
+    "buildId": "local-1792409117",
+    "profile": "debug",
+    "revision": "e10c4101a5c1258f58a398a2f9a329c602c11d66",
+    "schemaVersion": 16,
+    "sourceState": "modified",
+    "target": "aarch64-apple-darwin",
+    "version": "0.1.0"
+  },
+  "afterFrontendTimestampChange": {
+    "buildId": "local-1792409123",
+    "profile": "debug",
+    "revision": "e10c4101a5c1258f58a398a2f9a329c602c11d66",
+    "schemaVersion": 16,
+    "sourceState": "modified",
+    "target": "aarch64-apple-darwin",
+    "version": "0.1.0"
+  },
+  "unchangedRebuild": {
+    "buildId": "local-1792409123",
+    "profile": "debug",
+    "revision": "e10c4101a5c1258f58a398a2f9a329c602c11d66",
+    "schemaVersion": 16,
+    "sourceState": "modified",
+    "target": "aarch64-apple-darwin",
+    "version": "0.1.0"
+  },
+  "frontendOnlyChangeRefreshesStamp": true,
+  "unchangedBuildKeepsStamp": true
+}

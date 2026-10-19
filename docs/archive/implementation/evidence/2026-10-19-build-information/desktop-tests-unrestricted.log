@@ -1,0 +1,26 @@
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.06s
+     Running unittests src/lib.rs (target/debug/deps/gitjuke_desktop-6260709b1516222d)
+
+running 17 tests
+test build_info::tests::build_ids_reject_control_characters_and_oversized_values ... ok
+test login::tests::os_disabled_requires_exact_label_and_valid_output ... ok
+compiled build info: {"buildId":"local-1792409046","profile":"debug","revision":"e10c4101a5c1258f58a398a2f9a329c602c11d66","schemaVersion":16,"sourceState":"modified","target":"aarch64-apple-darwin","version":"0.1.0"}
+test login::tests::status_never_confuses_desire_with_registration ... ok
+BUILD_INFO_IPC={"buildId":"local-1792409046","profile":"debug","revision":"e10c4101a5c1258f58a398a2f9a329c602c11d66","schemaVersion":16,"sourceState":"modified","target":"aarch64-apple-darwin","version":"0.1.0"}
+test build_info::tests::compiled_metadata_is_bounded_serializable_and_uses_the_binary_contract ... ok
+test singleton::tests::child ... ok
+test build_info::tests::ipc_returns_build_information_without_a_database_or_authenticated_runtime ... ok
+test login::tests::preference_is_default_off_atomic_and_preserves_corruption ... ok
+test singleton::tests::symlink_lock_is_rejected ... ok
+test singleton::tests::long_configuration_paths_have_short_identity_isolated_socket_paths ... ok
+test login::tests::stable_path_identity_and_no_watchdog_are_required ... ok
+test startup::tests::corrupt_and_unreadable_files_survive_failed_startup ... ok
+test singleton::tests::simultaneous_launches_forward_and_crash_releases_ownership ... ok
+test singleton::tests::separate_processes_serialize_and_sigkill_releases_lock ... ok
+test startup::tests::missing_directory_can_be_repaired_and_retried_without_reset ... ok
+test ipc_tests::serialized_response_ceiling_is_inclusive_and_never_clips ... ok
+test build_info::tests::source_archives_report_unavailable_and_git_edits_are_not_clean ... ok
+test notifications::tests::unbundled_notification_calls_are_safe ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.95s

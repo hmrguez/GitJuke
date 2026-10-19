@@ -1,0 +1,36 @@
+Window: "GitJuke", App: GitJuke About Qualification.
+0 standard window GitJuke, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: GitJuke, URL: tauri://localhost
+			3 container Local storage needs attention
+				4 heading Local storage needs attention, Value: 1
+					5 text Local storage needs attention
+				6 text GitJuke couldn’t open your saved data.
+				7 text Your saved data couldn’t be found.
+				8 text Check that your Mac has enough free space and that you can open and save files in the folder below.
+				9 summary Data folder, Value: off
+					10 text Data folder
+				11 text Trying again keeps your account, preferences and read history.
+				12 button Try again
+				13 text You can quit GitJuke with ⌘Q. Your saved data won’t be reset.
+				14 container (expanded) Secondary Actions: Collapse
+					15 summary About this build, Value: on
+						16 text About this build
+					17 text GitJuke 0.1.0
+					18 description list
+						19 text Build
+						20 text local-1792409152
+						21 text Source
+						22 text e10c4101a5c1258f58a398a2f9a329c602c11d66 · modified sources
+						23 text Target
+						24 text aarch64-apple-darwin · release
+						25 text Data format
+						26 text 16
+	27 close button
+	28 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	29 minimize button
+	30 text GitJuke
+31 menu bar
+	32 GitJuke About Qualification
+
+The focused UI element is 15 summary About this build, Value: on

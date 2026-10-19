@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Deterministic read-only gh subprocess fixture; never used by production."""
+"""Deterministic gh subprocess fixture; never used by production."""
 import json,sys,pathlib,urllib.parse,time,calendar,hashlib
 root=pathlib.Path(sys.argv[0]).parent
 config=json.loads((root/'scenario.json').read_text()) if (root/'scenario.json').exists() else {}
@@ -24,7 +24,11 @@ if query and config.get('overflow_batches') and query['query'].startswith('query
  sys.stdout.write('x'*(16*1024*1024+1));sys.exit(0)
 if query:
  bucket='graphql';q=query['query'];v=query.get('variables',{})
- if q.startswith('query AlertHead'):
+ if q.startswith('mutation'):
+  node={'id':'posted','url':'https://github.com/a/b/pull/1#issuecomment-999','body':v['body'],'createdAt':'2026-10-19T10:00:00Z','author':{'login':'reader'}}
+  body={'data':{'addPullRequestReviewThreadReply':{'comment':node}}} if 'addPullRequestReviewThreadReply' in q else {'data':{'addComment':{'commentEdge':{'node':node}}}}
+  if config.get('deny_comment'):body={'errors':[{'type':'FORBIDDEN'}]}
+ elif q.startswith('query AlertHead'):
   body={'data':{'viewer':identity,'repository':{'pullRequest':{'headRefOid':config.get('alert_head',config.get('head','abc')),'potentialMergeCommit':{'oid':'merge-abc'} if config.get('merge') else None}}}}
  elif q.startswith('query ConversationDestination'):
   if config.get('slow_conversation'):

@@ -1,3 +1,6 @@
+#[cfg(target_os = "macos")]
+mod menus;
+mod build_info;
 mod notifications;
 use notifications::NativeAlerts;
 use std::sync::Mutex;
@@ -156,6 +159,15 @@ fn conversation_seen(
     generation: u64,
 ) -> Result<(), String> {
     safe(runtime.conversation_seen(&job, &id, &digest, generation))
+}
+#[tauri::command]
+async fn post_conversation(
+    runtime: State<'_, Runtime>,
+    job: gitjuke_core::conversation::ConversationJob,
+    body: String,
+    thread: Option<String>,
+) -> Result<gitjuke_core::conversation::Message, String> {
+    safe(runtime.post_conversation(job, body, thread).await)
 }
 #[tauri::command]
 fn request_conversation(
@@ -361,6 +373,7 @@ fn show(app: &tauri::AppHandle) {
     }
     let _ = app.set_activation_policy(tauri::ActivationPolicy::Regular);
     if let Some(w) = app.get_webview_window("main") {
+        let _ = w.unminimize();
         let _ = w.show();
         let _ = w.set_focus();
     }
@@ -549,19 +562,24 @@ pub fn run() {
                     _ => {}
                 })
                 .build(app)?;
-            // App menu's Quit and Cmd-Q use the same cancel/reap path as the tray.
-            let app_quit =
-                MenuItem::with_id(app, "app-quit", "Quit GitJuke", true, Some("CmdOrCtrl+Q"))?;
-            let app_menu = Menu::with_items(
-                app,
-                &[&tauri::menu::Submenu::with_items(
+            #[cfg(target_os = "macos")]
+            menus::install(app)?;
+            #[cfg(not(target_os = "macos"))]
+            {
+                // App menu's Quit and Cmd-Q use the same cancel/reap path as the tray.
+                let app_quit =
+                    MenuItem::with_id(app, "app-quit", "Quit GitJuke", true, Some("CmdOrCtrl+Q"))?;
+                let app_menu = Menu::with_items(
                     app,
-                    "GitJuke",
-                    true,
-                    &[&app_quit],
-                )?],
-            )?;
-            app.set_menu(app_menu)?;
+                    &[&tauri::menu::Submenu::with_items(
+                        app,
+                        "GitJuke",
+                        true,
+                        &[&app_quit],
+                    )?],
+                )?;
+                app.set_menu(app_menu)?;
+            }
             // The window starts hidden in configuration; login never flashes a reader.
             if background_launch() {
                 app.set_activation_policy(tauri::ActivationPolicy::Accessory);
@@ -614,6 +632,8 @@ pub fn run() {
             Ok(())
         })
         .on_menu_event(|app, event| {
+            #[cfg(target_os = "macos")]
+            menus::handle(app, event.id.as_ref());
             if event.id.as_ref() == "app-quit" {
                 quit(app.clone());
             }
@@ -642,6 +662,9 @@ pub fn run() {
             }
         })
         .invoke_handler(tauri::generate_handler![
+            #[cfg(target_os = "macos")]
+            menus::sync_reader_menu,
+            build_info::build_info,
             login::login_status,
             login::set_launch_at_login,
             set_alert_choices,
@@ -657,6 +680,7 @@ pub fn run() {
             activity_rendered,
             conversation_seen,
             request_conversation,
+            post_conversation,
             cancel_conversation,
             read_conversation,
             open_conversation,

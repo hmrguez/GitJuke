@@ -1,4 +1,5 @@
 import {useEffect,useState} from 'react';
+import {nativeMac} from './native-menu';
 
 // Session-only text enlargement. Never changes source limits, identity or seen authorization.
 export const textSizes=[100,125,150,175,200] as const;
@@ -10,6 +11,9 @@ export function useReaderTextSize(){
  },[size]);
  useEffect(()=>{
   const key=(e:KeyboardEvent)=>{
+   if(e.defaultPrevented)return;
+   // Native menu accelerators own these keys on macOS; avoid applying a step twice.
+   if(nativeMac()&&e.metaKey&&e.key!=='=')return;
    if(!(e.metaKey||e.ctrlKey)||e.altKey||e.isComposing)return;
    if(!['+','=','-','0'].includes(e.key))return;
    e.preventDefault();

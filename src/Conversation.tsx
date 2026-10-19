@@ -1,7 +1,8 @@
-import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import React,{useEffect,useId,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {command,type ConversationJob,type ConversationPage,type ConversationMessage,type Overview,type Snapshot} from './api';
 import {anchor,conversationTime,visitDestination,eligiblePage,segmentRanges,type PatchContext} from './conversation-model';
 import './conversation.css';
+import {ChevronDown,ChevronRight,Reply} from 'lucide-react';
 import {Markdown} from './Markdown';
 import {ConversationTimeline} from './ConversationTimeline';
 type ConversationProps={pr:Overview;revision:number;currentHead:string;context?:PatchContext;inline?:boolean;destination?:string;onBack?:()=>void;onBrowse?:()=>void};
@@ -43,14 +44,16 @@ function DestinationConversation({pr,revision,currentHead,context,inline=false,d
 const reviewLabels:Record<string,string>={APPROVED:'Approved',CHANGES_REQUESTED:'Requested changes',COMMENTED:'Reviewed',DISMISSED:'Review dismissed',PENDING:'Review pending',comment:'Commented',reply:'Replied',review:'Reviewed'};
 // Timeline rows render nearby comments independently; the old 64-node page allowance
 // made ordinary reviews fall back to literal source, including their headings.
-export function Message({message:m,job,generation,report,explicitlyOpened=false,continuous=false,nodeLimit=continuous?4000:64}:{continuous?:boolean;nodeLimit?:number;message:ConversationMessage;job:ConversationJob;generation:number;explicitlyOpened?:boolean;report:(e:string)=>void}){
+export function Message({message:m,job,generation,report,explicitlyOpened=false,continuous=false,nodeLimit=continuous?4000:64,onReply,defaultExpanded=true,onExpandedChange}:{defaultExpanded?:boolean;onExpandedChange?:(expanded:boolean)=>void;onReply?:()=>void;continuous?:boolean;nodeLimit?:number;message:ConversationMessage;job:ConversationJob;generation:number;explicitlyOpened?:boolean;report:(e:string)=>void}){
+ const [expanded,setExpanded]=useState(defaultExpanded),contentId=useId();
  const parts=useMemo(()=>continuous?[{start:0,end:(m.body??'').length}]:segmentRanges(m.body??''),[m.body,continuous]),[part,setPart]=useState(0),visited=useRef(new Set<number>()),element=useRef<HTMLElement>(null),body=useRef<HTMLDivElement>(null),opened=useRef(false),changingSegment=useRef(false);
  useLayoutEffect(()=>{if(changingSegment.current){if(body.current){body.current.scrollTop=0;body.current.focus();}changingSegment.current=false;}},[part]);
  useEffect(()=>{if(explicitlyOpened&&!opened.current){element.current?.focus();opened.current=true;}},[explicitlyOpened]);
  function changeSegment(delta:number){changingSegment.current=true;setPart(n=>n+delta);}
  useEffect(()=>{if(explicitlyOpened){if(visitDestination(m,m.id,part,parts.length,visited.current))void command('conversation_seen',{job,id:m.id,digest:m.digest,generation}).catch(e=>report(String(e)));}},[explicitlyOpened,part,m.id,m.body,m.digest,generation]);
- return <article ref={element} tabIndex={-1} className="conversation-message" aria-label={`${reviewLabels[m.kind]??'Comment'} by ${m.author??'unknown author'}`}><header><strong>{m.author??'Unknown author'}</strong>{['APPROVED','CHANGES_REQUESTED','COMMENTED','DISMISSED','PENDING'].includes(m.kind)&&<span>{reviewLabels[m.kind]}</span>}<time dateTime={m.time}>{conversationTime(m.time)}</time></header>
+ return <article ref={element} tabIndex={-1} className="conversation-message" aria-label={`${reviewLabels[m.kind]??'Comment'} by ${m.author??'unknown author'}`}><header><button className="message-toggle" type="button" aria-expanded={expanded} aria-controls={contentId} aria-label={`${expanded?'Collapse':'Expand'} comment by ${m.author??'unknown author'}`} onClick={()=>{onExpandedChange?.(!expanded);setExpanded(!expanded);}}>{expanded?<ChevronDown size={14} strokeWidth={1.65}/>:<ChevronRight size={14} strokeWidth={1.65}/>}</button><strong>{m.author??'Unknown author'}</strong>{['APPROVED','CHANGES_REQUESTED','COMMENTED','DISMISSED','PENDING'].includes(m.kind)&&<span>{reviewLabels[m.kind]}</span>}<time dateTime={m.time}>{conversationTime(m.time)}</time>{onReply&&<button type="button" className="reply-action" aria-label={`${job.source==='replies'?'Reply':'Quote reply'} to ${m.author??'comment'}`} onClick={onReply}><Reply size={13} strokeWidth={1.65}/>{job.source==='replies'?'Reply':'Quote reply'}</button>}</header>
+  <div id={contentId} hidden={!expanded}>
   {m.state==='complete'&&m.body!==null?<><div ref={body} className="message-body" tabIndex={0} role="region" aria-label={`Message body${parts.length>1?` · segment ${part+1} of ${parts.length}`:''}`}><Markdown baseUrl={m.url??`https://github.com/${job.repo}/pull/${job.number}`} nodeLimit={nodeLimit}>{m.body.slice(parts[part].start,parts[part].end)}</Markdown></div>{parts.length>1&&<div className="pagination"><button disabled={part===0} onClick={()=>changeSegment(-1)}>Previous part</button><span>Part {part+1} of {parts.length}</span><button disabled={part===parts.length-1} onClick={()=>changeSegment(1)}>Next part</button></div>}</>:<p className="state-banner">{m.state==='oversized'?'This comment is too long to preview. View it on GitHub.':'This comment isn’t available.'}</p>}
   <div className="reading-controls">{m.url&&<button onClick={()=>void command('open_conversation',{job,id:m.id}).catch(e=>report(String(e)))}>View on GitHub</button>}</div>
- </article>;
+ </div></article>;
 }

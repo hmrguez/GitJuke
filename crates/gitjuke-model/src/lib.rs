@@ -1,3 +1,4 @@
+//! Shared serialized reader and settings types; no database or process dependencies.
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -43,7 +44,7 @@ impl Theme {
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
     #[serde(default)]
-    pub alerts: crate::alerts::AlertSettings,
+    pub alerts: AlertSettings,
     #[serde(default)]
     pub paged_changes: bool,
     pub paused: bool,
@@ -195,7 +196,7 @@ pub struct CheckPage {
     pub pr: Option<PullRequest>,
     pub error: Option<String>,
     pub review: Option<String>,
-    pub items: Vec<crate::sync::CheckContext>,
+    pub items: Vec<CheckContext>,
     pub next_offset: Option<usize>,
     pub head: Option<String>,
     pub commits: Vec<ResourceHealth>,
@@ -216,4 +217,58 @@ pub struct StorageUsage {
     pub content_limit_bytes: u64,
     pub warning_at_bytes: u64,
     pub warning: bool,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "camelCase")]
+pub enum Permission {
+    #[default]
+    Unknown,
+    NotDetermined,
+    Denied,
+    Granted,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct AlertSettings {
+    pub onboarded: bool,
+    pub enabled: bool,
+    pub previews: bool,
+    pub categories: [bool; 5],
+    pub since: [u64; 5],
+    pub permission: Permission,
+    pub floor: i64,
+}
+impl Default for AlertSettings {
+    fn default() -> Self {
+        Self {
+            onboarded: false,
+            enabled: false,
+            previews: false,
+            categories: [true; 5],
+            since: [0; 5],
+            permission: Permission::Unknown,
+            floor: 0,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CheckContext {
+    pub id: String,
+    pub kind: String,
+    pub name: String,
+    pub status: String,
+    pub conclusion: Option<String>,
+    pub url: Option<String>,
+    pub suite_id: Option<String>,
+    pub suite_status: Option<String>,
+    pub suite_conclusion: Option<String>,
+    pub suite_updated_at: Option<String>,
+    #[serde(default)]
+    pub source_created_at: Option<String>,
+    pub run_id: Option<u64>,
+    pub attempt: Option<u64>,
+    pub commit: String,
 }

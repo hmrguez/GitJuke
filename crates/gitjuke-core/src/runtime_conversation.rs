@@ -220,7 +220,7 @@ impl Runtime {
                 c,
             )
             .await?;
-        if matches!(before.require_ok(), Err(Error::Denied)) {
+        if matches!(before.require_ok(), Err(gitjuke_github::Error::Denied)) {
             let mut i = self.lock()?;
             if Self::conversation_valid(&i, j, g, c)? {
                 i.store.activity_purge(&j.repo, j.number)?;
@@ -254,7 +254,7 @@ impl Runtime {
                 continue;
             }
             let response = response?;
-            let denied = matches!(response.require_ok(), Err(Error::Denied))
+            let denied = matches!(response.require_ok(), Err(gitjuke_github::Error::Denied))
                 || response.body["errors"].as_array().is_some_and(|a| {
                     a.iter()
                         .any(|v| matches!(v["type"].as_str(), Some("FORBIDDEN" | "NOT_FOUND")))
@@ -292,7 +292,7 @@ impl Runtime {
                             c,
                         )
                         .await?;
-                    if matches!(coordinates.require_ok(), Err(Error::Denied)) {
+                    if matches!(coordinates.require_ok(), Err(gitjuke_github::Error::Denied)) {
                         let mut i = self.lock()?;
                         if Self::conversation_valid(&i, j, g, c)? {
                             i.store.deny_conversation(&j.repo, j.number)?;
@@ -332,7 +332,7 @@ impl Runtime {
                 c,
             )
             .await?;
-        if matches!(after.require_ok(), Err(Error::Denied)) {
+        if matches!(after.require_ok(), Err(gitjuke_github::Error::Denied)) {
             let mut i = self.lock()?;
             if Self::conversation_valid(&i, j, g, c)? {
                 i.store.activity_purge(&j.repo, j.number)?;

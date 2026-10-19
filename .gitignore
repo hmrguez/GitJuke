@@ -3,6 +3,8 @@ node_modules/
 dist/
 *.tsbuildinfo
 .vite/
+__pycache__/
+*.pyc
 
 # Rust and Tauri build output
 target/

@@ -1,0 +1,28 @@
+    Checking gitjuke-core v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/crates/gitjuke-core)
+   Compiling tauri v2.12.4
+   Compiling gitjuke v0.1.0 (/Users/hmrguez/Programming/Personal/GitJuke/src-tauri)
+error: this `if` statement can be collapsed
+  --> src-tauri/build.rs:38:5
+   |
+38 | /     if let Some(reference) = build_metadata::git(root, &["symbolic-ref", "-q", "HEAD"]) {
+39 | |         if let Some(path) =
+40 | |             build_metadata::git(root, &["rev-parse", "--git-path", reference.trim()])
+...  |
+47 | |     }
+   | |_____^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+   = note: `-D clippy::collapsible-if` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+   |
+38 ~     if let Some(reference) = build_metadata::git(root, &["symbolic-ref", "-q", "HEAD"])
+39 ~         && let Some(path) =
+40 |             build_metadata::git(root, &["rev-parse", "--git-path", reference.trim()])
+...
+45 |             }
+46 ~         }
+   |
+
+error: could not compile `gitjuke` (build script) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

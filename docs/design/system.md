@@ -18,14 +18,18 @@ The generated transparent mark lives in `public/brand/gitjuke-mark.png`. The sid
 
 The sidebar, list navigator, reader toolbar, tabs, buttons, inputs, segmented controls, pagination, status banners and dialogs share styles in `src/app.css`. Changes and Conversation own only reader-specific layout.
 
+Conversation uses quiet, bordered Markdown composers for new comments and thread replies, with brass submit actions, visible posting errors, and drafts retained on failure. Chevron controls keep discussions expanded by default and expose their state to assistive technology. General comment replies quote the original message; review replies stay in their existing thread.
+
 Selected navigation uses a neutral surface; the reader tab has a brass underline. Color never carries selection or status alone. All controls have visible keyboard focus. Dialogs use the native modal focus boundary and Escape dismissal, with bespoke content and controls. The two-option reading mode is a segmented control, avoiding an OS-styled dropdown.
 
 Preferences exposes Graphite and Paper rather than arbitrary color customization. Existing stored colors are left intact; the stored mode selects the corresponding new palette. The typeface and default typography remain fixed. Session accessibility enlargement scales text through 200% without changing source or retention limits. Diagnostics are available through Sync status or the relevant Preferences section instead of dominating the reading flow.
 
 Lists filter only the currently loaded page and say so. Pagination and bounded loading remain authoritative. Opening files, reading messages, Activity receipts and native GitHub actions retain their existing runtime behavior.
 
-At the 960px content minimum, and whenever text is enlarged, the list and detail become separate views with a Back action. Below 640px the sidebar becomes an icon rail with named controls. Text wraps, reader content scrolls, and code retains horizontal scrolling. Reduced-motion preferences disable transitions. On the tested native title bar, a 672px outer minimum reserves 32px chrome and supplies the confirmed 640px content height; each advertised OS still needs native measurement.
+Preferences → About displays binary-owned version/build information in a compact definition list, with explicit manual-update guidance. Startup recovery exposes the same information under About this build. Version labels are read from the native binary rather than duplicated in the frontend; technical source/target/data-format details stay in these explicitly opened views.
+
+At the 960px content minimum, and whenever text is enlarged, the list and detail become separate views with a Back action. Below 640px the sidebar becomes an icon rail with named controls. Text wraps, reader content scrolls, and code retains horizontal scrolling. Reduced-motion preferences disable transitions. The macOS title bar overlays the web content and retains native traffic lights. A 42px draggable toolbar reserves the top row, with the persisted sidebar toggle beside the window controls and an Add pull request plus action at the right. Add pull request opens a native modal dialog from every workspace view, replacing the inline list form. The 672px outer minimum remains; native sizing still needs measurement on each supported OS.
 
 ## Verification
 
-Run `bun run build` and `bun test`. Visually inspect My PRs, Review requests, Activity, all four reader tabs, all Conversation sources, reading mode, and all four Preferences sections in both themes. Check compact layout and keyboard navigation. Production has no sample-data fallback; use real cached native data or explicitly isolated qualification fixtures.
+Run `bun run build` and `bun test`. Visually inspect My PRs, Review requests, Activity, all four reader tabs, all Conversation sources, reading mode, and all five Preferences sections in both themes. Check compact layout and keyboard navigation. Production has no sample-data fallback; use real cached native data or explicitly isolated qualification fixtures.

@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+gitjuke-model = { path = "../gitjuke-model" }
+gitjuke-github = { path = "../gitjuke-github" }
 sha2 = "0.10.9"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["raw_value"] }
@@ -12,7 +14,6 @@ tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "io
 tokio-util = { version = "0.7", features = ["rt"] }
 libc = "0.2"
 thiserror = "2"
-httpdate = "1"
 
 [dev-dependencies]
 tempfile = "3"

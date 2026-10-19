@@ -1109,7 +1109,7 @@ dependencies = [
 
 [[package]]
 name = "gitjuke"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "cc",
  "gitjuke-core",
@@ -1128,7 +1128,8 @@ dependencies = [
 name = "gitjuke-core"
 version = "0.1.0"
 dependencies = [
- "httpdate",
+ "gitjuke-github",
+ "gitjuke-model",
  "libc",
  "rusqlite",
  "serde",
@@ -1138,6 +1139,29 @@ dependencies = [
  "thiserror 2.0.21",
  "tokio",
  "tokio-util",
+]
+
+[[package]]
+name = "gitjuke-github"
+version = "0.1.0"
+dependencies = [
+ "gitjuke-model",
+ "httpdate",
+ "libc",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+ "thiserror 2.0.21",
+ "tokio",
+ "tokio-util",
+]
+
+[[package]]
+name = "gitjuke-model"
+version = "0.1.0"
+dependencies = [
+ "serde",
 ]
 
 [[package]]
