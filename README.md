@@ -25,7 +25,7 @@ Both screenshots show the native app reading public pull requests from [GitHub C
 
 GitJuke is an early development build for **Apple Silicon Macs running macOS 15 or later**. Some features are still being tested.
 
-1. [Download GitJuke v0.3.0](https://github.com/hmrguez/GitJuke/releases/download/v0.3.0/GitJuke_0.3.0_aarch64.dmg). The app is Developer ID signed and notarized by Apple.
+1. [Download GitJuke v0.3.1](https://github.com/hmrguez/GitJuke/releases/download/v0.3.1/GitJuke_0.3.1_aarch64.dmg). The app is Developer ID signed and notarized by Apple.
 2. Open the DMG and drag **GitJuke.app** into **Applications**, then eject the disk image.
 3. Install [GitHub CLI](https://cli.github.com/) if needed, then run `gh auth login` in Terminal to sign in to GitHub.
 4. Open **GitJuke** from Applications. It uses your GitHub CLI login.

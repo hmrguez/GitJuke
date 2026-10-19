@@ -1,4 +1,4 @@
-//! Independent cursor pages. No rendered HTML, raw source reconstruction or progress publication.
+//! A combined initial view followed by independent cursor pages. No rendered HTML, raw source reconstruction or progress publication.
 use crate::{
     Error, Result,
     changes::{hash, valid_sha},
@@ -35,13 +35,14 @@ impl ConversationJob {
             || !valid_sha(&self.head)
             || !matches!(
                 self.source.as_str(),
-                "comments" | "reviews" | "threads" | "replies" | "destination"
+                "initial" | "comments" | "reviews" | "threads" | "replies" | "destination"
             )
             || self.thread.is_some() != matches!(self.source.as_str(), "replies" | "destination")
             || self
                 .thread
                 .as_ref()
                 .is_some_and(|v| v.is_empty() || v.len() > 256)
+            || (self.source == "initial" && self.after.is_some())
             || (self.source == "destination"
                 && (self.after.is_some()
                     || self
@@ -71,13 +72,26 @@ impl ConversationJob {
     pub fn query(&self, first: usize) -> Value {
         let (owner, name) = self.repo.split_once('/').unwrap();
         let fields = "id url body createdAt author { login }";
-        let connection=match self.source.as_str(){
-   "comments"=>format!("comments(first:$first,after:$after) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {fields} }} }}"),
-   "reviews"=>format!("reviews(first:$first,after:$after) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {fields} state submittedAt }} }}"),
-   "threads"=>"reviewThreads(first:$first,after:$after) { totalCount pageInfo { hasNextPage endCursor } nodes { id path diffSide line startLine startDiffSide originalLine originalStartLine isOutdated isResolved comments(first:1) { nodes { id url createdAt commit { oid } originalCommit { oid } } } } }".into(),
-   _=>"reviewThreads(first:1) { totalCount }".to_owned(),
-  };
-        let query = if self.source == "destination" {
+        let root_fields = format!("{fields} commit {{ oid }} originalCommit {{ oid }}");
+        let threads = format!(
+            "reviewThreads(first:$first,after:$after) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ id path diffSide line startLine startDiffSide originalLine originalStartLine isOutdated isResolved comments(first:1) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {root_fields} }} }} }} }}"
+        );
+        let connection = match self.source.as_str() {
+            "comments" => format!(
+                "comments(first:$first,after:$after) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {fields} }} }}"
+            ),
+            "reviews" => format!(
+                "reviews(first:$first,after:$after) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {fields} state submittedAt }} }}"
+            ),
+            "threads" => threads.clone(),
+            _ => "reviewThreads(first:1) { totalCount }".to_owned(),
+        };
+        let query = if self.source == "initial" {
+            let threads = threads.replace(",after:$after", "");
+            format!(
+                "query ConversationInitial($owner:String!,$name:String!,$number:Int!,$first:Int!) {{ repository(owner:$owner,name:$name) {{ pullRequest(number:$number) {{ id headRefOid comments(first:$first) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {fields} }} }} reviews(first:$first) {{ totalCount pageInfo {{ hasNextPage endCursor }} nodes {{ {fields} state submittedAt }} }} {threads} }} }} rateLimit {{ cost remaining resetAt }} }}"
+            )
+        } else if self.source == "destination" {
             let ownership = "number repository { nameWithOwner }";
             format!(
                 "query ConversationDestination($owner:String!,$name:String!,$number:Int!,$thread:ID!) {{ repository(owner:$owner,name:$name) {{ pullRequest(number:$number) {{ id headRefOid }} }} node(id:$thread) {{ __typename ... on IssueComment {{ {fields} pullRequest {{ {ownership} }} }} ... on PullRequestReview {{ {fields} state pullRequest {{ {ownership} }} }} ... on PullRequestReviewComment {{ {fields} fullDatabaseId pullRequest {{ {ownership} }} }} }} rateLimit {{ cost remaining resetAt }} }}"
@@ -94,6 +108,9 @@ impl ConversationJob {
         let mut variables = json!({"owner":owner,"name":name,"number":self.number,"first":first,"after":self.after});
         if self.source == "destination" {
             variables.as_object_mut().unwrap().remove("first");
+            variables.as_object_mut().unwrap().remove("after");
+        }
+        if self.source == "initial" {
             variables.as_object_mut().unwrap().remove("after");
         }
         if let Some(thread) = &self.thread {
@@ -136,6 +153,8 @@ pub struct Thread {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConversationPage {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub seeds: Vec<ConversationSeed>,
     #[serde(default)]
     pub destination_anchor: Option<Thread>,
     pub head: String,
@@ -146,6 +165,33 @@ pub struct ConversationPage {
     pub next: Option<String>,
     pub total: u64,
     pub complete: bool,
+}
+/// A source's first page, including a thread identity for seeded replies.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ConversationSeed {
+    pub thread: Option<String>,
+    pub page: ConversationPage,
+}
+impl ConversationPage {
+    pub fn set_generation(&mut self, generation: u64) {
+        self.generation = generation;
+        for seed in &mut self.seeds {
+            seed.page.set_generation(generation);
+        }
+    }
+    pub fn body_bytes(&self) -> usize {
+        self.messages
+            .iter()
+            .filter_map(|m| m.body.as_ref())
+            .map(String::len)
+            .sum::<usize>()
+            + self
+                .seeds
+                .iter()
+                .map(|s| s.page.body_bytes())
+                .sum::<usize>()
+    }
 }
 /// Coordinates supplied by the exact REST review-comment identity, never reconstructed.
 pub fn destination_anchor(v: &Value, j: &ConversationJob, message: &Message) -> Result<Thread> {
@@ -220,6 +266,33 @@ pub fn parse(body: &Value, j: &ConversationJob, first: usize) -> Result<Conversa
         return Err(Error::Safe(
             "Conversation revision changed. Update the PR before reading it.".into(),
         ));
+    }
+    if j.source == "initial" {
+        let mut page = ConversationPage {
+            seeds: vec![],
+            destination_anchor: None,
+            head: j.head.clone(),
+            generation: 0,
+            source: j.source.clone(),
+            messages: vec![],
+            threads: vec![],
+            next: None,
+            total: 0,
+            complete: true,
+        };
+        for source in ["comments", "reviews", "threads"] {
+            let job = ConversationJob {
+                source: source.into(),
+                ..j.clone()
+            };
+            let child = parse(body, &job, first)?;
+            page.complete &= child.complete && child.seeds.iter().all(|seed| seed.page.complete);
+            page.seeds.push(ConversationSeed {
+                thread: None,
+                page: child,
+            });
+        }
+        return Ok(page);
     }
     if j.source == "destination" {
         let n = &body["data"]["node"];
@@ -297,6 +370,7 @@ pub fn parse(body: &Value, j: &ConversationJob, first: usize) -> Result<Conversa
         return Err(schema());
     }
     let mut p = ConversationPage {
+        seeds: vec![],
         destination_anchor: None,
         head: j.head.clone(),
         generation: 0,
@@ -314,6 +388,21 @@ pub fn parse(body: &Value, j: &ConversationJob, first: usize) -> Result<Conversa
             return Err(schema());
         }
         if j.source == "threads" {
+            // Parse the nested first comment with the same ownership, cursor and
+            // body bounds as an independently loaded reply page.
+            let reply_job = ConversationJob {
+                source: "replies".into(),
+                thread: Some(id.clone()),
+                after: None,
+                ..j.clone()
+            };
+            let mut wrapped = body.clone();
+            wrapped["data"]["node"] = json!({"id":id,"pullRequest":{"number":j.number,"repository":{"nameWithOwner":j.repo}},"comments":n["comments"]});
+            let replies = parse(&wrapped, &reply_job, 1)?;
+            p.seeds.push(ConversationSeed {
+                thread: Some(id.clone()),
+                page: replies,
+            });
             let root = &n["comments"]["nodes"][0];
             p.threads.push(Thread {
                 id,
@@ -397,6 +486,65 @@ mod tests {
     }
     fn response(j: &ConversationJob, n: Value) -> Value {
         json!({"data":{"repository":{"pullRequest":{"headRefOid":j.head,"comments":{"totalCount":1,"pageInfo":{"hasNextPage":false,"endCursor":null},"nodes":[n]}}}}})
+    }
+    #[test]
+    fn initial_query_combines_sources_and_first_thread_bodies() {
+        let mut j = job();
+        j.source = "initial".into();
+        assert!(j.validate().is_ok());
+        let query = j.query(20);
+        let text = query["query"].as_str().unwrap();
+        for field in [
+            "comments(first:$first",
+            "reviews(first:$first",
+            "reviewThreads(first:$first",
+            "comments(first:1)",
+            "body",
+            "pageInfo",
+        ] {
+            assert!(text.contains(field), "missing {field}");
+        }
+        assert!(!text.contains("$after"));
+        j.after = Some("cursor".into());
+        assert!(j.validate().is_err());
+    }
+    #[test]
+    fn initial_parse_keeps_all_cursors_and_rejects_partial_nested_sources() {
+        let j = ConversationJob {
+            source: "initial".into(),
+            ..job()
+        };
+        let connection = |nodes: Value, total: u64, next: Option<&str>| json!({"nodes":nodes,"totalCount":total,"pageInfo":{"hasNextPage":next.is_some(),"endCursor":next}});
+        let root = json!({"id":"root","createdAt":"now","body":"Requested file change","author":{"login":"reviewer"}});
+        let thread = json!({"id":"T","path":"src/app.ts","diffSide":"RIGHT","isOutdated":false,"isResolved":false,"comments":connection(json!([root]),2,Some("reply-next"))});
+        let mut body = json!({"data":{"repository":{"pullRequest":{"headRefOid":j.head,
+            "comments":connection(json!([{"id":"C","createdAt":"now","body":"comment"}]),2,Some("comment-next")),
+            "reviews":connection(json!([{"id":"R","createdAt":"now","body":"review","state":"CHANGES_REQUESTED"}]),1,None),
+            "reviewThreads":connection(json!([thread]),2,Some("thread-next"))}}}});
+        let mut page = parse(&body, &j, 20).unwrap();
+        assert_eq!(page.seeds.len(), 3);
+        assert_eq!(page.seeds[0].page.next.as_deref(), Some("comment-next"));
+        assert!(page.seeds[1].page.next.is_none());
+        assert_eq!(page.seeds[2].page.next.as_deref(), Some("thread-next"));
+        let reply = &page.seeds[2].page.seeds[0];
+        assert_eq!(reply.thread.as_deref(), Some("T"));
+        assert_eq!(
+            reply.page.messages[0].body.as_deref(),
+            Some("Requested file change")
+        );
+        assert_eq!(reply.page.next.as_deref(), Some("reply-next"));
+        assert!(!page.complete);
+        assert_eq!(
+            page.body_bytes(),
+            "commentreviewRequested file change".len()
+        );
+        page.set_generation(7);
+        assert_eq!(page.seeds[2].page.seeds[0].page.generation, 7);
+        body["data"]["repository"]["pullRequest"]["reviewThreads"]["nodes"][0]["comments"]["pageInfo"] =
+            Value::Null;
+        assert!(parse(&body, &j, 20).is_err());
+        body["data"]["repository"]["pullRequest"]["reviews"] = Value::Null;
+        assert!(parse(&body, &j, 20).is_err());
     }
     #[test]
     fn inclusive_utf8_and_unavailable_bodies() {

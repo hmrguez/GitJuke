@@ -72,6 +72,59 @@ async fn failure(r: &Runtime, j: &ConversationJob) {
     .await;
 }
 #[tokio::test]
+async fn combined_initial_view_seeds_sources_and_first_comments_in_one_graphql_read() {
+    let _gate = FIXTURES.lock().await;
+    let (d, r) = start().await;
+    let initial = read(&r, &job("initial")).await;
+    assert_eq!(initial.seeds.len(), 3);
+    for (seed, source) in initial.seeds.iter().zip(["comments", "reviews", "threads"]) {
+        assert_eq!(seed.page.source, source);
+        assert_eq!(seed.page.next.as_deref(), Some("20"));
+        assert_eq!(seed.page.generation, initial.generation);
+        let saved = r.conversation(&job(source)).unwrap().data.unwrap();
+        assert_eq!(saved.source, source);
+    }
+    let threads = &initial.seeds[2].page;
+    assert_eq!(threads.seeds.len(), 20);
+    for (thread, seed) in threads.threads.iter().zip(&threads.seeds) {
+        assert_eq!(seed.thread.as_deref(), Some(thread.id.as_str()));
+        assert_eq!(seed.page.messages.len(), 1);
+        assert_eq!(seed.page.messages[0].body.as_deref(), Some("hello 0"));
+        assert_eq!(seed.page.next.as_deref(), Some("1"));
+        assert_eq!(seed.page.generation, initial.generation);
+        let reply_job = ConversationJob {
+            thread: Some(thread.id.clone()),
+            ..job("replies")
+        };
+        assert_eq!(
+            r.conversation(&reply_job)
+                .unwrap()
+                .data
+                .unwrap()
+                .messages
+                .len(),
+            1
+        );
+    }
+    let reads = std::fs::read_to_string(d.path().join("reads")).unwrap();
+    let queries: Vec<Value> = reads
+        .lines()
+        .map(|line| serde_json::from_str(line).unwrap())
+        .filter(|v: &Value| {
+            v["query"]
+                .as_str()
+                .is_some_and(|q| q.starts_with("query Conversation"))
+        })
+        .collect();
+    assert_eq!(queries.len(), 1);
+    assert_eq!(queries[0]["query"], "query ConversationInitial");
+    let mut more = job("comments");
+    more.after = initial.seeds[0].page.next.clone();
+    let next = read(&r, &more).await;
+    assert_eq!(next.messages[0].id, "comments_20");
+    r.shutdown().await;
+}
+#[tokio::test]
 async fn independent_pages_thread_replies_and_ipc_subdivision() {
     let _gate = FIXTURES.lock().await;
     let (d, r) = start().await;

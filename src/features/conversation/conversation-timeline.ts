@@ -22,6 +22,9 @@ export class ConversationTimeline {
  disposed=false;
  revision:number;
  private generation:number|undefined;
+ private jobs=new Map<string,ConversationJob>();
+ private validation:Promise<void>|undefined;
+ private seeded=new Map<string,string|null>();
  private version=0;
  private listeners=new Set<()=>void>();
  private tail:Promise<unknown>=Promise.resolve();
@@ -63,6 +66,7 @@ export class ConversationTimeline {
    }
    if(this.disposed||!value.data||value.revision<this.revision)throw new Error('Unavailable');
    this.check(value.data,job);
+   if(job.source!=='initial')this.jobs.set(key,job);
    for(const message of value.data.messages)this.retain(message,job);
    return value.data;
   });
@@ -82,28 +86,51 @@ export class ConversationTimeline {
  private messages(page:ConversationPage,job:ConversationJob):TimelineMessage[]{
   return page.messages.map(({body,...metadata})=>({kind:'message',id:metadata.id,time:metadata.time,metadata,job}));
  }
- private async pages(source:ConversationJob['source'],thread:string|null,receive:(page:ConversationPage,job:ConversationJob)=>void,force=false){
-  let after:string|null=null;const visited=new Set<string>();
+ private ingest(page:ConversationPage,job:ConversationJob){
+  if(job.source!=='initial'){
+   this.jobs.set(jobKey(job),job);
+   for(const message of page.messages){
+    const previous=this.bodies.get(messageKey({job,id:message.id}));
+    if(previous?.digest!==message.digest||previous?.state!==message.state)this.retain(message,job);
+   }
+   if(job.source==='replies'){
+    const entries=new Map((this.replies.get(job.thread!)??[]).map(entry=>[entry.id,entry]));
+    this.messages(page,job).forEach(entry=>entries.set(entry.id,entry));
+    this.replies.set(job.thread!,chronological([...entries.values()]));
+   }else{
+    const incoming:TimelineEntry[]=job.source==='threads'?page.threads.map(thread=>({kind:'thread',id:thread.id,time:thread.time,thread,job})):this.messages(page,job);
+    const entries=new Map(this.entries.map(entry=>[`${entry.kind}:${entry.id}`,entry]));
+    incoming.forEach(entry=>entries.set(`${entry.kind}:${entry.id}`,entry));
+    this.entries=chronological([...entries.values()]);
+   }
+  }
+  for(const seed of page.seeds??[]){
+   const child:ConversationJob={...this.identity,source:seed.page.source as ConversationJob['source'],thread:seed.thread,after:null,seq:0};
+   this.seeded.set(jobKey(child),seed.page.next);
+   this.ingest(seed.page,child);
+  }
+ }
+ private async pages(source:ConversationJob['source'],thread:string|null,force=false,after:string|null=null){
+  const visited=new Set<string>();
   do{
    const job:ConversationJob={...this.identity,source,thread,after,seq:0};
    const page=await this.load(job,force);if(this.disposed)return;
-   receive(page,job);this.emit();
+   this.ingest(page,job);this.emit();
    after=page.next;
    if(after){if(visited.has(after))throw new Error('Repeated page');visited.add(after);}
   }while(after&&!this.disposed);
  }
  async start(){
-  for(const source of ['comments','reviews','threads'] as const){
-   if(this.disposed)return;
-   try{
-    await this.pages(source,null,(page,job)=>{
-     const incoming:TimelineEntry[]=source==='threads'?page.threads.map(thread=>({kind:'thread',id:thread.id,time:thread.time,thread,job})):this.messages(page,job);
-     const entries=new Map(this.entries.map(entry=>[`${entry.kind}:${entry.id}`,entry]));
-     incoming.forEach(entry=>entries.set(`${entry.kind}:${entry.id}`,entry));
-     this.entries=chronological([...entries.values()]);
-    });
-   }catch{if(!this.disposed){this.error=true;this.emit();}}
-  }
+  try{
+   const job:ConversationJob={...this.identity,source:'initial',thread:null,after:null,seq:0};
+   const initial=await this.load(job);if(this.disposed)return;
+   // Index all initial sources and their root comments before notifying React.
+   this.ingest(initial,job);this.emit();
+   for(const seed of initial.seeds??[]){
+    if(this.disposed)return;
+    if(seed.page.next)try{await this.pages(seed.page.source as ConversationJob['source'],seed.thread,false,seed.page.next);}catch{if(!this.disposed)this.reportError();}
+   }
+  }catch{if(!this.disposed)this.reportError();}
   this.finished=true;this.emit();
  }
  body(entry:TimelineMessage){return this.bodies.get(messageKey(entry));}
@@ -117,11 +144,9 @@ export class ConversationTimeline {
  }
  loadReplies(entry:TimelineThread){
   const existing=this.replyLoads.get(entry.id);if(existing)return existing;
-  const work=this.pages('replies',entry.id,(page,job)=>{
-   const entries=new Map((this.replies.get(entry.id)??[]).map(reply=>[reply.id,reply]));
-   this.messages(page,job).forEach(reply=>entries.set(reply.id,reply));
-   this.replies.set(entry.id,chronological([...entries.values()]));
-  }).catch(()=>{if(!this.disposed){this.error=true;this.emit();}});
+  const key=jobKey({...entry.job,source:'replies',thread:entry.id,after:null});
+  const after=this.seeded.get(key);
+  const work=(this.seeded.has(key)&&after===null?Promise.resolve():this.pages('replies',entry.id,false,after??null)).catch(()=>{if(!this.disposed)this.reportError();});
   this.replyLoads.set(entry.id,work);return work;
  }
  acceptPosted(message:ConversationMessage,thread:string|null=null){
@@ -132,20 +157,35 @@ export class ConversationTimeline {
   if(thread)this.replies.set(thread,chronological([...(this.replies.get(thread)??[]),entry]));
   else this.entries=chronological([...this.entries,entry]);
   this.emit();
-  void this.pages(thread?'replies':'comments',thread,(page,job)=>{
-   const incoming=this.messages(page,job);
-   if(thread){const entries=new Map((this.replies.get(thread)??[]).map(entry=>[entry.id,entry]));incoming.forEach(entry=>entries.set(entry.id,entry));this.replies.set(thread,chronological([...entries.values()]));}
-   else{const entries=new Map(this.entries.map(entry=>[`${entry.kind}:${entry.id}`,entry]));incoming.forEach(entry=>entries.set(`message:${entry.id}`,entry));this.entries=chronological([...entries.values()]);}
-  },true).catch(()=>this.reportError());
+  void this.pages(thread?'replies':'comments',thread,true).catch(()=>this.reportError());
  }
- async validate(){
-  if(this.disposed||!this.entries.length)return;
+ validate(){
+  if(this.validation)return this.validation;
+  const work=this.validatePages();this.validation=work;
+  void work.finally(()=>{this.validation=undefined;}).catch(()=>{});
+  return work;
+ }
+ private async validatePages(){
+  if(this.disposed||!this.jobs.size)return;
   try{
-   const job:ConversationJob={...this.identity,source:'comments',thread:null,after:null,seq:0};
-   const value=await command<Snapshot<ConversationPage|null>>('read_conversation',{job});
-   if(this.disposed||value.revision<this.revision)return;
-   if(!value.data)throw new Error('Removed');this.check(value.data,job);
+   // Store/watch revisions update the existing index. They never restart the
+   // reader or turn an unrelated revision into a GitHub refresh.
+   const jobs=new Map(this.jobs);
+   for(const [key,job] of jobs){
+    const value=await command<Snapshot<ConversationPage|null>>('read_conversation',{job});
+    if(this.disposed)return;
+    if(value.revision<this.revision)continue;
+    if(!value.data){if(this.jobs.has(key))throw new Error('Removed');continue;}
+    this.check(value.data,job);this.jobs.set(key,job);
+    if(value.data.next){
+     const next={...job,after:value.data.next};
+     if(!jobs.has(jobKey(next)))jobs.set(jobKey(next),next);
+    }
+    this.ingest(value.data,job);
+   }
+   this.emit();
   }catch{if(!this.disposed){this.entries=[];this.replies.clear();this.bodies.clear();this.bytes=0;this.error=true;this.emit();this.close();}}
  }
+
  close(){this.disposed=true;this.bodies.clear();this.bytes=0;this.timers.forEach((resolve,timer)=>{clearTimeout(timer);resolve();});this.timers.clear();}
 }

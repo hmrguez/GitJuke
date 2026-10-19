@@ -19,6 +19,15 @@ def commit(sha,offset=0):
   if i%2:nodes.append({'__typename':'StatusContext','id':'SC_'+str(i),'context':'External '+str(i),'state':'SUCCESS','createdAt':config.get('check_time','2026-10-17T00:00:00Z'),'targetUrl':'https://ci.example/check'})
   else:nodes.append({'__typename':'CheckRun','id':'CR_'+str(i),'name':'Actions '+str(i),'status':'COMPLETED','conclusion':'SUCCESS','detailsUrl':('https://github.com/a/b/actions/runs/'+str(2+i)+'/job/'+str(100+i)) if config.get('actions_logs') else 'https://github.com/a/b/actions/runs/2','checkSuite':{'id':'CS_'+str(i),'status':'COMPLETED','conclusion':'SUCCESS','updatedAt':config.get('check_time','2026-10-17T00:00:00Z'),'commit':{'oid':sha},'workflowRun':{'databaseId':2+i,'runAttempt':config.get('attempt',1)}}})
  return {'oid':sha,'statusCheckRollup':{'contexts':{'totalCount':count,'pageInfo':{'hasNextPage':offset+size<count,'endCursor':str(offset+size) if offset+size<count else None},'nodes':nodes}}}
+def conversation_connection(source,offset,size,head):
+ total=config.get('conversation_count',105);nodes=[]
+ for i in range(offset,min(total,offset+size)):
+  if source=='threads':
+   replies=conversation_connection('replies',0,1,head)
+   replies['nodes'][0].update(commit={'oid':head},originalCommit={'oid':'b'*40})
+   nodes.append({'id':'T_'+str(i),'path':'file-'+str(i)+'.txt','diffSide':'RIGHT','line':1,'originalLine':1,'startLine':None,'startDiffSide':None,'originalStartLine':None,'isResolved':i%2==0,'isOutdated':i%3==0,'comments':replies})
+  else:nodes.append({'id':source+'_'+str(i),'url':'https://github.com/a/b/pull/1#'+('pullrequestreview-' if source=='reviews' else 'discussion_r' if source=='replies' else 'issuecomment-')+str(i),'createdAt':'2026-10-18T00:00:00Z','author':{'login':'reader'},'body':config.get('conversation_body','hello '+str(i)),'state':'APPROVED'})
+ return {'totalCount':total,'pageInfo':{'hasNextPage':offset+size<total,'endCursor':str(offset+size) if offset+size<total else None},'nodes':nodes}
 status=200;remaining=4900;bucket='core'
 if query and config.get('overflow_batches') and query['query'].startswith('query WatchHeads') and len(query.get('variables',{}).get('ids',[]))>2:
  sys.stdout.write('x'*(16*1024*1024+1));sys.exit(0)
@@ -42,17 +51,17 @@ if query:
  elif q.startswith('query Conversation'):
   if config.get('slow_conversation'):
    (root/'conversation-started').write_text('started');time.sleep(config['slow_conversation'])
-  source='replies' if 'thread' in v else 'threads' if 'reviewThreads(first:$first' in q else 'reviews' if 'reviews(first:' in q else 'comments'
-  total=config.get('conversation_count',105);offset=int(v.get('after') or 0);size=v['first'];head=config.get('conversation_head',config.get('head','abc'))
-  nodes=[]
-  for i in range(offset,min(total,offset+size)):
-   if source=='threads':nodes.append({'id':'T_'+str(i),'path':'file-'+str(i)+'.txt','diffSide':'RIGHT','line':1,'originalLine':1,'startLine':None,'startDiffSide':None,'originalStartLine':None,'isResolved':i%2==0,'isOutdated':i%3==0,'comments':{'nodes':[{'id':'C_'+str(i),'createdAt':'2026-10-18T00:00:00Z','url':'https://github.com/a/b/pull/1#discussion_r'+str(i),'commit':{'oid':head},'originalCommit':{'oid':'b'*40}}]}})
-   else:nodes.append({'id':source+'_'+str(i),'url':'https://github.com/a/b/pull/1#'+('pullrequestreview-' if source=='reviews' else 'discussion_r' if source=='replies' else 'issuecomment-')+str(i),'createdAt':'2026-10-18T00:00:00Z','author':{'login':'reader'},'body':config.get('conversation_body','hello '+str(i)),'state':'APPROVED'})
-  connection={'totalCount':total,'pageInfo':{'hasNextPage':offset+size<total,'endCursor':str(offset+size) if offset+size<total else None},'nodes':nodes}
+  offset=int(v.get('after') or 0);size=v['first'];head=config.get('conversation_head',config.get('head','abc'))
   prdata={'id':'PR_1','headRefOid':head}
-  if source!='replies':prdata['reviewThreads' if source=='threads' else source]=connection
   body={'data':{'repository':{'pullRequest':prdata}}}
-  if source=='replies':body['data']['node']={'id':v['thread'],'pullRequest':{'number':v['number'],'repository':{'nameWithOwner':config.get('thread_repo','a/b')}},'comments':connection}
+  if q.startswith('query ConversationInitial'):
+   for source in ['comments','reviews','threads']:
+    prdata['reviewThreads' if source=='threads' else source]=conversation_connection(source,0,size,head)
+  else:
+   source='replies' if 'thread' in v else 'threads' if 'reviewThreads(first:$first' in q else 'reviews' if 'reviews(first:' in q else 'comments'
+   connection=conversation_connection(source,offset,size,head)
+   if source=='replies':body['data']['node']={'id':v['thread'],'pullRequest':{'number':v['number'],'repository':{'nameWithOwner':config.get('thread_repo','a/b')}},'comments':connection}
+   else:prdata['reviewThreads' if source=='threads' else source]=connection
   if config.get('deny_conversation'):body={'data':{'repository':{'pullRequest':None}},'errors':[{'type':'FORBIDDEN'}]}
  elif q.startswith('query Authored'):
   total=config.get('authored',1);offset=int(v.get('after') or 0);size=int(v.get('first',100));ids=config.get('authored_ids',list(range(1,total+1)))

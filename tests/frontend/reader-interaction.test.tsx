@@ -15,7 +15,12 @@ const pr={id:'pr',repo:'a/b',number:1,head:job.head,base:'main',title:'Reader',u
 const thread:ReviewThread={id:'T',path:'one.ts',side:'RIGHT',line:1,startLine:null,startSide:null,originalLine:null,originalStartLine:null,commit:job.head,originalCommit:null,outdated:false,resolved:false,url:null,time:'now'};
 let readRevision=1;
 let root:Root,host:HTMLElement,calls:{name:string;args:any}[],read:(j:ConversationJob)=>Promise<ConversationPage|null>;
-const page=(j:ConversationJob):ConversationPage=>({head:j.head,source:j.source,messages:j.source==='threads'?[]:[{...message,body:j.after?'second page':'first page',bytes:10}],threads:j.source==='threads'?[thread]:[],generation:1,next:j.after?null:'cursor',total:2,complete:!!j.after,destinationAnchor:null});
+const page=(j:ConversationJob):ConversationPage=>{
+ const data:ConversationPage={head:j.head,source:j.source,messages:j.source==='threads'||j.source==='initial'?[]:[{...message,body:j.after?'second page':'first page',bytes:10}],threads:j.source==='threads'?[thread]:[],generation:1,next:j.after||j.source==='initial'?null:'cursor',total:2,complete:!!j.after,destinationAnchor:null};
+ if(j.source==='initial')data.seeds=(['comments','reviews','threads'] as const).map(source=>({thread:null,page:page({...j,source})}));
+ if(j.source==='threads')data.seeds=[{thread:thread.id,page:page({...j,source:'replies',thread:thread.id,after:null})}];
+ return data;
+};
 const settle=()=>act(async()=>{await new Promise(resolve=>setTimeout(resolve,0));});
 const button=(name:string)=>Array.from(host.querySelectorAll('button')).find(b=>b.textContent===name)!;
 async function click(name:string){const el=button(name);expect(el).toBeDefined();await act(async()=>{el.focus();el.click();});await settle();}
@@ -107,7 +112,7 @@ test('segmented exact destinations retain traversal across current-anchor patch 
 });
 
 test('leaving a partial exact destination releases authorization and remounts fresh segment coverage',async()=>{
- read=async j=>({...page(j),messages:[message],threads:[],next:null,total:1});
+ read=async j=>j.source==='initial'?page(j):({...page(j),messages:[message],threads:[],next:null,total:1});
  const props={pr,revision:1,currentHead:pr.head};
  await render(<Conversation key="opened" {...props} destination="target"/>);await click('Next part');
  await render(<Conversation key="ordinary" {...props}/>);expect(button('Next part')).toBeUndefined();

@@ -235,7 +235,7 @@ impl Runtime {
         }
         let mut first = if j.source == "destination" {
             1
-        } else if j.source == "threads" {
+        } else if matches!(j.source.as_str(), "threads" | "initial") {
             20
         } else {
             50
@@ -304,14 +304,7 @@ impl Runtime {
                         Some(destination_anchor(&coordinates.body, j, &p.messages[0])?);
                 }
             }
-            if serde_json::to_vec(&p)?.len() > PAGE_BYTES
-                || p.messages
-                    .iter()
-                    .filter_map(|m| m.body.as_ref())
-                    .map(String::len)
-                    .sum::<usize>()
-                    > 2 * 1024 * 1024
-            {
+            if serde_json::to_vec(&p)?.len() > PAGE_BYTES || p.body_bytes() > 2 * 1024 * 1024 {
                 if first == 1 {
                     return Err(Error::Safe(
                         "Conversation metadata exceeds the page limit. Open GitHub.".into(),
@@ -349,8 +342,29 @@ impl Runtime {
             return Err(Error::Denied);
         }
         let mut i = self.lock()?;
-        page.generation = g;
+        page.set_generation(g);
         if Self::conversation_valid(&i, j, g, c)? {
+            // Publish individual source pages for later pagination, posting and
+            // cache validation before making the complete initial view readable.
+            fn save_seeds(
+                store: &mut crate::store::Store,
+                job: &ConversationJob,
+                page: &ConversationPage,
+                generation: u64,
+            ) -> Result<()> {
+                for seed in &page.seeds {
+                    let child = ConversationJob {
+                        source: seed.page.source.clone(),
+                        thread: seed.thread.clone(),
+                        after: None,
+                        ..job.clone()
+                    };
+                    save_seeds(store, &child, &seed.page, generation)?;
+                    store.put(&child.key(), &seed.page, generation)?;
+                }
+                Ok(())
+            }
+            save_seeds(&mut i.store, j, &page, g)?;
             i.store.put(&j.key(), &page, g)?;
             i.store.restore_conversation(&j.repo, j.number)?;
         }

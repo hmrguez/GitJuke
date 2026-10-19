@@ -1109,7 +1109,7 @@ dependencies = [
 
 [[package]]
 name = "gitjuke"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "cc",
  "gitjuke-core",

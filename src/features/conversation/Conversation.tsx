@@ -7,6 +7,11 @@ import {ChevronDown,ChevronRight,Reply} from 'lucide-react';
 import {Markdown} from '../../components/Markdown';
 import {ConversationTimeline} from './ConversationTimeline';
 type ConversationProps={pr:Overview;revision:number;currentHead:string;context?:PatchContext;inline?:boolean;destination?:string;onBack?:()=>void;onBrowse?:()=>void};
+export function ConversationTab({active,...props}:ConversationProps&{active:boolean}){
+ const [opened,setOpened]=useState(active);
+ useEffect(()=>{if(active)setOpened(true);},[active]);
+ return <div hidden={!active}>{(active||opened)&&<Conversation {...props}/>}</div>;
+}
 export function Conversation(props:ConversationProps){
  return props.destination?<DestinationConversation {...props}/>:<ConversationTimeline {...props}/>;
 }

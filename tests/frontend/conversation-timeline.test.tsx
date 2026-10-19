@@ -2,7 +2,7 @@ import React,{act} from 'react';
 import {createRoot,type Root} from 'react-dom/client';
 import {Window} from 'happy-dom';
 import {beforeEach,afterEach,expect,test} from 'bun:test';
-import {Conversation} from '../../src/features/conversation/Conversation';
+import {Conversation,ConversationTab} from '../../src/features/conversation/Conversation';
 import {ConversationTimeline,chronological,type TimelineMessage} from '../../src/features/conversation/conversation-timeline';
 import type {ConversationJob,ConversationPage,ConversationMessage,Overview,ReviewThread} from '../../src/lib/ipc';
 const head='a'.repeat(40),pr={id:'PR',repo:'a/b',number:1,head,base:'b'.repeat(40),title:'Timeline',url:'',body:null,bodyLimited:false,state:'open',draft:false,author:'author',stack:{state:'none'}} as Overview;
@@ -11,13 +11,36 @@ const thread:ReviewThread={id:'thread',path:'src/review.ts',line:8,side:'RIGHT',
 const page=(job:ConversationJob):ConversationPage=>({head,source:job.source,generation:1,next:null,total:0,complete:true,messages:[],threads:[]});
 let dom:Window,host:HTMLElement,root:Root,calls:{name:string;job:ConversationJob}[],read:(job:ConversationJob)=>Promise<any>;
 const snapshot=(data:unknown)=>({data,error:null,revision:10,complete:true,fetchedAt:1});
+// Emulate the native combined response while individual-page fixtures remain
+// available for pagination, store revisions and body-cache reads.
+async function readView(job:ConversationJob):Promise<any>{
+ if(job.source!=='initial')return read(job);
+ const seeds=[];let fetchedAt=Infinity,generation=1;
+ for(const source of ['comments','reviews','threads'] as const){
+  const child={...job,source};const value=await read(child);
+  if(!value.data||value.error)return value;
+  fetchedAt=Math.min(fetchedAt,value.fetchedAt??0);
+  const data={...value.data};
+  if(source==='comments')generation=data.generation;
+  if(source==='threads'){
+   data.seeds=[];
+   for(const thread of data.threads){
+    const replies=await read({...job,source:'replies',thread:thread.id});
+    if(!replies.data||replies.error)return replies;
+    data.seeds.push({thread:thread.id,page:replies.data});
+   }
+  }
+  seeds.push({thread:null,page:data});
+ }
+ return {...snapshot({...page(job),generation,seeds}),fetchedAt};
+}
 const settle=()=>act(async()=>{await new Promise(resolve=>setTimeout(resolve,0));});
 const render=async(node:React.ReactNode)=>{await act(async()=>root.render(node));await settle();await settle();};
 beforeEach(()=>{
  dom=new Window();Object.assign(globalThis,{window:dom,document:dom.document,HTMLElement:dom.HTMLElement,isTauri:true,IS_REACT_ACT_ENVIRONMENT:true,IntersectionObserver:class{constructor(private callback:any){}observe(){this.callback([{isIntersecting:true}]);}disconnect(){}}});
  host=document.createElement('div');document.body.append(host);root=createRoot(host);calls=[];
  read=async job=>snapshot({...page(job),messages:job.source==='comments'?[message(job.after?'comment-later':'comment-first',job.after?'14:00':'10:00')]:job.source==='reviews'?[message('review-approved','13:00')]:job.source==='replies'?[message(job.after?'reply-later':'reply-first',job.after?'12:30':'12:00')]:[],threads:job.source==='threads'?[thread]:[],next:(job.source==='comments'||job.source==='replies')&&!job.after?'next':null});
- (dom as any).__TAURI_INTERNALS__={invoke:async(name:string,args:any)=>{calls.push({name,job:args?.job});if(name==='read_conversation')return read(args.job);}};
+ (dom as any).__TAURI_INTERNALS__={invoke:async(name:string,args:any)=>{calls.push({name,job:args?.job});if(name==='read_conversation')return readView(args.job);}};
 });
 afterEach(async()=>{await act(async()=>root.unmount());host.remove();});
 
@@ -45,7 +68,7 @@ test('refresh replaces the timeline without retaining old comments or stealing k
 
 test('an authoritative removal clears the entire retained timeline and rejects a delayed page',async()=>{
  let resolve!:(value:any)=>void,blocked=false,removed=false;
- read=async job=>removed?snapshot(null):job.source==='reviews'?new Promise(r=>{blocked=true;resolve=r;}):snapshot({...page(job),messages:[message('private-comment','10:00')]});
+ read=async job=>removed?snapshot(null):job.source==='reviews'&&job.after?new Promise(r=>{blocked=true;resolve=r;}):snapshot({...page(job),next:job.source==='reviews'?'later':null,messages:[message('private-comment','10:00')]});
  await render(<Conversation pr={pr} currentHead={head} revision={1}/>);expect(blocked).toBe(true);expect(host.textContent).toContain('private-comment');
  removed=true;await render(<Conversation pr={pr} currentHead={head} revision={2}/>);
  expect(host.textContent).not.toContain('private-comment');
@@ -53,10 +76,10 @@ test('an authoritative removal clears the entire retained timeline and rejects a
  expect(host.textContent).not.toContain('late-review');expect(host.querySelectorAll('.timeline-entry')).toHaveLength(0);
 });
 
-test('a failed discussion source does not hide other kinds of review activity',async()=>{
+test('a failed combined source does not publish a partial initial discussion',async()=>{
  read=async job=>job.source==='comments'?{...snapshot(null),error:'permission failed'}:snapshot({...page(job),messages:job.source==='reviews'?[message('review-visible','13:00')]:[]});
  await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
- expect(host.textContent).toContain('review-visible');expect(host.textContent).toContain('Couldn’t load part of the discussion.');
+ expect(host.textContent).not.toContain('review-visible');expect(host.textContent).toContain('Couldn’t load part of the discussion.');
 });
 
 test('message body cache evicts older bodies at the 100-message boundary while keeping metadata navigable',async()=>{
@@ -74,14 +97,14 @@ test('ordering uses timestamps rather than lexical dates and has deterministic t
 
 test('cold timeline loads use one native request at a time and do not cancel sibling readers',async()=>{
  const requested=new Set<string>();let active=0,peak=0;
- read=async job=>requested.has(job.source)?snapshot(page(job)):{...snapshot(null),error:'Queued — loading'};
+ read=async job=>requested.has('initial')?snapshot(page(job)):{...snapshot(null),error:'Queued — loading'};
  (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
   calls.push({name,job:args?.job});
-  if(name==='read_conversation')return read(args.job);
+  if(name==='read_conversation')return readView(args.job);
   if(name==='request_conversation'){active++;peak=Math.max(peak,active);await new Promise(r=>setTimeout(r,0));requested.add(args.job.source);active--;}
  };
  await render(<Conversation pr={pr} currentHead={head} revision={1}/>);await settle();await settle();
- expect(peak).toBe(1);expect([...requested]).toEqual(['comments','reviews','threads']);
+ expect(peak).toBe(1);expect([...requested]).toEqual(['initial']);
  expect(calls.filter(c=>c.name==='cancel_conversation')).toHaveLength(0);
  expect(host.textContent).toContain('No discussion yet.');
 });
@@ -95,10 +118,10 @@ test('body cache respects the UTF-8 byte ceiling even below the message-count ce
  expect(reader.body(entries[0])).toBeUndefined();expect(reader.body(entries[1])?.body).toBe(body);expect(reader.body(entries[16])?.body).toBe(body);reader.close();
 });
 
-test('a changed account generation clears previously indexed discussion instead of mixing accounts',async()=>{
+test('a combined initial response with mixed account generations is rejected',async()=>{
  const reader=new ConversationTimeline({repo:pr.repo,number:1,head},1);
  read=async job=>snapshot({...page(job),generation:job.source==='comments'?1:2,messages:[message('private-'+job.source,'10:00')]});
- await reader.start();expect(reader.entries).toHaveLength(0);expect(reader.disposed).toBe(true);expect(reader.error).toBe(true);
+ await reader.start();expect(reader.entries).toHaveLength(0);expect(reader.error).toBe(true);
 });
 
 
@@ -231,7 +254,7 @@ test('opening a conversation discovers review threads added after a cached empty
   threads:job.source==='threads'&&refreshed.has('threads')?[reviewThread]:[]});
  const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
  (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
-  if(name==='request_conversation')refreshed.add(args.job.source);
+  if(name==='request_conversation'){refreshed.add(args.job.source);if(args.job.source==='initial')for(const source of ['comments','reviews','threads'])refreshed.add(source);}
   if(name==='post_conversation'){
    expect(args.thread).toBe('PRRT_review');expect(args.body).toBe('Addressed your suggestion.');
    return {...message('PRRC_posted','13:00',args.body),kind:'reply'};
@@ -269,7 +292,7 @@ test('page loads retain message bodies together without reads when rows become v
  expect(entries).toHaveLength(5);
  for(const entry of entries)expect(reader.body(entry)?.body).toBe(entry.id);
  const reads=calls.filter(call=>call.name==='read_conversation');
- expect(reads).toHaveLength(6);
+ expect(reads).toHaveLength(3);
  for(const entry of entries)await reader.show(entry);
  expect(calls.filter(call=>call.name==='read_conversation')).toHaveLength(reads.length);
  expect(calls.filter(call=>call.name==='request_conversation')).toHaveLength(0);
@@ -341,4 +364,76 @@ test('virtual rows preserve keyboard focus and typed reply drafts outside the vi
   intersections.get(row)!(false);
  });
  expect(row.querySelector('textarea')).toBe(input);expect(input.value).toBe('Keep this draft while scrolling');
+});
+
+
+test('switching reader tabs retains the loaded conversation without rereads or requests',async()=>{
+ const panel=(active:boolean)=><ConversationTab active={active} pr={pr} currentHead={head} revision={1}/>;
+ await render(panel(false));expect(calls).toHaveLength(0);
+ await render(panel(true));
+ const body=host.querySelector('.message-body');
+ const reads=calls.filter(c=>c.name==='read_conversation').length;
+ const requests=calls.filter(c=>c.name==='request_conversation').length;
+ await render(panel(false));await render(panel(true));
+ expect(host.querySelector('.message-body')===body).toBe(true);
+ expect(calls.filter(c=>c.name==='read_conversation')).toHaveLength(reads);
+ expect(calls.filter(c=>c.name==='request_conversation')).toHaveLength(requests);
+ expect(calls.filter(c=>c.name==='cancel_conversation')).toHaveLength(0);
+});
+
+test('store revisions merge new comments and replies into the retained timeline',async()=>{
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const saved=read;
+ read=async job=>{const value=await saved(job);return {...value,data:{...value.data,messages:[...value.data.messages,...(job.source==='comments'&&!job.after?[message('watch-comment','16:00')]:job.source==='replies'&&!job.after?[message('watch-reply','16:30')]:[])]}};};
+ const requests=calls.filter(c=>c.name==='request_conversation').length;
+ await render(<Conversation pr={pr} currentHead={head} revision={2}/>);
+ expect(host.textContent).toContain('watch-comment');
+ expect(host.querySelector('.timeline-replies')!.textContent).toContain('watch-reply');
+ expect(host.textContent).toContain('comment-first');
+ expect(calls.filter(c=>c.name==='request_conversation')).toHaveLength(requests);
+});
+
+
+test('revision updates discover newly saved pagination without requesting GitHub again',async()=>{
+ let updated=false;
+ read=async job=>snapshot({...page(job),messages:job.source==='comments'?[message(job.after?'watch-page':'original','10:00')]:[],next:updated&&job.source==='comments'&&!job.after?'watch-next':null});
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ const requests=calls.filter(c=>c.name==='request_conversation').length;
+ updated=true;await render(<Conversation pr={pr} currentHead={head} revision={2}/>);
+ expect(host.textContent).toContain('watch-page');expect(host.textContent).toContain('original');
+ expect(calls.filter(c=>c.name==='request_conversation')).toHaveLength(requests);
+});
+
+
+test('an empty retained conversation accepts its first comment from a store update',async()=>{
+ read=async job=>snapshot(page(job));
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ expect(host.textContent).toContain('No discussion yet.');
+ read=async job=>snapshot({...page(job),messages:job.source==='comments'?[message('first-watch-comment','17:00')]:[]});
+ await render(<Conversation pr={pr} currentHead={head} revision={2}/>);
+ expect(host.textContent).toContain('first-watch-comment');
+ expect(host.textContent).not.toContain('No discussion yet.');
+});
+
+
+test('the first published timeline contains comments, review decisions and file comments before pagination finishes',async()=>{
+ let release!:(value:any)=>void;
+ const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
+ (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
+  if(name==='read_conversation'&&args.job.after){
+   calls.push({name,job:args.job});
+   return new Promise(resolve=>{release=resolve;});
+  }
+  return invoke(name,args);
+ };
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ expect(host.textContent).toContain('comment-first');
+ expect(host.textContent).toContain('Approved');
+ expect(host.querySelector('.timeline-thread')!.textContent).toContain('reply-first');
+ expect(host.querySelector('.timeline-thread')!.textContent).not.toContain('Loading replies');
+ expect(calls.filter(c=>c.name==='request_conversation').map(c=>c.job.source)).toEqual(['initial']);
+ expect(calls.filter(c=>c.name==='read_conversation'&&c.job.source!=='initial'&&!c.job.after)).toHaveLength(0);
+ expect(host.querySelector('[aria-label="Loading conversation"]')).not.toBeNull();
+ await act(async()=>release(snapshot({...page({...pr,source:'comments'} as any),messages:[message('tail-comment','18:00')]})));
+ await settle();
 });
