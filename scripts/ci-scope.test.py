@@ -20,18 +20,19 @@ class ScopeTests(unittest.TestCase):
         self.assertFalse(scope.native_required([
             "src/Sidebar.tsx", "src/ui-copy.ts", "src/nested/component.css",
             "public/icon.svg", "index.html", "scripts/sidebar.test.tsx",
-            "scripts/diff.test.mjs", "README.md", "AGENTS.md", "docs/development.md",
+            "scripts/diff.test.mjs", "tests/frontend/sidebar.test.tsx", "tests/frontend/diff.test.mjs", "README.md", "AGENTS.md", "docs/development.md",
         ]))
         self.assertFalse(scope.native_required([]))
 
     def test_rust_shared_contract_configuration_and_unknown_paths_keep_native(self):
         for path in [
-            "crates/gitjuke-core/src/runtime.rs", "src-tauri/src/lib.rs", "src/api.ts", "src/embedded.rs",
+            "crates/gitjuke-core/src/runtime.rs", "src-tauri/src/lib.rs", "src/api.ts", "src/lib/ipc.ts", "src/lib/types.ts", "src/embedded.rs",
             "Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "package.json", "bun.lock",
             "tsconfig.json", "vite.config.ts", "bunfig.toml", ".gitignore",
             ".config/nextest.toml", ".cargo/config.toml", ".github/workflows/ci.yml",
             "src-tauri/capabilities/main.json", "src-tauri/icons/icon.png",
             "scripts/test-rust.py", "scripts/ci-scope.py", "scripts/build-desktop.sh",
+            "tests/tooling/build-desktop.test.ts", "tests/tooling/release-eligibility.test.ts",
             "scripts/build-desktop.test.ts", "scripts/fixtures/tauri.reader-qualification.json",
             "new-directory/unknown-file",
         ]:

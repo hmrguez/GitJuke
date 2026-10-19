@@ -38,7 +38,7 @@ results = {
 for suite, count, commands in [
     ('javascript', args.js_runs, {'npm_node': ['npm', 'run', 'test:diff:node'],
                                 'bun': ['bun', 'test'],
-                                'node': ['node', '--experimental-strip-types', '--test', 'scripts/diff.test.mjs']}),
+                                'node': ['node', '--experimental-strip-types', '--test', 'tests/frontend/diff.test.mjs']}),
     ('rust', args.rust_runs, {'npm': ['npm', 'test', '--', '--no-cache'],
                             'bun': ['bun', 'run', 'test:rust', '--no-cache']}),
 ]:

@@ -151,4 +151,5 @@ if endpoint.startswith('notifications?') if not query else False:extra+='X-Poll-
 if not query and not config.get('deny_activity') and any(part in endpoint for part in ['/comments?','/reviews?','/timeline?']) and len(entries)>page*size:extra+='Link: <https://api.github.com/next>; rel="next"\r\n'
 sys.stdout.write('HTTP/2.0 '
 +str(status)+' Status\r\nX-RateLimit-Resource: '+bucket+'\r\nX-RateLimit-Remaining: '+str(remaining)+'\r\nX-RateLimit-Reset: 4070908800\r\n'+extra+('Retry-After: 60\r\n' if status==429 else '')+'\r\n'+(json.dumps(body) if status!=304 else ''))
-if status>=400:sys.exit(1)
+# Match `gh api`: conditional HTTP 304 responses also exit unsuccessfully.
+if status==304 or status>=400:sys.exit(1)

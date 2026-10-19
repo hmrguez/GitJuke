@@ -1,10 +1,15 @@
 //! GitHub protocol parsing and bounded gh subprocess transport.
 //! Independent of SQLite, runtime scheduling, and the native desktop shell.
 pub use gitjuke_model as model;
+#[path = "protocol/activity.rs"]
 pub mod activity;
+#[path = "protocol/changes.rs"]
 pub mod changes;
+#[path = "protocol/conversation.rs"]
 pub mod conversation;
+#[path = "protocol/github.rs"]
 pub mod github;
+#[path = "protocol/sync.rs"]
 pub mod sync;
 pub mod transport;
 

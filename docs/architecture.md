@@ -6,15 +6,33 @@ GitJuke is a GitHub desktop client with explicit PR comment and thread reply sub
 
 | Location | Responsibility |
 | --- | --- |
-| `src/` | React readers, navigation, preferences, diff rendering, and UI styles |
-| `src-tauri/` | Native commands, application lifecycle, login integration, and macOS notifications |
-| `crates/gitjuke-model/` | Shared serialized reader, settings, and check types; no process or database dependencies |
-| `crates/gitjuke-github/` | GitHub parsing, read plans, and bounded `gh` subprocess transport; no SQLite or Tauri dependencies |
-| `crates/gitjuke-core/` | Runtime scheduling, storage, queries, and recovery; re-exports shared types and GitHub modules for existing callers |
-| `scripts/` | Frontend tests and isolated qualification helpers |
+| `src/main.tsx` | Browser bootstrap: fonts, React root, and startup recovery wrapper |
+| `src/app/` | App composition, navigation history, native-menu hook, accessibility, and global theme/styles |
+| `src/features/` | Activity, changes, conversation, checks, queries, notifications, preferences, and pull-request UI; each owns its models and styles |
+| `src/components/` | Shared sidebar, dropdown, Markdown renderer, and startup recovery UI |
+| `src/lib/` | Native invocation/events (`ipc.ts`), serialized contracts (`types.ts`), and shared UI copy |
+| `src-tauri/src/app/` | Native lifecycle, window/tray/menu setup, startup recovery, singleton ownership, login, and macOS notification adapters |
+| `src-tauri/src/commands/` | Frontend command handlers grouped by reader, changes, conversation/activity, checks/logs, queries, notifications, and build diagnostics |
+| `crates/gitjuke-model/src/` | Serialized settings, reader, status, and check types; re-exported at the crate root |
+| `crates/gitjuke-github/src/protocol/` | GitHub parsing and read plans; `transport.rs` owns bounded `gh` subprocess transport |
+| `crates/gitjuke-core/src/runtime/` | Runtime orchestration and feature workers; runtime unit tests are separate from production code |
+| `crates/gitjuke-core/src/activity/` | Activity storage, enrollment, and due-work selection |
+| `crates/gitjuke-core/src/watch/` | Watch storage, reading, reservations, scheduling, and pending selection |
+| `crates/gitjuke-core/src/storage/` | SQLite store, migrations and SQL, accounting, content admission, maintenance, and publication |
+| `crates/gitjuke-core/src/features/` | Alert, changes, conversation, logs, and saved-query persistence |
+| `crates/gitjuke-core/src/recovery/` | Database compatibility inspection and recovery reporting |
+| `tests/frontend/` | React interaction, accessibility, rendering, and model tests |
+| `tests/tooling/` | JavaScript release/build-tool tests |
+| `scripts/` | Development/release tooling, Python tooling tests, and isolated qualification helpers |
 | `docs/archive/implementation/` | Dated implementation records and verification artifacts |
 
-Rust dependencies flow from the native shell through core to GitHub and shared models. Core keeps runtime and storage together because their transaction and publication rules currently share private implementation details. Crates define test-task and cache boundaries; splitting these internals merely to create more packages would not remove expensive fixtures.
+Rust dependencies flow from the native shell through core to GitHub and shared models. Core keeps runtime and storage together because their transaction and publication rules share private implementation details. Crates define test-task and cache boundaries.
+
+The core and GitHub crate roots use explicit module paths to group implementation files without changing existing Rust imports, module visibility, or core test names. This preserves the Nextest fast-suite admission and concurrency filters. Tests that use private implementation details stay beside their owning modules; integration tests remain under each crate's `tests/` directory. Migration SQL stays beside the migration implementation.
+
+The frontend uses direct imports to each feature or shared module. `lib/ipc.ts` exposes invocation/events and re-exports the serialized types; appearance presets belong to `app/theme.ts`. Both IPC files require native CI validation when changed. Bun discovers JavaScript tests only under `tests/`, keeping discovery out of Cargo build artifacts. Scripts remain at their existing entry points for package commands and CI.
+
+The Tauri crate root only exposes `run`. Native startup registers explicitly qualified command handlers; each handler uses the common bounded-response encoder in `commands/mod.rs`. Command names, payloads, serialized model names, database schema, and application identity are unchanged by this organization.
 
 ## GitHub access and monitoring
 

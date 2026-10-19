@@ -3,6 +3,16 @@ members = ["crates/gitjuke-model", "crates/gitjuke-github", "crates/gitjuke-core
 default-members = ["crates/gitjuke-model", "crates/gitjuke-github", "crates/gitjuke-core"]
 resolver = "2"
 
+# Keep local builds small. Cargo still reuses unchanged compiled dependencies,
+# without retaining large incremental databases or full debug symbols.
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.test]
+debug = 0
+incremental = false
+
 # Keep host proc-macro dylibs loadable on macOS 27 / Xcode 27.
 # https://github.com/rust-lang/rust/issues/157750
 [profile.release.build-override]

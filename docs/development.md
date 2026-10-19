@@ -30,6 +30,10 @@ bun run prototype:build
 
 It is useful for inspecting the original design, but it is not the production reader or live-data evidence.
 
+## Source organization
+
+See the [code layout](architecture.md#code-layout) for frontend features, native commands, Rust internals, and test ownership. Keep feature-specific styles and models beside their readers. Put JavaScript UI tests in `tests/frontend/` and build/release tests in `tests/tooling/`; `bun test` discovers both. Core Rust tests retain their existing module names and fast-suite filters.
+
 ## Verify changes
 
 Install the checksum-pinned Nextest binary once. It lives in the ignored `target/test-tools/` directory, without changing your global Rust installation:
@@ -62,13 +66,25 @@ Successful task results are stored under `target/gitjuke-test-cache/`. Keys cove
 
 Use `-p gitjuke-github` (or another crate) to narrow a task manually. `--since` selects changed crates and their dependents, not merely previous failures. It includes staged, unstaged, deleted, and new files. Unknown/shared input paths select the whole workspace; an unavailable base ref also falls back to the whole workspace. A clean tree compared to `HEAD` selects nothing, so use the ordinary fast command to validate a newly checked-out commit. These are deterministic task caches, not coverage-based selection or evidence of full qualification.
 
-GitHub Actions always runs frontend tests and the frontend build. For frontend-only PRs and pushes, it skips Rust tests (including partition discovery), Clippy, and desktop builds. Frontend scope covers `src/` except the shared IPC bridge `src/api.ts`, `public/`, `index.html`, frontend `.test.tsx`/`.test.mjs` files in `scripts/`, and documentation/prototype changes. Rust files, Tauri files, shared/root configuration and lockfiles, CI/build/test tooling, and unrecognized paths require native validation. PR comparison uses the merge base; pushes compare their before/after commits. Deleted and renamed paths are included. An unavailable comparison defaults to native validation.
+GitHub Actions always runs frontend tests and the frontend build. For frontend-only PRs and pushes, it skips Rust tests (including partition discovery), Clippy, and desktop builds. Frontend scope covers `src/` except the shared IPC bridge `src/lib/ipc.ts` and its serialized types in `src/lib/types.ts`, `public/`, `index.html`, frontend `.test.tsx`/`.test.mjs` files in `tests/frontend/`, and documentation/prototype changes. Rust files, Tauri files, shared/root configuration and lockfiles, CI/build/test tooling, and unrecognized paths require native validation. PR comparison uses the merge base; pushes compare their before/after commits. Deleted and renamed paths are included. An unavailable comparison defaults to native validation.
 
 When native validation is required, CI runs cached fast Rust checks, uncached full workspace qualification, Clippy, and a desktop build. Release workflows explicitly set `force_full: true`; reusable CI defaults to full validation regardless of changed paths. The existing `macOS checks` gate requires frontend and scope detection to succeed, and accepts skipped native jobs only when scope detection explicitly selected that outcome. It restores Cargo artifacts and successful fast task results, and uploads per-crate JUnit reports for executed Rust tasks; cache hits are reported in the job log. Superseded PR runs are cancelled. Run `python3 scripts/ci-scope.test.py` when changing classification or gate behavior.
 
 Opt-in live and filesystem qualification cases have their own setup in the relevant implementation records. Passing simulated tests does not establish native UI or live-provider compatibility.
 
 ## Build a local app
+
+Local development and test profiles omit debug symbols and incremental compilation
+databases to keep disk use down. Cargo still reuses unchanged compiled crates in
+the workspace's `target/` directory; desktop builds reuse their fixed target and
+profile directories. Source-level native debugging requires an explicit override,
+such as `CARGO_PROFILE_DEV_DEBUG=2`.
+
+Run `bun run clean` with builds and tests stopped to remove Rust artifacts, test
+result caches, frontend output, and Vite caches. It keeps installed dependencies
+and the pinned Nextest runner. The next build recompiles from scratch. Cargo can
+retain obsolete artifacts after toolchain, feature, or configuration changes;
+use this command to reclaim them. This is an explicit reset, not a disk quota.
 
 ```sh
 bun run desktop:build

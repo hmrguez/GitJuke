@@ -14,13 +14,13 @@ ROOT = Path(__file__).resolve().parent.parent
 def native_required(paths):
     for path in paths:
         # The IPC bridge is a shared contract even though it lives beside the UI.
-        if path == "src/api.ts" or path.endswith(".rs"):
+        if path in {"src/api.ts", "src/lib/ipc.ts", "src/lib/types.ts"} or path.endswith(".rs"):
             return True
         if path.startswith(("src/", "public/", "docs/", ".scratch/")):
             continue
         if "/" not in path and (path.endswith(".md") or path == "index.html"):
             continue
-        if PurePosixPath(path).parent == PurePosixPath("scripts") and path.endswith((".test.tsx", ".test.mjs")):
+        if (path.startswith("tests/frontend/") or PurePosixPath(path).parent == PurePosixPath("scripts")) and path.endswith((".test.tsx", ".test.mjs")):
             continue
         # Rust, Tauri, root configuration/lockfiles, CI and build/test tooling,
         # and any new/unrecognized path all keep native validation enabled.

@@ -25,6 +25,25 @@ fn api_error_and_partial_schema_are_not_successful_empty_sets() {
     assert!(page.incomplete);
 }
 #[test]
+fn conditional_not_modified_is_valid_despite_gh_exit_one() {
+    let parsed = Response::parse(Output {
+        stdout: b"HTTP/2.0 304 Not Modified\r\nETag: \"cached\"\r\n\r\n".to_vec(),
+        stderr: b"gh: HTTP 304\n".to_vec(),
+        success: false,
+    })
+    .expect("gh exits 1 for a valid conditional cache response");
+    assert_eq!(parsed.status, 304);
+    assert_eq!(parsed.headers["etag"], "\"cached\"");
+    assert!(parsed.body.is_null());
+
+    assert!(Response::parse(Output {
+        stdout: b"HTTP/2.0 200 OK\r\n\r\n{}".to_vec(),
+        stderr: Vec::new(),
+        success: false,
+    })
+    .is_err());
+}
+#[test]
 fn search_preserves_merged_state_for_pull_request_readers() {
     let items: Vec<_> = [
         ("open", serde_json::Value::Null),

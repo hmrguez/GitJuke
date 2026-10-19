@@ -590,8 +590,22 @@ async fn conditional_hydration_reuses_exact_url_payload_without_replaying_activi
     r.refresh_activity("a/b", 1).unwrap();
     until(|| read_count(d.path()) > before + 14 && !r.status().unwrap().busy).await;
     assert_eq!(count, r.activity(0).unwrap().items.len());
+    assert!(r.activity(0).unwrap().error.is_none());
     let reads = std::fs::read_to_string(d.path().join("reads")).unwrap();
     assert!(reads.contains("If-None-Match:"));
+    // An unchanged PR overview must not prevent a changed comments page
+    // from being hydrated and published during the same traversal.
+    scenario(
+        &d,
+        serde_json::json!({"validators":true,"comments":[activity_comment(1,false),activity_comment(2,false)]}),
+    );
+    r.refresh_activity("a/b", 1).unwrap();
+    until(|| {
+        r.activity(0)
+            .is_ok_and(|a| a.items.iter().any(|item| item.id.ends_with("IC_2")))
+    })
+    .await;
+    assert!(r.activity(0).unwrap().error.is_none());
     r.shutdown().await;
 }
 #[tokio::test]

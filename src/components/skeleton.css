@@ -1,0 +1,28 @@
+.skeleton-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.skeleton{min-width:0;width:100%;pointer-events:none}
+.skeleton-content{min-width:0;animation:skeleton-pulse 1.8s ease-in-out infinite}
+.skeleton-bar{display:block;height:.85em;max-width:100%;flex-shrink:1;border-radius:3px;background:var(--line-strong)}
+.skeleton-row{display:flex;align-items:center;gap:10px;min-width:0}
+.skeleton-node{display:flex;flex-direction:column;gap:12px;min-height:100px}
+.skeleton-node .skeleton-row{width:100%}
+.skeleton-icon{width:14px;height:14px;flex-shrink:0;border-radius:50%}
+.skeleton-node>.skeleton-bar:first-child,.skeleton-node>.skeleton-bar:last-child{height:.7em}
+.skeleton-text{display:grid;gap:14px;margin:20px 0}
+.skeleton-message{margin-bottom:16px}
+.skeleton-message header{justify-content:space-between}
+.skeleton-title{height:1.65em;margin:14px 0}
+.skeleton-badge{height:22px;border-radius:var(--radius-control)}
+.skeleton .skeleton-tabs{flex-wrap:nowrap;display:flex;align-items:center;gap:24px;min-height:54px}
+.skeleton-detail .overview .skeleton-text+.skeleton-text{margin-top:32px}
+.skeleton-file{padding:14px 12px;border-bottom:1px solid var(--line);justify-content:space-between}
+.skeleton-code{padding:12px 0;overflow:hidden}
+.skeleton-code-line{display:flex;align-items:center;gap:16px;min-height:24px;padding-right:16px}
+.skeleton-code-source{flex:1;min-width:0}.skeleton-code-source>.skeleton-bar{height:.75em}
+.skeleton-gutter{width:44px;flex-shrink:0;padding:0 12px;border-right:1px solid var(--line)}
+.skeleton-log .skeleton-gutter{width:44px;padding:0 12px}
+.skeleton-check{align-items:center;grid-template-columns:minmax(0,1fr) 80px}
+.skeleton-check>.skeleton-bar:last-child{grid-column:1/-1}
+.skeleton-build-grid{display:grid;grid-template-columns:7em minmax(0,1fr);align-items:center;gap:16px 24px;margin-top:24px}
+@keyframes skeleton-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.skeleton-content{animation:none}}
+@media(forced-colors:active){.skeleton-bar{background:GrayText}}

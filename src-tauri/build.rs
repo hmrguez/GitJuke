@@ -63,9 +63,9 @@ fn main() {
     ] {
         println!("cargo:rustc-env=GITJUKE_BUILD_{key}={value}");
     }
-    println!("cargo:rerun-if-changed=src/notifications.m");
+    println!("cargo:rerun-if-changed=src/app/notifications.m");
     cc::Build::new()
-        .file("src/notifications.m")
+        .file("src/app/notifications.m")
         .flag("-fobjc-arc")
         .flag("-fblocks")
         .compile("gitjuke_notifications");

@@ -1,6 +1,6 @@
 [test]
 # Keep discovery out of Cargo's large target directory.
-root = "scripts"
+root = "tests"
 
 [run]
 # Run JavaScript CLIs (Vite, TypeScript and Tauri) with Bun too.
