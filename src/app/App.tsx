@@ -15,9 +15,13 @@ import {useNavigationHistory,type NavigationEntry} from './navigation-history';
 import type {SavedQuery,QueryList} from '../lib/ipc';
 import {Changes} from '../features/changes/Changes';
 import {ConversationTab} from '../features/conversation/Conversation';
+import {ConversationSession} from '../features/conversation/conversation-session';
+import type {ConversationTimeline} from '../features/conversation/conversation-timeline';
 import {Markdown} from '../components/Markdown';
 import {CheckReader} from '../features/checks/Checks';
-import {PullRequestIcon,PullRequestBadge,pullRequestState,pullRequestLabel} from '../features/pull-requests/StatusIndicators';
+import {readAllChecks} from '../features/checks/check-pages';
+import {PullRequestBadge} from '../features/pull-requests/StatusIndicators';
+import {PullRequestRail} from '../features/pull-requests/PullRequestRail';
 import './app.css';
 import './theme.css';
 import {compactReader,readerListKey,useReaderTextSize} from './reader-accessibility';
@@ -29,6 +33,9 @@ export function App(){
   useEffect(()=>{window.addEventListener('keydown',readerListKey);return()=>window.removeEventListener('keydown',readerListKey);},[]);
   const [status,setStatus]=useState<Status|null>(null),[page,setPage]=useState<Page|null>(null);
   const [selected,setSelected]=useState<{repo:string;number:number}|null>(null);
+  const [conversation,setConversation]=useState<ConversationTimeline|null>(null);
+  const [conversationSession]=useState(()=>new ConversationSession());
+  useEffect(()=>()=>conversationSession.clear(),[conversationSession]);
   const [detail,setDetail]=useState<Snapshot<Overview|null>|null>(null),[error,setError]=useState('');
   const [view,setView]=useState<'mine'|'review'|'activity'|'query'>('mine'),[tab,setTab]=useState<'overview'|'changes'|'conversation'|'checks'>('overview');
   const [checks,setChecks]=useState<CheckPage|null>(null),[checkOffset,setCheckOffset]=useState(0);
@@ -48,7 +55,7 @@ export function App(){
       const s=await command<Status>('runtime_status');
       if(request!==readSerial.current||s.revision<storeRevision.current)return;
       storeRevision.current=s.revision;setStatus(s);
-      if(s.locked){setPage(null);setDetail(null);setChecks(null);setDestination(null);setNotificationRecord(null);setError('');return;}
+      if(s.locked){++detailSerial.current;conversationSession.clear();setConversation(null);setPage(null);setDetail(null);setChecks(null);setDestination(null);setNotificationRecord(null);setError('');return;}
       if(!restored.current){restored.current=true;if(s.selected){const selection={repo:s.selected[0],number:s.selected[1]};selectedRef.current=selection;setSelected(selection);}}
       if(view==='query'||view==='activity')return;
       const p=await command<Page>(view==='mine'?'authored_page':'requested_page',{offset});
@@ -56,15 +63,26 @@ export function App(){
       storeRevision.current=p.revision;setPage(p);setError('');
     }catch(e){if(request===readSerial.current)setError(String(e));}
   },[offset,view]);
-  const loadDetail=useCallback(async(offsetOverride?:number)=>{
+  const loadDetail=useCallback(async()=>{
     const pr=selectedRef.current;if(!pr)return;const request=++detailSerial.current;
     try{const d=await command<Snapshot<Overview|null>>('read_overview',pr);
       if(request!==detailSerial.current||selectedRef.current?.repo!==pr.repo||selectedRef.current?.number!==pr.number||d.revision<storeRevision.current)return;
-      setDetail(d);
-      const next=await command<CheckPage>('read_checks',{...pr,offset:offsetOverride??checkOffset});
+      // Show the cached overview immediately and share the background discussion
+      // session with mounted views so they never start a duplicate traversal.
+      if(!d.data)conversationSession.clear();
+      const timeline=d.data?conversationSession.begin(d.data,d.revision):null;
+      if(request!==detailSerial.current||selectedRef.current?.repo!==pr.repo||selectedRef.current?.number!==pr.number||timeline?.disposed)return;
+      setConversation(timeline);setDetail(d);
+      const next=await readAllChecks(pr);
       if(request===detailSerial.current&&selectedRef.current?.repo===pr.repo&&selectedRef.current?.number===pr.number&&next.revision>=storeRevision.current)setChecks(next);
     }catch(e){if(request===detailSerial.current)setError(String(e));}
-  },[checkOffset]);
+  },[conversationSession]);
+  useEffect(()=>{if(conversation?.finished)void conversation.validate();},[conversation,status?.revision]);
+  useEffect(()=>{
+    if(!conversation||status?.settings.paused)return;
+    const timer=setInterval(()=>{if(conversation.finished)void conversation.start(true);},30_000);
+    return()=>clearInterval(timer);
+  },[conversation,status?.settings.paused]);
   const history=useNavigationHistory({view,query,selected,tab,destination,notificationRecord,notificationUnavailable,search,offset,checkOffset,origin:selectionOrigin.current},!!status,restoreNavigation,resolveNavigation,e=>setError(String(e)));
   async function resolveNavigation(entry:NavigationEntry){
     let next=entry;
@@ -91,13 +109,13 @@ export function App(){
     setNotificationRecord(entry.notificationRecord);setNotificationUnavailable(entry.notificationUnavailable);
     setSearch(entry.search);setOffset(entry.offset);setCheckOffset(entry.checkOffset);
     if(entry.view!==view||entry.offset!==offset)setPage(null);
-    setDetail(null);setChecks(null);setError('');
+    conversationSession.clear();setConversation(null);setDetail(null);setChecks(null);setError('');
     selectedRef.current=entry.selected;setSelected(entry.selected);
     selectionOrigin.current=entry.origin;selectionFocus.current=entry.selected?document.activeElement:undefined;
     if(entry.selected){
       const selection=entry.selected,request=detailSerial.current;
       void command('select_pr',selection).then(()=>{
-        if(request===detailSerial.current)void loadDetail(entry.checkOffset);
+        if(request===detailSerial.current)void loadDetail();
       }).catch(e=>{if(request===detailSerial.current)setError(String(e));});
     }
     if(!entry.selected)requestAnimationFrame(()=>{
@@ -124,10 +142,11 @@ export function App(){
   async function select(repo:string,number:number,origin?:string){
     selectionOrigin.current=origin??(document.activeElement?.id||null);selectionFocus.current=document.activeElement;
     setDestination(null);
+    conversationSession.clear();setConversation(null);
     ++detailSerial.current;setSelected({repo,number});selectedRef.current={repo,number};setDetail(null);setChecks(null);setCheckOffset(0);
-    try{await command('select_pr',{repo,number});await loadDetail(0);return true;}catch(e){setError(String(e));return false;}
+    try{await command('select_pr',{repo,number});await loadDetail();return true;}catch(e){setError(String(e));return false;}
   }
-  function backToList(){selectionFocus.current=undefined;const id=destination?.id;setDestination(null);setSelected(null);selectedRef.current=null;++detailSerial.current;setDetail(null);requestAnimationFrame(()=>{const origin=document.getElementById(id?`activity-${id}`:selectionOrigin.current??'');if(origin?.isConnected)origin.focus();else document.querySelector<HTMLElement>('.stack-navigator')?.focus();});}
+  function backToList(){conversationSession.clear();setConversation(null);selectionFocus.current=undefined;const id=destination?.id;setDestination(null);setSelected(null);selectedRef.current=null;++detailSerial.current;setDetail(null);requestAnimationFrame(()=>{const origin=document.getElementById(id?`activity-${id}`:selectionOrigin.current??'');if(origin?.isConnected)origin.focus();else document.querySelector<HTMLElement>('.stack-navigator')?.focus();});}
   function browseConversation(){setDestination(null);setTab('conversation');requestAnimationFrame(()=>document.getElementById('conversation')?.focus());}
   useEffect(()=>{
     let active=true;let busy=false;
@@ -201,9 +220,7 @@ export function App(){
         {status?.locked&&<p className="state-banner">Check your GitHub connection in Preferences.</p>}
         {status?.storageStopped&&<p className="state-banner">Updates are paused while local storage needs attention.</p>}
         {page?.error&&<p className="state-banner">{friendlyError(page.error,'Couldn’t update pull requests. Try refreshing.')}</p>}
-        <label className="search-field"><Search size={14}/><input aria-label="Filter pull requests" placeholder="Filter this page…" value={search} onChange={e=>setSearch(e.target.value)}/></label><div className="pr-list">{!page&&!status?.locked&&!error&&<Skeleton shape="pull-requests" label="Loading pull requests"/>}{page?.items.filter(p=>`${p.repo} ${p.number} ${p.title}`.toLowerCase().includes(search.toLowerCase())).map(p=><button key={p.id} id={`pr-${p.id}`} data-pr-state={pullRequestState(p)} className={`stack-node ${selected?.repo===p.repo&&selected.number===p.number?'active':''}`} onClick={()=>void select(p.repo,p.number,`pr-${p.id}`)}>
-          <span className="node-meta">{p.repo} · #{p.number}</span><strong className="node-title"><PullRequestIcon pr={p} size={14}/>{p.title}</strong><span className="node-meta"><span className="pr-state-text">{pullRequestLabel(p)}</span> · {p.author??'Unavailable author'}</span>
-        </button>)}</div>
+        <label className="search-field"><Search size={14}/><input aria-label="Filter pull requests" placeholder="Filter this page…" value={search} onChange={e=>setSearch(e.target.value)}/></label>{page?<PullRequestRail items={page.items} stacks={page.stacks} selected={selected} search={search} select={(repo,number,origin)=>void select(repo,number,origin)}/>:<div className="pr-list">{!status?.locked&&!error&&<Skeleton shape="pull-requests" label="Loading pull requests"/>}</div>}
         {search&&page&&page.items.length>0&&!page.items.some(p=>`${p.repo} ${p.number} ${p.title}`.toLowerCase().includes(search.toLowerCase()))&&<p className="empty">No matches on this page.</p>}
         {page&&!page.complete&&!status?.locked&&!page.error&&<Skeleton shape="pull-requests" label="Loading more pull requests" count={page.items.length?1:4}/>}
         {page?.items.length===0&&page.complete&&<p className="empty">{view==='mine'?'You have no open pull requests.':'No open review requests.'}</p>}
@@ -217,8 +234,10 @@ export function App(){
             {pr.stack.state==='published'&&<section className="stack-section" aria-label="Pull request stack"><GitBranch size={16}/><div><span>Stack #{pr.stack.number}</span><ol reversed>{[...pr.stack.members].reverse().map(member=><li key={member.number}><button aria-current={member.number===pr.number?'page':undefined} onClick={()=>void select(pr.repo,member.number)}>#{member.number} {member.title}</button></li>)}</ol></div></section>}
             {checks?.head&&checks.head!==pr.head&&<p className="state-banner">This pull request has new changes. <button onClick={()=>void select(pr.repo,pr.number)}>Update overview</button></p>}
             <div className="tabs" role="tablist" aria-label="Reader">{(['overview','changes','conversation','checks'] as const).map(item=><button key={item} role="tab" aria-selected={tab===item} id={`${item}-tab`} aria-controls={item} onClick={()=>{if(item!=='changes'&&item!=='conversation')setDestination(null);setTab(item);}} onKeyDown={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const tabs=['overview','changes','conversation','checks'] as const;const next=e.key==='Home'?tabs[0]:e.key==='End'?tabs[3]:tabs[(tabs.indexOf(tab)+(e.key==='ArrowRight'?1:3))%4];if(next!=='changes'&&next!=='conversation')setDestination(null);setTab(next);document.getElementById(`${next}-tab`)?.focus();}}} tabIndex={tab===item?0:-1}>{item==='overview'?<FileText size={14}/>:item==='changes'?<FileDiff size={14}/>:item==='conversation'?<MessageSquare size={14}/>:<CircleCheck size={14}/>} {item==='overview'?'Overview':item==='changes'?'Changes':item==='conversation'?'Conversation':'Checks'}</button>)}</div>
-            {tab==='overview'?<section className="overview" id="overview" tabIndex={0} role="tabpanel" aria-labelledby="overview-tab">{pr.bodyLimited?<p>This description is too long to preview. View it on GitHub.</p>:<Markdown baseUrl={pr.url}>{pr.body||'No description.'}</Markdown>}</section>:tab==='changes'?<Changes key={`${pr.repo}:${pr.number}`} pr={pr} currentHead={checks?.head??pr.head} destination={destination?.id.slice(`github.com:${pr.repo}:${pr.number}:`.length)} onBack={backToList} onBrowse={browseConversation} paged={status?.settings.pagedChanges??false} revision={status?.revision??0} onMode={paged=>void action('set_changes_mode',{paged})}/>:tab==='conversation'?null:<CheckReader revision={status?.revision??0} repo={pr.repo} number={pr.number} checks={checks} offset={checkOffset} setOffset={setCheckOffset}/>}
-            <ConversationTab active={tab==='conversation'} key={`${pr.repo}:${pr.number}:${pr.head}:${destination?.id??'ordinary'}`} destination={destination?.id.startsWith(`github.com:${pr.repo}:${pr.number}:`)?destination.id.slice(`github.com:${pr.repo}:${pr.number}:`.length):undefined} onBack={backToList} onBrowse={browseConversation} pr={pr} currentHead={checks?.head??pr.head} revision={status?.revision??0}/>
+            <div hidden={tab!=='overview'}><section className="overview" id="overview" tabIndex={0} role="tabpanel" aria-labelledby="overview-tab">{pr.bodyLimited?<p>This description is too long to preview. View it on GitHub.</p>:<Markdown baseUrl={pr.url}>{pr.body||'No description.'}</Markdown>}</section></div>
+            <div hidden={tab!=='changes'}><Changes key={`${pr.repo}:${pr.number}`} pr={pr} currentHead={checks?.head??pr.head} destination={tab==='changes'&&destination?.id.startsWith(`github.com:${pr.repo}:${pr.number}:`)?destination.id.slice(`github.com:${pr.repo}:${pr.number}:`.length):undefined} onBack={backToList} onBrowse={browseConversation} paged={status?.settings.pagedChanges??false} revision={status?.revision??0} onMode={paged=>void action('set_changes_mode',{paged})}/></div>
+            <div hidden={tab!=='checks'}><CheckReader revision={status?.revision??0} repo={pr.repo} number={pr.number} checks={checks} offset={0} setOffset={setCheckOffset}/></div>
+            <ConversationTab timeline={conversation??undefined} updatesPaused={status?.settings.paused??true} active={tab==='conversation'} key={`${pr.repo}:${pr.number}:${pr.head}:${destination?.id??'ordinary'}`} destination={destination?.id.startsWith(`github.com:${pr.repo}:${pr.number}:`)?destination.id.slice(`github.com:${pr.repo}:${pr.number}:`.length):undefined} onBack={backToList} onBrowse={browseConversation} pr={pr} currentHead={checks?.head??pr.head} revision={status?.revision??0}/>
 
           </>:detail?.error?<div className="empty">This PR is unavailable.</div>:<Skeleton shape="detail" label="Loading pull request"/>}
         </>:<div className="empty reader-empty"><GitPullRequest size={36}/><h1>Select a pull request</h1></div>}

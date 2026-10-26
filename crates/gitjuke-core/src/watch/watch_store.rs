@@ -137,6 +137,14 @@ impl Store {
             .transpose()
     }
     pub fn register_selected(&mut self, pr: &Overview, open: bool) -> Result<()> {
+        self.register_selected_snapshot(pr, open, None)
+    }
+    pub(crate) fn register_selected_snapshot(
+        &mut self,
+        pr: &Overview,
+        open: bool,
+        updated_at: Option<&str>,
+    ) -> Result<()> {
         let Some(request) = self.publication_request("selected", &(pr, open))? else {
             return Ok(());
         };
@@ -155,7 +163,16 @@ impl Store {
             state: pr.state.clone(),
             draft: pr.draft,
             author: pr.author.clone(),
-            updated_at: date(now()),
+            // Viewing a PR must not count as an update. Older snapshots without
+            // a timestamp retain the feed's last known GitHub update time.
+            updated_at: match updated_at {
+                Some(value) => value.to_owned(),
+                None => self
+                    .get::<PullRequest>(&format!("list:{}", pr.id))?
+                    .data
+                    .map(|item| item.updated_at)
+                    .unwrap_or_else(|| date(now())),
+            },
         };
         let mut loc = self.publication_locator(&pr.id)?.unwrap_or_else(|| {
             serde_json::json!([
@@ -570,6 +587,49 @@ impl Store {
         }
         self.save_budget(&budget)
     }
+    /// Bundle a bounded set of cached stacks into the same response as the PRs.
+    /// Reads use the normal cache visibility guards; this never enrolls neighbors
+    /// as watches or starts remote work from a list read.
+    pub(crate) fn list_stacks(
+        &mut self,
+        items: &[PullRequest],
+        remaining_bytes: usize,
+    ) -> Result<Vec<PullRequestStack>> {
+        let mut stacks = Vec::new();
+        let mut seen = std::collections::HashSet::new();
+        let mut budget = remaining_bytes.min(128 * 1024);
+        for pr in items.iter().take(100) {
+            if stacks.iter().any(|entry: &PullRequestStack| {
+                entry.repo == pr.repo
+                    && matches!(&entry.stack, StackState::Published { members, .. }
+                        if members.iter().any(|member| member.number == pr.number))
+            }) {
+                continue;
+            }
+            let snapshot = self.get::<Overview>(&format!("pr:{}:{}", pr.repo, pr.number))?;
+            let Some(overview) = snapshot.data else {
+                continue;
+            };
+            let StackState::Published { number, .. } = &overview.stack else {
+                continue;
+            };
+            if !seen.insert((pr.repo.clone(), *number)) {
+                continue;
+            }
+            let entry = PullRequestStack {
+                repo: pr.repo.clone(),
+                stack: overview.stack,
+            };
+            let bytes = serde_json::to_vec(&entry)?.len() + 1;
+            if bytes > budget {
+                continue;
+            }
+            budget -= bytes;
+            stacks.push(entry);
+        }
+        Ok(stacks)
+    }
+
     pub fn list_page(&mut self, view: &str, offset: usize) -> Result<Page> {
         let predicate = match view {
             "authored" => "source='authored'",
@@ -579,6 +639,7 @@ impl Store {
         if crate::clear_content::pending(&self.conn)? {
             return Ok(Page {
                 items: vec![],
+                stacks: vec![],
                 next_offset: None,
                 fetched_at: None,
                 complete: false,
@@ -587,7 +648,7 @@ impl Store {
             });
         }
         let sql = format!(
-            "SELECT c.key,c.json FROM content c JOIN watch_source s ON c.key='list:'||s.id WHERE {predicate} AND c.accessed>=? AND NOT EXISTS(SELECT 1 FROM watch_locator l JOIN pr_purge p ON p.repo=l.repo COLLATE NOCASE AND p.number=l.number WHERE c.key='list:'||l.id) GROUP BY c.key ORDER BY c.key LIMIT 101 OFFSET ?"
+            "SELECT c.key,c.json FROM content c JOIN watch_source s ON c.key='list:'||s.id WHERE {predicate} AND json_extract(c.json,'$.state')='open' AND c.accessed>=? AND NOT EXISTS(SELECT 1 FROM watch_locator l JOIN pr_purge p ON p.repo=l.repo COLLATE NOCASE AND p.number=l.number WHERE c.key='list:'||l.id) GROUP BY c.key ORDER BY julianday(json_extract(c.json,'$.updatedAt')) DESC,c.key LIMIT 101 OFFSET ?"
         );
         let mut q = self.conn.prepare(&sql)?;
         let mut items = vec![];
@@ -614,6 +675,8 @@ impl Store {
                 )?;
             }
         }
+        drop(q);
+        let stacks = self.list_stacks(&items, (900 * 1024_usize).saturating_sub(bytes))?;
         let keys = if view == "authored" {
             "key='authored'"
         } else {
@@ -634,6 +697,7 @@ impl Store {
         Ok(Page {
             next_offset: more.then_some(offset + items.len()),
             items,
+            stacks,
             fetched_at: fetched.map(|v| v as u64),
             complete: complete && expected == available && sources_ready  && !self.conn.query_row("SELECT EXISTS(SELECT 1 FROM source_restart WHERE source=? OR (?=1 AND (source='teams' OR source LIKE 'team:%')))",params![if view=="authored" {"authored"} else {"direct"},view!="authored"],|r|r.get::<_,bool>(0))?,
             error,
@@ -654,4 +718,45 @@ pub fn parse_timestamp(v: &str) -> Result<u64> {
         return Err(schema().into());
     }
     Ok(timestamp as u64)
+}
+
+#[cfg(test)]
+mod list_order_tests {
+    use super::*;
+
+    #[test]
+    fn selected_snapshot_uses_github_update_time_and_preserves_it_when_missing() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut store = Store::open(&dir.path().join("db")).unwrap();
+        let overview: Overview = serde_json::from_value(serde_json::json!({
+            "id":"P1", "repoId":1, "repo":"a/b", "number":1,
+            "title":"Change", "url":"https://github.com/a/b/pull/1",
+            "body":null, "bodyLimited":false, "head":"abc", "base":"main",
+            "state":"open", "draft":false, "author":null, "stack":{"state":"none"}
+        }))
+        .unwrap();
+        let updated = "2026-10-20T12:00:00Z";
+        store
+            .register_selected_snapshot(&overview, true, Some(updated))
+            .unwrap();
+        assert_eq!(
+            store
+                .get::<PullRequest>("list:P1")
+                .unwrap()
+                .data
+                .unwrap()
+                .updated_at,
+            updated
+        );
+        store.register_selected(&overview, true).unwrap();
+        assert_eq!(
+            store
+                .get::<PullRequest>("list:P1")
+                .unwrap()
+                .data
+                .unwrap()
+                .updated_at,
+            updated
+        );
+    }
 }

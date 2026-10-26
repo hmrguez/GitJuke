@@ -17,13 +17,7 @@ export function eligiblePage(p:ConversationPage):boolean{
  }
  return check(p,0)&&retentionWithin(messages)&&messages.every(m=>m.body===null||new TextEncoder().encode(m.body).length<=BODY_LIMIT);
 }
-// Segment navigation bounds layout work; the Markdown renderer separately caps DOM nodes.
-// Surrogate pairs are never split.
-export function segmentRanges(body:string,size=32768):{start:number;end:number}[]{
- const result:{start:number;end:number}[]=[];for(let i=0;i<body.length;){let end=Math.min(body.length,i+size);if(end<body.length&&body.charCodeAt(end-1)>=0xd800&&body.charCodeAt(end-1)<=0xdbff)end--;result.push({start:i,end});i=end;}return result.length?result:[{start:0,end:0}];
-}
-export function segments(body:string,size=32768):string[]{return segmentRanges(body,size).map(r=>body.slice(r.start,r.end));}
-export function canMarkSeen(m:Pick<ConversationMessage,'state'|'body'>,visited:number,count:number){return m.state==='complete'&&m.body!==null&&visited===count;}
+export function canMarkSeen(m:Pick<ConversationMessage,'state'|'body'>){return m.state==='complete'&&m.body!==null;}
 export type PatchContext={file:ChangedFile;head:string;base:string;model:DiffModel;jump:(row:number)=>void};
 export function anchor(t:ReviewThread,c?:PatchContext):{row:number|null;label:string}{
  if(t.outdated)return {row:null,label:`Outdated · original ${t.originalCommit?.slice(0,10)??'commit unavailable'}:${t.originalLine??'line unavailable'}`};
@@ -43,15 +37,6 @@ export function anchor(t:ReviewThread,c?:PatchContext):{row:number|null;label:st
  for(let line=start;line<=t.line;line++)if(coordinates.get(line)?.count!==1)return {row:null,label:'These lines aren’t available in the changes'};
  return matches?.count===1?{row:matches.row,label:`Attached · ${t.side.toLowerCase()} line ${t.line}`}:{row:null,label:'This line isn’t available in the changes'};
 }
-// Bounded metadata history only. Bodies are never kept in page/navigation history.
-export function advance(history:(string|null)[],cursor:string|null): (string|null)[]{return [...history,cursor].slice(-128);}
-
-// A commit contributes only to the explicitly opened matching source, never a neighbor.
-export function visitDestination(m:ConversationMessage,destination:string|undefined,part:number,count:number,visited:Set<number>):boolean{
- if(!destination||m.id!==destination||!Number.isInteger(part)||part<0||part>=count)return false;
- visited.add(part);return canMarkSeen(m,visited.size,count);
-}
-
 const discussionDate=new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'});
 export function conversationTime(value:string):string{
  const date=new Date(value);return Number.isNaN(date.getTime())?value:discussionDate.format(date);

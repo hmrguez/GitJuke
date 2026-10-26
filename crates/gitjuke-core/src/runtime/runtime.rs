@@ -1266,18 +1266,27 @@ impl Runtime {
                     i.store.activity_purge(repo, *number)?;
                     return Err(Error::Safe("Pull request unavailable; cached content purged without inferring deletion.".into()));
                 }
-                let data = github::parse_overview(&response, repo, *number)?;
+                let mut data = github::parse_overview(&response, repo, *number)?;
+                // Stack membership is refreshed separately; retain its last known
+                // topology while the new membership request is in flight.
+                if let Some(previous) = i.store.get::<Overview>(&key)?.data {
+                    data.stack = previous.stack;
+                }
                 let head = data.head.clone();
                 let selected =
                     i.reader_open && i.selected.as_ref() == Some(&(repo.clone(), *number));
-                i.store.register_selected(&data, selected)?;
+                i.store.register_selected_snapshot(
+                    &data,
+                    selected,
+                    response.body["updated_at"].as_str(),
+                )?;
                 i.store.put(&key, &data, generation)?;
                 i.store.set_due(&key, now() + 10)?;
                 i.queue.push(Work {
                     ticket: None,
                     job: Job::Stacks(repo.clone(), *number, head),
                     manual: w.manual,
-                    foreground: false,
+                    foreground: w.foreground,
                 });
             }
             Job::Stacks(repo, number, head) => {
@@ -1292,18 +1301,20 @@ impl Runtime {
                                 ticket: None,
                                 job: Job::StackDetail(repo.clone(), *number, head.clone(), stack),
                                 manual: w.manual,
-                                foreground: false,
+                                foreground: w.foreground,
                             });
                         }
                         Ok(None) => {
                             pr.stack = StackState::None;
                             i.store.put(&key, &pr, generation)?;
+                            i.store.set_due(&format!("stack-read:{generation}:{repo}:{number}"), now())?;
                         }
                         Err(err) => {
                             pr.stack = StackState::Unknown {
                                 reason: err.to_string(),
                             };
                             i.store.put(&key, &pr, generation)?;
+                            i.store.set_due(&format!("stack-read:{generation}:{repo}:{number}"), now())?;
                         }
                     }
                 }
@@ -1321,6 +1332,7 @@ impl Runtime {
                             }
                         });
                     i.store.put(&key, &pr, generation)?;
+                    i.store.set_due(&format!("stack-read:{generation}:{repo}:{number}"), now())?;
                 }
             }
             Job::Logs(_)

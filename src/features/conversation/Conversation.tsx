@@ -1,19 +1,30 @@
 import {Skeleton} from '../../components/Skeleton';
-import React,{useEffect,useId,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import React,{useEffect,useId,useRef,useState,useSyncExternalStore} from 'react';
 import {command,type ConversationJob,type ConversationPage,type ConversationMessage,type Overview,type Snapshot} from '../../lib/ipc';
-import {anchor,conversationTime,visitDestination,eligiblePage,segmentRanges,type PatchContext} from './conversation-model';
+import {anchor,conversationTime,canMarkSeen,eligiblePage,type PatchContext} from './conversation-model';
 import './conversation.css';
 import {ChevronDown,ChevronRight,Reply} from 'lucide-react';
 import {Markdown} from '../../components/Markdown';
 import {ConversationTimeline} from './ConversationTimeline';
-type ConversationProps={pr:Overview;revision:number;currentHead:string;context?:PatchContext;inline?:boolean;destination?:string;onBack?:()=>void;onBrowse?:()=>void};
+import type {ConversationTimeline as Timeline} from './conversation-timeline';
+type ConversationProps={timeline?:Timeline;pr:Overview;updatesPaused?:boolean;revision:number;currentHead:string;context?:PatchContext;inline?:boolean;destination?:string;onBack?:()=>void;onBrowse?:()=>void};
 export function ConversationTab({active,...props}:ConversationProps&{active:boolean}){
- const [opened,setOpened]=useState(active);
- useEffect(()=>{if(active)setOpened(true);},[active]);
- return <div hidden={!active}>{(active||opened)&&<Conversation {...props}/>}</div>;
+ return <div hidden={!active}><Conversation {...props}/></div>;
 }
 export function Conversation(props:ConversationProps){
- return props.destination?<DestinationConversation {...props}/>:<ConversationTimeline {...props}/>;
+ return props.destination?(props.timeline?<RetainedDestination {...props} timeline={props.timeline}/>:<DestinationConversation {...props}/>):<ConversationTimeline {...props}/>;
+}
+// Activity destinations borrow their already-loaded source and exact cache job.
+// Their native receipt still validates the source digest and account generation.
+function RetainedDestination({timeline,pr,currentHead,destination,context,inline=false,onBack,onBrowse}:ConversationProps&{timeline:Timeline}){
+ useSyncExternalStore(timeline.subscribe,timeline.snapshot);
+ const source=timeline.destination(destination!);
+ const position=source?.thread?anchor(source.thread,context):null;
+ return <section id={inline?'inline-conversation':'conversation'} className="conversation" tabIndex={-1} role={inline?'region':'tabpanel'} aria-label={inline?'Inline discussions':'Conversation'} aria-labelledby={inline?undefined:'conversation-tab'}>
+  <div className="reading-controls"><button onClick={onBack}>Back to Activity</button><button onClick={onBrowse}>Browse conversation</button>{source?.thread&&<span className="reader-meta">{source.thread.path}{source.thread.line?` · line ${source.thread.line}`:''}</span>}{position?.row!=null&&context&&<button onClick={()=>context.jump(position.row!)}>Return to diff · line {source?.thread?.line}</button>}</div>
+  <div className="reader-actions"><button onClick={()=>void timeline.start(true)}>Refresh conversation</button></div>
+  {source?<Message key={`${source.message.id}:${source.message.digest}:${source.generation}`} message={source.message} job={source.job} generation={source.generation} explicitlyOpened={currentHead===pr.head&&!timeline.disposed} continuous report={()=>timeline.reportError()}/>:<p className="state-banner">This comment is no longer available.</p>}
+ </section>;
 }
 function DestinationConversation({pr,revision,currentHead,context,inline=false,destination,onBack,onBrowse}:ConversationProps){
  const [snapshot,setSnapshot]=useState<Snapshot<ConversationPage|null>|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
@@ -48,18 +59,15 @@ function DestinationConversation({pr,revision,currentHead,context,inline=false,d
  </section>;
 }
 const reviewLabels:Record<string,string>={APPROVED:'Approved',CHANGES_REQUESTED:'Requested changes',COMMENTED:'Reviewed',DISMISSED:'Review dismissed',PENDING:'Review pending',comment:'Commented',reply:'Replied',review:'Reviewed'};
-// Timeline rows render nearby comments independently; the old 64-node page allowance
-// made ordinary reviews fall back to literal source, including their headings.
+// Render the entire comment in every reader, including Activity destinations.
 export function Message({message:m,job,generation,report,explicitlyOpened=false,continuous=false,nodeLimit=continuous?4000:64,onReply,defaultExpanded=true,onExpandedChange}:{defaultExpanded?:boolean;onExpandedChange?:(expanded:boolean)=>void;onReply?:()=>void;continuous?:boolean;nodeLimit?:number;message:ConversationMessage;job:ConversationJob;generation:number;explicitlyOpened?:boolean;report:(e:string)=>void}){
  const [expanded,setExpanded]=useState(defaultExpanded),contentId=useId();
- const parts=useMemo(()=>continuous?[{start:0,end:(m.body??'').length}]:segmentRanges(m.body??''),[m.body,continuous]),[part,setPart]=useState(0),visited=useRef(new Set<number>()),element=useRef<HTMLElement>(null),body=useRef<HTMLDivElement>(null),opened=useRef(false),changingSegment=useRef(false);
- useLayoutEffect(()=>{if(changingSegment.current){if(body.current){body.current.scrollTop=0;body.current.focus();}changingSegment.current=false;}},[part]);
+ const element=useRef<HTMLElement>(null),opened=useRef(false);
  useEffect(()=>{if(explicitlyOpened&&!opened.current){element.current?.focus();opened.current=true;}},[explicitlyOpened]);
- function changeSegment(delta:number){changingSegment.current=true;setPart(n=>n+delta);}
- useEffect(()=>{if(explicitlyOpened){if(visitDestination(m,m.id,part,parts.length,visited.current))void command('conversation_seen',{job,id:m.id,digest:m.digest,generation}).catch(e=>report(String(e)));}},[explicitlyOpened,part,m.id,m.body,m.digest,generation]);
+ useEffect(()=>{if(explicitlyOpened&&canMarkSeen(m))void command('conversation_seen',{job,id:m.id,digest:m.digest,generation}).catch(e=>report(String(e)));},[explicitlyOpened,m.id,m.body,m.digest,generation]);
  return <article ref={element} tabIndex={-1} className="conversation-message" aria-label={`${reviewLabels[m.kind]??'Comment'} by ${m.author??'unknown author'}`}><header><button className="message-toggle" type="button" aria-expanded={expanded} aria-controls={contentId} aria-label={`${expanded?'Collapse':'Expand'} comment by ${m.author??'unknown author'}`} onClick={()=>{onExpandedChange?.(!expanded);setExpanded(!expanded);}}>{expanded?<ChevronDown size={14} strokeWidth={1.65}/>:<ChevronRight size={14} strokeWidth={1.65}/>}</button><strong>{m.author??'Unknown author'}</strong>{['APPROVED','CHANGES_REQUESTED','COMMENTED','DISMISSED','PENDING'].includes(m.kind)&&<span>{reviewLabels[m.kind]}</span>}<time dateTime={m.time}>{conversationTime(m.time)}</time>{onReply&&<button type="button" className="reply-action" aria-label={`${job.source==='replies'?'Reply':'Quote reply'} to ${m.author??'comment'}`} onClick={onReply}><Reply size={13} strokeWidth={1.65}/>{job.source==='replies'?'Reply':'Quote reply'}</button>}</header>
   <div id={contentId} hidden={!expanded}>
-  {m.state==='complete'&&m.body!==null?<><div ref={body} className="message-body" tabIndex={0} role="region" aria-label={`Message body${parts.length>1?` · segment ${part+1} of ${parts.length}`:''}`}><Markdown baseUrl={m.url??`https://github.com/${job.repo}/pull/${job.number}`} nodeLimit={nodeLimit}>{m.body.slice(parts[part].start,parts[part].end)}</Markdown></div>{parts.length>1&&<div className="pagination"><button disabled={part===0} onClick={()=>changeSegment(-1)}>Previous part</button><span>Part {part+1} of {parts.length}</span><button disabled={part===parts.length-1} onClick={()=>changeSegment(1)}>Next part</button></div>}</>:<p className="state-banner">{m.state==='oversized'?'This comment is too long to preview. View it on GitHub.':'This comment isn’t available.'}</p>}
+  {m.state==='complete'&&m.body!==null?<><div className="message-body" tabIndex={0} role="region" aria-label="Message body"><Markdown baseUrl={m.url??`https://github.com/${job.repo}/pull/${job.number}`} nodeLimit={nodeLimit}>{m.body}</Markdown></div></>:<p className="state-banner">{m.state==='oversized'?'This comment is too long to preview. View it on GitHub.':'This comment isn’t available.'}</p>}
   <div className="reading-controls">{m.url&&<button onClick={()=>void command('open_conversation',{job,id:m.id}).catch(e=>report(String(e)))}>View on GitHub</button>}</div>
  </div></article>;
 }

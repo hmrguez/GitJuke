@@ -28,31 +28,35 @@ async function render(node:React.ReactNode){await act(async()=>root.render(node)
 beforeEach(()=>{Object.assign(globalThis,{IntersectionObserver:class{constructor(private callback:any){}observe(){this.callback([{isIntersecting:true}]);}disconnect(){}}});host=document.createElement('div');document.body.append(host);root=createRoot(host);calls=[];readRevision=1;read=async j=>page(j);(dom as any).__TAURI_INTERNALS__={invoke:async(name:string,args:any)=>{calls.push({name,args});if(name==='read_conversation')return {data:await read(args.job),revision:readRevision,error:null};return null;}};});
 afterEach(async()=>{await act(async()=>root.unmount());host.remove();});
 
-test('ordinary segment navigation focuses the scrollable new segment and resets its scroll',async()=>{
- await render(<Message message={message} job={job} generation={1} report={()=>{}}/>);
- const body=host.querySelector<HTMLElement>('.message-body')!;expect(body.tabIndex).toBe(0);body.scrollTop=300;
- await click('Next part');expect(document.activeElement===body).toBe(true);expect(body.scrollTop).toBe(0);expect(body.getAttribute('aria-label')).toContain('segment 2 of 3');
+test('ordinary long comments render in full without part navigation',async()=>{
+ await render(<Message message={{...message,body:message.body+' comment tail'}} job={job} generation={1} report={()=>{}}/>);
+ const body=host.querySelector<HTMLElement>('.message-body')!;
+ expect(body.tabIndex).toBe(0);expect(body.textContent).toContain('comment tail');
+ expect(body.textContent!.length).toBe(70013);
+ expect(button('Next part')).toBeUndefined();expect(button('Previous part')).toBeUndefined();
  expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
 });
-test('exact destination counts committed distinct segments without stealing focus on polling',async()=>{
+test('exact destination renders its full body and records one receipt without stealing focus on polling',async()=>{
  const node=<Message message={message} job={job} generation={1} explicitlyOpened report={()=>{}}/>;await render(node);
- expect(document.activeElement===host.querySelector('article')).toBe(true);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
- await click('Next part');await click('Previous part');await click('Next part');expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
- await click('Next part');expect(document.activeElement===host.querySelector('.message-body')).toBe(true);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
- const other=document.createElement('button');document.body.append(other);other.focus();await render(node);expect(document.activeElement===other).toBe(true);other.remove();
+ expect(document.activeElement===host.querySelector('article')).toBe(true);
+ expect(host.querySelector('.message-body')!.textContent!.length).toBe(70000);
+ expect(button('Next part')).toBeUndefined();
+ expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
+ const other=document.createElement('button');document.body.append(other);other.focus();await render(node);
+ expect(document.activeElement===other).toBe(true);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);other.remove();
 });
 test('oversized destination remains unseen; complete empty review submits its exact receipt',async()=>{
  await render(<Message key="limited" message={{...message,body:null,state:'oversized'}} job={job} generation={1} explicitlyOpened report={()=>{}}/>);expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
  await render(<Message key="empty" message={{...message,kind:'APPROVED',body:'',bytes:0}} job={job} generation={2} explicitlyOpened report={()=>{}}/>);
  expect(calls.filter(c=>c.name==='conversation_seen').map(c=>c.args)).toEqual([{job,id:message.id,digest:message.digest,generation:2}]);
 });
-test('changed destination generation restarts segment coverage; stale head never submits seen',async()=>{
+test('changed destination generation records its exact full-body receipt; stale heads never submit seen',async()=>{
  let generation=1;read=async j=>({...page(j),messages:[message],generation,next:null,total:1});
- await render(<Conversation pr={pr} revision={1} currentHead={pr.head} destination="target"/>);await click('Next part');
- generation=2;readRevision=2;await render(<Conversation pr={pr} revision={2} currentHead={pr.head} destination="target"/>);await click('Next part');await click('Next part');
- expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);expect(calls.find(c=>c.name==='conversation_seen')!.args.generation).toBe(2);
- await render(<Conversation key="stale" pr={pr} revision={1} currentHead={'b'.repeat(40)} destination="target"/>);await click('Next part');await click('Next part');
- expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
+ await render(<Conversation pr={pr} revision={1} currentHead={pr.head} destination="target"/>);
+ generation=2;readRevision=2;await render(<Conversation pr={pr} revision={2} currentHead={pr.head} destination="target"/>);
+ expect(calls.filter(c=>c.name==='conversation_seen').map(c=>c.args.generation)).toEqual([1,2]);
+ await render(<Conversation key="stale" pr={pr} revision={1} currentHead={'b'.repeat(40)} destination="target"/>);
+ expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(2);
 });
 
 test('changes render every row regardless of saved paged mode; file pages focus the navigator',async()=>{
@@ -86,7 +90,7 @@ test('an exact inline thread jump retains diff focus rather than overriding it w
  }finally{target.remove();}
 });
 
-test('segmented exact destinations retain traversal across current-anchor patch loading and jump to a later line in the continuous diff',async()=>{
+test('complete exact destinations retain their receipt across patch loading and jump to a later diff line',async()=>{
  const source='@@ -0,0 +1,201 @@\n'+Array.from({length:201},(_,i)=>`+local line ${i+1}`).join('\n');
  const model=parseDiff(source),file={index:0,path:'file-0.txt',previousPath:null,status:'added',additions:201,deletions:0,url:null};
  const coordinates={...thread,id:message.id,path:file.path,line:201,startLine:199,startSide:'RIGHT'};
@@ -102,23 +106,22 @@ test('segmented exact destinations retain traversal across current-anchor patch 
  };
  try{
   await render(<Changes pr={pr} currentHead={pr.head} paged revision={1} destination="target" onMode={()=>{}}/>);
-  expect(button('Return to diff · line 201')).toBeUndefined();await click('Next part');
+  expect(button('Return to diff · line 201')).toBeUndefined();expect(button('Next part')).toBeUndefined();
   await act(async()=>host.querySelector<HTMLButtonElement>('.file-list button')!.click());await settle();await settle();
   expect(host.textContent).toContain('line 201');await click('Return to diff · line 201');
   expect(document.activeElement===host.querySelector('.diff-viewport')).toBe(true);expect(host.querySelectorAll('.diff-row')).toHaveLength(202);expect(host.querySelector('.diff-source')!.textContent).toContain('local line 201');
-  expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);await click('Next part');
   expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);expect(calls.find(c=>c.name==='conversation_seen')!.args.id).toBe('target');
  }finally{await render(null);Object.assign(globalThis,{Worker:priorWorker,ResizeObserver:priorObserver});}
 });
 
-test('leaving a partial exact destination releases authorization and remounts fresh segment coverage',async()=>{
+test('ordinary browsing never submits a receipt; reopening an exact destination renders it in full',async()=>{
  read=async j=>j.source==='initial'?page(j):({...page(j),messages:[message],threads:[],next:null,total:1});
  const props={pr,revision:1,currentHead:pr.head};
- await render(<Conversation key="opened" {...props} destination="target"/>);await click('Next part');
- await render(<Conversation key="ordinary" {...props}/>);expect(button('Next part')).toBeUndefined();
- expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
- await render(<Conversation key="reopened" {...props} destination="target"/>);expect(host.textContent).toContain('Part 1 of 3');
- await click('Next part');expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(0);
- await click('Next part');expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
+ await render(<Conversation key="opened" {...props} destination="target"/>);
+ expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
+ await render(<Conversation key="ordinary" {...props}/>);
+ expect(button('Next part')).toBeUndefined();expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(1);
+ await render(<Conversation key="reopened" {...props} destination="target"/>);
+ expect(host.querySelector('.message-body')!.textContent!.length).toBe(70000);
+ expect(button('Next part')).toBeUndefined();expect(calls.filter(c=>c.name==='conversation_seen')).toHaveLength(2);
 });
-

@@ -282,3 +282,122 @@ fn restarting_paused_does_not_replay_prior_session_manual_jobs() {
     assert!(s.pending(1).unwrap().is_empty());
     assert!(s.settings().unwrap().paused);
 }
+
+#[test]
+fn list_bundles_stack_metadata_atomically_with_prs_and_includes_every_stack_on_the_page() {
+    let d = tempfile::tempdir().unwrap();
+    let mut s = Store::open(&d.path().join("db")).unwrap();
+    s.bind(&Identity {
+        id: 42,
+        login: "reader".into(),
+    })
+    .unwrap();
+    let items: Vec<_> = (1..=12).map(pr).collect();
+    s.begin_source("authored").unwrap();
+    s.stage_source("authored", &items).unwrap();
+    s.publish_source("authored").unwrap();
+    let generation = s.generation().unwrap();
+    for item in &items {
+        let overview = Overview {
+            repo_id: item.repo_id,
+            id: item.id.clone(),
+            repo: item.repo.clone(),
+            number: item.number,
+            title: item.title.clone(),
+            url: item.url.clone(),
+            body: None,
+            body_limited: false,
+            head: "a".repeat(40),
+            base: "main".into(),
+            state: "open".into(),
+            draft: false,
+            author: None,
+            stack: StackState::Published {
+                number: item.number,
+                trunk: "main".into(),
+                members: vec![StackMember {
+                    number: item.number,
+                    title: item.title.clone(),
+                    url: item.url.clone(),
+                }],
+            },
+        };
+        s.put(&format!("pr:a/b:{}", item.number), &overview, generation)
+            .unwrap();
+    }
+    let watches_before = s.watch_page(0).unwrap().items.len();
+    let page = s.list_page("authored", 0).unwrap();
+    assert_eq!(page.items.len(), 12);
+    assert_eq!(page.stacks.len(), 12);
+    assert_eq!(page.stacks[0].repo, "a/b");
+    assert!(
+        matches!(&page.stacks[0].stack, StackState::Published { members, .. }
+        if members.iter().any(|member| member.number == page.items[0].number))
+    );
+    let json = serde_json::to_value(&page).unwrap();
+    assert_eq!(json["stacks"].as_array().unwrap().len(), 12);
+    assert_eq!(s.watch_page(0).unwrap().items.len(), watches_before);
+    assert!(s.pending(u64::MAX / 2).unwrap().is_empty());
+    // A second list read returns the same bundled topology, without hydration work.
+    assert_eq!(s.list_page("authored", 0).unwrap().stacks.len(), 12);
+    s.clear().unwrap();
+    let cleared = s.list_page("authored", 0).unwrap();
+    assert!(cleared.items.is_empty());
+    assert!(cleared.stacks.is_empty());
+}
+
+#[test]
+fn main_lists_filter_closed_prs_and_sort_by_updated_before_pagination() {
+    let d = tempfile::tempdir().unwrap();
+    let mut s = Store::open(&d.path().join("db")).unwrap();
+    s.bind(&Identity {
+        id: 42,
+        login: "reader".into(),
+    })
+    .unwrap();
+    let items: Vec<_> = (1..=107)
+        .map(|n| {
+            let mut item = pr(n);
+            item.updated_at = date(1_790_000_000 + n);
+            item
+        })
+        .collect();
+    for source in ["authored", "direct", "team:1"] {
+        s.begin_source(source).unwrap();
+        s.stage_source(source, &items).unwrap();
+        s.publish_source(source).unwrap();
+    }
+    // A newer cached snapshot can close a PR before source discovery catches up.
+    let generation = s.generation().unwrap();
+    for (number, state) in [(1, "closed"), (2, "merged")] {
+        let mut item = pr(number);
+        item.state = state.into();
+        item.updated_at = date(1_790_001_000);
+        s.put(&format!("list:{}", item.id), &item, generation)
+            .unwrap();
+    }
+    for view in ["authored", "requested"] {
+        let first = s.list_page(view, 0).unwrap();
+        assert_eq!(first.items.len(), 100);
+        assert_eq!(first.next_offset, Some(100));
+        assert_eq!(
+            first.items.iter().map(|p| p.number).collect::<Vec<_>>(),
+            (8..=107).rev().collect::<Vec<_>>()
+        );
+        let last = s.list_page(view, 100).unwrap();
+        assert_eq!(
+            last.items.iter().map(|p| p.number).collect::<Vec<_>>(),
+            vec![7, 6, 5, 4, 3]
+        );
+        assert_eq!(last.next_offset, None);
+        assert!(
+            first
+                .items
+                .iter()
+                .chain(&last.items)
+                .all(|p| p.state == "open")
+        );
+        // Re-reading preserves pagination order, even though cache access times change.
+        assert_eq!(s.list_page(view, 0).unwrap().items[0].number, 107);
+    }
+}

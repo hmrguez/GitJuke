@@ -63,10 +63,20 @@ pub struct Snapshot<T> {
     pub error: Option<String>,
     pub revision: u64,
 }
+/// Published stack metadata bundled with a PR list, scoped to its repository.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PullRequestStack {
+    pub repo: String,
+    pub stack: StackState,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Page {
     pub items: Vec<PullRequest>,
+    #[serde(default)]
+    pub stacks: Vec<PullRequestStack>,
     pub next_offset: Option<usize>,
     pub fetched_at: Option<u64>,
     pub complete: bool,

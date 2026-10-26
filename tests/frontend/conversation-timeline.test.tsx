@@ -69,7 +69,7 @@ test('refresh replaces the timeline without retaining old comments or stealing k
 test('an authoritative removal clears the entire retained timeline and rejects a delayed page',async()=>{
  let resolve!:(value:any)=>void,blocked=false,removed=false;
  read=async job=>removed?snapshot(null):job.source==='reviews'&&job.after?new Promise(r=>{blocked=true;resolve=r;}):snapshot({...page(job),next:job.source==='reviews'?'later':null,messages:[message('private-comment','10:00')]});
- await render(<Conversation pr={pr} currentHead={head} revision={1}/>);expect(blocked).toBe(true);expect(host.textContent).toContain('private-comment');
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);expect(blocked).toBe(true);expect(host.textContent).not.toContain('private-comment');
  removed=true;await render(<Conversation pr={pr} currentHead={head} revision={2}/>);
  expect(host.textContent).not.toContain('private-comment');
  await act(async()=>resolve(snapshot({...page({...pr,source:'reviews'} as any),messages:[message('late-review','13:00')]})));await settle();
@@ -82,13 +82,16 @@ test('a failed combined source does not publish a partial initial discussion',as
  expect(host.textContent).not.toContain('review-visible');expect(host.textContent).toContain('Couldn’t load part of the discussion.');
 });
 
-test('message body cache evicts older bodies at the 100-message boundary while keeping metadata navigable',async()=>{
+test('initial loading retains every body across more than 100 comments',async()=>{
  const reader=new ConversationTimeline({repo:pr.repo,number:1,head},1);
- read=async job=>snapshot({...page(job),messages:[message(job.thread!,'10:00')]});
- const entries:TimelineMessage[]=Array.from({length:101},(_,i)=>({kind:'message',id:`message-${i}`,time:'',metadata:message(`message-${i}`,'10:00'),job:{repo:pr.repo,number:1,head,source:'replies',thread:`message-${i}`,after:null,seq:0}}));
- for(const entry of entries)await reader.show(entry);
- expect(reader.body(entries[0])).toBeUndefined();expect(reader.body(entries[100])?.body).toBe('message-100');
- await reader.show(entries[0]);expect(reader.body(entries[0])?.body).toBe('message-0');reader.close();
+ read=async job=>{
+  const start=job.after==='last'?100:job.after?50:0;
+  return {...snapshot({...page(job),messages:job.source==='comments'?Array.from({length:start===100?1:50},(_,i)=>message(`message-${start+i}`,'10:00')):[],next:job.source==='comments'?(start===0?'middle':start===50?'last':null):null}),fetchedAt:Math.floor(Date.now()/1000)};
+ };
+ await reader.start();
+ expect(reader.entries).toHaveLength(101);
+ for(const entry of reader.entries)if(entry.kind==='message')expect(reader.body(entry)?.body).toBe(entry.id);
+ reader.close();
 });
 
 test('ordering uses timestamps rather than lexical dates and has deterministic ties',()=>{
@@ -109,13 +112,13 @@ test('cold timeline loads use one native request at a time and do not cancel sib
  expect(host.textContent).toContain('No discussion yet.');
 });
 
-test('body cache respects the UTF-8 byte ceiling even below the message-count ceiling',async()=>{
+test('initial loading retains the whole discussion beyond the former 2 MB body ceiling',async()=>{
  const reader=new ConversationTimeline({repo:pr.repo,number:1,head},1);
  const body='é'.repeat(65536);
- read=async job=>snapshot({...page(job),messages:[message(job.thread!,'10:00',body)]});
- const entries:TimelineMessage[]=Array.from({length:17},(_,i)=>({kind:'message',id:`body-${i}`,time:'',metadata:message(`body-${i}`,'10:00'),job:{repo:pr.repo,number:1,head,source:'replies',thread:`body-${i}`,after:null,seq:0}}));
- for(const entry of entries)await reader.show(entry);
- expect(reader.body(entries[0])).toBeUndefined();expect(reader.body(entries[1])?.body).toBe(body);expect(reader.body(entries[16])?.body).toBe(body);reader.close();
+ read=async job=>({...snapshot({...page(job),messages:job.source==='comments'?Array.from({length:job.after?1:16},(_,i)=>message(`body-${job.after?16:i}`,'10:00',body)):[],next:job.source==='comments'&&!job.after?'next':null}),fetchedAt:Math.floor(Date.now()/1000)});
+ await reader.start();expect(reader.entries).toHaveLength(17);
+ for(const entry of reader.entries)if(entry.kind==='message')expect(reader.body(entry)?.body===body).toBe(true);
+ reader.close();
 });
 
 test('a combined initial response with mixed account generations is rejected',async()=>{
@@ -287,81 +290,47 @@ test('page loads retain message bodies together without reads when rows become v
  await reader.start();
  const discussion=reader.entries.find(entry=>entry.kind==='thread')!;
  if(discussion.kind!=='thread')throw new Error('Missing thread');
- await reader.loadReplies(discussion);
  const entries=[...reader.entries.filter((entry):entry is TimelineMessage=>entry.kind==='message'),...reader.replies.get(discussion.id)!];
  expect(entries).toHaveLength(5);
  for(const entry of entries)expect(reader.body(entry)?.body).toBe(entry.id);
  const reads=calls.filter(call=>call.name==='read_conversation');
  expect(reads).toHaveLength(3);
- for(const entry of entries)await reader.show(entry);
  expect(calls.filter(call=>call.name==='read_conversation')).toHaveLength(reads.length);
  expect(calls.filter(call=>call.name==='request_conversation')).toHaveLength(0);
  reader.close();
 });
 
-test('offscreen comments use measured spacers and remount without rereading their bodies',async()=>{
- const intersections=new Map<Element,(visible:boolean)=>void>(),sizes=new Map<Element,()=>void>();
- const previousResize=globalThis.ResizeObserver;
- Object.assign(globalThis,{
-  IntersectionObserver:class{
-   constructor(private callback:any){}
-   observe(node:Element){intersections.set(node,visible=>this.callback([{isIntersecting:visible}]));}
-   disconnect(){}
-  },
-  ResizeObserver:class{
-   private node?:Element;
-   constructor(private callback:any){}
-   observe(node:Element){this.node=node;sizes.set(node,()=>this.callback([]));}
-   disconnect(){if(this.node)sizes.delete(this.node);}
-  },
- });
- try{
-  read=async job=>({...snapshot({...page(job),messages:job.source==='comments'?Array.from({length:40},(_,i)=>message(`comment-${i}`,'10:00')):[]}),fetchedAt:Math.floor(Date.now()/1000)});
-  await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
-  const rows=[...host.querySelectorAll<HTMLElement>('.conversation-timeline>.timeline-entry')];
-  expect(rows).toHaveLength(40);expect(host.querySelectorAll('.message-body')).toHaveLength(0);
-  expect(rows.every(row=>row.getAttribute('aria-hidden')==='true'&&!row.hasChildNodes())).toBe(true);
-  const reads=calls.filter(c=>c.name==='read_conversation').length;
-  await act(async()=>{intersections.get(rows[0])!(true);intersections.get(rows[1])!(true);});
-  expect(host.querySelectorAll('.message-body')).toHaveLength(2);
-  expect(rows[0].textContent).toContain('comment-0');
-  let height=480;
-  rows[0].getBoundingClientRect=()=>({height}) as DOMRect;
-  sizes.get(rows[0])!();height=640;sizes.get(rows[0])!();
-  await act(async()=>rows[0].querySelector<HTMLButtonElement>('.message-toggle')!.click());
-  await act(async()=>intersections.get(rows[0])!(false));
-  expect(rows[0].style.height).toBe('640px');expect(rows[0].hasChildNodes()).toBe(false);
-  expect(sizes.has(rows[0])).toBe(false);
-  await act(async()=>intersections.get(rows[0])!(true));
-  expect(rows[0].style.height).toBe('');
-  expect(rows[0].querySelector('.message-toggle')?.getAttribute('aria-expanded')).toBe('false');
-  expect(rows[0].textContent).toContain('comment-0');
-  expect(calls.filter(c=>c.name==='read_conversation')).toHaveLength(reads);
- }finally{Object.assign(globalThis,{ResizeObserver:previousResize});}
+test('every comment and reply mounts without intersection observers or scrolling',async()=>{
+ let observers=0;
+ Object.assign(globalThis,{IntersectionObserver:class{constructor(){observers++;}observe(){}disconnect(){}}});
+ const saved=read;
+ read=async job=>job.source==='comments'?snapshot({...page(job),messages:Array.from({length:50},(_,i)=>message(`comment-${i}`,'10:00')),next:job.after?null:'next'}):saved(job);
+ await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
+ expect(observers).toBe(0);
+ expect(host.querySelectorAll('.message-body')).toHaveLength(53);
+ expect(host.textContent).toContain('comment-49');expect(host.textContent).toContain('reply-later');
+ expect(host.querySelector('.timeline-entry[aria-hidden]')).toBeNull();
+ expect(host.querySelector('.timeline-entry[style]')).toBeNull();
+ const row=host.querySelector<HTMLElement>('.timeline-entry')!;
+ const body=row.querySelector('.message-body');
+ const reads=calls.filter(c=>c.name==='read_conversation').length;
+ await act(async()=>{row.dispatchEvent(new dom.Event('scroll'));host.querySelector<HTMLButtonElement>('.reader-actions button')!.focus();});
+ expect(row.querySelector('.message-body')).toBe(body);
+ expect(calls.filter(c=>c.name==='read_conversation')).toHaveLength(reads);
 });
 
-test('virtual rows preserve keyboard focus and typed reply drafts outside the viewport',async()=>{
- const intersections=new Map<Element,(visible:boolean)=>void>();
- Object.assign(globalThis,{IntersectionObserver:class{
-  constructor(private callback:any){}
-  observe(node:Element){intersections.set(node,visible=>this.callback([{isIntersecting:visible}]));this.callback([{isIntersecting:true}]);}
-  disconnect(){}
- }});
+test('fully mounted rows preserve keyboard focus and reply drafts',async()=>{
  await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
  const row=host.querySelector<HTMLElement>('.conversation-timeline>.timeline-entry')!;
  const toggle=row.querySelector<HTMLButtonElement>('.message-toggle')!;
- await act(async()=>{toggle.focus();intersections.get(row)!(false);});
- expect(document.activeElement).toBe(toggle);expect(row.querySelector('.message-body')).not.toBeNull();
- await act(async()=>host.querySelector<HTMLButtonElement>('.reader-actions button')!.focus());
- expect(row.hasChildNodes()).toBe(false);
- await act(async()=>intersections.get(row)!(true));
+ await act(async()=>toggle.focus());expect(document.activeElement).toBe(toggle);
  await act(async()=>row.querySelector<HTMLButtonElement>('.reply-action')!.click());
  const input=row.querySelector<HTMLTextAreaElement>('textarea')!;
  await act(async()=>{
   Object.getOwnPropertyDescriptor(dom.HTMLTextAreaElement.prototype,'value')!.set!.call(input,'Keep this draft while scrolling');
   input.dispatchEvent(new dom.Event('input',{bubbles:true}));
   host.querySelector<HTMLButtonElement>('.reader-actions button')!.focus();
-  intersections.get(row)!(false);
+  row.dispatchEvent(new dom.Event('scroll'));
  });
  expect(row.querySelector('textarea')).toBe(input);expect(input.value).toBe('Keep this draft while scrolling');
 });
@@ -369,7 +338,8 @@ test('virtual rows preserve keyboard focus and typed reply drafts outside the vi
 
 test('switching reader tabs retains the loaded conversation without rereads or requests',async()=>{
  const panel=(active:boolean)=><ConversationTab active={active} pr={pr} currentHead={head} revision={1}/>;
- await render(panel(false));expect(calls).toHaveLength(0);
+ await render(panel(false));expect(calls.some(call=>call.name==='read_conversation')).toBe(true);
+ expect(host.querySelector('[hidden]')).not.toBeNull();
  await render(panel(true));
  const body=host.querySelector('.message-body');
  const reads=calls.filter(c=>c.name==='read_conversation').length;
@@ -416,24 +386,69 @@ test('an empty retained conversation accepts its first comment from a store upda
 });
 
 
-test('the first published timeline contains comments, review decisions and file comments before pagination finishes',async()=>{
+test('initial conversation waits for the final replies before publishing one complete discussion',async()=>{
  let release!:(value:any)=>void;
  const invoke=(dom as any).__TAURI_INTERNALS__.invoke;
  (dom as any).__TAURI_INTERNALS__.invoke=async(name:string,args:any)=>{
-  if(name==='read_conversation'&&args.job.after){
+  if(name==='read_conversation'&&args.job.source==='replies'&&args.job.after){
    calls.push({name,job:args.job});
    return new Promise(resolve=>{release=resolve;});
   }
   return invoke(name,args);
  };
  await render(<Conversation pr={pr} currentHead={head} revision={1}/>);
- expect(host.textContent).toContain('comment-first');
- expect(host.textContent).toContain('Approved');
- expect(host.querySelector('.timeline-thread')!.textContent).toContain('reply-first');
- expect(host.querySelector('.timeline-thread')!.textContent).not.toContain('Loading replies');
- expect(calls.filter(c=>c.name==='request_conversation').map(c=>c.job.source)).toEqual(['initial']);
- expect(calls.filter(c=>c.name==='read_conversation'&&c.job.source!=='initial'&&!c.job.after)).toHaveLength(0);
+ expect(host.querySelectorAll('.timeline-entry')).toHaveLength(0);
  expect(host.querySelector('[aria-label="Loading conversation"]')).not.toBeNull();
- await act(async()=>release(snapshot({...page({...pr,source:'comments'} as any),messages:[message('tail-comment','18:00')]})));
+ expect(host.querySelector('.comment-composer')).toBeNull();
+ await act(async()=>release({...snapshot({...page({...pr,source:'replies'} as any),messages:[message('tail-reply','18:00')]}),fetchedAt:Math.floor(Date.now()/1000)}));
  await settle();
+ for(const text of ['comment-first','comment-later','Approved','reply-first','tail-reply'])expect(host.textContent).toContain(text);
+ expect(host.querySelector('[aria-label="Loading conversation"]')).toBeNull();
+ for(const text of ['Next part','Previous part','Next page','Previous page'])expect(host.textContent).not.toContain(text);
+});
+
+
+test('initial traversal fetches every offscreen thread reply page before finishing',async()=>{
+ const reader=new ConversationTimeline({repo:pr.repo,number:1,head},1);
+ await reader.start();
+ expect(reader.finished).toBe(true);
+ expect(reader.replies.get('thread')?.map(reply=>reply.id)).toEqual(['reply-first','reply-later']);
+ expect(calls.some(call=>call.name==='read_conversation'&&call.job.source==='replies'&&call.job.after==='next')).toBe(true);
+ reader.close();
+});
+
+test('polling after the initial traversal merges new threads and all their replies',async()=>{
+ const reader=new ConversationTimeline({repo:pr.repo,number:1,head},1);
+ read=async job=>snapshot(page(job));
+ await reader.start();
+ read=async job=>snapshot({...page(job),threads:job.source==='threads'?[thread]:[],messages:job.source==='replies'?[message(job.after?'tail':'root',job.after?'13:00':'12:00')]:[],next:job.source==='replies'&&!job.after?'next':null});
+ await reader.start(true);
+ expect(reader.entries.map(entry=>entry.id)).toEqual(['thread']);
+ expect(reader.replies.get('thread')?.map(entry=>entry.id)).toEqual(['root','tail']);
+ reader.close();
+});
+
+
+test('mounting and remounting a prepared conversation renders complete bodies in its first layout without skeletons or reads',async()=>{
+ const {ConversationSession}=await import('../../src/features/conversation/conversation-session');
+ const session=new ConversationSession();
+ const ready=session.prepare(pr,1);expect(session.prepare(pr,1)).toBe(ready);
+ const timeline=await ready;
+ const reads=calls.filter(c=>c.name==='read_conversation').length;
+ const layouts:{bodies:number;skeletons:number}[]=[];
+ function Mounted(){
+  React.useLayoutEffect(()=>{layouts.push({bodies:host.querySelectorAll('.message-body').length,skeletons:host.querySelectorAll('.skeleton').length});},[]);
+  return <ConversationTab active timeline={timeline} pr={pr} currentHead={head} revision={1}/>;
+ }
+ try{
+  await render(<Mounted/>);await render(null);await render(<Mounted/>);
+  expect(layouts).toEqual([{bodies:5,skeletons:0},{bodies:5,skeletons:0}]);
+  expect(calls.filter(c=>c.name==='read_conversation')).toHaveLength(reads);
+  expect(calls.filter(c=>c.name==='cancel_conversation')).toHaveLength(0);
+  await render(<Conversation timeline={timeline} pr={pr} currentHead={head} revision={1} destination="reply-later"/>);
+  expect(host.querySelector('.skeleton')).toBeNull();expect(host.textContent).toContain('reply-later');
+  expect(calls.filter(c=>c.name==='read_conversation')).toHaveLength(reads);
+  const receipt=(calls as any[]).find(c=>c.name==='conversation_seen');
+  expect(receipt?.job.source).toBe('replies');expect(receipt?.job.after).toBe('next');
+ }finally{session.clear();}
 });

@@ -35,6 +35,143 @@ impl Runtime {
         }
         Self::cached_operation(&mut i, |s| s.list_page("requested", offset))
     }
+    /// Prepare the visible page before publishing it to the tray. Cached page
+    /// reads remain local; this explicit preparation uses the normal worker.
+    pub async fn prepared_page(&self, view: &str, offset: usize) -> Result<Page> {
+        let read = || match view {
+            "authored" => self.page(offset),
+            "requested" => self.requested_page(offset),
+            _ => Err(Error::Safe("Unknown PR list.".into())),
+        };
+        let mut page = read()?;
+        loop {
+            let preparation = self.prepare_page_stacks(&page.items).await;
+            let mut current = read()?;
+            // Discovery can replace the page while membership is loading. New
+            // arrivals must pass through preparation before becoming visible.
+            if preparation.is_ok()
+                && current.items.iter().any(|item| {
+                    !page.items.iter().any(|previous| {
+                        previous.repo == item.repo && previous.number == item.number
+                    })
+                })
+            {
+                page = current;
+                continue;
+            }
+            match preparation {
+                Err(Error::Safe(message)) => current.error = Some(message),
+                other => other?,
+            }
+            return Ok(current);
+        }
+    }
+
+    pub(crate) async fn prepare_page_stacks(&self, items: &[PullRequest]) -> Result<()> {
+        let result = self.prepare_page_stacks_inner(items).await;
+        self.protect_storage(result)
+    }
+
+    async fn prepare_page_stacks_inner(&self, items: &[PullRequest]) -> Result<()> {
+        let deadline = tokio::time::Instant::now() + std::time::Duration::from_secs(30);
+        loop {
+            let mut unavailable = None;
+            let ready = {
+                let mut i = self.lock()?;
+                if i.locked {
+                    return Err(Error::Safe(i.health.clone()));
+                }
+                // Opening a cached list must respect Pause and storage protection.
+                if i.storage_stopped || i.store.settings()?.paused {
+                    return Ok(());
+                }
+                let stacks = i.store.list_stacks(items, 128 * 1024)?;
+                let generation = i.store.generation()?;
+                let mut ready = true;
+                for pr in items.iter().take(100) {
+                    if stacks.iter().any(|entry| {
+                        entry.repo == pr.repo
+                            && matches!(&entry.stack, StackState::Published { members, .. }
+                            if members.iter().any(|member| member.number == pr.number))
+                    }) {
+                        continue;
+                    }
+                    let key = format!("pr:{}:{}", pr.repo, pr.number);
+                    let overview = i.store.get::<Overview>(&key)?;
+                    let fetched_at = overview.fetched_at.unwrap_or(0);
+                    let job = if let Some(overview) = overview.data {
+                        match overview.stack {
+                            StackState::None | StackState::Published { .. } => continue,
+                            StackState::Unknown { reason }
+                                if i.store.due(&format!(
+                                    "stack-read:{generation}:{}:{}",
+                                    pr.repo, pr.number
+                                ))? >= fetched_at.max(1) =>
+                            {
+                                unavailable =
+                                    Some(format!("Stack information is unavailable: {reason}"));
+                                continue;
+                            }
+                            _ => {}
+                        }
+                        Job::Stacks(pr.repo.clone(), pr.number, overview.head)
+                    } else {
+                        Job::Overview(pr.repo.clone(), pr.number)
+                    };
+                    ready = false;
+                    // Coalesce concurrent list reads and promote this page ahead
+                    // of unrelated monitoring, without changing the selection.
+                    let queued = i.queue.jobs.iter().any(|work| match &work.job {
+                        Job::Overview(repo, number)
+                        | Job::Stacks(repo, number, _)
+                        | Job::StackDetail(repo, number, _, _) => {
+                            repo == &pr.repo && *number == pr.number
+                        }
+                        _ => false,
+                    });
+                    let in_flight: bool = i.store.conn.query_row(
+                        "SELECT EXISTS(SELECT 1 FROM pending WHERE key=? OR (json_extract(job,'$.Stacks[0]')=? AND json_extract(job,'$.Stacks[1]')=?) OR (json_extract(job,'$.StackDetail[0]')=? AND json_extract(job,'$.StackDetail[1]')=?))",
+                        rusqlite::params![key,pr.repo,pr.number as i64,pr.repo,pr.number as i64], |r| r.get(0))?;
+                    if queued {
+                        for work in &mut i.queue.jobs {
+                            match &work.job {
+                                Job::Overview(repo, number)
+                                | Job::Stacks(repo, number, _)
+                                | Job::StackDetail(repo, number, _, _)
+                                    if repo == &pr.repo && *number == pr.number =>
+                                {
+                                    work.foreground = true
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+                    if in_flight {
+                        i.store.conn.execute(
+                            "UPDATE pending SET foreground=1 WHERE key=? OR (json_extract(job,'$.Stacks[0]')=? AND json_extract(job,'$.Stacks[1]')=?) OR (json_extract(job,'$.StackDetail[0]')=? AND json_extract(job,'$.StackDetail[1]')=?)",
+                            rusqlite::params![key,pr.repo,pr.number as i64,pr.repo,pr.number as i64])?;
+                    } else if !queued {
+                        i.store.enqueue(&key, &job, false, true, 0, false)?;
+                    }
+                }
+                ready
+            };
+            if ready {
+                return unavailable.map_or(Ok(()), |message| Err(Error::Safe(message)));
+            }
+            if self.stop.is_cancelled() {
+                return Err(Error::Safe("The reader is closing.".into()));
+            }
+            if tokio::time::Instant::now() >= deadline {
+                return Err(Error::Safe(
+                    "Stack information could not finish loading. Refresh to try again.".into(),
+                ));
+            }
+            self.notify_sync();
+            tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+        }
+    }
+
     pub(crate) fn request_discovery(&self, manual: bool) -> Result<()> {
         let result = self.request_discovery_inner(manual);
         self.protect_storage(result)
@@ -495,7 +632,18 @@ impl Runtime {
                     match head(node, target) {
                         Ok(read) => {
                             if let Some(current) = i.store.accept_head(&read, target)? {
-                                // Keep an old overview labeled by its own SHA until explicitly read again.
+                                // The tray needs native membership even for PRs the reader
+                                // has never opened. Persist this work so a large watch set
+                                // does not overflow the bounded in-memory queue.
+                                let stack_due = format!("stack:{}:{}", target.repo, target.number);
+                                if read.snapshot.pr.state == "open"
+                                    && (w.manual || i.store.due(&stack_due)? <= now())
+                                {
+                                    let job = Job::Overview(target.repo.clone(), target.number);
+                                    i.store
+                                        .enqueue(&job.key(), &job, w.manual, false, 0, false)?;
+                                    i.store.set_due(&stack_due, now() + 300)?;
+                                }
                                 for page in read.pages {
                                     let target = CheckTarget {
                                         page_size: i.context_size,

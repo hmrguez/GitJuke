@@ -1,5 +1,5 @@
 import {command,type ConversationJob,type ConversationMessage,type ConversationPage,type ReviewThread,type Snapshot} from '../../lib/ipc';
-import {eligiblePage,RETAINED_BYTES,RETAINED_MESSAGES} from './conversation-model';
+import {eligiblePage} from './conversation-model';
 
 export type TimelineMessage={kind:'message';id:string;time:string;metadata:Omit<ConversationMessage,'body'>;job:ConversationJob};
 export type TimelineThread={kind:'thread';id:string;time:string;thread:ReviewThread;job:ConversationJob};
@@ -11,8 +11,8 @@ export function chronological<T extends {id:string;time:string}>(items:T[]):T[]{
  return [...items].sort((a,b)=>(Date.parse(a.time)||0)-(Date.parse(b.time)||0)||a.id.localeCompare(b.id));
 }
 
-// One foreground native request at a time. Each page supplies metadata and bodies
-// together; the bounded body cache only reloads comments after eviction.
+// Fetch the entire discussion independently of which rows React renders.
+// Keep bodies for this reader session so scrolling never triggers another fetch.
 export class ConversationTimeline {
  entries:TimelineEntry[]=[];
  replies=new Map<string,TimelineMessage[]>();
@@ -24,6 +24,7 @@ export class ConversationTimeline {
  private generation:number|undefined;
  private jobs=new Map<string,ConversationJob>();
  private validation:Promise<void>|undefined;
+ private loading=false;
  private seeded=new Map<string,string|null>();
  private version=0;
  private listeners=new Set<()=>void>();
@@ -31,7 +32,6 @@ export class ConversationTimeline {
  private refreshed=new Set<string>();
  private pending=new Map<string,Promise<ConversationPage>>();
  private bodies=new Map<string,ConversationMessage>();
- private bytes=0;
  private timers=new Map<ReturnType<typeof setTimeout>,()=>void>();
  private replyLoads=new Map<string,Promise<void>>();
  constructor(readonly identity:Pick<ConversationJob,'repo'|'number'|'head'>,revision:number,private refresh=false){this.revision=revision;}
@@ -75,13 +75,7 @@ export class ConversationTimeline {
   return work;
  }
  private retain(message:ConversationMessage,job:ConversationJob){
-  const key=messageKey({job,id:message.id}),previous=this.bodies.get(key);
-  if(previous){this.bytes-=new TextEncoder().encode(previous.body??'').length;this.bodies.delete(key);}
-  const bytes=new TextEncoder().encode(message.body??'').length;
-  while(this.bodies.size&&(this.bodies.size>=RETAINED_MESSAGES||this.bytes+bytes>RETAINED_BYTES)){
-   const oldest=this.bodies.keys().next().value!;this.bytes-=new TextEncoder().encode(this.bodies.get(oldest)?.body??'').length;this.bodies.delete(oldest);
-  }
-  this.bodies.set(key,message);this.bytes+=bytes;
+  this.bodies.set(messageKey({job,id:message.id}),message);
  }
  private messages(page:ConversationPage,job:ConversationJob):TimelineMessage[]{
   return page.messages.map(({body,...metadata})=>({kind:'message',id:metadata.id,time:metadata.time,metadata,job}));
@@ -120,33 +114,42 @@ export class ConversationTimeline {
    if(after){if(visited.has(after))throw new Error('Repeated page');visited.add(after);}
   }while(after&&!this.disposed);
  }
- async start(){
+ async start(force=false){
+  if(this.loading||this.disposed)return;
+  this.loading=true;this.error=false;
   try{
    const job:ConversationJob={...this.identity,source:'initial',thread:null,after:null,seq:0};
-   const initial=await this.load(job);if(this.disposed)return;
+   const initial=await this.load(job,force);if(this.disposed)return;
    // Index all initial sources and their root comments before notifying React.
    this.ingest(initial,job);this.emit();
    for(const seed of initial.seeds??[]){
     if(this.disposed)return;
-    if(seed.page.next)try{await this.pages(seed.page.source as ConversationJob['source'],seed.thread,false,seed.page.next);}catch{if(!this.disposed)this.reportError();}
+    if(seed.page.next)try{await this.pages(seed.page.source as ConversationJob['source'],seed.thread,force,seed.page.next);}catch{if(!this.disposed)this.reportError();}
+   }
+   // Every thread, including threads on later pages, must finish before initial
+   // loading completes. Rendering never starts a resource request.
+   for(const entry of this.entries){
+    if(this.disposed)return;
+    if(entry.kind==='thread'){if(force)this.replyLoads.delete(entry.id);await this.loadReplies(entry,force);}
    }
   }catch{if(!this.disposed)this.reportError();}
-  this.finished=true;this.emit();
+  this.loading=false;this.finished=true;this.emit();
  }
  body(entry:TimelineMessage){return this.bodies.get(messageKey(entry));}
- async show(entry:TimelineMessage){
-  if(this.body(entry)||this.disposed)return;
-  try{
-   const page=await this.load(entry.job);if(this.disposed)return;
-   if(!page.messages.some(message=>message.id===entry.id))throw new Error('Removed');
-   this.emit();
-  }catch{if(!this.disposed){this.error=true;this.emit();}}
+ destination(id:string){
+  if(this.disposed)return;
+  const entries=[...this.entries,...[...this.replies.values()].flat()];
+  const entry=entries.find((entry):entry is TimelineMessage=>entry.kind==='message'&&entry.id===id);
+  if(!entry)return;
+  const message=this.body(entry);if(!message)return;
+  const thread=this.entries.find((item):item is TimelineThread=>item.kind==='thread'&&item.id===entry.job.thread)?.thread;
+  return {message,job:entry.job,generation:this.generation??0,thread};
  }
- loadReplies(entry:TimelineThread){
+ private loadReplies(entry:TimelineThread,force=false){
   const existing=this.replyLoads.get(entry.id);if(existing)return existing;
   const key=jobKey({...entry.job,source:'replies',thread:entry.id,after:null});
   const after=this.seeded.get(key);
-  const work=(this.seeded.has(key)&&after===null?Promise.resolve():this.pages('replies',entry.id,false,after??null)).catch(()=>{if(!this.disposed)this.reportError();});
+  const work=(this.seeded.has(key)&&after===null?Promise.resolve():this.pages('replies',entry.id,force,after??null)).catch(()=>{if(!this.disposed)this.reportError();});
   this.replyLoads.set(entry.id,work);return work;
  }
  acceptPosted(message:ConversationMessage,thread:string|null=null){
@@ -183,9 +186,13 @@ export class ConversationTimeline {
     }
     this.ingest(value.data,job);
    }
+   for(const entry of this.entries){
+    if(this.disposed)return;
+    if(entry.kind==='thread')await this.loadReplies(entry);
+   }
    this.emit();
-  }catch{if(!this.disposed){this.entries=[];this.replies.clear();this.bodies.clear();this.bytes=0;this.error=true;this.emit();this.close();}}
+  }catch{if(!this.disposed){this.entries=[];this.replies.clear();this.bodies.clear();this.error=true;this.emit();this.close();}}
  }
 
- close(){this.disposed=true;this.bodies.clear();this.bytes=0;this.timers.forEach((resolve,timer)=>{clearTimeout(timer);resolve();});this.timers.clear();}
+ close(){this.disposed=true;this.bodies.clear();this.timers.forEach((resolve,timer)=>{clearTimeout(timer);resolve();});this.timers.clear();}
 }

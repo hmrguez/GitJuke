@@ -45,11 +45,11 @@ pub(crate) fn request_query(
     safe(runtime.request_query(id, version, page))
 }
 #[tauri::command]
-pub(crate) fn query_page(
+pub(crate) async fn query_page(
     runtime: State<'_, Runtime>,
     id: i64,
     version: u64,
     page: u32,
 ) -> Result<gitjuke_core::saved_queries::QueryPage, String> {
-    safe(runtime.query_page(id, version, page))
+    safe(runtime.prepared_query_page(id, version, page).await)
 }

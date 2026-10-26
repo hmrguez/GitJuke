@@ -345,7 +345,9 @@ async fn two_hundred_files_use_two_batches_and_supply_cached_patches() {
     let fetch_elapsed = started.elapsed();
     assert_eq!(all.len(), 200);
     for file in &all {
-        let selected = selected(file.index, j.base.as_ref().unwrap());
+        let mut selected = selected(file.index, j.base.as_ref().unwrap());
+        // The eager reader requests the full variant; the batch must supply it too.
+        selected.large = true;
         let p = r
             .changes_patch(&selected)
             .unwrap()

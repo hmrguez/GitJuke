@@ -23,12 +23,18 @@ pub(crate) fn runtime_status(app: tauri::AppHandle) -> Result<Status, String> {
     safe(runtime.status())
 }
 #[tauri::command]
-pub(crate) fn authored_page(runtime: State<'_, Runtime>, offset: usize) -> Result<Page, String> {
-    safe(runtime.page(offset))
+pub(crate) async fn authored_page(
+    runtime: State<'_, Runtime>,
+    offset: usize,
+) -> Result<Page, String> {
+    safe(runtime.prepared_page("authored", offset).await)
 }
 #[tauri::command]
-pub(crate) fn requested_page(runtime: State<'_, Runtime>, offset: usize) -> Result<Page, String> {
-    safe(runtime.requested_page(offset))
+pub(crate) async fn requested_page(
+    runtime: State<'_, Runtime>,
+    offset: usize,
+) -> Result<Page, String> {
+    safe(runtime.prepared_page("requested", offset).await)
 }
 #[tauri::command]
 pub(crate) fn watch_page(runtime: State<'_, Runtime>, offset: usize) -> Result<WatchPage, String> {

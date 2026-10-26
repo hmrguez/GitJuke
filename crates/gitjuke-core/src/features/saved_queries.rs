@@ -52,6 +52,7 @@ pub struct QueryResults {
 pub struct QueryPage {
     pub query: SavedQuery,
     pub items: Vec<PullRequest>,
+    pub stacks: Vec<PullRequestStack>,
     pub total: Option<u64>,
     pub cached_count: usize,
     pub next_page: Option<u32>,
@@ -264,9 +265,13 @@ impl Store {
             && all_complete
             && first.complete;
         let error=s.error.or(first.error).or_else(||(denied_run>0&&run.is_none()).then(||"Query access unavailable. Refresh after restoring access.".into())).or_else(||data.as_ref().filter(|p|!p.source_complete).map(|_|"GitHub returned a partial or Search-limited set. Counts are not a complete membership claim.".into()));
+        let items = data.as_ref().map(|p| p.items.clone()).unwrap_or_default();
+        let bytes = serde_json::to_vec(&items)?.len();
+        let stacks = self.list_stacks(&items, (900 * 1024_usize).saturating_sub(bytes))?;
         Ok(QueryPage {
             query,
-            items: data.as_ref().map(|p| p.items.clone()).unwrap_or_default(),
+            items,
+            stacks,
             total,
             cached_count,
             next_page: data.as_ref().and_then(|p| p.next_page),
@@ -315,6 +320,28 @@ impl Runtime {
             return Err(Error::Safe(i.health.clone()));
         }
         Self::cached_operation(&mut i, |s| s.query_page(id, version, page))
+    }
+    pub async fn prepared_query_page(&self, id: i64, version: u64, page: u32) -> Result<QueryPage> {
+        let mut cached = self.query_page(id, version, page)?;
+        loop {
+            let preparation = self.prepare_page_stacks(&cached.items).await;
+            let mut result = self.query_page(id, version, page)?;
+            if preparation.is_ok()
+                && result.items.iter().any(|item| {
+                    !cached.items.iter().any(|previous| {
+                        previous.repo == item.repo && previous.number == item.number
+                    })
+                })
+            {
+                cached = result;
+                continue;
+            }
+            match preparation {
+                Err(Error::Safe(message)) => result.error = Some(message),
+                other => other?,
+            }
+            return Ok(result);
+        }
     }
     pub fn activate_query(&self, id: Option<i64>, version: Option<u64>) -> Result<()> {
         let mut i = self.lock()?;

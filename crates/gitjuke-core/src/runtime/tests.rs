@@ -2539,3 +2539,159 @@ fn queue_bounds_coalescing_and_fairness() {
     assert!(!q.pop().unwrap().foreground);
     assert_eq!(q.jobs.len(), 124);
 }
+
+#[tokio::test]
+async fn authored_tray_discovers_both_stacks_without_selecting_their_members() {
+    let _worker_fixture = WORKER_FIXTURES.lock().await;
+    let (d, path) = fixture_store();
+    std::fs::write(
+        d.path().join("scenario.json"),
+        r#"{"authored":6,"direct_ids":[],"no_teams":true,"stacks":{"5":[1,2,3],"9":[4,5,6]}}"#,
+    )
+    .unwrap();
+    let r = Runtime::start(path, |_| {}).unwrap();
+    wait_for(|| {
+        r.page(0)
+            .is_ok_and(|page| page.complete && page.items.len() == 6)
+    })
+    .await;
+    wait_for(|| r.page(0).is_ok_and(|page| page.stacks.len() == 2)).await;
+    let mut numbers = r
+        .page(0)
+        .unwrap()
+        .stacks
+        .iter()
+        .map(|entry| match entry.stack {
+            StackState::Published { number, .. } => number,
+            _ => panic!("expected published stack"),
+        })
+        .collect::<Vec<_>>();
+    numbers.sort_unstable();
+    assert_eq!(numbers, vec![5, 9]);
+    assert!(r.lock().unwrap().selected.is_none());
+    // Explicit refresh must bypass the slow membership cadence and remove a
+    // stack that is no longer published, without disturbing its neighbor.
+    std::fs::write(
+        d.path().join("scenario.json"),
+        r#"{"authored":6,"direct_ids":[],"no_teams":true,"stacks":{"5":[1,2,3]}}"#,
+    )
+    .unwrap();
+    r.refresh().unwrap();
+    wait_for(|| {
+        r.page(0).is_ok_and(|page| {
+            page.stacks.len() == 1
+                && matches!(
+                    page.stacks[0].stack,
+                    StackState::Published { number: 5, .. }
+                )
+        })
+    })
+    .await;
+    r.shutdown().await;
+}
+
+#[tokio::test]
+async fn initial_tray_page_includes_all_related_stacks() {
+    let _worker_fixture = WORKER_FIXTURES.lock().await;
+    for view in ["authored", "requested", "query"] {
+        let (d, path) = fixture_store();
+        let ids = (1..=6).collect::<Vec<_>>();
+        let scenario = serde_json::json!({
+            "authored": if view == "authored" {6} else {0},
+            "direct_ids": if view == "requested" {ids.clone()} else {vec![]},
+            "query_ids": ids, "no_teams":true, "slow_stack":0.1,
+            "stacks":{"5":[1,2,3],"9":[4,5,6]}
+        });
+        std::fs::write(d.path().join("scenario.json"), scenario.to_string()).unwrap();
+        let r = Runtime::start(path, |_| {}).unwrap();
+        wait_for(|| r.status().is_ok_and(|status| !status.locked)).await;
+        let stacks = if view == "query" {
+            let query = r
+                .save_query(None, None, "Test".into(), "repo:a/b".into())
+                .unwrap();
+            r.request_query(query.id, query.version, 1).unwrap();
+            wait_for(|| {
+                r.query_page(query.id, query.version, 1)
+                    .is_ok_and(|page| page.items.len() == 6)
+            })
+            .await;
+            let page = r
+                .prepared_query_page(query.id, query.version, 1)
+                .await
+                .unwrap();
+            assert!(page.error.is_none(), "{:?}", page.error);
+            assert_eq!(
+                r.status().unwrap().watch_count,
+                0,
+                "reading stacks must not enroll search results"
+            );
+            page.stacks
+        } else {
+            wait_for(|| {
+                match view {
+                    "authored" => r.page(0),
+                    _ => r.requested_page(0),
+                }
+                .is_ok_and(|page| page.complete && page.items.len() == 6)
+            })
+            .await;
+            let page = r.prepared_page(view, 0).await.unwrap();
+            assert!(page.error.is_none(), "{:?}", page.error);
+            page.stacks
+        };
+        assert_eq!(
+            stacks.len(),
+            2,
+            "the first {view} page response must include both stacks"
+        );
+        assert!(r.lock().unwrap().selected.is_none());
+        // A warm reread must not start another membership traversal.
+        let before = std::fs::read_to_string(d.path().join("reads"))
+            .unwrap()
+            .lines()
+            .filter(|line| line.contains("/stacks"))
+            .count();
+        if view != "query" {
+            let page = r.prepared_page(view, 0).await.unwrap();
+            assert_eq!(page.stacks.len(), 2);
+        }
+        let after = std::fs::read_to_string(d.path().join("reads"))
+            .unwrap()
+            .lines()
+            .filter(|line| line.contains("/stacks"))
+            .count();
+        assert_eq!(before, after);
+        r.shutdown().await;
+    }
+}
+
+#[tokio::test]
+async fn unavailable_stack_metadata_keeps_prs_readable_and_pause_keeps_reads_local() {
+    let _worker_fixture = WORKER_FIXTURES.lock().await;
+    let (d, path) = fixture_store();
+    std::fs::write(
+        d.path().join("scenario.json"),
+        r#"{"authored":1,"direct_ids":[],"no_teams":true,"deny_stacks":true}"#,
+    )
+    .unwrap();
+    let r = Runtime::start(path, |_| {}).unwrap();
+    wait_for(|| {
+        r.page(0)
+            .is_ok_and(|page| page.complete && page.items.len() == 1)
+    })
+    .await;
+    let page = r.prepared_page("authored", 0).await.unwrap();
+    assert_eq!(page.items.len(), 1);
+    assert!(
+        page.error
+            .as_ref()
+            .is_some_and(|error| error.contains("Stack information is unavailable"))
+    );
+    r.set_pause(true).unwrap();
+    wait_for(|| r.status().is_ok_and(|status| !status.busy)).await;
+    let before = reads(d.path());
+    let page = r.prepared_page("authored", 0).await.unwrap();
+    assert_eq!(page.items.len(), 1);
+    assert_eq!(reads(d.path()), before);
+    r.shutdown().await;
+}

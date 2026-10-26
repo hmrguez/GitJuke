@@ -23,7 +23,10 @@ async function routed(kind:'comment'|'check'|'summary'|'unavailable'){
   if(name==='activity_page')return {items:[record],nextOffset:null,revision:1,baseline:true,pending:0};
   if(name==='read_overview')return {data:pr,fetchedAt:1,complete:true,error:null,revision:1};
   if(name==='read_checks')return {items:[],commits:[],head,revision:1};
-  if(name==='read_conversation')return {data:{head,source:args.job.source,generation:1,messages:[{id:'route-target',kind:'comment',author:'other',time:'now',url:null,body:'exact source',state:'complete',bytes:12,digest:'route-digest'}],threads:[],next:null,total:1,complete:true},revision:1,error:null};
+  if(name==='read_conversation'){
+   const page=(source:string)=>({head,source,generation:1,messages:source==='comments'?[{id:'route-target',kind:'comment',author:'other',time:'now',url:null,body:'exact source',state:'complete',bytes:12,digest:'route-digest'}]:[],threads:[],next:null,total:1,complete:true});
+   return {data:args.job.source==='initial'?{...page('initial'),seeds:['comments','reviews','threads'].map(source=>({thread:null,page:page(source)}))}:page(args.job.source),fetchedAt:Math.floor(Date.now()/1000),revision:1,error:null};
+  }
   return null;
  }};
  const {App}=await import('../../src/app/App');

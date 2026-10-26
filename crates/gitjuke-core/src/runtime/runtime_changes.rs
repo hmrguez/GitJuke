@@ -267,8 +267,8 @@ impl Runtime {
         } else {
             let data = files(&response, job, base, total, FILE_PAGE)?;
             let items = response.body.as_array().expect("files validated the array");
-            // Retain eligible supplied patches before making their metadata visible.
-            // The automatic tier still labels large content instead of opting into it.
+            // Retain both reader variants before publishing metadata. Opening a PR
+            // opts into full patches, so supplied content must not be fetched again.
             for (value, file) in items.iter().zip(&data.items) {
                 if value.get("patch").is_none() {
                     continue;
@@ -281,6 +281,8 @@ impl Runtime {
                     ..job.clone()
                 };
                 Self::store_changes_patch(&mut pending, &patch_job, value, file.clone(), base)?;
+                let full_job = ChangesJob { large: true, ..patch_job };
+                Self::store_changes_patch(&mut pending, &full_job, value, file.clone(), base)?;
                 while pending.len() >= 12 {
                     i.store.put_changes_batch(&pending[..12], generation)?;
                     pending.drain(..12);

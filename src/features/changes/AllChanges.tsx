@@ -78,21 +78,12 @@ function AllRevision({pr,currentHead,paged,revision,onMode,update,refresh}:Props
     {limited&&<p className="reader-meta">Some files are only available on GitHub.</p>}
     {error&&<p className="state-banner" role="alert">Couldn’t load changes. Refresh to try again.</p>}
     <details className="file-navigator"><summary>Jump to file</summary><nav aria-label="Changed files" className="file-list">{files.map(file=><button key={file.index} onClick={()=>jump(file.index)}><span className="file-path">{file.path}</span><span className="file-stat"><span className="diff-additions">+{file.additions}</span><span className="diff-deletions">−{file.deletions}</span></span></button>)}</nav></details>
-    {base&&files.map(file=><LazyPatch key={file.index} {...{file,base,queue,pr,currentHead,paged,revision,onMode}} register={element=>{if(element)sections.current.set(file.index,element);else sections.current.delete(file.index);}}/>)}
+    {base&&files.map(file=><LoadedPatch key={file.index} {...{file,base,queue,pr,currentHead,paged,revision,onMode}} register={element=>{if(element)sections.current.set(file.index,element);else sections.current.delete(file.index);}}/>)}
     {ready&&!files.length&&<p className="empty">No changed files in this revision.</p>}
   </section>;
 }
-function LazyPatch({file,base,queue,register,...props}:Props&{file:ChangedFile;base:string;queue:ChangesQueue;register:(element:HTMLElement|null)=>void}){
-  const element=useRef<HTMLElement>(null),[near,setNear]=useState(false);
-  useEffect(()=>{
-    const node=element.current;if(!node)return;
-    // Start automatically as a file approaches, then retain it for uninterrupted scrolling.
-    const observer=new IntersectionObserver(entries=>{
-      if(entries.some(entry=>entry.isIntersecting)){setNear(true);observer.disconnect();}
-    },{rootMargin:'1200px'});
-    observer.observe(node);return()=>observer.disconnect();
-  },[]);
-  return <article ref={node=>{element.current=node;register(node);}} tabIndex={-1} className="all-file-section" aria-label={`Changes in ${file.path}`} onFocus={()=>setNear(true)}>
-    {near?<FileChanges {...props} embedded={{file,base,queue}}/>:<div className="file-patch-placeholder"><div className="patch-heading"><h2>{file.path}</h2><span className="file-stat"><span className="diff-additions">+{file.additions}</span><span className="diff-deletions">−{file.deletions}</span></span></div><Skeleton shape="diff" label="Loading changes"/></div>}
+function LoadedPatch({file,base,queue,register,...props}:Props&{file:ChangedFile;base:string;queue:ChangesQueue;register:(element:HTMLElement|null)=>void}){
+  return <article ref={register} tabIndex={-1} className="all-file-section" aria-label={`Changes in ${file.path}`}>
+    <FileChanges {...props} embedded={{file,base,queue}}/>
   </article>;
 }

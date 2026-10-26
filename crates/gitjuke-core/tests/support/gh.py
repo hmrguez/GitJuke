@@ -107,7 +107,12 @@ else:
     body['incomplete_results']=bool(config.get('query_partial'));body['total_count']=config.get('query_total',len(ids))
     if config.get('query_title_bytes'):
      for item in body['items']:item['title']='x'*config['query_title_bytes']
- elif '/stacks?' in endpoint:body=[]
+ elif '/stacks?' in endpoint:
+  if config.get('slow_stack'):time.sleep(config['slow_stack'])
+  if config.get('deny_stacks'):status=404
+  n=int(urllib.parse.parse_qs(urllib.parse.urlparse(endpoint).query)['pull_request'][0]);body=[{'number':int(k)} for k,members in config.get('stacks',{}).items() if n in members]
+ elif '/stacks/' in endpoint:
+  k=endpoint.split('/')[-1];body={'number':int(k),'base':{'ref':'main'},'pull_requests':[dict(number=n,title=pr(n)['title'],html_url=pr(n)['url']) for n in config.get('stacks',{}).get(k,[])]}
  elif endpoint.startswith('notifications?'):
   entries=config.get('notifications',[]);params=urllib.parse.parse_qs(urllib.parse.urlparse(endpoint).query);page=int(params.get('page',['1'])[0]);size=int(params.get('per_page',['50'])[0]);body=entries[(page-1)*size:page*size]
  elif endpoint=='repos/a/b/pulls/comments/9' or any(endpoint=='repos/a/b/pulls/comments/'+str(f.get('node',{}).get('fullDatabaseId')) for f in config.get('destinations',{}).values()):

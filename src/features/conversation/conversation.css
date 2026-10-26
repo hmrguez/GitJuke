@@ -10,7 +10,6 @@
 .conversation-timeline{display:grid;gap:20px;margin-top:16px;position:relative;padding-left:20px;border-left:1px solid var(--line)}
 .timeline-entry{min-width:0;position:relative;scroll-margin-top:20px}
 .conversation-timeline>.timeline-entry:before{content:'';position:absolute;left:-25px;top:25px;width:8px;height:8px;border:1px solid var(--line-strong);border-radius:50%;background:var(--theme-surface)}
-.timeline-entry[aria-hidden=true]:before{display:none}
 .conversation>.skeleton-conversation{box-sizing:border-box;padding-top:20px;padding-bottom:24px}
 .timeline-replies>.skeleton-conversation{box-sizing:border-box;padding:16px 20px 24px}
 .timeline-thread{border:1px solid var(--line);border-radius:var(--radius-panel);background:var(--theme-surface);min-width:0}

@@ -20,7 +20,7 @@ test('ChangesQueue holds each native slot until its reader finishes',async()=>{
   await Promise.resolve();expect(second).toBe(false);release();await pending;expect(second).toBe(true);
 });
 
-test('all-file review walks metadata pages, automatically renders nearby patches and navigates to distant files',async()=>{
+test('all-file review walks metadata pages, eagerly loads every patch without viewport events and navigates to distant files',async()=>{
   const dom=new Window();
   const observers=new Map<Element,(near:boolean)=>void>();
   class Observer {
@@ -62,8 +62,6 @@ test('all-file review walks metadata pages, automatically renders nearby patches
     expect(host.querySelectorAll('.all-file-section').length).toBe(20);
     expect(host.querySelector<HTMLButtonElement>('.file-list button')!.disabled).toBe(false);
     const first=host.querySelector('.all-file-section')!;
-    const firstVisibility=observers.get(first)!;
-    await act(async()=>firstVisibility(true));
     await flush();
     expect(first.querySelector('table')).not.toBeNull();
     for(const label of ['Hunk','Reload file','Reading mode','UTF-8','Head','files loaded','Single file'])expect(host.textContent).not.toContain(label);
@@ -75,15 +73,13 @@ test('all-file review walks metadata pages, automatically renders nearby patches
     expect(host.querySelectorAll('.all-file-section').length).toBe(21);
     expect(host.textContent).toContain('21 files');expect(requests).toEqual([]);
     const sections=host.querySelectorAll<HTMLElement>('.all-file-section');
-    await act(async()=>{firstVisibility(true);observers.get(sections[1])!(true);});
     await flush();
-    expect(requests).toEqual([]);expect(host.querySelectorAll('table.diff-source').length).toBe(2);
+    expect(requests).toEqual([]);expect(host.querySelectorAll('table.diff-source').length).toBe(21);
     expect(host.textContent).toContain('+after');expect(cancellations).toBe(0);
-    // A far-away navigator link focuses/mounts the target without selecting a single-file reader.
+    // Even the final file is ready before its navigator link is activated.
     await act(async()=>{host.querySelectorAll<HTMLButtonElement>('.file-list button')[20].click();});
     await flush();expect(requests).toEqual([]);expect(sections[20].querySelector('table')).not.toBeNull();
     // Keep loaded changes in the document when scrolling away.
-    await act(async()=>firstVisibility(false));
     expect(sections[0].querySelector('table')).not.toBeNull();expect(sections[0].textContent).toContain('file-0.ts');
     // Authoritative cache removal hides every retained reader.
     cleared=true;
